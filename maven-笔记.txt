@@ -1,0 +1,198 @@
+maven plugin 目标前缀
+	为了使maven插件使用起来更方便，maven引入了目标前缀的概念，如help是maven-help-plugin的目标前缀，
+	dependency是maven-dependency-plugin的前缀，通过目标前缀，maven可以确定插件的groupId和artifactId
+	以及version。
+插件仓库
+	Maven会区别对待依赖的远程仓库与插件的远程仓库
+	配置依赖仓库使用repositories标签和repository子标签，而配置插件仓库使用pluginRepositories和pluginRepository
+	<repositories>
+		<repository>
+			<id>repository identify</id>
+			<name>repository name</name>
+			<url>repository address</url>
+			<layout>default</layout><!--用于指定用maven1还是maven2标准-->
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+	</repositories>
+默认的groupId
+	如果插件是maven的官方插件(即如果其groupId为org.apache.maven.plugins),就可以省略groupId配置
+插件版本解析
+	maven在超级pom中定义了核心插件的版本,如maven-compile-plugin、maven-clean-plugin等
+	如果未指定版本的插件不在超级pom的范畴，maven就会检查所有仓库中可用的版本，然后做出选择。
+		1.maven会遍历所有插件仓库，将groupId/artifactId路径下的仓库元数据归并后,就能计算出latest和release的值.
+		2.latest代表该构件的最新版本包括snapshot版本.release代表最新的非快照版本.
+		3.maven2中插件的版本会自动使用latest版本,到了maven3,会使用release版本
+解析插件前缀
+	maven会根据目标前缀搜索四个地方的插件
+	1.当前项目中pom文件中的插件,寻找跟目标前缀匹配的插件,如果没有,进行第二步的查找
+	2.在org/apache/maven/plugins和org/codehaus/mojo两个路径下寻找元数据(maven-metadata.xml),匹配元数据中的插件
+	3.在setting.xml的pluginGroups标签下配置的pluginGroup路径下寻找元数据,寻找的顺序由pluginGroup标签的定义顺序决定
+使用maven-help-plugin获取插件表述
+	maven-help-plugin是maven官方提供的插件,goalPrefix为help
+	该插件中定义了九个目标,常用的就是describe目标
+	help:describe
+	  Description: Displays a list of the attributes for a Maven Plugin and/or
+	    goals (aka Mojo - Maven plain Old Java Object).
+	可以使用-Ddetail属性开启输出每个目标可用的参数
+	如mvn help:describe -Dplugin=org.springframework.boot:spring-boot-maven-plugin:1.5.1.RELEASE -Ddetail
+	上面的命令就可以将spring-boot-maven-plugin的详细使用方法列出来
+生命周期
+	在开发过程中,软件开发人员每天都在对项目进行清理、编译、测试及部署，但这些步骤每天都是重复的，刻板的，完全可以使用自动化工具帮助我们完成
+	maven的生命周期就是对所有的构建过程进行抽象和统一。这个生命周期包含了项目的清理、初始化、编译、测试、打包、集成测试、验证、部署和站点生成等几乎所有构建过程
+	maven的生命周期是抽象的，这意味着生命周期本身不做任何实际的工作，在maven的设计中，实际的任务都交由插件来完成。
+	maven拥有三套相互独立的生命周期
+		clean：清理项目
+		default：构建项目
+		site： 建立项目站点
+	每套生命周期都包含一些阶段（phase），这些阶段是有顺序的，并且后面的阶段依赖于前面的阶段，可以直接执行某套生命周期中的某个阶段，在该阶段之前的所有阶段也会顺序执行
+	maven的生命周期和阶段在maven-core包下的META-INF/plexus/components.xml文件中定义
+	clean：
+		pre-clean
+		clean
+		post-clean
+	default：
+		validate
+		initialize
+		generate-sources
+		process-sources
+			处理项目主资源文件，一般来说，是对src/main/resources目录的内容进行变量替换等工作，复制到项目输出的主classpath目录下
+		generate-resources
+		process-resources
+		compile
+		process-classes
+		generate-test-sources
+		process-test-sources
+		generate-test-resources
+		process-test-resources
+		test-compile
+		process-test-classes
+		test
+		prepare-package
+		package
+		pre-integration-test
+		integration-test
+		post-integration-test
+		verify
+		install
+		deploy
+	site
+		pre-site
+		site
+		post-site
+		site-deploy
+阶段与goal的默认绑定情况
+	<phases>
+	  <process-resources>
+	    org.apache.maven.plugins:maven-resources-plugin:2.6:resources
+	  </process-resources>
+	  <compile>
+	    org.apache.maven.plugins:maven-compiler-plugin:3.1:compile
+	  </compile>
+	  <process-test-resources>
+	    org.apache.maven.plugins:maven-resources-plugin:2.6:testResources
+	  </process-test-resources>
+	  <test-compile>
+	    org.apache.maven.plugins:maven-compiler-plugin:3.1:testCompile
+	  </test-compile>
+	  <test>
+	    org.apache.maven.plugins:maven-surefire-plugin:2.12.4:test
+	  </test>
+	  <package>
+	    org.apache.maven.plugins:maven-jar-plugin:2.4:jar
+	  </package>
+	  <install>
+	    org.apache.maven.plugins:maven-install-plugin:2.4:install
+	  </install>
+	  <deploy>
+	    org.apache.maven.plugins:maven-deploy-plugin:2.7:deploy
+	  </deploy>
+	</phases>
+自定义绑定
+	除了内置绑定以外，用户还可以自己选择将某个插件绑定到生命周期的某个阶段上，可以在pom文件的plugin中进行定义
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase><!--该配置就是指定该插件目标的执行时机-->
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+构建
+	如果给构建下一个定义,那么可以这样描述,构建就是从拿到源码到项目部署完成的一系列过程
+maven简介
+	maven不仅仅是一个构建工具,还是一个依赖管理工具和项目信息管理工具
+	maven可以帮我们管理原本分散在项目中各个角落的项目信息,包括项目描述、开发者列表、版本控制系统地址、许可证、缺陷管理系统地址等。
+	maven为全世界的java开发者提供了一个免费的中央仓库，在其中几乎可以找到任何流行开源类库。
+pom文件
+	如果pom文件中不指定packaging，那么默认就是jar
+	坐标定义
+		maven通过坐标唯一标识一个构建，maven的坐标是通过一些元素定义的。groupId、artifactId、version、packaging、classifier
+		其中groupId、artifactId和version是必须指定的，packaging和classifier是可选的
+		packaging用于指定打包方式，如pom、jar、war等
+		classifier用来帮助定义构建输出的一些附属构建。
+	依赖定义
+		maven是一个依赖管理软件使用<dependencies>和<dependency>标签指定本项目依赖的其他构建
+		<dependencies>
+			<denpendency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-web</artifactId>
+				<version>1.5.1.RELEASE</version>
+				<type>jar</type>
+				<!--
+					用于定义引入的构建的作用范围可选值为compile、test、runtime、provided
+				-->
+				<scope>compoile</scope>
+				<!--
+					optional选择主要用于依赖传递中,如A依赖B,B依赖X,如果B对X的optional都为true,那么即使B对X的scope为compile,A对B的scope也为compile,
+					A也不会依赖X,因为B对X的optional为true
+				-->
+				<optional>true</optional>
+				<!--
+					exclusions也是为了应对依赖传递,如果A依赖B,B依赖C并且scope都为compile,如果不想让A依赖从B传递依赖过来的C,那么可以使用exclusions
+					标签将A对C的传递依赖排除.
+				-->
+				<exclusions>
+					<exclusion>
+						<groupId></groupId>
+						<artifactId></artifactId>
+						<version></version>
+					</exclusion>
+				</exclusions>
+			</denpendency>
+		</denpendencies>
+	传递性依赖
+		如果A-->B,B-->C,那么依赖范围可以决定A是否对C有传递性依赖
+		下图中第一行为第一依赖范围,第一列为第二依赖范围
+					compile 	test 	provided 	runtime
+		compile 	compile 	-- 		-- 			runtime
+		test 		test 		-- 		-- 			test
+		provided 	provided 	-- 		provided 	provided
+		runtime 	runtime 	-- 		-- 			runtime
+	依赖调解
+		maven引入传递性依赖机制,在有些情况下会造成一定的问题,
+		比如说有如下依赖关系A-->B-->C-->X(1.1),A-->D-->X(1.2)
+			在这种情况下,maven遵循路径最近者优先,即使用X(1.2)
+		还有一种情况如A-->B-->X(1.1),A-->C-->X(1.2)
+			在这种情况下,maven遵循第一声明者优先,即使用X(1.1)
+maven仓库
+	为了避免多个项目中防止重复的构件,maven将所有构件都统一存储在一个固定的位置,使多个项目可以共享其中的构件,通过maven坐标唯一标识这些构件
+	根据构件的坐标存储构件的规则是:groupId/artifactId/version/artifactId-version.packaging
+仓库的分类
+	对于maven来说,仓库只分为两类,本地仓库和远程仓库.当maven根据坐标寻找构件的时候会现在本地仓库中寻找,如果本地仓库存在此构件,则直接使用;如果
+	本地仓库中不存在此构件,或者需要查看是否有更新的构件版本,maven就回去远程仓库查找,发现需要的构件之后,下载到本地仓库再使用.
+	
