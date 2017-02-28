@@ -1,0 +1,15 @@
+Maven 笔记
+Maven简介
+	Maven为我们规定好了一套构建项目的流程,只要我们按照一定的约定创建我们的项目,就可以利用Maven定义的这套流程自动化的
+	构建项目,包括编译、测试、打包、部署等。
+Maven生命周期
+	Maven分为三种生命周期：clean、default、site。每一种生命周期又有自己的阶段（phase）
+	clean就是清理上次编译的文件包括三个阶段（phase）pre-clean、clean、post-clean
+	default是我们构建项目的核心过程，例如编译、测试、打包、部署等
+	site主要是用于构建站点
+Maven plugin
+	Maven plugin是Maven的核心,Maven软件中只定义了构建框架,但每一步具体做什么处理并没有在maven软件中给出,
+	而是通过plugin的形式实现具体的构建过程。
+	
+	Maven plugin有goal的概念，就是一个plugin要执行的目标，一个plugin可以有多个goal，在使用plugin时指定要执行的goal即可，
+	plugin帮助Maven完成构建的方式就是
