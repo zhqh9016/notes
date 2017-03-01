@@ -195,4 +195,43 @@ maven仓库
 仓库的分类
 	对于maven来说,仓库只分为两类,本地仓库和远程仓库.当maven根据坐标寻找构件的时候会现在本地仓库中寻找,如果本地仓库存在此构件,则直接使用;如果
 	本地仓库中不存在此构件,或者需要查看是否有更新的构件版本,maven就回去远程仓库查找,发现需要的构件之后,下载到本地仓库再使用.
-	
+maven 插件开发
+	步骤:	1.mvn archetype:generate
+			2.输入maven-archetype-plugin
+			3.根据提示完成插件项目的搭建过程包括groupId、artifactId、package
+			4.编写自己的MoJo（maven old Java object），继承AbstractMojo
+			5.在Mojo类上添加@Mojo注解或使用javadoc标注@goal
+			6.执行mvn install将该插件安装到本地仓库
+			7.测试自定义插件
+	Mojo样例：
+		/**
+		 * Goal print the word user transfered
+		 * @goal touch
+		 * @requiresProject false
+		 */
+		public class PrintMojo extends AbstractMojo {
+			
+			/**
+			 * The words you want to print in the screen.
+			 * @parameter property="trans.words"
+			 */
+			private String words;
+			
+			public void execute() throws MojoExecutionException {
+				
+				getLog().warn(words);
+				System.out.println(words);
+				
+			}
+		}
+	插件开发主要点：
+		必须定义goal
+		可以定义可配置属性
+		可以指定执行该插件时是否需要依赖具体的项目
+		可以为可配置属性指定表达式，用于在命令行中接收系统参数。
+		可以为goal绑定默认阶段
+		可以为属性引用pom文件中的属性如project.version等
+		
+		
+		
+		
