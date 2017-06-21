@@ -1,0 +1,13 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<link rel="Shortcut Icon" href = "favicon.ico">
+		<title>Liyh Demo</title>
+	</head>
+	<body>
+		<ul>
+			<li><a href="/webjars/swagger-ui/index.html?url=/swagger/ltci-portal-api-v1.yml">interface Information</a></li>
+			<li><a href="http://localhost:8080/api/v1/reconsiderFile?fileId=3001c389fd0d74e3c90be794ba0fd2007&fileType=jpg">download</a></li>
+		</ul>
+	</body>
+</html>

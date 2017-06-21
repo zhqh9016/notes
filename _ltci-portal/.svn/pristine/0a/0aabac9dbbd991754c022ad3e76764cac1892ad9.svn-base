@@ -1,0 +1,22 @@
+post: 
+  tags:
+  - evaluateTask
+  summary: 在线预览图片
+  description: 在线预览图片
+  operationId: getMongoDBMessage
+  parameters: 
+    - name: id
+      in: query
+      description: mongoDB id
+      required: true
+      type: string
+  responses:
+      200:
+        description: 查询成功
+        schema:
+          $ref: "../../ltci-api-v1.yml/#/definitions/ResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-api-v1.yml/#/definitions/ResultDTO"
+

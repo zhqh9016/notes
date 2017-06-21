@@ -1,0 +1,332 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/common.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/detailStyle.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../css/detailStyle.css" />
+    <style>
+    .Bomb_box {
+        width: 800px;
+        height: 80%;
+        background: white;
+        position: fixed;
+        top: 50px;
+        left: 50%;
+        margin-left: -350px;
+        border: 2px solid #999;
+        display: none
+    }
+    
+    .Bomb_box span {
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app" style="height: 100%;width: 100%;border: none;">
+        <table width="100%" id="userList" toolbar="#userListtb">
+        </table>
+        <div id="userListtb" style="padding:3px; height: auto">
+            <div name="searchColums" id="searchColums">
+                <input id="isShowSearchId" type="hidden" value="false" />
+                <input id="_sqlbuilder" name="sqlbuilder" type="hidden" />
+                <form id="userListForm">
+                    <span class="inputLable">
+							<span class="inputLableText">申请人：</span>
+                    <input type="text" name="insuredPersonName" class="inuptxt" />
+                    </span>
+                    <span class="inputLable">
+							<span class="inputLableText">身份证号码：</span>
+                    <input type="text" id="idCard" name="idCard" class="inuptxt easyui-validatebox" data-options="validType:'idCard'" />
+                    </span>
+                    <span class="inputLable">
+							<span class="inputLableText">评估机构名称：</span>
+                    <input type="text" name="evaluateAgencyName" class="inuptxt" />
+                    </span>
+                    <span class="inputLable">
+							<span class="inputLableText">经办时间：</span>
+                    <input type="text" name="operatedStartTime" class="WdatePicker" />
+                    </span>
+                    <!-- 						<span class="inputLable">
+							<span class="inputLableText">经办结束时间：</span>
+							<input type="text" name="operatedEndTime" class="WdatePicker" />
+						</span> -->
+                    <span class="inputLable"><span class="inputLableText">
+						<a href="#" class="easyui-linkbutton" iconcls="icon-search" onclick="doSearch()">查询</a>
+						<a href="#" class="easyui-linkbutton" iconcls="icon-search" onclick="resetSearch()">重置</a>
+						</span></span>
+                </form>
+            </div>
+            <div style="height:30px;" class="datagrid-toolbar">
+                <span style="float:left;">
+				<a href="#" class="easyui-linkbutton" plain="true" icon="icon-putout" onclick="doBatchPrint()">批量打印</a>
+			</span>
+            </div>
+        </div>
+    </div>
+    <div style="display:none">
+        <div id="showTableInfo">
+            <iframe id="showTableInfo_iframe" src="" width="99%" height="99%"></iframe>
+        </div>
+        <div id="showInfoDetail">
+        </div>
+        <div id="printPicture"></div>
+    </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/util/WdatePicker.js"></script>
+<script type="text/javascript" src="../../js/util/ajaxfileupload.js"></script>
+<script type="text/javascript" src="../../js/validate.js"></script>
+<script type="text/javascript" src="../../js/util/jquery.jqprint-0.3.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/treatmentApply/expertAssess.js"></script>
+<script type="text/javascript" src="../../js/treatmentApply/treatmentCommon.js"></script>
+<script>
+$('#showTableInfo').window({
+    title: '查看',
+    width: 900,
+    height: 450,
+    closed: true,
+    minimizable: false,
+    collapsible: false,
+    modal: true
+});
+$('#showInfoDetail').window({
+    title: '查看',
+    width: 900,
+    height: 450,
+    closed: true,
+    minimizable: false,
+    collapsible: false,
+    modal: true
+});
+
+function doLoading() {
+    var obj = {
+        insuredPersonName: $("input[name=insuredPersonName]").val(),
+        idCard: $("input[name=idCard]").val(),
+        evaluateAgencyName: $("input[name=evaluateAgencyName]").val(),
+        operatedStartTime: $("input[name=operatedStartTime]").val(), //经办时间为一个查询条件
+        operatedEndTime: $("input[name=operatedStartTime]").val(), //经办时间为一个查询条件
+        page: TableObj.page,
+        pageSize: TableObj.pageSize
+    };
+    var url = portalServiceUrl + "/api/v1/expertEvaluate";
+    sendAjax(url, "post", obj, function(data) {
+        gridLoadData('userList', data);
+    });
+}
+
+function doSearch() {
+    if (!$("#idCard").validatebox("isValid")) {
+        $.messager.alert('警告', "请输入正确格式的身份证！");
+        return;
+    }
+    TableObj.page = 1;
+    TableObj.pageSize = 10;
+    doLoading();
+}
+var evaluateJson = '';
+
+function doexpertAssess(index, b, readonly) { //录入量表
+    var row = $('#userList').datagrid('getRows')[index];
+    var data = JSON.parse(row.detailJson); //获取量表json
+    evaluateJson = row.evaluateContent;
+    var firstCode = row.firstEvaluateCode;
+    var code = row.expertEvaluateCode; //row.firstEvaluateCode;
+    console.log('量表code：', code);
+    $('#showTableInfo_iframe').attr('src', 'resultTemplate.html?firstCode=' + firstCode + '&expertCode=' + code + '&operate=true&expert=true');
+    $('#showTableInfo').window('open');
+    // $(".easyui-linkbutton").linkbutton();
+    // doSumScore();
+    // //$('expertScore')
+    // //var score=doCountScore('score');
+    // $('.expert-assess').on('click',function(){doSumScore();});
+
+}
+
+function loadexpertAssess(index) { //查看附件
+    var row = $('#userList').datagrid('getRows')[index];
+    code = row.expertEvaluateCode;
+    //var url = portalServiceUrl + "/api/v1/expertEvaluat/" + code;
+    //sendAjax(url, "get", "", function(data){
+    //if(data.status!==200){
+    //	$.messager.alert('警告', data.message);
+    //	return true;
+    //}
+    var s = "<div class=\"mainTitle\">附件</div>";
+    s += "<div class=\"mainWapper\"><div id='showImageInfo' class='imgBox'></div></div>";
+    s += "<div class=\"mainTitle\">专家意见:</div>";
+    s += "<div class=\"mainWapper\"><span>" + row.opinion + "</span></div>";
+    $('#showInfoDetail').html(s);
+    //loadImages("showImageInfo",data.datas.accessoryAddress);
+    doLoadImage(row.accessoryAddress, 'showImageInfo');
+    $('#showInfoDetail').window('open');
+    //}, functi on(err or) {
+    //	console.log(er ror);
+    //	$.messager.alert('警告', "查询失败");
+    //});
+}
+
+function doBatchPrint() { //applicationFormScan
+    if (!isCheck()) {
+        return;
+    }
+    //			if(rowData.taskState == '03'||rowData.taskState == '04'){
+    $('#printPicture').html('');
+    var checkedItems = $('#userList').datagrid('getChecked');
+    var names = [];
+    var isOk = true;
+    $.each(checkedItems, function(index, item) {
+        //printSingle(item.expertEvaluateCode);
+        if (item.taskState !== '03' && item.taskState !== '04') {
+            $.messager.alert('警告', "请选择可打印的记录进行打印");
+            isOk = false;
+            return false;
+        }
+        doLoadPrintImage(item.accessoryAddress, 'printPicture', '80%');
+        if (item.applicationFormScan) {
+            doLoadPrintImage(item.applicationFormScan, 'printPicture', '80%');
+        }
+    });
+    if (isOk) $('#printPicture').jqprint();
+}
+
+function printSingle(index) { //applicationFormScan
+    var row = $('#userList').datagrid('getRows')[index];
+    //			accessoryAddress
+    $('#printPicture').html('');
+    doLoadPrintImage(row.accessoryAddress, 'printPicture', '80%');
+    if (row.applicationFormScan) {
+        doLoadPrintImage(row.applicationFormScan, 'printPicture', '80%');
+    }
+    $('#printPicture').jqprint();
+    // var url = portalServiceUrl + "/api/v1/expertEvaluat/" + code;
+    // sendAjax(url, "get", "", function(data){
+    // 	if(data.status!=200){
+    // 		$.messager.alert('警告', data.message);
+    // 		return true;
+    // 	}
+    // 	var response=data.datas.accessoryAddress;
+    // 	var s="",o = JSON.parse(response);
+    // 	for(var k in o) {
+    // 		temp = o[k];
+    // 		for(var i in temp) {
+    // 			sData = temp[i];
+    // 		}
+    // 		s+="<img width=\"100%\" height=\"100%\" src=\"data:image/gif;base64," + sData + "\">";
+    // 	}
+    // 	doPrint(s);
+    // }, funct ion(err or) {
+    // 	console.log(er ror);
+    // 	$.messager.alert('警告', "查询失败");
+    // },false);
+}
+// function loadImages(id, sData) {
+// 	var o = JSON.parse(sData);
+// 	for(var k in o) {
+// 		temp = o[k];
+// 		for(var i in temp) {
+// 			sData = temp[i];
+// 		}
+// 		$('#' + id).append("<img width=\"100%\" height=\"100%\" src=\"data:image/gif;base64," + sData + "\">");
+// 	}
+// }
+function removeImg() {
+    //事件委托删除图片
+    $("#showimage").on("click", ".removeImg", function() {
+        var inputID = $(this).attr("data-imgId");
+        var inputName = $(this).attr("data-inputName");
+        var inputValue = $("input[name=" + inputName + "]").val();
+        var ids = inputValue.split(",");
+        var newID = [];
+        $.each(ids, function(index, value) {
+            if (inputID != value) {
+                newID.push(value);
+            }
+        });
+        var returnValue = "";
+        $.each(newID, function(index, value) {
+            returnValue += value;
+            if (index < newID.length - 1) {
+                returnValue += ",";
+            }
+        });
+        $("input[name=" + inputName + "]").val(returnValue);
+        $("div[data-singleImg=" + inputID + "]").remove();
+
+        //发送请求，删除图片
+        var url = portalServiceUrl + "/api/v1/treatmentApplicationAttachement/" + inputID;
+        sendAjax(url, "delete", "", function(successdata) {
+            console.log(successdata.message, successdata.status);
+        });
+    });
+}
+
+function fileUpLoad(node, name) { //上传图片到 服务器，并返回图片id，并放到form隐藏域内			
+    $.ajaxFileUpload({
+        url: portalServiceUrl + "/api/v1/treatmentApplicationAttachement",
+        type: 'post',
+        secureuri: false, //一般设置为false
+        complete: null,
+        fileSize: '1024',
+        fileFilter: 'jpg',
+        fileElementId: node.id, // 上传文件的id、name属性名
+        dataType: 'text', //返回值类型，一般设置为json、application/json
+        //data: { Id: '123123', name: 'attachment' },
+        success: function(data, status) {
+            //jsondata = getJSONStr(data);
+            data = JSON.parse(data).datas;
+            //JSON.parse(data).datas
+            //alert(jsondata.msg);
+            console.log(data);
+            console.log('上传success文件名为:attachmentid=', data.attachmentid);
+            console.log('上传success状态为:status=', status);
+            var s = $("input[name='" + name + "']").val();
+            if (s.length < 1) s = data.attachmentid;
+            else s += "," + data.attachmentid;
+            $("input[name='" + name + "']").val(s);
+            var sUrl = getImgUrl(node); //  //$('#'+node.id).val()
+
+            $('#' + name + '_images').append('<div data-singleImg = "' + data.attachmentid + '" class="singleImg"><img style="width:200px;height:auto;" src= "' + sUrl + '"><span data-inputName =  "' + name + '" data-imgId = "' + data.attachmentid + '" class="removeImg">删除图片</span></div>');
+            var sButton = "<input type=\"file\" id=\"" + node.id + "\"  name=\"attachment\" onchange=\"fileUpLoad(this,'" + name + "')\" />" +
+                "<a href='javascript:;'>点击选择图片</a>";
+            $('#' + name + '_button').html('');
+            $('#' + name + '_button').html(sButton);
+            removeImg();
+
+        },
+        error: function(data, status, e) {
+            console.log('error:data=', data);
+            console.log('error:status=', status);
+            console.log('error:msg=', e);
+        }
+    });
+}
+
+function resetSearch() {
+    $('#userListForm input').val('');
+    loadDictionary();
+}
+
+function isCheck() {
+    var arr = $('#userList').datagrid('getChecked');
+    if (arr.length < 1) {
+        $.messager.alert('警告', '请选择一行数据再进行操作');
+        return false;
+    }
+    return true;
+}
+</script>
+
+</html>

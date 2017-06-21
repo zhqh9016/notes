@@ -1,0 +1,334 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/common.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+    #chooseOrganization div {
+        margin-left: 8px;
+    }
+    
+    .applyPeople {
+        margin: 10px;
+        font-size: 14px;
+    }
+    
+    .applyPeople span {
+        display: inline-block;
+        padding: 2px 8px;
+    }
+    
+    .organizationList {
+        width: 800px;
+    }
+    
+    .organizationSmallList {
+        width: 220px;
+        height: 260px;
+        float: left;
+        margin: 10px;
+        padding: 0 8px;
+    }
+    
+    .organizationSmallList dt {
+        height: 180px;
+    }
+    
+    #chooseOrganization {}
+    
+    .organizationSmallList {
+        line-height: 28px;
+    }
+    
+    .organizationSmallList dd {
+        margin-top: 10px;
+    }
+    
+    .applyMan {
+        display: inline-block;
+        min-width: 86px;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app" style="height: 100%;width: 100%;border: none;">
+        <div id="searchShow" style="height: 100%;">
+            <table width="100%" id="userList" toolbar="#userListtb">
+            </table>
+            <div id="userListtb" style="padding:3px; height: auto">
+                <div name="searchColums" id="searchColums">
+                    <input id="isShowSearchId" type="hidden" value="false" />
+                    <input id="_sqlbuilder" name="sqlbuilder" type="hidden" />
+                    <form id="userListForm">
+                        <span class="inputLable"><span class="inputLableText">申请人：</span>
+                        <input type="text" name="insuredPersonName" class="inuptxt" />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">电话：</span>
+                        <input type="text" name="mobile" class="inuptxt" />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">经办时间：</span>
+                        <input name="operatedTime" editable="false" type="text" class="WdatePicker" />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">任务状态：</span>
+                        <input id="taskState" data-dictionary="taskState" name="taskState" editable="false" data-value="00,01" type="text" class="easyui-combobox dictionary query-condition" />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">
+							<a href="#" class="easyui-linkbutton" iconcls="icon-search" onclick="doSearch()">查询</a>
+							<a href="#" class="easyui-linkbutton" iconcls="icon-search" onclick="resetSearch()">重置</a>
+							</span></span>
+                    </form>
+                </div>
+                <div style="height:30px;" class="datagrid-toolbar">
+                    <span>
+							<a href="#" class="easyui-linkbutton" plain="true" icon="icon-putout" onclick="chooseOrganizations()">批量选择机构</a>
+						</span>
+                </div>
+            </div>
+        </div>
+        <div id="chooseOrganization" style="display: none;">
+            <div class="input_box">
+                <div class="input_box_title"><span>申请人信息：</span></div>
+                <ul class="applyPeople">
+                    <!--<li>
+							申请人：<span class="applyMan">11111111111</span>电话：<span class="applyManMobile">18811111111</span>
+						</li>
+						<li>
+							申请人：<span class="applyMan">11111111111</span>电话：<span class="applyManMobile">18811111111</span>
+						</li>-->
+                </ul>
+                <div class="">
+                    <a href="javascript:;" onclick="showFirst()" class="easyui-linkbutton" style="margin-top: 10px;">返回上一页面</a>
+                </div>
+            </div>
+            <div class="input_box">
+                <div class="input_box_title"><span>选择机构</span></div>
+                <div class="organizations">
+                    <div style="margin-top: 10px;">
+                        请选择行政区：
+                        <input id="areaCombox" name="areaCombox" editable="false" id="area" type="text" class="easyui-combobox " />
+                    </div>
+                    <div>
+                        <a style="margin-top: 10px;" href="javascript:;" name="" class="easyui-linkbutton" onclick="doSearchOrganization()">确定</a>
+                    </div>
+                    <div class="organizationList clear">
+                        <!--<dl class="organizationSmallList">
+							<dt>
+								<p>名称：荆门市东宝区长宁居养老院荆门市东宝区长宁居养老院</p>
+								<p>地址：荆门市东宝区</p>
+								<p>服务能力：本周剩余69人次</p>
+								<p>服务评分：五分</p>
+							</dt>
+							<dd>
+								<a class="sentOrganization easyui-linkbutton" href="javascript:;" name="" onclick="">选择机构并发送</a>
+							</dd>
+						</dl>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/util/WdatePicker.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/validate.js"></script>
+<script type="text/javascript" src="../../js/treatmentApply/assessmentTaskSend.js"></script>
+<script type="text/javascript" src="../../js/treatmentApply/treatmentCommon.js"></script>
+<script>
+var evaluateTaskCodes = []; //评估任务编号
+$(function() {
+        //获取地区信息，加载下拉框
+        $("#areaCombox").combobox({
+            valueField: 'id',
+            textField: 'areaName',
+            data: getNextarea(420800),
+            onSelect: function(selectedValue) {
+                //console.log(selectedValue);
+            }
+        });
+    }
+
+);
+
+function doSearch() {
+    TableObj.page = 1;
+    TableObj.pageSize = 10;
+    doLoading();
+}
+
+function doLoading() { //加载列表数据
+    var taskState = "00,01"; //列表查询结果应只是已发送和未发送2种结果
+    if ($("input[name=taskState]").val()) {
+        taskState = $("input[name=taskState]").val();
+    }
+    var obj = {
+        insuredPersonName: $("input[name=insuredPersonName]").val(),
+        mobile: $("input[name=mobile]").val(),
+        operatedTime: $("input[name=operatedTime]").val(),
+        taskState: taskState,
+        page: TableObj.page,
+        pageSize: TableObj.pageSize
+    };
+    var url = portalServiceUrl + "/api/v1/evaluateTasks";
+    sendAjax(url, "post", obj, function(data) {
+        gridLoadData('userList', data);
+    });
+}
+
+function resetSearch() {
+    $('#userListForm input').val('');
+    loadDictionary();
+}
+
+function isCheck() {
+    var arr = $('#userList').datagrid('getChecked');
+    if (arr.length < 1) {
+        $.messager.alert('警告', '请选择一行数据再进行操作');
+        return false;
+    }
+    return true;
+}
+
+//单选  选择机构
+function chooseOneOrganization(rowData) {
+    $(".organizationList").html("");
+    var row = $('#userList').datagrid('getRows')[rowData];
+    if (row.taskState != '00') {
+        $.messager.alert("警告", "已发送的任务无法重复发送");
+        return;
+    }
+    showNext();
+    evaluateTaskCodes = [row.evaluateTaskCode];
+    var html = '<li>申请人：<span class="applyMan">' + row.insuredPersonName + '</span>电话：<span class="applyManMobile">' + row.mobile + '</span></li>';
+    $(".applyPeople").html(html);
+}
+
+//批量选择机构
+function chooseOrganizations() {
+    $(".organizationList").html("");
+    var rows = $("#userList").datagrid("getChecked");
+    var isSended = false;
+    $.each(rows, function(index, item) {
+        if (item.taskState != "00") {
+            isSended = true;
+        }
+    });
+    if (isSended) {
+        $.messager.alert("警告", "批量选择的任务有已发送的任务，请重新选择！");
+        return;
+    }
+    if (isCheck()) {
+        showNext();
+        console.log(rows);
+        var html = "";
+        evaluateTaskCodes = [];
+        $.each(rows, function(index, item) {
+            evaluateTaskCodes.push(item.evaluateTaskCode);
+            console.log(item.insuredPersonName);
+            html += '<li>申请人：<span class="applyMan">' + item.insuredPersonName + '</span>电话：<span class="applyManMobile">' + item.mobile + '</span></li>';
+        });
+        $(".applyPeople").html(html);
+    }
+}
+
+//发送机构按钮的onclick事件绑定
+$("#chooseOrganization").on("click", ".sentOrganization", function() {
+        $.messager.confirm('提示', '是否确认发送？', function(r) {
+            if (r) {
+                $(".organizationList").html("");
+                var evaluateAgencyCode = $(this).attr("data-evaluateAgencyCode");
+                var evaluateAgencyName = $(this).attr("data-evaluateAgencyName");
+                //console.log(evaluateTaskCodes);
+                //console.log(evaluateAgencyCode);
+                //console.log(evaluateAgencyName);
+                var taskCodeStr = "";
+                if (evaluateTaskCodes.length > 1) {
+                    $.each(evaluateTaskCodes, function(index, item) {
+                        taskCodeStr += item;
+                        if (index < (evaluateTaskCodes.length - 1)) {
+                            taskCodeStr += ",";
+                        }
+                    });
+                } else {
+                    taskCodeStr = evaluateTaskCodes[0];
+                }
+                var str = "evaluateTaskCodes=" + taskCodeStr + "&evaluateAgencyCode=" + evaluateAgencyCode + "&evaluateAgencyName=" + evaluateAgencyName;
+                var url = portalServiceUrl + "/api/v1/evaluateTask";
+                sendAjax(url, "put", str, function(successdata) {
+                    console.log(successdata);
+                    if (successdata.status == 201) {
+                        $.messager.show({
+                            title: '提示',
+                            msg: '选择机构成功',
+                            timeout: 8000
+                        });
+                        doLoading();
+                        showFirst();
+
+                        //						$.messager.alert("消息", "修改成功!", 'info');
+
+                    } else {
+                        $.messager.alert("提示", successdata.message);
+                        doLoading();
+                        showFirst();
+                    }
+                });
+            }
+        });
+
+    }
+
+); //确定按钮  根据选择的行政区获取评估机构
+function doSearchOrganization() {
+    var areaId = $("input[name=areaCombox]").val();
+    if (!areaId) {
+        $.messager.alert("提示", "请先选择一个区域！");
+        return;
+    }
+    var getOrganizationUrl = portalServiceUrl + "/api/v1/evaluateDepartments/areaNum/" + areaId + "/organizationType/10";
+    sendAjax(getOrganizationUrl, "get", "", function(successdata) {
+        console.log(successdata);
+        var organizationData = successdata;
+        var html = "";
+        if (organizationData.status == 200) {
+            $.each(organizationData.datas, function(index, value) {
+                var agencyAddressDetail = "";
+                if (value.agencyAddressDetail) {
+                    agencyAddressDetail = value.agencyAddressDetail;
+                }
+                var serviceability = "";
+                if (value.serviceability) {
+                    serviceability = value.serviceability;
+                }
+                html += '<dl class="organizationSmallList"><dt>' + '<p>名称：' + value.agencyName + '</p>' + '<p>地址：' + agencyAddressDetail + '</p>' + '<p>服务能力：' + serviceability + '</p>' + '</dt>' + '<dd><a class = "sentOrganization easyui-linkbutton" href="javascript:;" data-evaluateAgencyCode = "' + value.agencyCode + '" data-evaluateAgencyName = "' + value.agencyName + '">选择机构并发送</a></dd></dl>';
+            });
+            $(".organizationList").html(html);
+            $(".organizationList .easyui-linkbutton").linkbutton();
+        } else {
+            $.messager.alert("提示", "获取评估机构失败!");
+        }
+    });
+}
+
+//显示下一步的页面
+function showNext() {
+    $("#searchShow").hide();
+    $("#chooseOrganization").show();
+}
+
+//显示第一步的页面
+function showFirst() {
+    $("#searchShow").show();
+    $("#chooseOrganization").hide();
+}
+</script>
+
+</html>

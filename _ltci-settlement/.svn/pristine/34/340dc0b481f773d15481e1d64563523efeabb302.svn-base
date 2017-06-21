@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.CustomMonSetPerDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.OrgSettlementDO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="org_set_code" property="orgSetCode" jdbcType="VARCHAR" />
+    <result column="set_date" property="setDate" jdbcType="TIMESTAMP" />
+    <result column="org_code" property="orgCode" jdbcType="VARCHAR" />
+    <result column="org_name" property="orgName" jdbcType="VARCHAR" />
+    <result column="fee_starttime" property="feeStarttime" jdbcType="TIMESTAMP" />
+    <result column="fee_endtime" property="feeEndtime" jdbcType="TIMESTAMP" />
+    <result column="nurse_total_amount" property="nurseTotalAmount" jdbcType="DECIMAL" />
+    <result column="si_pay" property="siPay" jdbcType="DECIMAL" />
+    <result column="pay_self" property="paySelf" jdbcType="DECIMAL" />
+    <result column="expense_self" property="expenseSelf" jdbcType="DECIMAL" />
+    <result column="account_pay" property="accountPay" jdbcType="DECIMAL" />
+    <result column="bank_card_pay" property="bankCardPay" jdbcType="DECIMAL" />
+    <result column="acount_payable" property="acountPayable" jdbcType="DECIMAL" />
+    <result column="warranty" property="warranty" jdbcType="DECIMAL" />
+    <result column="real_pay" property="realPay" jdbcType="DECIMAL" />
+    <result column="unr_fee" property="unrFee" jdbcType="DECIMAL" />
+    <result column="over_cost" property="overCost" jdbcType="DECIMAL" />
+    <result column="audit_state" property="auditState" jdbcType="INTEGER" />
+    <result column="check_flag" property="checkFlag" jdbcType="INTEGER" />
+    <result column="reject_reason" property="rejectReason" jdbcType="VARCHAR" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="countMouSetPer" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	SELECT SUM(account_pay) account_pay,SUM(bank_card_pay) bank_card_pay FROM ltci_mon_set_per 
+       WHERE org_code = #{orgCode} AND nurse_starttime &gt;=#{startTime} AND nurse_endtime &lt;= #{endTime} AND created_org = #{createdOrg};
+  </select>
+</mapper>

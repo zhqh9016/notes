@@ -1,0 +1,19 @@
+delete:
+  tags:
+  - userManage
+  summary: 删除用户
+  description: 无返回值。测试数据：用户名[79bd2154deb7483a81bd8e7da55b9afa]。
+  operationId: deleteUser
+  parameters:
+  - name: id
+    in: path
+    description: 用户编号
+    required: true
+    type: string
+  responses:
+    200:
+      description: 删除成功
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/Response"

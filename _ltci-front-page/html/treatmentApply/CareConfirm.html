@@ -1,0 +1,444 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/common.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/detailStyle.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../css/detailStyle.css" />
+    <style>
+    #secondStep h3 {
+        font-size: 14px;
+        line-height: 22px;
+        margin: 20px 20px 20px 10px;
+        font-weight: bold;
+    }
+    
+    #secondStep #agencyTable {
+        margin: 20px;
+        line-height: 24px;
+        border-collapse: collapse;
+    }
+    
+    #secondStep #agencyTable td {
+        font-size: 14px;
+        color: #5a636b;
+        border: 1px solid #d5d9db;
+        padding: 4px 14px;
+        text-align: center;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app" style="height: 100%;width: 100%;border: none;">
+        <div id="firstStep" style="height: 100%;">
+            <table width="100%" id="userList" toolbar="#userListtb">
+            </table>
+            <div id="userListtb" style="padding:3px; height: auto">
+                <div name="searchColums" id="searchColums">
+                    <input id="isShowSearchId" type="hidden" value="false" />
+                    <input id="_sqlbuilder" name="sqlbuilder" type="hidden" />
+                    <form id="userListForm">
+                        <span class="inputLable"><span class="inputLableText">申请人：</span>
+                        <input type="text" name="insuredPersonName" class="inuptxt" />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">身份证号码：</span>
+                        <input type="text" id="idCard" name="idCard" class="inuptxt easyui-validatebox" data-options="validType:'idCard'" />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">评估机构：</span>
+                        <input type="text" name="evaluateAgencyName" class="inuptxt" />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">时间：</span>
+                        <input name="operatedTime" type="text" class="WdatePicker" editable="false" />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">确认状态：</span>
+                        <input id="nursingState" data-dictionary="nursingState" name="nursingState" type="text" class="easyui-combobox dictionary query-condition" editable="false" />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">
+							<a href="#" class="easyui-linkbutton" iconcls="icon-search" onclick="doSearch()">查询</a>
+							<a href="#" class="easyui-linkbutton" iconcls="icon-search" onclick="resetSearch()">重置</a>
+							</span></span>
+                    </form>
+                </div>
+                <!--<div style="height:30px;" class="datagrid-toolbar">
+						<span style="float:left;">
+							<a href="#" class="easyui-linkbutton" plain="true" icon="icon-putout" onclick="">批量标记为已通知</a>
+						</span>
+					</div>-->
+            </div>
+        </div>
+        <div id="secondStep" style="display: none;">
+            <div class="input_box">
+                <div class="input_box_title"><span>请为以下人员选择护理机构</span></div>
+                <div class="personInfo">
+                    <table class="info_box">
+                        <!--<tr><th>Header</th></tr>-->
+                        <tr>
+                            <td class="info_name">姓名：</td>
+                            <td class="info_value"><span class="insuredPersonName">张伟</span></td>
+                        </tr>
+                        <tr>
+                            <td class="info_name">地址：</td>
+                            <td class="info_value"><span class="address">荆门市东宝区泉口街3号</span></td>
+                        </tr>
+                        <tr>
+                            <td class="info_name">申办类别：</td>
+                            <td class="info_value">
+                                <input class="easyui-combobox dictionary" id="bidType" data-dictionary="bidType" name="applyType" value="">
+                            </td>
+                        </tr>
+                        <tr class="isRelativeCared">
+                            <td class="info_name">是否亲属照顾：</td>
+                            <td class="info_value">
+                                <input class="easyui-combobox dictionary" id="isRelativeCared" data-dictionary="isRelativeCared" name="isRelativeCared" value="">
+                            </td>
+                        </tr>
+                    </table>
+                    <!--<p>姓名：<span class="insuredPersonName">张伟</span></p>
+					<p>地址：<span class="address">荆门市东宝区泉口街3号</span></p>
+					申办类别：<input class="easyui-combobox dictionary" id="bidType" data-dictionary="bidType" name="applyType" value=""> <br/><br/>
+					<span class="isRelativeCared">
+						是否亲属照顾：<input class="easyui-combobox dictionary" id="isRelativeCared" data-dictionary="isRelativeCared" name="isRelativeCared" value="">
+					</span>-->
+                </div>
+            </div>
+            <div class="input_box">
+                <div class="input_box_title"><span>请选择护理机构</span></div>
+                <table id="agencyTable" border="" cellspacing="0" cellpadding="0">
+                    <!--<tr>
+						<td>最终机构</td>
+						<td>意向机构</td>
+						<td>机构名称</td>
+						<td>机构类型</td>
+						<td>服务范围</td>
+						<td>床位剩余</td>
+						<td>服务能力剩余</td>
+						<td>距离申请人</td>
+					</tr>
+					<tr>
+						<td><input type="radio" name="finalAgency" value="" /></td>
+						<td><input type="checkbox" name="intentAgencyCode" value="" /></td>
+						<td><span class="agencyName"></span></td>
+						<td><span class="agencyType"></span></td>
+						<td><span class="serviceContentList"></span></td>
+						<td><span class="agencyBedsNum"></span></td>
+						<td><span class="serviceability"></span></td>
+						<td><span class="distance"></span></td>
+					</tr>-->
+                </table>
+                <div>
+                    <a href="javascript:;" onclick="chooseWantedAgency()" class="easyui-linkbutton">确认意向护理机构</a>
+                    <a href="javascript:;" onclick="updateFinalAgency()" class="easyui-linkbutton">确认最终护理机构</a>
+                    <a href="javascript:;" onclick="showFirst()" class="easyui-linkbutton">返回上一页面</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="display:none">
+        <div id="showTableInfo">
+            <iframe id="showTableInfo_iframe" src="" width="99%" height="99%"></iframe>
+        </div>
+        <div id="showInfo"></div>
+    </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../../js/validate.js"></script>
+<script type="text/javascript" src="../../js/util/WdatePicker.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/treatmentApply/CareConfirm.js"></script>
+<script type="text/javascript" src="../../js/treatmentApply/treatmentCommon.js"></script>
+<script>
+$('#showTableInfo').window({
+    title: '查看',
+    width: 800,
+    height: 450,
+    minimizable: false,
+    collapsible: false,
+    closed: true,
+    modal: true
+});
+$('#showInfo').window({
+    title: '查看',
+    width: 800,
+    height: 450,
+    minimizable: false,
+    collapsible: false,
+    closed: true,
+    modal: true
+});
+var nursingTaskCodes = ""; //护理任务编号
+function doSearch() {
+    if (!$("#idCard").validatebox("isValid")) {
+        $.messager.alert('警告', "请输入正确格式的身份证！");
+        return;
+    }
+    TableObj.page = 1;
+    TableObj.pageSize = 10;
+    doLoading();
+}
+
+function doLoading() {
+    var obj = {
+        insuredPersonName: $("input[name=insuredPersonName]").val(),
+        idCard: $("input[name=idCard]").val(),
+        evaluateAgencyName: $("input[name=evaluateAgencyName]").val(),
+        operatedTime: $("input[name=operatedTime]").val(),
+        state: $("input[name=nursingState]").val(),
+        page: TableObj.page,
+        pageSize: TableObj.pageSize
+    };
+    var url = portalServiceUrl + "/api/v1/nursingTasks";
+    sendAjax(url, "post", obj, function(data) {
+        gridLoadData('userList', data);
+    });
+}
+
+function resetSearch() {
+    $('#userListForm input').val('');
+    loadDictionary();
+}
+
+function isCheck() {
+    var arr = $('#userList').datagrid('getChecked');
+    if (arr.length < 1) {
+        $.messager.alert('警告', '请选择一行数据再进行操作');
+        return false;
+    }
+    return true;
+}
+
+//选择护理机构按钮		
+function chooseOrganization(rowIndex) {
+    doSearchOrganization(); //查询显示机构信息
+    var row = $('#userList').datagrid('getRows')[rowIndex];
+    $("input[name=intentAgencyCode]").removeAttr("checked");
+    $("input[name=finalAgency]").removeAttr("checked");
+    //申办类别为非全日制时显示亲属照顾模块
+    $(".isRelativeCared").hide();
+    $("#bidType").combobox({
+        onSelect: function() {
+            if ($("input[name=applyType]").val() == 32) {
+                $(".isRelativeCared").show();
+            } else {
+                $(".isRelativeCared").hide();
+            }
+        }
+    });
+    var applyType = row.applyType;
+    var isRelativeCared = row.isRelativeCared;
+    if (applyType == "32") {
+        $(".isRelativeCared").show();
+    }
+    if (applyType) {
+        $("input[name=applyType]").val(applyType);
+    }
+    if (isRelativeCared) {
+        $("input[name=isRelativeCared]").val(isRelativeCared);
+    }
+    comboboxSelected(); //通过数据加载下拉框选择项(查询时候选中数据项)
+
+    if (row.state == "02") {
+        $.messager.alert("消息", "已选择最终机构，无法再次选择！");
+        return;
+    }
+    //获取意向机构并勾选多选框
+    var intentAgency = row.intentAgency.split(",");
+    $.each(intentAgency, function(index, item) {
+        $('input[name=intentAgencyCode][value="' + item + '"]').attr("checked", "checked");
+    });
+
+    //显示选中人的信息
+    nursingTaskCodes = "";
+    nursingTaskCodes = row.nursingTaskCode;
+    $(".personInfo .insuredPersonName").html(row.insuredPersonName);
+    $(".personInfo .address").html(row.address);
+    showNext();
+}
+
+//查询显示机构信息
+var organizations = [];
+
+function doSearchOrganization() {
+    organizations = [];
+    var areaId = "420800";
+    var getOrganizationUrl = portalServiceUrl + "/api/v1/evaluateDepartments/areaNum/" + areaId + "/organizationType/00";
+    sendAjax(getOrganizationUrl, "get", "", function(data) {
+        var organizationData = data;
+        organizations = data.datas;
+        //console.log(organizations);
+        var html =
+            '<tr style="font-weight: bold;font-size:16px"><td>最终机构</td>' +
+            '<td>意向机构</td>' +
+            '<td>机构名称</td>' +
+            '<td>机构类型</td>' +
+            '<td>服务范围</td>' +
+            '<td>床位剩余</td>' +
+            '<td>服务能力剩余</td>';
+        if (organizationData.status == 200) {
+            $.each(organizations, function(index, value) {
+                //"serviceContentList":[{"orgTypeCd":"1","orgTypeNm":"少时诵诗书"}],"
+                //拼接服务范围
+                var serviceContentList = "";
+                var serviceContentListArray = value.serviceContentList;
+                if (serviceContentListArray.length > 0) {
+                    if (serviceContentListArray.length == 1) {
+                        serviceContentList += serviceContentListArray[0].orgTypeNm;
+                    } else {
+                        $.each(serviceContentListArray, function(index, val) {
+                            if (index < serviceContentListArray.length - 1) {
+                                serviceContentList += val.orgTypeNm + "；";
+                            } else {
+                                serviceContentList += val.orgTypeNm;
+                            }
+
+                        });
+                    }
+                }
+                var agencyBedsNum = "";
+                if (value.agencyBedsNum) {
+                    agencyBedsNum = value.agencyBedsNum
+                }
+                var serviceability = "";
+                if (value.serviceability) {
+                    serviceability = value.serviceability
+                }
+                html += '<tr><td><input type="radio" name="finalAgency" value="' + value.agencyCode + '" /></td>' +
+                    '<td><input type="checkbox" name="intentAgencyCode" value="' + value.agencyCode + '" /></td>' +
+                    '<td><span class="agencyName">' + value.agencyName + '</span></td>' +
+                    '<td><span class="agencyType">' + '护理机构' + '</span></td>' +
+                    '<td><span class="serviceContentList">' + serviceContentList + '</span></td>' +
+                    '<td><span class="agencyBedsNum">' + agencyBedsNum + '</span></td>' +
+                    '<td><span class="serviceability">' + serviceability + '</span></td>';
+            });
+            $("#secondStep #agencyTable").html(html);
+        }
+    }, false);
+
+}
+//确认最终护理机构
+function updateFinalAgency() {
+    var finalAgencyCode = $("input[name=finalAgency]:checked").val();
+    var applyType = $("input[name=applyType]").val();
+    var isRelativeCared = $("input[name=isRelativeCared]").val();
+    var finalAgencyName = "";
+
+    $.each(organizations, function(index, value) {
+        if (finalAgencyCode == value.agencyCode) {
+            finalAgencyName = value.agencyName;
+            return;
+        }
+    });
+    if (!applyType) {
+        $.messager.alert("提示", "请选择申办类型");
+        return;
+    }
+    if (!finalAgencyCode) {
+        $.messager.alert("提示", "请选择最终护理机构");
+        return;
+    }
+    $.messager.confirm('提示', '是否确认最终护理机构？', function(r) {
+        if (r) {
+            var httpData = {
+                nursingTaskCodes: nursingTaskCodes,
+                finalAgencyCode: finalAgencyCode,
+                finalAgencyName: finalAgencyName,
+                applyType: applyType,
+                isRelativeCared: isRelativeCared
+            };
+            //console.log(httpData);
+            var updateFinalAgencyUrl = portalServiceUrl + "/api/v1/nursingTaskFinalAgency";
+            sendAjax(updateFinalAgencyUrl, "put", httpData, function(successdata) {
+                //console.log(successdata);
+                if (successdata.status == 201) {
+                    //$.messager.alert("提示", '最终护理机构确认成功！', 'info');
+                    doLoading();
+                    showFirst();
+                    $.messager.show({
+                        title: '提示',
+                        msg: '最终护理机构确认成功！',
+                        timeout: 8000
+                    });
+
+                } else {
+                    $.messager.alert("提示", successdata.message);
+                }
+            });
+        }
+    });
+
+}
+
+//选择意向机构
+function chooseWantedAgency() {
+    var applyType = $("input[name=applyType]").val();
+    var isRelativeCared = "";
+    if ($("input[name=isRelativeCared]").val()) {
+        isRelativeCared = $("input[name=isRelativeCared]").val();
+    }
+    if (!applyType) {
+        $.messager.alert("提示", "请选择申办类型");
+        return;
+    }
+    if ($('input[name="intentAgencyCode"]:checked').length < 1) {
+        $.messager.alert('警告', '请选择机构后再进行操作');
+        return;
+    }
+    var intentAgencyArray = [];
+    var chooseWantedAgencyUrl = portalServiceUrl + "/api/v1/nursingTaskIntentAgency";
+    $.each($('input[name="intentAgencyCode"]:checked'), function() {
+        //				console.log($(this).val())
+        intentAgencyArray.push($(this).val());
+    });
+    var intentAgencyCode = "";
+    $.each(intentAgencyArray, function(index, item) {
+        intentAgencyCode += item;
+        if (index < intentAgencyArray.length - 1) {
+            intentAgencyCode += ",";
+        }
+    });
+    var httpData = {
+        nursingTaskCodes: nursingTaskCodes,
+        intentAgencyCode: intentAgencyCode,
+        applyType: applyType,
+        isRelativeCared: isRelativeCared
+    };
+    sendAjax(chooseWantedAgencyUrl, "put", httpData, function(data) {
+        if (data.status == 201) {
+            //					$.messager.alert("提示", '意向选择机构机构确认成功！', 'info');
+
+            doLoading();
+            showFirst();
+            $.messager.show({
+                title: '提示',
+                msg: '意向选择机构机构确认成功！',
+                timeout: 8000
+            });
+        } else {
+            $.messager.alert("警告", '意向选择机构机构确认失败！', 'info');
+            doLoading();
+            showFirst();
+        }
+    });
+}
+
+//显示下一步的页面
+function showNext() {
+    $("#firstStep").hide();
+    $("#secondStep").show();
+}
+//显示第一步的页面
+function showFirst() {
+    $("#firstStep").show();
+    $("#secondStep").hide();
+
+}
+</script>
+
+</html>

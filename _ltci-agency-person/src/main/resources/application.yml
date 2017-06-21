@@ -1,0 +1,115 @@
+feign.hystrix.enabled: false
+restBasePath: /api/v1
+server.port: 8087
+systemCharset: UTF-8
+systemCode: LCPM
+
+#调用文件微服务
+feign.media.file.url: http://localhost:8084
+feign.media.file.client: ltci-media-file
+
+
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.130.206.191:3306/ltci_agency_person
+    username: tklcpm
+    password: tklcpm
+    
+spring.datasource.tomcat:
+    max-active: 50
+    max-wait: 30000
+    test-on-borrow:  true
+    max-idle: 10
+    min-idle: 5
+    test-on-connect: true
+    test-on-return: true
+    test-while-idle: true
+    validation-query: SELECT 1 FROM DUAL
+    validation-query-timeout: -1
+    
+#mybatis的xml映射文件路径
+mybatis.mapperLocations: classpath*:com/taikang/dic/ltci/mapper/*.xml
+#需要注册别名的POJO类所在包
+mybatis.typeAliasesPackage: com.taikang.dic.ltci.model
+
+#机构有效状态的定时任务
+agencyValidTiming: 00 00 00 * * ?
+#mq 发送、接收失败消息定时重试 ‘时间’，同时key也是锁表中的‘业务模块类型’
+retryFailMessageTiming: 00 00 0/1 * * ?
+
+#人员申请和变更
+ltci.personApply.queue: q.personApply.jingmen
+ltci.personApply.messageCode: LTC_APL_EMP_001
+#人员申请受理告知
+ltci.personAcceptResult.queue: q.longTermService
+ltci.personAcceptResult.messageCode: LTC_APL_EMP_002
+ltci.personAcceptResult.exechange: x.personAcceptResult
+#人员审核结果告知
+ltci.personApproveResult.queue: q.longTermService
+ltci.personApproveResult.messageCode: LTC_APL_EMP_003
+ltci.personApproveResult.exechange: x.personApproveResult
+#人员变更审核结果告知
+ltci.personChangeApproveResult.queue: q.longTermService
+ltci.personChangeApproveResult.messageCode: LTC_APL_EMP_004
+ltci.personChangeApproveResult.exechange: x.personApproveResult
+
+#机构新增、变更
+ltci.orgApplication.queue: q.orgApplication.jingmen
+ltci.orgApplication.messageCode: LTC_APL_ORG_001
+#机构申请受理告知
+ltci.orgAcceptResult.exchange: x.orgAcceptResult
+ltci.orgAcceptResult.messageCode: LTC_APL_ORG_002
+#机构申请审核告知
+ltci.orgApproveResult.exchange: x.orgApproveResult
+ltci.orgApproveResult.messageCode: LTC_APL_ORG_003
+#机构变更审核告知
+ltci.orgChangeResult.exchange: x.orgApproveResult
+ltci.orgChangeResult.messageCode: LTC_APL_ORG_004
+
+spring.rabbitmq:
+  host: 10.130.202.57
+  port: 5672
+  username: longtermcare
+  password: longtermcare
+  virtualHost: longtermcare
+
+
+---
+spring.profiles: test
+
+#调用文件微服务
+feign.media.file.url: http://localhost:8084
+feign.media.file.client: ltci-media-file
+
+spring.datasource:
+    url: jdbc:mysql://10.130.206.186:3306/ltci_agency_person
+    username: tklcpm
+    password: tklcpm
+    
+spring.rabbitmq:
+  host: 10.135.45.77,10.135.45.79
+  port: 5672
+  username: longtermcare
+  password: longtermcare
+  virtualHost: longtermcare    
+
+#生产环境
+---
+spring.profiles: pro
+
+#调用文件微服务
+feign.media.file.url: http://10.128.128.91:8084
+feign.media.file.client: ltci-media-file
+
+spring.datasource:
+    url: jdbc:mysql://10.128.128.94:3306/ltci_agency_person
+    username: tklcpm
+    password: tklcpm@2ol7
+    
+#rabbitmq 生产环境
+spring.rabbitmq:
+  host: 172.16.70.96,172.16.70.97
+  port: 5672
+  username: longtermcare
+  password: rA20gq
+  virtualHost: longtermcare

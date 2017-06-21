@@ -1,0 +1,78 @@
+post:
+  tags:
+  - patrolTask
+  summary: 分页查询巡查护理任务信息
+  description: 根据条件查询的护理任务信息
+  operationId: getNursingPatrolTaskList
+  parameters:
+   - name: provinceCode
+     in: formData
+     description: 省编号
+     required: false
+     type: string
+   - name: cityCode
+     in: formData
+     description: 市编码
+     required: false
+     type: string
+   - name: areaCode
+     in: formData
+     description: 区县编号
+     required: false
+     type: string       
+   - name: orgCode
+     in: formData
+     description: 机构编码
+     required: false
+     type: string
+   - name: beginTime
+     in: formData
+     description: 服务开始时间
+     required: false
+     type: string
+   - name: endTime
+     in: formData
+     description: 服务结束时间
+     required: false
+     type: string
+   - name: isPrivilege
+     in: formData
+     description: 是否特权通过（是、否）
+     required: false
+     type: string
+   - name: isKinshipCare
+     in: formData
+     description: 是否亲属照护（是、否） 
+     required: false
+     type: string  
+   - name: serviceType
+     in: formData
+     description: 服务类型(非全日居家护理、全日居家护理、机构护理、医疗护理)
+     required: false 
+     type: string  
+   - name: serviceItems
+     in: formData
+     description: 服务目录项（页面录入的） 
+     required: false
+     type: string  
+   - name: page
+     in: formData
+     description: 页数
+     required: false
+     type: string
+   - name: pageSize
+     in: formData
+     description: 条数
+     required: false
+     type: string
+  responses:
+    200:
+      description: 查询成功
+      schema:
+        type: array
+        items:
+          $ref: "../../ltci-portal-api-v1.yml/definitions/PageResultDTO"
+    default:
+      description: 其它错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml#/definitions/PageResultDTO"

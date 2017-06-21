@@ -1,0 +1,23 @@
+get:
+  tags:
+  - orgSettlement
+  summary: 费用结算打印
+  description: 费用结算打印
+  operationId: printSettle
+  parameters:
+  
+  - name: id
+    in: path
+    description: 机构月结id
+    required: true
+    type: string
+    
+  responses:
+    200:
+      description: 查询成功
+      schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/PageResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/Response"

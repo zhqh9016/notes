@@ -1,0 +1,81 @@
+put:
+  tags:
+  - resManage
+  summary: 修改资源信息
+  description: 返回数值类型（大于0为成功）
+  operationId: updateRes
+  parameters:
+  - name: id
+    in: path
+    description: id
+    required: true
+    type: string
+  - name: parentId
+    in: formData
+    description: 父级id 顶级=0
+    required: false
+    type: string
+  - name: resName
+    in: formData
+    description: 资源名称
+    required: false
+    type: string
+  - name: description
+    in: formData
+    description: 资源描述
+    required: false
+    type: string
+  - name: url
+    in: formData
+    description: 资源链接
+    required: false
+    type: string
+  - name: sequence
+    in: formData
+    description: 资源显示顺序
+    required: false
+    type: string
+  - name: isMenu
+    in: formData
+    description: 是否是菜单(1-是 0-否)
+    required: false
+    type: integer
+    format: int32
+  - name: updateBy
+    in: formData
+    description: 修改人
+    required: true
+    type: string
+  responses:
+    200:
+      description: 创建成功
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/Response"
+
+delete:
+  tags:
+  - resManage
+  summary: 删除资源
+  description: 无返回值
+  operationId: deleteRes
+  parameters:
+  - name: id
+    in: path
+    description: 资源编号
+    required: true
+    type: string
+  - name: operatedBy
+    in: formData
+    description: 经办人
+    required: true
+    type: string
+  responses:
+    200:
+      description: 删除成功
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/Response"
+        

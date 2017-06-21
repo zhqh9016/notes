@@ -1,0 +1,162 @@
+<html>
+
+<head>
+    <title>费用支付</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="renderer" content="webkit" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/common.css" type="text/css" />
+</head>
+
+<body>
+    <table width="100%" id="feePaymentList" toolbar="#feePaymentListtb">
+    </table>
+    <div id="feePaymentListtb" style="padding:3px; height: auto">
+        <div name="searchColums" id="searchColums">
+            <input id="isShowSearchId" type="hidden" value="false" />
+            <input id="_sqlbuilder" name="sqlbuilder" type="hidden" />
+            <form id="feePaymentListForm">
+                <span class="inputLable">
+						<span class = "inputLableText" >机构名称：</span>
+                <input type="text" name="orgName" class="inuptxt" />
+                </span>
+                <span class="inputLable">
+						<span class = "inputLableText" >机构编码：</span>
+                <input type="text" name="orgCode" class="inuptxt" />
+                </span>
+                <span class="inputLable">
+                        <span class = "inputLableText" >审核状态：</span>
+                <input type="text" id="inspection" data-dictionary="inspection" name="auditState" data-value="3,5,6" class="easyui-combobox dictionary query-condition " />
+                </span>
+                <span class="inputLable">
+						<span class = "inputLableText" >开始日期：</span>
+                <input type="text" id="search_startDate" name="startDate" class="Wdate" />
+                </span>
+                <span class="inputLable">
+						<span class = "inputLableText" >结束日期：</span>
+                <input type="text" id="search_endDate" name="endDate" class="Wdate" />
+                </span>
+                <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-search" style="margin-left:160" onclick="doLoading()">查询</a>
+                <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-reload" onclick="resetSearch()">重置</a>
+            </form>
+        </div>
+    </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/util/WdatePicker.js"></script>
+<script type="text/javascript" src="../../js/feeBalanceManage/fee_payment.js"></script>
+<script type="text/javascript" src="../../js/validate.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script>
+function doLoading() {
+    if ($("#search_startDate").val() !== "" && $("#search_endDate").val() !== "") {
+        if (Date.parse($("#search_startDate").val()) > Date.parse($("#search_endDate").val())) {
+            $.messager.alert('提示', '开始日期不能大于终止日期。');
+            return false;
+        }
+    }
+    TableObj.page = 1; //设置页码 必须
+    TableObj.pageSize = 10; //设置每页数据 必须
+    TableObj.query = { //查询条件
+        orgName: $("input[name=orgName]").val(),
+        orgCode: $("input[name=orgCode]").val(),
+        auditState: $("input[name=auditState]").val(),
+        startDate: $("input[name=startDate]").val(),
+        endDate: $("input[name=endDate]").val(),
+        page: TableObj.page,
+        pageSize: TableObj.pageSize
+    };
+
+    loadGridData(); //原来的 doLoading();
+}
+//查询
+
+//重置
+function resetSearch() {
+    $('#feePaymentListForm input').val('');
+}
+//支付操作
+function payment(index) {
+    $.messager.confirm('确认', '确认支付吗？', function(r) {
+        if (r) {
+            var row = $('#feePaymentList').datagrid('getRows')[index];
+            var s = "&createdOrg=" + row.createdOrg;
+            var url = portalServiceUrl + "/api/v1/orgSettlement/pay/" + row.id;
+
+            //					var tableData = JSON.parse(trans Object._response)
+            //					console.log(tableData);
+            //					if(tableData.status == 407) {
+            //						$.messager.alert('提示', tableData.message);
+            //						return false;
+            //					}
+            //					doLoading();
+            //					showMsg("支付成功！");
+            sendAjax(url, "put", s, function(tableData) {
+                if (tableData.status == "200") {
+                    showMsg("支付成功！");
+                    loadGridData();
+                } else {
+                    $.messager.alert('提示', tableData.message);
+                }
+            });
+        }
+    });
+}
+//结算操作
+function account(index) {
+    $.messager.confirm('确认', '确认结算吗？', function(r) {
+        if (r) {
+            var row = $('#feePaymentList').datagrid('getRows')[index];
+            var s = "&createdOrg=" + row.createdOrg;
+
+            //					var tableData = JSON.parse(trans Object._response)
+            //					console.log(tableData);
+            //					if(tableData.status == 407) {
+            //						$.messager.alert('提示', tableData.message);
+            //						return false;
+            //					}
+            //					showMsg("结算成功！");
+            //					doLoading();
+            sendAjax(portalServiceUrl + "/api/v1/orgSettlement/settle/" + row.id, "put", s, function(tableData) {
+                if (tableData.status == "200") {
+                    showMsg("结算成功！");
+                    loadGridData();
+                } else {
+                    $.messager.alert('提示', tableData.message);
+                }
+            });
+        }
+    });
+}
+//打印操作
+function print(index) {
+    $.messager.confirm('确认', '确认打印吗？', function(r) {
+        if (r) {
+            var row = $('#feePaymentList').datagrid('getRows')[index];
+            console.log(row.id);
+
+            //					var tableData = JSON.parse(trans Object._response)
+            //					console.log(tableData);
+            //					if(tableData.status = "407") {
+            //						$.messager.alert('提示', tableData.message);
+            //						return false;
+            //					}
+            sendAjax(portalServiceUrl + "/api/v1/orgSettlement/" + row.id, "get", "", function(tableData) {
+                if (tableData.status == "407") {
+                    $.messager.alert('提示', tableData.message);
+                    return false;
+                }
+            });
+        }
+    });
+}
+</script>
+
+</html>

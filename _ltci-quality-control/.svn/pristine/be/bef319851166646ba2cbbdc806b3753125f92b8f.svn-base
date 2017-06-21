@@ -1,0 +1,142 @@
+#访问路径前缀
+restBasePath: /api/v1
+
+#关闭hystrix的fallback
+feign.hystrix.enabled: false
+
+#服务启动端口号
+server.port: 8085
+
+#系统编码
+systemCode: LCPM
+
+#MQ编码
+systemCharset: UTF-8
+
+#mybatis的xml映射文件路径
+mybatis.mapperLocations: classpath*:com/taikang/dic/ltci/mapper/*.xml
+
+#需要注册别名的POJO类所在包
+mybatis.typeAliasesPackage: com.taikang.dic.ltci.model
+
+#媒体文件微服务路径和名称
+feign.media.file.url: http://localhost:8084
+feign.media.file.client: ltci-media-file
+
+#待遇申请微服务
+feign.treatment.application.url: http://localhost:8090
+feign.treatment.application.client: ltci-treatment-application
+
+#机构人员微服务地址
+feign.agency.person.url: http://localhost:8087
+feign.agency.person.client: ltci-agency-person
+
+#定时重发发送失败的MQ信息的定时任务ScheduleMqFailRetry
+retryFailMessageTiming: 0 0 0/1 * * ?
+
+
+#监听移动端投诉的接口
+ltci.mobileCompliain.queue: q.complaint.jingmen
+
+#申诉复议接收
+ltci.appealReconsider.queue: q.appealReconsider.jingmen
+ltci.appealReconsider.messageCode: LTC_HQA_PAT_002
+
+#申诉复议结果告知
+ltci.appealResult.exchange: x.appealResult
+ltci.appealResult.messageCode: LTC_HQA_PAT_003
+
+#巡查结果初审告知
+ltci.patrolResult.queue: q.longTermService
+ltci.patrolResult.exechange: x.patrolResult
+ltci.sendPatrolResult.messageCode: LTC_HQA_PAT_001
+
+#任务分配发送
+ltci.deputyBindingSendCase.queue: q.mobile
+ltci.deputyBindingSendCase.exchange:  x.taskAssign
+ltci.deputyBindingSend.messageCode: SC339_10003
+
+#任务执行结果上报
+ltci.taskResult.queue: q.taskResult.jingmen
+ltci.taskResult.exchange: x.taskResult
+
+#数据库连接配置默认连接是开发环境
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.130.206.191:3306/ltci_quality_control
+    username: tklcpm
+    password: tklcpm
+ 
+spring.datasource.tomcat:
+    max-active: 50
+    max-wait: 30000
+    test-on-borrow:  true
+    max-idle: 10
+    min-idle: 5
+    test-on-connect: true
+    test-on-return: true
+    test-while-idle: true
+    validation-query: SELECT 1 FROM DUAL
+    validation-query-timeout: -1
+
+#rabbitmq连接配置默认连接是开发环境   
+spring.rabbitmq:
+  host: 10.130.202.57
+  port: 5672
+  username: longtermcare
+  password: longtermcare
+  virtualHost: longtermcare
+
+#测试环境  
+---
+spring.profiles: test
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.130.206.186:3306/ltci_quality_control
+    username: tklcpm
+    password: tklcpm
+  
+spring.rabbitmq:
+  host: 10.135.45.77,10.135.45.79
+  port: 5672
+  username: longtermcare
+  password: longtermcare
+  virtualHost: longtermcare
+
+#开发环境  
+---
+spring.profiles: dev
+
+#mysql 开发环境
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.130.206.191:3306/ltci_quality_control
+    username: tklcpm
+    password: tklcpm
+    
+#rabbitmq 开发环境
+spring.rabbitmq:
+  host: 10.130.202.57
+  port: 5672
+  username: longtermcare
+  password: longtermcare
+  virtualHost: longtermcare
+
+#生产环境  
+---
+spring.profiles: pro
+
+#mysql 生产环境
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.128.128.94:3306/ltci_quality_control
+    username: tklcpm
+    password: tklcpm@2ol7
+    
+#rabbitmq 生产环境
+spring.rabbitmq:
+  host: 172.16.70.96,172.16.70.97
+  port: 5672
+  username: longtermcare
+  password: rA20gq
+  virtualHost: longtermcare

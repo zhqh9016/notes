@@ -1,0 +1,63 @@
+post:
+  summary: 根据项目编码或项目名称或项目类别或费用类别或收费项目等级或有效标示查询
+  description: 返回角色信息列表。测试数据：[服务项目名称或服务项目编码]。
+  operationId: listItem
+  parameters:
+  - name: serviceCode
+    in: formData
+    description: 服务项目编码
+    required: false
+    type: string    
+  - name: serviceName
+    in: formData
+    description: 服务项目名称
+    required: false
+    type: string
+  - name: serviceType
+    in: formData
+    description: 服务项目类别
+    required: false
+    type: integer
+    format: int32
+  - name: chargeType
+    in: formData
+    description: 费用类别
+    required: false
+    type: string
+  - name: chargeLevel
+    in: formData
+    description: 收费项目等级
+    required: false
+    type: string
+  - name: isValid
+    in: formData
+    description: 有效标示
+    required: false
+    type: integer
+    format: int32
+  - name: page
+    in: formData
+    description: 当前页码
+    required: true
+    type: integer
+    format: int32
+  - name: pageSize
+    in: formData
+    description: 每页显示件数
+    required: true
+    type: integer
+    format: int32    
+  tags:
+  - serviceItemManage
+  responses:
+    200:
+      description: 查询成功
+      schema:
+        type: array
+        items:
+          $ref: "../../ltci-settlement-api-v1.yml/#/definitions/PageResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-settlement-api-v1.yml/#/definitions/Response"
+    

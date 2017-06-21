@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.taikang.dic.ltci.dao.ExpertEvaluateDAO">
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.ExpertEvaluateDO">
+    <id column="expert_evaluateid" property="expertEvaluateid" jdbcType="VARCHAR"/>
+    <result column="expert_evaluate_code" property="expertEvaluateCode" jdbcType="VARCHAR"/>
+    <result column="first_evaluate_code" property="firstEvaluateCode" jdbcType="VARCHAR"/>
+    <result column="accessory_address" property="accessoryAddress" jdbcType="VARCHAR"/>
+    <result column="print_state" property="printState" jdbcType="VARCHAR"/>
+    <result column="fraction" property="fraction" jdbcType="INTEGER"/>
+    <result column="opinion" property="opinion" jdbcType="VARCHAR"/>
+    <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR"/>
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP"/>
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR"/>
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR"/>
+    <result column="is_valid" property="isValid" jdbcType="INTEGER"/>
+    <result column="si_area" property="siArea" jdbcType="VARCHAR"/>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.taikang.dic.ltci.model.ExpertEvaluateDO" extends="BaseResultMap">
+    <result column="evaluate_content" property="evaluateContent" jdbcType="LONGVARCHAR"/>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" suffix=")" prefixOverrides="and">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">and ${criterion.condition}</when>
+                <when test="criterion.singleValue">and ${criterion.condition} #{criterion.value}</when>
+                <when test="criterion.betweenValue">and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}</when>
+                <when test="criterion.listValue">and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">#{listItem}</foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" suffix=")" prefixOverrides="and">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">and ${criterion.condition}</when>
+                <when test="criterion.singleValue">and ${criterion.condition} #{criterion.value}</when>
+                <when test="criterion.betweenValue">and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}</when>
+                <when test="criterion.listValue">and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">#{listItem}</foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">expert_evaluateid, expert_evaluate_code, first_evaluate_code, accessory_address, print_state, fraction, opinion, remark, operated_by, operated_time, operated_org, created_by, created_time, created_org, is_valid, si_area</sql>
+  <sql id="Blob_Column_List">evaluate_content</sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.taikang.dic.ltci.model.ExpertEvaluateDOExample">select
+    <if test="distinct">distinct</if>
+    <include refid="Base_Column_List"/>,
+    <include refid="Blob_Column_List"/>from ltci_expert_evaluate
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause"/>
+    </if>
+    <if test="orderByClause != null">order by ${orderByClause}</if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.ExpertEvaluateDOExample">select
+    <if test="distinct">distinct</if>
+    <include refid="Base_Column_List"/>from ltci_expert_evaluate
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause"/>
+    </if>
+    <if test="orderByClause != null">order by ${orderByClause}</if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">select
+    <include refid="Base_Column_List"/>,
+    <include refid="Blob_Column_List"/>from ltci_expert_evaluate where expert_evaluateid = #{expertEvaluateid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">delete from ltci_expert_evaluate where expert_evaluateid = #{expertEvaluateid,jdbcType=VARCHAR}</delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.ExpertEvaluateDOExample">delete from ltci_expert_evaluate
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause"/>
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.ExpertEvaluateDO">insert into ltci_expert_evaluate (expert_evaluateid, expert_evaluate_code, first_evaluate_code, accessory_address, print_state, fraction, opinion, remark, operated_by, operated_time, operated_org, created_by, created_time, created_org, is_valid, si_area, evaluate_content ) values (#{expertEvaluateid,jdbcType=VARCHAR}, #{expertEvaluateCode,jdbcType=VARCHAR}, #{firstEvaluateCode,jdbcType=VARCHAR}, #{accessoryAddress,jdbcType=VARCHAR}, #{printState,jdbcType=VARCHAR}, #{fraction,jdbcType=INTEGER}, #{opinion,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{operatedBy,jdbcType=VARCHAR}, #{operatedTime,jdbcType=TIMESTAMP}, #{operatedOrg,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{createdOrg,jdbcType=VARCHAR}, #{isValid,jdbcType=INTEGER}, #{siArea,jdbcType=VARCHAR}, #{evaluateContent,jdbcType=LONGVARCHAR} )</insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.ExpertEvaluateDO">insert into ltci_expert_evaluate
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="expertEvaluateid != null">expert_evaluateid,</if>
+      <if test="expertEvaluateCode != null">expert_evaluate_code,</if>
+      <if test="firstEvaluateCode != null">first_evaluate_code,</if>
+      <if test="accessoryAddress != null">accessory_address,</if>
+      <if test="printState != null">print_state,</if>
+      <if test="fraction != null">fraction,</if>
+      <if test="opinion != null">opinion,</if>
+      <if test="remark != null">remark,</if>
+      <if test="operatedBy != null">operated_by,</if>
+      <if test="operatedTime != null">operated_time,</if>
+      <if test="operatedOrg != null">operated_org,</if>
+      <if test="createdBy != null">created_by,</if>
+      <if test="createdTime != null">created_time,</if>
+      <if test="createdOrg != null">created_org,</if>
+      <if test="isValid != null">is_valid,</if>
+      <if test="siArea != null">si_area,</if>
+      <if test="evaluateContent != null">evaluate_content,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="expertEvaluateid != null">#{expertEvaluateid,jdbcType=VARCHAR},</if>
+      <if test="expertEvaluateCode != null">#{expertEvaluateCode,jdbcType=VARCHAR},</if>
+      <if test="firstEvaluateCode != null">#{firstEvaluateCode,jdbcType=VARCHAR},</if>
+      <if test="accessoryAddress != null">#{accessoryAddress,jdbcType=VARCHAR},</if>
+      <if test="printState != null">#{printState,jdbcType=VARCHAR},</if>
+      <if test="fraction != null">#{fraction,jdbcType=INTEGER},</if>
+      <if test="opinion != null">#{opinion,jdbcType=VARCHAR},</if>
+      <if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+      <if test="operatedBy != null">#{operatedBy,jdbcType=VARCHAR},</if>
+      <if test="operatedTime != null">#{operatedTime,jdbcType=TIMESTAMP},</if>
+      <if test="operatedOrg != null">#{operatedOrg,jdbcType=VARCHAR},</if>
+      <if test="createdBy != null">#{createdBy,jdbcType=VARCHAR},</if>
+      <if test="createdTime != null">#{createdTime,jdbcType=TIMESTAMP},</if>
+      <if test="createdOrg != null">#{createdOrg,jdbcType=VARCHAR},</if>
+      <if test="isValid != null">#{isValid,jdbcType=INTEGER},</if>
+      <if test="siArea != null">#{siArea,jdbcType=VARCHAR},</if>
+      <if test="evaluateContent != null">#{evaluateContent,jdbcType=LONGVARCHAR},</if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.ExpertEvaluateDOExample" resultType="java.lang.Integer">select count(*) from ltci_expert_evaluate
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause"/>
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">update ltci_expert_evaluate
+    <set>
+      <if test="record.expertEvaluateid != null">expert_evaluateid = #{record.expertEvaluateid,jdbcType=VARCHAR},</if>
+      <if test="record.expertEvaluateCode != null">expert_evaluate_code = #{record.expertEvaluateCode,jdbcType=VARCHAR},</if>
+      <if test="record.firstEvaluateCode != null">first_evaluate_code = #{record.firstEvaluateCode,jdbcType=VARCHAR},</if>
+      <if test="record.accessoryAddress != null">accessory_address = #{record.accessoryAddress,jdbcType=VARCHAR},</if>
+      <if test="record.printState != null">print_state = #{record.printState,jdbcType=VARCHAR},</if>
+      <if test="record.fraction != null">fraction = #{record.fraction,jdbcType=INTEGER},</if>
+      <if test="record.opinion != null">opinion = #{record.opinion,jdbcType=VARCHAR},</if>
+      <if test="record.remark != null">remark = #{record.remark,jdbcType=VARCHAR},</if>
+      <if test="record.operatedBy != null">operated_by = #{record.operatedBy,jdbcType=VARCHAR},</if>
+      <if test="record.operatedTime != null">operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},</if>
+      <if test="record.operatedOrg != null">operated_org = #{record.operatedOrg,jdbcType=VARCHAR},</if>
+      <if test="record.createdBy != null">created_by = #{record.createdBy,jdbcType=VARCHAR},</if>
+      <if test="record.createdTime != null">created_time = #{record.createdTime,jdbcType=TIMESTAMP},</if>
+      <if test="record.createdOrg != null">created_org = #{record.createdOrg,jdbcType=VARCHAR},</if>
+      <if test="record.isValid != null">is_valid = #{record.isValid,jdbcType=INTEGER},</if>
+      <if test="record.siArea != null">si_area = #{record.siArea,jdbcType=VARCHAR},</if>
+      <if test="record.evaluateContent != null">evaluate_content = #{record.evaluateContent,jdbcType=LONGVARCHAR},</if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause"/>
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">update ltci_expert_evaluate set expert_evaluateid = #{record.expertEvaluateid,jdbcType=VARCHAR}, expert_evaluate_code = #{record.expertEvaluateCode,jdbcType=VARCHAR}, first_evaluate_code = #{record.firstEvaluateCode,jdbcType=VARCHAR}, accessory_address = #{record.accessoryAddress,jdbcType=VARCHAR}, print_state = #{record.printState,jdbcType=VARCHAR}, fraction = #{record.fraction,jdbcType=INTEGER}, opinion = #{record.opinion,jdbcType=VARCHAR}, remark = #{record.remark,jdbcType=VARCHAR}, operated_by = #{record.operatedBy,jdbcType=VARCHAR}, operated_time = #{record.operatedTime,jdbcType=TIMESTAMP}, operated_org = #{record.operatedOrg,jdbcType=VARCHAR}, created_by = #{record.createdBy,jdbcType=VARCHAR}, created_time = #{record.createdTime,jdbcType=TIMESTAMP}, created_org = #{record.createdOrg,jdbcType=VARCHAR}, is_valid = #{record.isValid,jdbcType=INTEGER}, si_area = #{record.siArea,jdbcType=VARCHAR}, evaluate_content = #{record.evaluateContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause"/>
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">update ltci_expert_evaluate set expert_evaluateid = #{record.expertEvaluateid,jdbcType=VARCHAR}, expert_evaluate_code = #{record.expertEvaluateCode,jdbcType=VARCHAR}, first_evaluate_code = #{record.firstEvaluateCode,jdbcType=VARCHAR}, accessory_address = #{record.accessoryAddress,jdbcType=VARCHAR}, print_state = #{record.printState,jdbcType=VARCHAR}, fraction = #{record.fraction,jdbcType=INTEGER}, opinion = #{record.opinion,jdbcType=VARCHAR}, remark = #{record.remark,jdbcType=VARCHAR}, operated_by = #{record.operatedBy,jdbcType=VARCHAR}, operated_time = #{record.operatedTime,jdbcType=TIMESTAMP}, operated_org = #{record.operatedOrg,jdbcType=VARCHAR}, created_by = #{record.createdBy,jdbcType=VARCHAR}, created_time = #{record.createdTime,jdbcType=TIMESTAMP}, created_org = #{record.createdOrg,jdbcType=VARCHAR}, is_valid = #{record.isValid,jdbcType=INTEGER}, si_area = #{record.siArea,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause"/>
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.ExpertEvaluateDO">update ltci_expert_evaluate
+    <set>
+      <if test="expertEvaluateCode != null">expert_evaluate_code = #{expertEvaluateCode,jdbcType=VARCHAR},</if>
+      <if test="firstEvaluateCode != null">first_evaluate_code = #{firstEvaluateCode,jdbcType=VARCHAR},</if>
+      <if test="accessoryAddress != null">accessory_address = #{accessoryAddress,jdbcType=VARCHAR},</if>
+      <if test="printState != null">print_state = #{printState,jdbcType=VARCHAR},</if>
+      <if test="fraction != null">fraction = #{fraction,jdbcType=INTEGER},</if>
+      <if test="opinion != null">opinion = #{opinion,jdbcType=VARCHAR},</if>
+      <if test="remark != null">remark = #{remark,jdbcType=VARCHAR},</if>
+      <if test="operatedBy != null">operated_by = #{operatedBy,jdbcType=VARCHAR},</if>
+      <if test="operatedTime != null">operated_time = #{operatedTime,jdbcType=TIMESTAMP},</if>
+      <if test="operatedOrg != null">operated_org = #{operatedOrg,jdbcType=VARCHAR},</if>
+      <if test="createdBy != null">created_by = #{createdBy,jdbcType=VARCHAR},</if>
+      <if test="createdTime != null">created_time = #{createdTime,jdbcType=TIMESTAMP},</if>
+      <if test="createdOrg != null">created_org = #{createdOrg,jdbcType=VARCHAR},</if>
+      <if test="isValid != null">is_valid = #{isValid,jdbcType=INTEGER},</if>
+      <if test="siArea != null">si_area = #{siArea,jdbcType=VARCHAR},</if>
+      <if test="evaluateContent != null">evaluate_content = #{evaluateContent,jdbcType=LONGVARCHAR},</if>
+    </set>where expert_evaluateid = #{expertEvaluateid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.taikang.dic.ltci.model.ExpertEvaluateDO">update ltci_expert_evaluate set expert_evaluate_code = #{expertEvaluateCode,jdbcType=VARCHAR}, first_evaluate_code = #{firstEvaluateCode,jdbcType=VARCHAR}, accessory_address = #{accessoryAddress,jdbcType=VARCHAR}, print_state = #{printState,jdbcType=VARCHAR}, fraction = #{fraction,jdbcType=INTEGER}, opinion = #{opinion,jdbcType=VARCHAR}, remark = #{remark,jdbcType=VARCHAR}, operated_by = #{operatedBy,jdbcType=VARCHAR}, operated_time = #{operatedTime,jdbcType=TIMESTAMP}, operated_org = #{operatedOrg,jdbcType=VARCHAR}, created_by = #{createdBy,jdbcType=VARCHAR}, created_time = #{createdTime,jdbcType=TIMESTAMP}, created_org = #{createdOrg,jdbcType=VARCHAR}, is_valid = #{isValid,jdbcType=INTEGER}, si_area = #{siArea,jdbcType=VARCHAR}, evaluate_content = #{evaluateContent,jdbcType=LONGVARCHAR} where expert_evaluateid = #{expertEvaluateid,jdbcType=VARCHAR}</update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.ExpertEvaluateDO">update ltci_expert_evaluate set expert_evaluate_code = #{expertEvaluateCode,jdbcType=VARCHAR}, first_evaluate_code = #{firstEvaluateCode,jdbcType=VARCHAR}, accessory_address = #{accessoryAddress,jdbcType=VARCHAR}, print_state = #{printState,jdbcType=VARCHAR}, fraction = #{fraction,jdbcType=INTEGER}, opinion = #{opinion,jdbcType=VARCHAR}, remark = #{remark,jdbcType=VARCHAR}, operated_by = #{operatedBy,jdbcType=VARCHAR}, operated_time = #{operatedTime,jdbcType=TIMESTAMP}, operated_org = #{operatedOrg,jdbcType=VARCHAR}, created_by = #{createdBy,jdbcType=VARCHAR}, created_time = #{createdTime,jdbcType=TIMESTAMP}, created_org = #{createdOrg,jdbcType=VARCHAR}, is_valid = #{isValid,jdbcType=INTEGER}, si_area = #{siArea,jdbcType=VARCHAR} where expert_evaluateid = #{expertEvaluateid,jdbcType=VARCHAR}</update>
+</mapper>

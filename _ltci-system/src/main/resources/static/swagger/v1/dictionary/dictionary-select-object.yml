@@ -1,0 +1,55 @@
+post: 
+  tags:
+  - dictionaryManage
+  summary: 查询字典表
+  description: 前端查询字典表 测试数据(id:dsdsdsds,type:apply_type,typeName:申办类别,value:01,valueName:非全日居家护理)
+  operationId: getDictionary
+  parameters: 
+  - name: type
+    in: formData
+    description: 类型值
+    required: false
+    type: string
+  - name: typeName
+    in: formData
+    description: 类型名称
+    required: false
+    type: string
+  - name: value
+    in: formData
+    description: 属性值
+    required: false
+    type: string
+  - name: valueName
+    in: formData
+    description: 属性名称
+    required: false
+    type: string
+  - name: page
+    in: formData
+    description: 当前页码
+    required: false
+    type: integer
+    format: int32
+  - name: pageSize
+    in: formData
+    description: 每页显示条数
+    required: false
+    type: integer
+    format: int32
+  - name: queryFlag
+    in: formData
+    description: 查询标识
+    required: false
+    type: string
+  responses:
+    200:
+      description: 查询成功
+      schema: 
+        type: array
+        items: 
+          $ref: "../../ltci-system-api-v1.yml/#/definitions/PageResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/ResultDTO"

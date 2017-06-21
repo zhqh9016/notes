@@ -1,0 +1,245 @@
+package com.taikang.dic.ltci.evaluate.nursing.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
+import com.taikang.dic.ltci.evaluate.nursing.common.NursingTaskEnum;
+import com.taikang.dic.ltci.evaluate.nursing.model.EvaluateTaskSpecialDO;
+import com.taikang.dic.ltci.evaluate.nursing.service.EvaluateTaskService;
+import com.taikang.dic.ltci.evaluate.nursing.serviceClient.EvaluateTaskServerClient;
+import com.taikang.dic.ltci.evaluate.nursing.serviceClient.NursingTaskServerClient;
+import com.taikang.dic.ltci.evaluate.nursing.serviceClient.OrganizationServerClient;
+import com.taikang.dic.ltci.portal.api.model.AttachmentDTO;
+import com.taikang.dic.ltci.portal.api.model.EvaluateTaskDTO;
+import com.taikang.dic.ltci.portal.api.model.NursingTaskDTO;
+import com.taikang.dic.ltci.portal.api.model.OrganizationDTO;
+import com.taikang.dic.ltci.portal.api.model.PageResultDTO;
+import com.taikang.dic.ltci.portal.api.model.RestResponseDTO;
+import com.taikang.dic.ltci.portal.api.model.ResultDTO;
+import com.taikang.dic.ltci.portal.api.model.UserDTO;
+import com.taikang.dic.ltci.portal.common.enumeration.FileTypeEnum;
+import com.taikang.dic.ltci.portal.common.enumeration.StatusCodeEnum;
+import com.taikang.dic.ltci.portal.common.restRequestResponse.RestResponseFormat;
+import com.taikang.dic.ltci.portal.common.util.UserUtils;
+import com.taikang.dic.ltci.portal.serverClient.AttachmentServiceClient;
+import com.taikang.dic.ltci.quality.control.professionModel.PageResultPF;
+
+/**
+ * @author itw_xuxf
+ * @version 2017年3月31日下午3:21:33 待遇申请状态处理 feign请求
+ */
+@Service
+public class EvaluateTaskServiceImpl implements EvaluateTaskService {
+
+  private static final Logger logger = LoggerFactory.getLogger(EvaluateTaskServiceImpl.class);
+
+  @Autowired private EvaluateTaskServerClient evaluateTaskServerClient;
+  @Autowired private NursingTaskServerClient nursingTaskServerClient;
+  @Autowired private AttachmentServiceClient attachmentServiceClient;
+  @Autowired private OrganizationServerClient organizationServerClient;
+
+  @Autowired
+  private com.taikang.dic.ltci.system.serverClient.OrganizationServerClient
+      systemOrganizationServerClient;
+
+  @Value(value = "${spring.application.name}")
+  private String systemCode;
+  /**
+   * 分页查询
+   *
+   * @param insuredPersonName 参保人姓名
+   * @param idCard 身份证号
+   * @param securityNumber 社保卡号
+   * @param disease 疾病
+   * @param operatedTime 经办时间
+   * @param page 页数
+   * @param pageSize 条数
+   * @return
+   */
+  @Override
+  public PageResultDTO queryEvaluateTaskList(
+      String insuredPersonName,
+      String mobile,
+      String operatedTime,
+      String taskState,
+      int page,
+      int pageSize) {
+
+    EvaluateTaskDTO evaluateTaskDTO = new EvaluateTaskDTO();
+    evaluateTaskDTO.setInsuredPersonName(insuredPersonName);
+    evaluateTaskDTO.setMobile(mobile);
+    evaluateTaskDTO.setTaskState(taskState);
+    evaluateTaskDTO.setOperatedTime(operatedTime);
+
+    RestResponseDTO restResponseDTO =
+        evaluateTaskServerClient.evaluateTaskList(evaluateTaskDTO, page, pageSize, systemCode);
+    PageResultDTO pageResultDTO = RestResponseFormat.restResponseDTO2PageResultDTO(restResponseDTO);
+
+    //调用接口将经办机构编码替换成经办机构名称
+    if (pageResultDTO.getDatas() != null) {
+      List<EvaluateTaskDTO> evaluateTaskDTOList =
+          JSONArray.parseArray(
+              JSONObject.toJSONString(pageResultDTO.getDatas()), EvaluateTaskDTO.class);
+      for (EvaluateTaskDTO evaluateTaskDTO2 : evaluateTaskDTOList) {
+        if (evaluateTaskDTO2.getOperatedOrg() != null) {
+          String operatedOrg = evaluateTaskDTO2.getOperatedOrg();
+          ResultDTO result = systemOrganizationServerClient.getByCode(operatedOrg, systemCode);
+          if (result.getDatas() != null) {
+            OrganizationDTO organizationDTO =
+                JSONObject.parseObject(
+                    JSONObject.toJSONString(result.getDatas()), OrganizationDTO.class);
+            evaluateTaskDTO2.setOperatedOrg(organizationDTO.getName());
+          }
+        }
+      }
+      pageResultDTO.setDatas(evaluateTaskDTOList);
+    }
+
+    return pageResultDTO;
+  }
+
+  @Override
+  public ResultDTO sendEvaluateTaskBatch(
+      String evaluateTaskCodes, String evaluateAgencyCode, String evaluateAgencyName) {
+    UserDTO userDTO = UserUtils.getCurrentUser();
+    String operatedBy = "";
+    String operatedOrg = "";
+    if (userDTO != null) {
+      operatedBy = userDTO.getTrueName();
+      if (userDTO.getDepartment() != null) {
+        operatedOrg = userDTO.getDepartment().getCode();
+      }
+    }
+    RestResponseDTO restResponseDTO =
+        evaluateTaskServerClient.sendEvaluateTask(
+            evaluateTaskCodes,
+            operatedBy,
+            operatedOrg,
+            evaluateAgencyCode,
+            evaluateAgencyName,
+            systemCode);
+    return RestResponseFormat.restResponseDTO2ResultDTO(restResponseDTO);
+  }
+
+  /** 查询评估机构信息 调用第三方接口 */
+  @Override
+  public ResultDTO getEvaluateDepartments(String areaNum, String organizationType) {
+    logger.info("-------------getEvaluateDepartments:--------------");
+    //测试数据areaCd   110000
+    ResultDTO dto = new ResultDTO();
+    PageResultPF prf = organizationServerClient.getEvaluateDepartments(areaNum, organizationType);
+    transferTo(dto, prf, areaNum, organizationType);
+    return dto;
+  }
+
+  private void transferTo(
+      ResultDTO dto, PageResultPF prf, String areaNum, String organizationType) {
+    logger.debug("____transferTo prf=" + JSONObject.toJSONString(prf));
+    if (prf != null) {
+      dto.setMessage(prf.getMsg());
+      if ("0".equals(prf.getCode())) {
+        dto.setStatus(StatusCodeEnum.OK.getValue());
+      } else {
+        dto.setStatus(StatusCodeEnum.INTERNAL_SERVER_ERROR.getValue());
+      }
+      if (prf.getData() != null) {
+        dto.setDatas(prf.getData());
+        //TODO需要将接受到数据转换成我们的对应数据
+        /**
+         * code -> agencyCode name -> agencyName address -> agencyAddressDetail
+         *
+         * <p>assessmentAgencyFlag 定点评估机构标志 boolean 1..1 根据【机构定点服务类型】来判断 agencyType nursingAgency
+         * 定点护理机构标志 boolean 1..1 根据【机构定点服务类型】来判断 agencyType
+         *
+         * <p>orgDesignatedTypeList 机构定点服务类型 list serviceContentList orgCd 机构编码 string orgTypeCd
+         * 机构服务类型编码 string orgTypeName 机构服务类型名称 string
+         */
+        logger.info("prf.getData():" + prf.getData());
+      } else {
+        dto.setDatas(new ArrayList<>());
+      }
+    }
+  }
+
+  /** 重评接口 */
+  @Override
+  public ResultDTO reviewEvaluateTask(String evaluateTaskCode, String reevalueateResult) {
+    UserDTO userDTO = UserUtils.getCurrentUser();
+    String operatedBy = "";
+    String operatedOrg = "";
+    if (userDTO != null) {
+      operatedBy = userDTO.getTrueName();
+      if (userDTO.getDepartment() != null) {
+        operatedOrg = userDTO.getDepartment().getCode();
+      }
+    }
+    RestResponseDTO restResponseDTO =
+        evaluateTaskServerClient.reviewEvaluateTask(
+            evaluateTaskCode, reevalueateResult, operatedBy, operatedOrg, systemCode);
+    return RestResponseFormat.restResponseDTO2ResultDTO(restResponseDTO);
+  }
+  /** 批量修改送达状态 */
+  @Override
+  public ResultDTO batchTreatmentApplicationCase(
+      String taskState, String operatedBy, String evaluateTaskCodes) {
+    UserDTO userDTO = UserUtils.getCurrentUser();
+    String createdBy = operatedBy;
+    String createdOrg = "";
+    if (userDTO != null) {
+      createdBy = userDTO.getTrueName();
+      if (userDTO.getDepartment() != null) {
+        createdOrg = userDTO.getDepartment().getCode();
+      }
+    }
+    RestResponseDTO restResponseDTO =
+        evaluateTaskServerClient.batchTreatmentApplicationCase(
+            taskState, createdBy, createdOrg, evaluateTaskCodes, evaluateTaskCodes);
+    ResultDTO resultDto = RestResponseFormat.restResponseDTO2ResultDTO(restResponseDTO);
+
+    return resultDto;
+  }
+
+  @Override
+  public PageResultDTO getExpertTaskList(
+      String insuredPersonName,
+      String idCard,
+      String evaluateOrg,
+      String operatedTime,
+      String taskState,
+      int page,
+      int pageSize) {
+    RestResponseDTO restResponseDTO =
+        evaluateTaskServerClient.getExpertTaskList(
+            insuredPersonName, idCard, evaluateOrg, operatedTime, taskState, page, pageSize);
+    return RestResponseFormat.restResponseDTO2PageResultDTO(restResponseDTO);
+  }
+
+  @Override
+  public ResultDTO getMongoDBMessage(String id) {
+    ResultDTO resultDTO =
+        attachmentServiceClient.getAttachmentByID(id, FileTypeEnum.PICTURE.getValue());
+    if (resultDTO != null && StatusCodeEnum.OK.getValue().equals(resultDTO.getStatus())) {
+      AttachmentDTO dto =
+          JSONObject.parseObject(
+              JSONObject.toJSONString(resultDTO.getDatas()), AttachmentDTO.class);
+      resultDTO.setDatas(dto.getContent());
+    }
+    return resultDTO;
+  }
+
+  @Override
+  public ResultDTO getToDoListEvaluateTaskList() {
+    RestResponseDTO restResponseDTO = evaluateTaskServerClient.getToDoListEvaluateTaskList();
+    return RestResponseFormat.restResponseDTO2ResultDTO(restResponseDTO);
+  }
+}

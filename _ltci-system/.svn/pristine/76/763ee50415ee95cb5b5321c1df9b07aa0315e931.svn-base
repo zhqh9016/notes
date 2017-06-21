@@ -1,0 +1,24 @@
+post:
+  summary: 查询角色名称是否重复
+  description: 返回0:表示存在;1:不存在
+  operationId: getRoleName
+  parameters:
+  - name: roleName
+    in: formData
+    description: 角色名称
+    required: true
+    type: string       
+  tags:
+  - roleManage
+  responses:
+    200:
+      description: 查询成功
+      schema:
+        type: array
+        items:
+          $ref: "../../ltci-system-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"
+    

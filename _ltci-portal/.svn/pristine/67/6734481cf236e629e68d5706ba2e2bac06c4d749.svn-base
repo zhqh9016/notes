@@ -1,0 +1,22 @@
+put: 
+  tags:
+  - evaluateTask
+  summary: 发送评估任务
+  description: 发送评估任务
+  operationId: sendEvaluateTask
+  parameters:
+  - name: evaluateTaskCodes
+    in: formData
+    description: 评估任务编号，可以是多个，但是需要用逗号分隔，例：9472b12f484a434083c3fbb4369c05a0
+    required: true
+    type: string
+  responses:
+    201: 
+      description: 评估任务发送成功
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+ 

@@ -1,0 +1,64 @@
+post: 
+  tags:
+  - deputyBinding 
+  summary: 代理人绑定人工审核接口
+  description: 代理人绑定人工审核信息提交
+  operationId: createDeputyBinding
+  parameters: 
+    - name: serialNumber
+      in: formData
+      description: 申请流水号(移动端生成的)
+      required: true
+      type: string
+    - name: idCard
+      in: formData
+      description: 参保人身份证号码
+      required: true
+      type: string 
+    - name: securityNumber
+      in: formData
+      description: 参保人社保卡号码
+      required: true
+      type: string 
+    - name: deputyName
+      in: formData
+      description: 代理人名字
+      required: true
+      type: string 
+    - name: deputyIdCard
+      in: formData
+      description: 代理人身份证号码
+      required: true
+      type: string 
+    - name: deputyMobile
+      in: formData
+      description: 代理人联系方式
+      required: true
+      type: string 
+    - name: createdBy
+      in: formData
+      description: 创建人
+      required: true
+      type: string 
+    - name: createdOrg
+      in: formData
+      description: 创建人机构
+      required: true
+      type: string 
+  responses:
+      200:
+        description: 查询成功
+        schema:
+          $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"
+
+
+
+
+
+
+
+

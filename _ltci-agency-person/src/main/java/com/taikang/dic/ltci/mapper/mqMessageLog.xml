@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.MqMessageLogDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.MqMessageLogDO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="send_state" property="sendState" jdbcType="VARCHAR" />
+    <result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="re_send_num" property="reSendNum" jdbcType="BIGINT" />
+    <result column="fail_message" property="failMessage" jdbcType="VARCHAR" />
+    <result column="exchange_name" property="exchangeName" jdbcType="VARCHAR" />
+    <result column="queue_name" property="queueName" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.taikang.dic.ltci.model.MqMessageLogDO" extends="BaseResultMap" >
+    <result column="send_content" property="sendContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, type, send_state, send_time, create_time, re_send_num, fail_message, exchange_name, 
+    queue_name
+  </sql>
+  <sql id="Blob_Column_List" >
+    send_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.taikang.dic.ltci.model.MqMessageLogDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ltci_mq_message_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.MqMessageLogDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ltci_mq_message_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ltci_mq_message_log
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_mq_message_log
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.MqMessageLogDOExample" >
+    delete from ltci_mq_message_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.MqMessageLogDO" >
+    insert into ltci_mq_message_log (id, type, send_state, 
+      send_time, create_time, re_send_num, 
+      fail_message, exchange_name, queue_name, 
+      send_content)
+    values (#{id,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{sendState,jdbcType=VARCHAR}, 
+      #{sendTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{reSendNum,jdbcType=BIGINT}, 
+      #{failMessage,jdbcType=VARCHAR}, #{exchangeName,jdbcType=VARCHAR}, #{queueName,jdbcType=VARCHAR}, 
+      #{sendContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.MqMessageLogDO" >
+    insert into ltci_mq_message_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="sendState != null" >
+        send_state,
+      </if>
+      <if test="sendTime != null" >
+        send_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="reSendNum != null" >
+        re_send_num,
+      </if>
+      <if test="failMessage != null" >
+        fail_message,
+      </if>
+      <if test="exchangeName != null" >
+        exchange_name,
+      </if>
+      <if test="queueName != null" >
+        queue_name,
+      </if>
+      <if test="sendContent != null" >
+        send_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="sendState != null" >
+        #{sendState,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reSendNum != null" >
+        #{reSendNum,jdbcType=BIGINT},
+      </if>
+      <if test="failMessage != null" >
+        #{failMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="exchangeName != null" >
+        #{exchangeName,jdbcType=VARCHAR},
+      </if>
+      <if test="queueName != null" >
+        #{queueName,jdbcType=VARCHAR},
+      </if>
+      <if test="sendContent != null" >
+        #{sendContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.MqMessageLogDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_mq_message_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_mq_message_log
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sendState != null" >
+        send_state = #{record.sendState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sendTime != null" >
+        send_time = #{record.sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.reSendNum != null" >
+        re_send_num = #{record.reSendNum,jdbcType=BIGINT},
+      </if>
+      <if test="record.failMessage != null" >
+        fail_message = #{record.failMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.exchangeName != null" >
+        exchange_name = #{record.exchangeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.queueName != null" >
+        queue_name = #{record.queueName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sendContent != null" >
+        send_content = #{record.sendContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update ltci_mq_message_log
+    set id = #{record.id,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      send_state = #{record.sendState,jdbcType=VARCHAR},
+      send_time = #{record.sendTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      re_send_num = #{record.reSendNum,jdbcType=BIGINT},
+      fail_message = #{record.failMessage,jdbcType=VARCHAR},
+      exchange_name = #{record.exchangeName,jdbcType=VARCHAR},
+      queue_name = #{record.queueName,jdbcType=VARCHAR},
+      send_content = #{record.sendContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_mq_message_log
+    set id = #{record.id,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      send_state = #{record.sendState,jdbcType=VARCHAR},
+      send_time = #{record.sendTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      re_send_num = #{record.reSendNum,jdbcType=BIGINT},
+      fail_message = #{record.failMessage,jdbcType=VARCHAR},
+      exchange_name = #{record.exchangeName,jdbcType=VARCHAR},
+      queue_name = #{record.queueName,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.MqMessageLogDO" >
+    update ltci_mq_message_log
+    <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="sendState != null" >
+        send_state = #{sendState,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        send_time = #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reSendNum != null" >
+        re_send_num = #{reSendNum,jdbcType=BIGINT},
+      </if>
+      <if test="failMessage != null" >
+        fail_message = #{failMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="exchangeName != null" >
+        exchange_name = #{exchangeName,jdbcType=VARCHAR},
+      </if>
+      <if test="queueName != null" >
+        queue_name = #{queueName,jdbcType=VARCHAR},
+      </if>
+      <if test="sendContent != null" >
+        send_content = #{sendContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.taikang.dic.ltci.model.MqMessageLogDO" >
+    update ltci_mq_message_log
+    set type = #{type,jdbcType=VARCHAR},
+      send_state = #{sendState,jdbcType=VARCHAR},
+      send_time = #{sendTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      re_send_num = #{reSendNum,jdbcType=BIGINT},
+      fail_message = #{failMessage,jdbcType=VARCHAR},
+      exchange_name = #{exchangeName,jdbcType=VARCHAR},
+      queue_name = #{queueName,jdbcType=VARCHAR},
+      send_content = #{sendContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.MqMessageLogDO" >
+    update ltci_mq_message_log
+    set type = #{type,jdbcType=VARCHAR},
+      send_state = #{sendState,jdbcType=VARCHAR},
+      send_time = #{sendTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      re_send_num = #{reSendNum,jdbcType=BIGINT},
+      fail_message = #{failMessage,jdbcType=VARCHAR},
+      exchange_name = #{exchangeName,jdbcType=VARCHAR},
+      queue_name = #{queueName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

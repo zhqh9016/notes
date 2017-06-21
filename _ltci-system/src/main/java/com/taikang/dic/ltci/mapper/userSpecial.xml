@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.IUserSpecialDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.UserDO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="true_name" property="trueName" jdbcType="VARCHAR" />
+    <result column="departmentid" property="departmentid" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="salt" property="salt" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="sequence" property="sequence" jdbcType="INTEGER" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="is_authority" property="isAuthority" jdbcType="INTEGER" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <select id="getUser" resultMap="BaseResultMap">
+	  select distinct a.*
+	  from ltci_r_user_role b join ltci_user a on a.id = b.user_id 
+	                        join ltci_role c on b.role_id = c.id
+	  where  a.is_valid = 1
+	  <if test="userName != null and userName!=''">
+	  and a.user_name = #{userName}
+	  </if>
+	  <if test="departmentid != null and departmentid != ''">
+	  and a.departmentid = #{departmentid}
+	  </if>
+	  <if test="roleCode != null and roleCode != ''">
+	  and c.role_code = #{roleCode}
+	  </if>
+	  limit ${page}, ${pageSize} 
+  </select>
+  
+  <select id="countUser" resultType="java.lang.Integer">
+  select count(d.id) 
+	from 
+	(
+	  select distinct a.*
+	  from ltci_r_user_role b join ltci_user a on a.id = b.user_id 
+	                        join ltci_role c on b.role_id = c.id
+	  where  a.is_valid = 1
+	  <if test="userName != null and userName!=''">
+	  and a.user_name = #{userName}
+	  </if>
+	  <if test="departmentid != null and departmentid != ''">
+	  and a.departmentid = #{departmentid}
+	  </if>
+	  <if test="roleCode != null and roleCode != ''">
+	  and c.role_code = #{roleCode}
+	  </if>
+	)d
+  </select>
+  
+    <select id="getUserNotRoleCode" resultMap="BaseResultMap">
+	  select distinct a.*
+	  from ltci_user a left join 
+		(
+				select *
+        from ltci_role b join ltci_r_user_role c on b.id = c.role_id
+      )d on a.id=  d.user_id
+	
+	  where  a.is_valid = 1
+	  <if test="userName != null and userName!=''">
+	  and a.user_name = #{userName}
+	  </if>
+	  <if test="departmentid != null and departmentid != ''">
+	  and a.departmentid = #{departmentid}
+	  </if>
+	  limit ${page}, ${pageSize} 
+  </select>
+  
+  <select id="countUserNotRoleCode" resultType="java.lang.Integer">
+  select count(e.id) 
+	from 
+	(
+	  	 select distinct a.*
+	     from ltci_user a left join 
+		 (
+				select *
+                from ltci_role b join ltci_r_user_role c on b.id = c.role_id
+         )d on a.id=  d.user_id
+	  where  a.is_valid = 1
+	  <if test="userName != null and userName!=''">
+	  and a.user_name = #{userName}
+	  </if>
+	  <if test="departmentid != null and departmentid != ''">
+	  and a.departmentid = #{departmentid}
+	  </if>
+	)e
+  </select>
+  
+  
+  
+  
+</mapper>

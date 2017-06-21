@@ -1,0 +1,161 @@
+﻿#访问路径前缀
+restBasePath: /api/v1
+
+#服务启动端口号
+server.port: 8090
+
+#系统编码
+systemCode: LCPM
+
+#MQ编码
+systemCharset: UTF-8
+
+#关闭hystrix
+feign.hystrix.enabled: false
+
+#mybatis的xml映射文件路径
+mybatis.mapperLocations: classpath*:com/taikang/dic/ltci/mapper/*.xml
+
+#需要注册别名的POJO类所在包
+mybatis.typeAliasesPackage: com.taikang.dic.ltci.model
+
+#基础微服务路径和服务名
+feign.system.url: http://localhost:8082
+feign.system: ltci-system
+
+#媒体文件微服务地址和服务名
+feign.media.file.url: http://localhost:8084
+feign.media.file.client: ltci-media-file
+
+#评估护理微服务地址
+feign.evaluate.nursing.url: http://localhost:8086
+feign.evaluate.nursing.client: ltci-evaluate-nursing
+
+#定时重发发送失败的MQ信息的定时任务ScheduleServiceImpl
+reSendFaildMqMessage: 0 0 0/12 * * ?
+
+
+#mq 发送、接收失败消息定时重试 ‘时间’，同时key也是锁表中的‘业务模块类型’
+retryFailMessageTiming: 00 00 0/1 * * ?
+
+
+#待遇申请发送的Queue和ExChange
+ltci.treatmentApplicationCase.queue: q.mobile
+ltci.treatmentApplicationCase.exchange: x.treatmentAcceptResult
+ltci.treatmentApplicationCase.messageCode1: SC339_10001
+ltci.treatmentApplicationCase.messageCode2: SC339_10002
+
+#代理人绑定监听的queue
+#q.bindingApplication
+ltci.deputyBinding.queue: q.bindingApplication.jingmen
+
+#代理人绑定结果发送的Queue和ExChange
+ltci.deputyBindingSendCase.queue: q.mobile
+ltci.deputyBindingSendCase.exchange: x.bindingResult
+ltci.deputyBindingSend.messageCode: SC339_10000
+
+
+#数据库连接配置默认连接是开发环境
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.130.206.191:3306/ltci_treatment_application
+    username: tklcpm
+    password: tklcpm
+ 
+spring.datasource.tomcat:
+    max-active: 50
+    max-wait: 30000
+    test-on-borrow:  true
+    max-idle: 10
+    min-idle: 5
+    test-on-connect: true
+    test-on-return: true
+    test-while-idle: true
+    validation-query: SELECT 1 FROM DUAL
+    validation-query-timeout: -1
+
+#rabbitmq连接配置默认连接是开发环境   
+spring.rabbitmq:
+  host: 10.130.202.57
+  port: 5672
+  username: longtermcare
+  password: longtermcare
+  virtualHost: longtermcare
+
+#是否是webservice接口测试，默认不开启
+isWebserviceDebug: false
+
+#webservice接口地址
+soap.nurse.wsdl.url: http://10.135.45.81/services/care?wsdl
+
+#测试环境  
+---
+spring.profiles: test
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.130.206.186:3306/ltci_treatment_application
+    username: tklcpm
+    password: tklcpm
+    
+spring.rabbitmq:
+  host: 10.135.45.77,10.135.45.79
+  port: 5672
+  username: longtermcare
+  password: longtermcare
+  virtualHost: longtermcare
+
+#是否是webservice接口测试，默认不开启
+isWebserviceDebug: false
+
+#webservice接口地址 
+soap.nurse.wsdl.url: http://10.135.45.81/services/care?wsdl
+
+#开发环境  
+---
+spring.profiles: dev
+
+#mysql 开发环境
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.130.206.191:3306/ltci_treatment_application
+    username: tklcpm
+    password: tklcpm
+    
+#rabbitmq 开发环境
+spring.rabbitmq:
+  host: 10.130.202.57
+  port: 5672
+  username: longtermcare
+  password: longtermcare
+  virtualHost: longtermcare
+
+#是否是webservice接口测试，默认不开启
+isWebserviceDebug: false
+
+#webservice接口地址
+soap.nurse.wsdl.url: http://10.135.45.81/services/care?wsdl
+  
+#生产环境  
+---
+spring.profiles: pro
+
+#mysql 生产环境
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.128.128.94:3306/ltci_treatment_application
+    username: tklcpm
+    password: tklcpm@2ol7
+    
+#rabbitmq 生产环境
+spring.rabbitmq:
+  host: 172.16.70.96,172.16.70.97
+  port: 5672
+  username: longtermcare
+  password: rA20gq
+  virtualHost: longtermcare
+
+#是否是webservice接口测试，默认不开启
+isWebserviceDebug: true
+
+#webservice接口地址
+soap.nurse.wsdl.url: http://10.135.45.81/services/care?wsdl

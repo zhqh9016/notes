@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.DeputyBindingSpecialDAO" >
+<resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.DeputyBindingSpecialDO" >
+    <id column="deputy_bindingid" property="deputyBindingid" jdbcType="VARCHAR" />
+    <result column="deputy_binding_code" property="deputyBindingCode" jdbcType="VARCHAR" />
+    <result column="serial_number" property="serialNumber" jdbcType="VARCHAR" />
+    <result column="insured_person_code" property="insuredPersonCode" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="insured_person_name" property="insuredPersonName" jdbcType="VARCHAR" />
+    <result column="security_number" property="securityNumber" jdbcType="VARCHAR" />
+    <result column="deputy_name" property="deputyName" jdbcType="VARCHAR" />
+    <result column="deputy_id_card" property="deputyIdCard" jdbcType="VARCHAR" />
+    <result column="deputy_mobile" property="deputyMobile" jdbcType="VARCHAR" />
+    <result column="deputy_id_card_scan" property="deputyIdCardScan" jdbcType="VARCHAR" />
+    <result column="security_number_scan" property="securityNumberScan" jdbcType="VARCHAR" />
+    <result column="id_card_scan" property="idCardScan" jdbcType="VARCHAR" />
+    <result column="case_history_scan" property="caseHistoryScan" jdbcType="VARCHAR" />
+    <result column="application_form_scan" property="applicationFormScan" jdbcType="VARCHAR" />
+    <result column="check_state" property="checkState" jdbcType="VARCHAR" />
+    <result column="check_reason" property="checkReason" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="queryDeputyBinding" resultMap="BaseResultMap">
+	select a.deputy_bindingid,a.deputy_binding_code,a.id_card,a.security_number,b.insured_person_name,a.deputy_id_card,a.deputy_name,a.check_state,a.check_reason
+	from ltci_deputy_binding a,ltci_insured_person b
+	where a.insured_person_code=b.insured_person_code 
+  	  <if test="insuredPersonName != null and insuredPersonName !='' " >
+        and b.insured_person_name like  concat('%',#{insuredPersonName},'%')
+      </if> 	
+  	  <if test="idCard != null and idCard !='' " >
+        and a.id_card = #{idCard,jdbcType=VARCHAR}
+      </if>
+      <if test="securityNumber != null and securityNumber !='' " >
+        and a.security_number = #{securityNumber,jdbcType=VARCHAR}
+      </if>
+      <if test="deputyName != null and deputyName !='' " >
+        and a.deputy_name like concat('%',#{deputyName},'%')
+      </if>
+      <if test="deputyIdCard != null and deputyIdCard !='' " >
+        and a.deputy_id_card = #{deputyIdCard,jdbcType=VARCHAR}
+      </if>
+      <if test="checkState != null and checkState !='' " >
+        and a.check_state = #{checkState,jdbcType=VARCHAR}
+      </if>
+      <if test="operatedOrg != null and operatedOrg !='' " >
+        and (a.created_org = #{operatedOrg,jdbcType=VARCHAR} or a.operated_org = #{operatedOrg,jdbcType=VARCHAR})
+      </if>
+    order by case when check_state='02' then 0 else 1 end,a.created_time desc	
+    limit ${page}, ${pageSize}  
+  </select>
+  
+  <select id="countDeputyBinding"  resultType="java.lang.Integer">
+  		select count(a.id_card) 
+		from ltci_deputy_binding a,ltci_insured_person b
+		where a.insured_person_code=b.insured_person_code 
+  		  <if test="insuredPersonName != null and insuredPersonName !='' " >
+     	   and b.insured_person_name  like  concat('%',#{insuredPersonName},'%')
+   	   	  </if> 	
+  	  	  <if test="idCard != null and idCard !='' " >
+           and a.id_card = #{idCard,jdbcType=VARCHAR}
+          </if>
+	      <if test="securityNumber != null and securityNumber !='' " >
+	        and a.security_number = #{securityNumber,jdbcType=VARCHAR}
+	      </if>
+	      <if test="deputyName != null and deputyName !='' " >
+	        and a.deputy_name like concat('%',#{deputyName},'%')
+	      </if>
+	      <if test="deputyIdCard != null and deputyIdCard !='' " >
+	        and a.deputy_id_card = #{deputyIdCard,jdbcType=VARCHAR}
+	      </if>
+	      <if test="checkState != null and checkState !='' " >
+	        and a.check_state = #{checkState,jdbcType=VARCHAR}
+	      </if>	
+	      <if test="operatedOrg != null and operatedOrg !='' " >
+	        and (a.created_org = #{operatedOrg,jdbcType=VARCHAR} or a.operated_org = #{operatedOrg,jdbcType=VARCHAR})
+	      </if>
+  </select>
+  
+  <select id="getDeputyBindingDOState" resultMap="BaseResultMap" parameterType="java.lang.String">
+	select * from ltci_deputy_binding
+	where 
+    id_card = #{idCard,jdbcType=VARCHAR} and
+    security_number = #{securityNumber,jdbcType=VARCHAR} and
+    deputy_id_card = #{deputyIdCard,jdbcType=VARCHAR}
+    order by created_time desc limit 0,1
+  </select>
+  
+  <select id="getDeputyBindSpecialDO" resultMap="BaseResultMap" parameterType="java.lang.String">
+	select 
+	ldb.*,
+	lip.insured_person_name insured_person_name
+	from 
+	ltci_deputy_binding ldb 
+	join 
+	ltci_insured_person lip 
+	on 
+	ldb.insured_person_code = lip.insured_person_code 
+	where 
+	ldb.deputy_binding_code = #{deputyBindingCode,jdbcType=VARCHAR}
+  </select>
+  
+  <resultMap id="rDeputyBindingResultDO" type="com.taikang.dic.ltci.model.DeputyBindingResultDO" >
+  	<id column="application_code" property="applicationCode" jdbcType="VARCHAR" />
+    <result column="deputy_name" property="deputyName" jdbcType="VARCHAR" />
+    <result column="deputy_id_card" property="deputyIdCard" jdbcType="VARCHAR" />
+    <result column="insured_person_name" property="insuredPersonName" jdbcType="VARCHAR" />
+    <result column="security_number" property="securityNumber" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="application_code" property="applicationCode" jdbcType="VARCHAR" />
+    <result column="application_status" property="applicationStatus" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="VARCHAR" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="application_reason" property="applicationReason" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getDeputyBindingListQuery" resultMap="rDeputyBindingResultDO" parameterType="java.lang.String">
+    select 
+			 c.deputy_name,
+			 c.deputy_id_card,
+			 e.insured_person_name,
+			 e.security_number,
+			 e.id_card,
+			 c.application_reason,
+			 c.application_code,
+			 c.application_status,
+			 date_format(c.operated_time,'%Y-%m-%d %H:%i:%s') operated_time ,
+			 c.operated_by
+	from (
+		 select b.insured_person_name,
+						 b.security_number,
+						 b.id_card,max(a.created_time) created_time
+		 from ltci_application a,ltci_insured_person b
+     where a.insured_person_code=b.insured_person_code
+     	     <if test="deputyIdCard !='' and deputyIdCard != null ">
+     	and a.deputy_id_card=#{deputyIdCard,jdbcType=VARCHAR}
+     </if>
+      and a.is_valid=1
+     and a.sources='02'
+     group by b.insured_person_name,b.security_number,b.id_card) e,
+		 ltci_application c,
+		 ltci_insured_person d
+	where
+	c.insured_person_code=d.insured_person_code
+	and d.insured_person_name =e.insured_person_name 
+	and d.security_number= e.security_number
+	and d.id_card=e.id_card
+	and c.created_time=e.created_time
+       <if test="deputyIdCard !='' and deputyIdCard != null ">
+     	and c.deputy_id_card=#{deputyIdCard,jdbcType=VARCHAR}
+     </if>
+  </select>
+</mapper>

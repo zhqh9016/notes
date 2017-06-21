@@ -1,0 +1,16 @@
+type: object
+description: 申请表状态
+properties: 
+  status: 
+    type: integer
+    format: int32
+    description: 状态码
+    example: 200
+  datas: 
+    type: object 
+    description: 结果信息
+    example: xxx
+  message: 
+    type: string
+    description: 结果状态描述
+    example: 查询成功

@@ -1,0 +1,703 @@
+---
+swagger: "2.0"
+
+info:
+  version: v1
+  title: 机构人员微服务
+  description: 机构人员管理相关微服务
+
+basePath: /api/v1
+schemes:
+- http
+produces:
+- application/json
+consumes:
+- application/json
+
+tags:
+- name: agencyAccept
+  description: 机构在线受理
+- name: agencyAduit
+  description: 机构审核
+- name: staffHistory
+  description: 人员在线受理
+  
+paths:
+  /agencyHistory/list:
+    $ref: v1/agencyHistory/get-list.yml
+    
+  /agency/audit/list:
+    $ref: v1/agencyAudit/agency-audit-list.yml
+  
+  /staffHistory/{staffId}:
+    $ref: v1/staffHistory/get-id.yml
+  /staffHistory/list:
+    $ref: v1/staffHistory/get-list.yml
+     
+definitions:
+  ResultDTO: 
+    type: object 
+    description: 结果基本信息
+    properties: 
+        status: 
+          type: integer
+          format: int32
+          description: 状态码
+          example: 200
+        datas: 
+          type: object 
+          description: 结果信息
+          example: xxx
+        message: 
+          type: string
+          description: 结果状态描述
+          
+  PageResultDTO:
+    type: object
+    description: 分页信息
+    properties:
+        status: 
+          type: integer
+          format: int32
+          description: 状态码
+          example: 200
+        message: 
+          type: string
+          description: 结果状态描述
+        page:
+          type: integer
+          format: int32
+          description: 当前页码
+          example: 1
+        pageSize:
+          type: integer
+          format: int32
+          description: 每页显示件数
+          example: 1
+        totalDataNum:
+          type: integer
+          format: int32
+          description: 总件数
+          example: 10
+        totalPageNum:
+          type: integer
+          format: int32
+          description: 总页数
+          example: 10
+        datas:
+          type: object
+          description: 结果信息
+          example: xxx
+          
+  AgencyHistoryDTO: 
+    type: object 
+    description: 机构历史信息
+    properties: 
+        serialNum: 
+          type: string
+          description: 流水号
+          example: 1234567
+        actionType: 
+          type: string 
+          description: 操作类型（新增、变更；变更时只传有变化的项目值）
+          example: xxx
+        agencyCode: 
+          type: string
+          description: 机构信息码（经办）
+        orgCode: 
+          type: string
+          description: 机构编号
+        agencyName: 
+          type: string
+          description: 机构名称
+        provinceCode: 
+          type: string
+          description: 所在省份编码
+        cityCode: 
+          type: string
+          description: 所在城市编码
+        areaCode: 
+          type: string
+          description: 所在区县编码
+        agencyAddressDetail: 
+          type: string
+          description: 机构详细地址
+        agencyType: 
+          type: string
+          description: 机构类型(护理/评估)
+        agencyLevel: 
+          type: integer
+          format: int32
+          description: 机构类别(一级以上医疗机构等)
+        agencyState: 
+          type: integer
+          format: int32
+          description: 机构审核状态
+        agencyServiceType: 
+          type: string
+          description: 定点服务机构类型(居家护理/养老机构护理)
+        validState: 
+          type: integer
+          format: int32
+          description: 有效状态
+        ownershipForm: 
+          type: integer
+          format: int32
+          description: 所有制形式
+        practiceLicense: 
+          type: string
+          description: 执业许可证号
+        agencyRegistrationNum: 
+          type: string
+          description: 机构登记证号
+        legalRepresentative: 
+          type: string
+          description: 法人代表
+        legalPapersType: 
+          type: string
+          description: 法人证件类型
+        legalIdCard: 
+          type: string
+          description: 法人证件号码
+        legalPhoneNo: 
+          type: string
+          description: 法人电话
+        agencyServiceContact: 
+          type: string
+          description: 长期护理服务业务负责人
+        agencyContactPhone: 
+          type: string
+          description: 长期护理服务业务负责人联系电话
+        agencyContactEmail: 
+          type: string
+          description: 长期护理服务业务负责人电子邮箱
+        serviceContent: 
+          type: string
+          description: 服务内容
+        agencyBedNum: 
+          type: integer
+          format: int32
+          description: 机构床位数
+        homeServiceNum: 
+          type: integer
+          format: int32
+          description: 居家服务人数
+        constructionArea: 
+          type: number
+          format: double
+          description: 建筑面积
+        remark: 
+          type: string
+          description: 备注说明
+        agencyCoordinates: 
+          type: string
+          description: 机构经纬度
+        agencyApplicat: 
+          type: string
+          description: 申请人
+        agencyApplyDate: 
+          type: string
+          description: 申请日期
+        advancedDoctorNum: 
+          type: integer
+          format: int32
+          description: 高级执业医师数
+        intermediateDoctorNum: 
+          type: integer
+          format: int32
+          description: 中级执业医师数
+        primaryDoctorNum: 
+          type: integer
+          format: int32
+          description: 初级执业医师数
+        advancedNurseNum: 
+          type: integer
+          format: int32
+          description: 高级执业护士数
+        intermediateNurseNum: 
+          type: integer
+          format: int32
+          description: 中级执业护士数
+        primaryNurseNum: 
+          type: integer
+          format: int32
+          description: 初级执业护士数
+        advancedCarerNum: 
+          type: integer
+          format: int32
+          description: 高级执业护理员数
+        intermediateCarerNum: 
+          type: integer
+          format: int32
+          description: 中级执业护理员数
+        primaryCarerNum: 
+          type: integer
+          format: int32
+          description: 初级执业护理员数
+        advancedMiscNum: 
+          type: integer
+          format: int32
+          description: 高级其他人员数
+        intermediateMiscNum: 
+          type: integer
+          format: int32
+          description: 中级其他人员数
+        primaryMiscNum: 
+          type: integer
+          format: int32
+          description: 初级其他人员数
+        cause: 
+          type: string
+          description: 不受理或不通过原因
+        operatedBy: 
+          type: string
+          description: 经办人
+        operatedOrg: 
+          type: string
+          description: 经办机构
+        operatedTime: 
+          type: string
+          description: 经办时间
+        createdBy: 
+          type: string
+          description: 创建人
+        createdOrg: 
+          type: string
+          description: 创建机构
+        createdTime: 
+          type: string
+          description: 创建时间
+        agencyFiles:
+          type: array
+          items:
+            type: object
+            $ref: "#/definitions/FileDTO"
+          description: 机构附件
+        keyBeginDate: 
+          type: string
+          description: 密钥开始日期
+        keyEndDate: 
+          type: string
+          description: 密钥终止日期
+        agencyCodeInput:
+          type: string
+          description: 审核输入机构编码
+          
+  StaffHistoryDTO: 
+    type: object 
+    description: 人员历史信息
+    properties: 
+        serialNo: 
+          type: string
+          description: 流水号
+          example: 1234567
+        actionType: 
+          type: string 
+          description: 操作类型（新增、变更；变更时只传有变化的项目值）
+          example: xxx
+        agencyCode: 
+          type: string
+          description: 机构编码（经办）(隶属机构名称)
+        agencyName: 
+          type: string
+          description: 机构名称(隶属机构名称)
+        staffCode: 
+          type: string
+          description: 人员编号
+        empCode: 
+          type: string
+          description: 专业人员编号
+        staffName: 
+          type: string
+          description: 人员姓名
+        staffPhone: 
+          type: string
+          description: 人员手机号
+        credentialType: 
+          type: integer
+          format: int32
+          description: 证件类型
+        credentialNumber: 
+          type: string
+          description: 身份证号
+        credentialValidityDate: 
+          type: string
+          description: 证件有效期
+        staffGender: 
+          type: integer
+          format: int32
+          description: 性别
+        highestEducation: 
+          type: string
+          description: 最高学历
+        acquireDegree: 
+          type: string
+          description: 获得学位
+        diplomaDate: 
+          type: string
+          description: 毕业证发证日期
+        degreeDate: 
+          type: string
+          description: 学位证发证日期
+        jobScope: 
+          type: string
+          description: 申请从业范围(1.评估人员/2.护理人员/3.医疗护士/4.管理人员/5.其他)
+        qualificationCertificationNumber: 
+          type: string
+          description: 资格证书编号
+        qualificationLevel: 
+          type: integer
+          format: int32
+          description: 资格级别(1.初级职称,2.中级职称,3.高级职称)
+        qualificationCertificationDate: 
+          type: string
+          description: 资格证书发证日期
+        practiceNumbe: 
+          type: string
+          description: 执业证书编号
+        practiceLevel: 
+          type: integer
+          format: int32
+          description: 执业级别
+        practiceCertificationDate: 
+          type: string
+          description: 执业证书发证日期
+        uniqueNumber: 
+          type: string
+          description: 监管唯一认证id
+        remark: 
+          type: string
+          description: 备注说明
+        auditState: 
+          type: integer
+          format: int32
+          description: 人员审核状态
+        cause: 
+          type: string
+          description: 不受理或不通过原因
+        staffLevel: 
+          type: string
+          description: 职称(1.高级,2.中级,3.初级)
+        category: 
+          type: string
+          description: 类别(1.执业医师,2.执业护士,3.护理员,4其他)                   
+        operatedBy: 
+          type: string
+          description: 经办人
+        operatedOrg: 
+          type: string
+          description: 经办机构
+        operatedTime: 
+          type: string
+          description: 经办时间
+        createdBy: 
+          type: string
+          description: 创建人
+        createdOrg: 
+          type: string
+          description: 创建机构
+        createdTime: 
+          type: string
+          description: 创建时间
+        staffFiles:
+          type: array
+          items:
+            type: object
+            $ref: "#/definitions/FileDTO"
+          description: 人员附件
+  FileDTO: 
+    type: object 
+    description: 附件信息
+    properties: 
+        objType: 
+          type: integer
+          format: int32
+          description: 机构、人员类型
+        code: 
+          type: string 
+          description: 机构、人员编号
+        accessoryType: 
+          type: string
+          description: 机构、人员类型
+        fileId: 
+          type: string
+          description: 资源表id
+        fileName: 
+          type: string
+          description: 文件名
+        fileType: 
+          type: string
+          description: 文件格式 
+        credentialName: 
+          type: string
+          description: 证件名称
+        credentialLevel: 
+          type: string
+          description: 证件等级
+        credentialDate: 
+          type: string
+          description: 发证日期
+        credentialCode: 
+          type: string
+          description: 证件编号 
+        historyId:
+          type: string
+          description: 历史记录ID
+          example: 18090909090                                       
+  AttachmentDTO:
+    type: object
+    description: 附件基本信息
+    properties:
+        fileName:
+          type: string
+          description: 文件名
+          example: "xxx"
+        suffix:
+          type: string
+          description: 文件后缀
+          example: "xxx"
+        content:
+          type: string
+          description: 文件base64
+          example: "xxx"
+        fileType:
+          type: string
+          description: 文件类型
+          example: "0,1,2"         
+  AgencyDTO: 
+    type: object 
+    description: 机构信息
+    properties: 
+        agencyCode: 
+          type: string
+          description: 机构信息码（经办）
+        orgCode: 
+          type: string
+          description: 机构编号
+        agencyName: 
+          type: string
+          description: 机构名称
+        provinceCode: 
+          type: string
+          description: 所在省份编码
+        cityCode: 
+          type: string
+          description: 所在城市编码
+        areaCode: 
+          type: string
+          description: 所在区县编码
+        agencyAddressDetail: 
+          type: string
+          description: 机构详细地址
+        agencyType: 
+          type: string
+          description: 机构类型(护理/评估)
+        agencyLevel: 
+          type: integer
+          format: int32
+          description: 机构类别(一级以上医疗机构等)
+        agencyState: 
+          type: integer
+          format: int32
+          description: 机构审核状态
+        agencyServiceType: 
+          type: string
+          description: 定点服务机构类型(居家护理/养老机构护理)
+        legalRepresentative: 
+          type: string
+          description: 法人代表
+        legalPapersType: 
+          type: string
+          description: 法人证件类型
+        legalIdCard: 
+          type: string
+          description: 法人证件号码
+        legalPhoneNo: 
+          type: string
+          description: 法人电话
+        agencyServiceContact: 
+          type: string
+          description: 长期护理服务业务负责人
+        agencyContactPhone: 
+          type: string
+          description: 长期护理服务业务负责人联系电话
+        agencyContactEmail: 
+          type: string
+          description: 长期护理服务业务负责人电子邮箱
+        agencyBedNum: 
+          type: integer
+          format: int32
+          description: 机构床位数
+        ownershipForm: 
+          type: integer
+          format: int32
+          description: 所有制形式
+        practiceLicense: 
+          type: string
+          description: 执业许可证号
+        constructionArea: 
+          type: number
+          format: double
+          description: 建筑面积
+        remark: 
+          type: string
+          description: 备注说明
+        agencyCoordinates: 
+          type: string
+          description: 机构经纬度
+        operatedBy: 
+          type: string
+          description: 经办人
+        operatedOrg: 
+          type: string
+          description: 经办机构
+        operatedTime: 
+          type: string
+          description: 经办时间
+        createdBy: 
+          type: string
+          description: 创建人
+        createdOrg: 
+          type: string
+          description: 创建机构
+        createdTime: 
+          type: string
+          description: 创建时间
+        rejectionReason:
+          type: string
+          description: 审核不通过原因
+        secretKey:
+          type: string
+          description: 密钥
+        keyBeginDate:
+          type: string
+          description: 密钥开始时间
+        keyEndDate:
+          type: string
+          description: 密钥终止时间
+
+  AgencyDetailDTO: 
+    type: object 
+    description: 机构信息
+    properties: 
+        agencyCode: 
+          type: string
+          description: 机构信息码（经办）
+        orgCode: 
+          type: string
+          description: 机构编号
+        agencyName: 
+          type: string
+          description: 机构名称
+        provinceCode: 
+          type: string
+          description: 所在省份编码
+        cityCode: 
+          type: string
+          description: 所在城市编码
+        areaCode: 
+          type: string
+          description: 所在区县编码
+        agencyAddressDetail: 
+          type: string
+          description: 机构详细地址
+        agencyType: 
+          type: string
+          description: 机构类型(护理/评估)
+        agencyLevel: 
+          type: integer
+          format: int32
+          description: 机构类别(一级以上医疗机构等)
+        agencyServiceType: 
+          type: string
+          description: 定点服务机构类型(居家护理/养老机构护理)
+        legalRepresentative: 
+          type: string
+          description: 法人代表
+        legalPapersType: 
+          type: string
+          description: 法人证件类型
+        legalIdCard: 
+          type: string
+          description: 法人证件号码
+        legalPhoneNo: 
+          type: string
+          description: 法人电话
+        agencyServiceContact: 
+          type: string
+          description: 长期护理服务业务负责人
+        agencyContactPhone: 
+          type: string
+          description: 长期护理服务业务负责人联系电话
+        agencyContactEmail: 
+          type: string
+          description: 长期护理服务业务负责人电子邮箱
+        agencyBedNum: 
+          type: integer
+          format: int32
+          description: 机构床位数
+        ownershipForm: 
+          type: integer
+          format: int32
+          description: 所有制形式
+        practiceLicense: 
+          type: string
+          description: 执业许可证号
+        constructionArea: 
+          type: number
+          format: double
+          description: 建筑面积
+        remark: 
+          type: string
+          description: 备注说明
+        agencyCoordinates: 
+          type: string
+          description: 机构经纬度
+        advancedDoctorNum: 
+          type: integer
+          format: int32
+          description: 高级执业医师数
+        intermediateDoctorNum: 
+          type: integer
+          format: int32
+          description: 中级执业医师数
+        primaryDoctorNum: 
+          type: integer
+          format: int32
+          description: 初级执业医师数
+        advancedNurseNum: 
+          type: integer
+          format: int32
+          description: 高级执业护士数
+        intermediateNurseNum: 
+          type: integer
+          format: int32
+          description: 中级执业护士数
+        primaryNurseNum: 
+          type: integer
+          format: int32
+          description: 初级执业护士数
+        advancedCarerNum: 
+          type: integer
+          format: int32
+          description: 高级执业护理员数
+        intermediateCarerNum: 
+          type: integer
+          format: int32
+          description: 中级执业护理员数
+        primaryCarerNum: 
+          type: integer
+          format: int32
+          description: 初级执业护理员数
+        advancedMiscNum: 
+          type: integer
+          format: int32
+          description: 高级其他人员数
+        intermediateMiscNum: 
+          type: integer
+          format: int32
+          description: 中级其他人员数
+        primaryMiscNum: 
+          type: integer
+          format: int32
+          description: 初级其他人员数

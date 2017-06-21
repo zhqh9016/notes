@@ -1,0 +1,63 @@
+post:
+  tags:
+  - patrolTask
+  summary: 分页查询巡查评估任务信息
+  description: 根据条件查询的评估任务信息
+  operationId: getEvaluatePatrolTaskList
+  parameters:
+   - name: provinceCode
+     in: formData
+     description: 省编号
+     required: false
+     type: string
+   - name: cityCode
+     in: formData
+     description: 市编码
+     required: false
+     type: string
+   - name: areaCode
+     in: formData
+     description: 区县编号
+     required: false
+     type: string       
+   - name: orgCode
+     in: formData
+     description: 机构编码
+     required: false
+     type: string
+   - name: beginTime
+     in: formData
+     description: 服务开始时间
+     required: false
+     type: string
+   - name: endTime
+     in: formData
+     description: 服务结束时间
+     required: false
+     type: string
+   - name: isCritical
+     in: formData
+     description: 是否紧急（是、否）
+     required: false
+     type: string  
+   - name: page
+     in: formData
+     description: 页数
+     required: false
+     type: string
+   - name: pageSize
+     in: formData
+     description: 条数
+     required: false
+     type: string
+  responses:
+    200:
+      description: 查询成功
+      schema:
+        type: array
+        items:
+          $ref: "../../ltci-portal-api-v1.yml/definitions/PageResultDTO"
+    default:
+      description: 其它错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml#/definitions/PageResultDTO"

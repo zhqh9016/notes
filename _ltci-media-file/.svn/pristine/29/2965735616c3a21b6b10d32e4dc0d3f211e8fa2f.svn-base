@@ -1,0 +1,52 @@
+get:
+  tags:
+  - mediaFile
+  summary: 按附件id查询附件信息
+  description: 返回附件信息。
+  operationId: getAttachmentByID
+  parameters:
+  - name: id
+    in: path
+    description: 附件id
+    required: true
+    type: string
+  - name: fileType
+    in: path
+    description: 附件类型
+    required: true
+    type: string
+  responses:
+    200:
+      description: 查询成功
+      schema:
+        $ref: "../../ltci-media-file-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-media-file-api-v1.yml/#/definitions/ResultDTO"
+delete:
+  tags:
+  - mediaFile
+  summary: 按附件id删除附件信息
+  description: 按附件id删除附件信息。
+  operationId: deleteAttachment
+  parameters:
+  - name: id
+    in: path
+    description: 附件id
+    required: true
+    type: string
+  - name: fileType
+    in: path
+    description: 附件类型
+    required: true
+    type: string
+  responses:
+    200:
+      description: 删除成功
+      schema:
+        $ref: "../../ltci-media-file-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-media-file-api-v1.yml/#/definitions/ResultDTO"

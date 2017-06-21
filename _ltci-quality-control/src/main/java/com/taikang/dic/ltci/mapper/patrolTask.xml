@@ -1,0 +1,752 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.IPatrolTaskDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.PatrolTaskDO" >
+    <id column="patrol_task_id" property="patrolTaskId" jdbcType="VARCHAR" />
+    <result column="patrol_object_type" property="patrolObjectType" jdbcType="INTEGER" />
+    <result column="patrol_object_id" property="patrolObjectId" jdbcType="VARCHAR" />
+    <result column="patrol_object_name" property="patrolObjectName" jdbcType="VARCHAR" />
+    <result column="patrol_object_phone" property="patrolObjectPhone" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="agency_code" property="agencyCode" jdbcType="VARCHAR" />
+    <result column="agency_name" property="agencyName" jdbcType="VARCHAR" />
+    <result column="patrol_object_addr" property="patrolObjectAddr" jdbcType="VARCHAR" />
+    <result column="patrol_remark" property="patrolRemark" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="task_category" property="taskCategory" jdbcType="INTEGER" />
+    <result column="task_level" property="taskLevel" jdbcType="INTEGER" />
+    <result column="patrols_type" property="patrolsType" jdbcType="INTEGER" />
+    <result column="task_state" property="taskState" jdbcType="INTEGER" />
+    <result column="task_number" property="taskNumber" jdbcType="VARCHAR" />
+    <result column="complaint_object_id" property="complaintObjectId" jdbcType="VARCHAR" />
+    <result column="complainant_object_type" property="complainantObjectType" jdbcType="INTEGER" />
+    <result column="complaint_type" property="complaintType" jdbcType="INTEGER" />
+    <result column="complaint_time" property="complaintTime" jdbcType="TIMESTAMP" />
+    <result column="complainant_id" property="complainantId" jdbcType="VARCHAR" />
+    <result column="violation_item" property="violationItem" jdbcType="VARCHAR" />
+    <result column="complaint_content" property="complaintContent" jdbcType="VARCHAR" />
+    <result column="deputy_name" property="deputyName" jdbcType="VARCHAR" />
+    <result column="deputy_mobile" property="deputyMobile" jdbcType="VARCHAR" />
+    <result column="insured_person_card" property="insuredPersonCard" jdbcType="VARCHAR" />
+    <result column="complainant_card" property="complainantCard" jdbcType="VARCHAR" />
+    <result column="complaint_object_type" property="complaintObjectType" jdbcType="INTEGER" />
+    <result column="patrol_staff_id" property="patrolStaffId" jdbcType="VARCHAR" />
+    <result column="patrol_staff_name" property="patrolStaffName" jdbcType="VARCHAR" />
+    <result column="execute_message_state" property="executeMessageState" jdbcType="INTEGER" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    patrol_task_id, patrol_object_type, patrol_object_id, patrol_object_name, patrol_object_phone, 
+    id_card, agency_code, agency_name, patrol_object_addr, patrol_remark, remark, task_category, 
+    task_level, patrols_type, task_state, task_number, complaint_object_id, complainant_object_type, 
+    complaint_type, complaint_time, complainant_id, violation_item, complaint_content, 
+    deputy_name, deputy_mobile, insured_person_card, complainant_card, complaint_object_type, 
+    patrol_staff_id, patrol_staff_name, execute_message_state, is_valid, si_area, operated_by, 
+    operated_org, operated_time, created_by, created_org, created_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.PatrolTaskDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ltci_patrol_task
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ltci_patrol_task
+    where patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_patrol_task
+    where patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.PatrolTaskDOExample" >
+    delete from ltci_patrol_task
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.PatrolTaskDO" >
+    insert into ltci_patrol_task (patrol_task_id, patrol_object_type, patrol_object_id, 
+      patrol_object_name, patrol_object_phone, id_card, 
+      agency_code, agency_name, patrol_object_addr, 
+      patrol_remark, remark, task_category, 
+      task_level, patrols_type, task_state, 
+      task_number, complaint_object_id, complainant_object_type, 
+      complaint_type, complaint_time, complainant_id, 
+      violation_item, complaint_content, deputy_name, 
+      deputy_mobile, insured_person_card, complainant_card, 
+      complaint_object_type, patrol_staff_id, patrol_staff_name, 
+      execute_message_state, is_valid, si_area, 
+      operated_by, operated_org, operated_time, 
+      created_by, created_org, created_time
+      )
+    values (#{patrolTaskId,jdbcType=VARCHAR}, #{patrolObjectType,jdbcType=INTEGER}, #{patrolObjectId,jdbcType=VARCHAR}, 
+      #{patrolObjectName,jdbcType=VARCHAR}, #{patrolObjectPhone,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, 
+      #{agencyCode,jdbcType=VARCHAR}, #{agencyName,jdbcType=VARCHAR}, #{patrolObjectAddr,jdbcType=VARCHAR}, 
+      #{patrolRemark,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{taskCategory,jdbcType=INTEGER}, 
+      #{taskLevel,jdbcType=INTEGER}, #{patrolsType,jdbcType=INTEGER}, #{taskState,jdbcType=INTEGER}, 
+      #{taskNumber,jdbcType=VARCHAR}, #{complaintObjectId,jdbcType=VARCHAR}, #{complainantObjectType,jdbcType=INTEGER}, 
+      #{complaintType,jdbcType=INTEGER}, #{complaintTime,jdbcType=TIMESTAMP}, #{complainantId,jdbcType=VARCHAR}, 
+      #{violationItem,jdbcType=VARCHAR}, #{complaintContent,jdbcType=VARCHAR}, #{deputyName,jdbcType=VARCHAR}, 
+      #{deputyMobile,jdbcType=VARCHAR}, #{insuredPersonCard,jdbcType=VARCHAR}, #{complainantCard,jdbcType=VARCHAR}, 
+      #{complaintObjectType,jdbcType=INTEGER}, #{patrolStaffId,jdbcType=VARCHAR}, #{patrolStaffName,jdbcType=VARCHAR}, 
+      #{executeMessageState,jdbcType=INTEGER}, #{isValid,jdbcType=INTEGER}, #{siArea,jdbcType=VARCHAR}, 
+      #{operatedBy,jdbcType=VARCHAR}, #{operatedOrg,jdbcType=VARCHAR}, #{operatedTime,jdbcType=TIMESTAMP}, 
+      #{createdBy,jdbcType=VARCHAR}, #{createdOrg,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.PatrolTaskDO" >
+    insert into ltci_patrol_task
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="patrolTaskId != null" >
+        patrol_task_id,
+      </if>
+      <if test="patrolObjectType != null" >
+        patrol_object_type,
+      </if>
+      <if test="patrolObjectId != null" >
+        patrol_object_id,
+      </if>
+      <if test="patrolObjectName != null" >
+        patrol_object_name,
+      </if>
+      <if test="patrolObjectPhone != null" >
+        patrol_object_phone,
+      </if>
+      <if test="idCard != null" >
+        id_card,
+      </if>
+      <if test="agencyCode != null" >
+        agency_code,
+      </if>
+      <if test="agencyName != null" >
+        agency_name,
+      </if>
+      <if test="patrolObjectAddr != null" >
+        patrol_object_addr,
+      </if>
+      <if test="patrolRemark != null" >
+        patrol_remark,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="taskCategory != null" >
+        task_category,
+      </if>
+      <if test="taskLevel != null" >
+        task_level,
+      </if>
+      <if test="patrolsType != null" >
+        patrols_type,
+      </if>
+      <if test="taskState != null" >
+        task_state,
+      </if>
+      <if test="taskNumber != null" >
+        task_number,
+      </if>
+      <if test="complaintObjectId != null" >
+        complaint_object_id,
+      </if>
+      <if test="complainantObjectType != null" >
+        complainant_object_type,
+      </if>
+      <if test="complaintType != null" >
+        complaint_type,
+      </if>
+      <if test="complaintTime != null" >
+        complaint_time,
+      </if>
+      <if test="complainantId != null" >
+        complainant_id,
+      </if>
+      <if test="violationItem != null" >
+        violation_item,
+      </if>
+      <if test="complaintContent != null" >
+        complaint_content,
+      </if>
+      <if test="deputyName != null" >
+        deputy_name,
+      </if>
+      <if test="deputyMobile != null" >
+        deputy_mobile,
+      </if>
+      <if test="insuredPersonCard != null" >
+        insured_person_card,
+      </if>
+      <if test="complainantCard != null" >
+        complainant_card,
+      </if>
+      <if test="complaintObjectType != null" >
+        complaint_object_type,
+      </if>
+      <if test="patrolStaffId != null" >
+        patrol_staff_id,
+      </if>
+      <if test="patrolStaffName != null" >
+        patrol_staff_name,
+      </if>
+      <if test="executeMessageState != null" >
+        execute_message_state,
+      </if>
+      <if test="isValid != null" >
+        is_valid,
+      </if>
+      <if test="siArea != null" >
+        si_area,
+      </if>
+      <if test="operatedBy != null" >
+        operated_by,
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org,
+      </if>
+      <if test="operatedTime != null" >
+        operated_time,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="createdOrg != null" >
+        created_org,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="patrolTaskId != null" >
+        #{patrolTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="patrolObjectType != null" >
+        #{patrolObjectType,jdbcType=INTEGER},
+      </if>
+      <if test="patrolObjectId != null" >
+        #{patrolObjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="patrolObjectName != null" >
+        #{patrolObjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="patrolObjectPhone != null" >
+        #{patrolObjectPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyCode != null" >
+        #{agencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyName != null" >
+        #{agencyName,jdbcType=VARCHAR},
+      </if>
+      <if test="patrolObjectAddr != null" >
+        #{patrolObjectAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="patrolRemark != null" >
+        #{patrolRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="taskCategory != null" >
+        #{taskCategory,jdbcType=INTEGER},
+      </if>
+      <if test="taskLevel != null" >
+        #{taskLevel,jdbcType=INTEGER},
+      </if>
+      <if test="patrolsType != null" >
+        #{patrolsType,jdbcType=INTEGER},
+      </if>
+      <if test="taskState != null" >
+        #{taskState,jdbcType=INTEGER},
+      </if>
+      <if test="taskNumber != null" >
+        #{taskNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintObjectId != null" >
+        #{complaintObjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="complainantObjectType != null" >
+        #{complainantObjectType,jdbcType=INTEGER},
+      </if>
+      <if test="complaintType != null" >
+        #{complaintType,jdbcType=INTEGER},
+      </if>
+      <if test="complaintTime != null" >
+        #{complaintTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="complainantId != null" >
+        #{complainantId,jdbcType=VARCHAR},
+      </if>
+      <if test="violationItem != null" >
+        #{violationItem,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintContent != null" >
+        #{complaintContent,jdbcType=VARCHAR},
+      </if>
+      <if test="deputyName != null" >
+        #{deputyName,jdbcType=VARCHAR},
+      </if>
+      <if test="deputyMobile != null" >
+        #{deputyMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredPersonCard != null" >
+        #{insuredPersonCard,jdbcType=VARCHAR},
+      </if>
+      <if test="complainantCard != null" >
+        #{complainantCard,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintObjectType != null" >
+        #{complaintObjectType,jdbcType=INTEGER},
+      </if>
+      <if test="patrolStaffId != null" >
+        #{patrolStaffId,jdbcType=VARCHAR},
+      </if>
+      <if test="patrolStaffName != null" >
+        #{patrolStaffName,jdbcType=VARCHAR},
+      </if>
+      <if test="executeMessageState != null" >
+        #{executeMessageState,jdbcType=INTEGER},
+      </if>
+      <if test="isValid != null" >
+        #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="siArea != null" >
+        #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedOrg != null" >
+        #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdOrg != null" >
+        #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.PatrolTaskDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_patrol_task
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_patrol_task
+    <set >
+      <if test="record.patrolTaskId != null" >
+        patrol_task_id = #{record.patrolTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.patrolObjectType != null" >
+        patrol_object_type = #{record.patrolObjectType,jdbcType=INTEGER},
+      </if>
+      <if test="record.patrolObjectId != null" >
+        patrol_object_id = #{record.patrolObjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.patrolObjectName != null" >
+        patrol_object_name = #{record.patrolObjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.patrolObjectPhone != null" >
+        patrol_object_phone = #{record.patrolObjectPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idCard != null" >
+        id_card = #{record.idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyCode != null" >
+        agency_code = #{record.agencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyName != null" >
+        agency_name = #{record.agencyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.patrolObjectAddr != null" >
+        patrol_object_addr = #{record.patrolObjectAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.patrolRemark != null" >
+        patrol_remark = #{record.patrolRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskCategory != null" >
+        task_category = #{record.taskCategory,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskLevel != null" >
+        task_level = #{record.taskLevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.patrolsType != null" >
+        patrols_type = #{record.patrolsType,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskState != null" >
+        task_state = #{record.taskState,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskNumber != null" >
+        task_number = #{record.taskNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.complaintObjectId != null" >
+        complaint_object_id = #{record.complaintObjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.complainantObjectType != null" >
+        complainant_object_type = #{record.complainantObjectType,jdbcType=INTEGER},
+      </if>
+      <if test="record.complaintType != null" >
+        complaint_type = #{record.complaintType,jdbcType=INTEGER},
+      </if>
+      <if test="record.complaintTime != null" >
+        complaint_time = #{record.complaintTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.complainantId != null" >
+        complainant_id = #{record.complainantId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.violationItem != null" >
+        violation_item = #{record.violationItem,jdbcType=VARCHAR},
+      </if>
+      <if test="record.complaintContent != null" >
+        complaint_content = #{record.complaintContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deputyName != null" >
+        deputy_name = #{record.deputyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deputyMobile != null" >
+        deputy_mobile = #{record.deputyMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insuredPersonCard != null" >
+        insured_person_card = #{record.insuredPersonCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.complainantCard != null" >
+        complainant_card = #{record.complainantCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.complaintObjectType != null" >
+        complaint_object_type = #{record.complaintObjectType,jdbcType=INTEGER},
+      </if>
+      <if test="record.patrolStaffId != null" >
+        patrol_staff_id = #{record.patrolStaffId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.patrolStaffName != null" >
+        patrol_staff_name = #{record.patrolStaffName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.executeMessageState != null" >
+        execute_message_state = #{record.executeMessageState,jdbcType=INTEGER},
+      </if>
+      <if test="record.isValid != null" >
+        is_valid = #{record.isValid,jdbcType=INTEGER},
+      </if>
+      <if test="record.siArea != null" >
+        si_area = #{record.siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedBy != null" >
+        operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedOrg != null" >
+        operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedTime != null" >
+        operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdBy != null" >
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdOrg != null" >
+        created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null" >
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_patrol_task
+    set patrol_task_id = #{record.patrolTaskId,jdbcType=VARCHAR},
+      patrol_object_type = #{record.patrolObjectType,jdbcType=INTEGER},
+      patrol_object_id = #{record.patrolObjectId,jdbcType=VARCHAR},
+      patrol_object_name = #{record.patrolObjectName,jdbcType=VARCHAR},
+      patrol_object_phone = #{record.patrolObjectPhone,jdbcType=VARCHAR},
+      id_card = #{record.idCard,jdbcType=VARCHAR},
+      agency_code = #{record.agencyCode,jdbcType=VARCHAR},
+      agency_name = #{record.agencyName,jdbcType=VARCHAR},
+      patrol_object_addr = #{record.patrolObjectAddr,jdbcType=VARCHAR},
+      patrol_remark = #{record.patrolRemark,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      task_category = #{record.taskCategory,jdbcType=INTEGER},
+      task_level = #{record.taskLevel,jdbcType=INTEGER},
+      patrols_type = #{record.patrolsType,jdbcType=INTEGER},
+      task_state = #{record.taskState,jdbcType=INTEGER},
+      task_number = #{record.taskNumber,jdbcType=VARCHAR},
+      complaint_object_id = #{record.complaintObjectId,jdbcType=VARCHAR},
+      complainant_object_type = #{record.complainantObjectType,jdbcType=INTEGER},
+      complaint_type = #{record.complaintType,jdbcType=INTEGER},
+      complaint_time = #{record.complaintTime,jdbcType=TIMESTAMP},
+      complainant_id = #{record.complainantId,jdbcType=VARCHAR},
+      violation_item = #{record.violationItem,jdbcType=VARCHAR},
+      complaint_content = #{record.complaintContent,jdbcType=VARCHAR},
+      deputy_name = #{record.deputyName,jdbcType=VARCHAR},
+      deputy_mobile = #{record.deputyMobile,jdbcType=VARCHAR},
+      insured_person_card = #{record.insuredPersonCard,jdbcType=VARCHAR},
+      complainant_card = #{record.complainantCard,jdbcType=VARCHAR},
+      complaint_object_type = #{record.complaintObjectType,jdbcType=INTEGER},
+      patrol_staff_id = #{record.patrolStaffId,jdbcType=VARCHAR},
+      patrol_staff_name = #{record.patrolStaffName,jdbcType=VARCHAR},
+      execute_message_state = #{record.executeMessageState,jdbcType=INTEGER},
+      is_valid = #{record.isValid,jdbcType=INTEGER},
+      si_area = #{record.siArea,jdbcType=VARCHAR},
+      operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.PatrolTaskDO" >
+    update ltci_patrol_task
+    <set >
+      <if test="patrolObjectType != null" >
+        patrol_object_type = #{patrolObjectType,jdbcType=INTEGER},
+      </if>
+      <if test="patrolObjectId != null" >
+        patrol_object_id = #{patrolObjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="patrolObjectName != null" >
+        patrol_object_name = #{patrolObjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="patrolObjectPhone != null" >
+        patrol_object_phone = #{patrolObjectPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyCode != null" >
+        agency_code = #{agencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyName != null" >
+        agency_name = #{agencyName,jdbcType=VARCHAR},
+      </if>
+      <if test="patrolObjectAddr != null" >
+        patrol_object_addr = #{patrolObjectAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="patrolRemark != null" >
+        patrol_remark = #{patrolRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="taskCategory != null" >
+        task_category = #{taskCategory,jdbcType=INTEGER},
+      </if>
+      <if test="taskLevel != null" >
+        task_level = #{taskLevel,jdbcType=INTEGER},
+      </if>
+      <if test="patrolsType != null" >
+        patrols_type = #{patrolsType,jdbcType=INTEGER},
+      </if>
+      <if test="taskState != null" >
+        task_state = #{taskState,jdbcType=INTEGER},
+      </if>
+      <if test="taskNumber != null" >
+        task_number = #{taskNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintObjectId != null" >
+        complaint_object_id = #{complaintObjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="complainantObjectType != null" >
+        complainant_object_type = #{complainantObjectType,jdbcType=INTEGER},
+      </if>
+      <if test="complaintType != null" >
+        complaint_type = #{complaintType,jdbcType=INTEGER},
+      </if>
+      <if test="complaintTime != null" >
+        complaint_time = #{complaintTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="complainantId != null" >
+        complainant_id = #{complainantId,jdbcType=VARCHAR},
+      </if>
+      <if test="violationItem != null" >
+        violation_item = #{violationItem,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintContent != null" >
+        complaint_content = #{complaintContent,jdbcType=VARCHAR},
+      </if>
+      <if test="deputyName != null" >
+        deputy_name = #{deputyName,jdbcType=VARCHAR},
+      </if>
+      <if test="deputyMobile != null" >
+        deputy_mobile = #{deputyMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredPersonCard != null" >
+        insured_person_card = #{insuredPersonCard,jdbcType=VARCHAR},
+      </if>
+      <if test="complainantCard != null" >
+        complainant_card = #{complainantCard,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintObjectType != null" >
+        complaint_object_type = #{complaintObjectType,jdbcType=INTEGER},
+      </if>
+      <if test="patrolStaffId != null" >
+        patrol_staff_id = #{patrolStaffId,jdbcType=VARCHAR},
+      </if>
+      <if test="patrolStaffName != null" >
+        patrol_staff_name = #{patrolStaffName,jdbcType=VARCHAR},
+      </if>
+      <if test="executeMessageState != null" >
+        execute_message_state = #{executeMessageState,jdbcType=INTEGER},
+      </if>
+      <if test="isValid != null" >
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="siArea != null" >
+        si_area = #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        operated_by = #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdOrg != null" >
+        created_org = #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.PatrolTaskDO" >
+    update ltci_patrol_task
+    set patrol_object_type = #{patrolObjectType,jdbcType=INTEGER},
+      patrol_object_id = #{patrolObjectId,jdbcType=VARCHAR},
+      patrol_object_name = #{patrolObjectName,jdbcType=VARCHAR},
+      patrol_object_phone = #{patrolObjectPhone,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      agency_code = #{agencyCode,jdbcType=VARCHAR},
+      agency_name = #{agencyName,jdbcType=VARCHAR},
+      patrol_object_addr = #{patrolObjectAddr,jdbcType=VARCHAR},
+      patrol_remark = #{patrolRemark,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      task_category = #{taskCategory,jdbcType=INTEGER},
+      task_level = #{taskLevel,jdbcType=INTEGER},
+      patrols_type = #{patrolsType,jdbcType=INTEGER},
+      task_state = #{taskState,jdbcType=INTEGER},
+      task_number = #{taskNumber,jdbcType=VARCHAR},
+      complaint_object_id = #{complaintObjectId,jdbcType=VARCHAR},
+      complainant_object_type = #{complainantObjectType,jdbcType=INTEGER},
+      complaint_type = #{complaintType,jdbcType=INTEGER},
+      complaint_time = #{complaintTime,jdbcType=TIMESTAMP},
+      complainant_id = #{complainantId,jdbcType=VARCHAR},
+      violation_item = #{violationItem,jdbcType=VARCHAR},
+      complaint_content = #{complaintContent,jdbcType=VARCHAR},
+      deputy_name = #{deputyName,jdbcType=VARCHAR},
+      deputy_mobile = #{deputyMobile,jdbcType=VARCHAR},
+      insured_person_card = #{insuredPersonCard,jdbcType=VARCHAR},
+      complainant_card = #{complainantCard,jdbcType=VARCHAR},
+      complaint_object_type = #{complaintObjectType,jdbcType=INTEGER},
+      patrol_staff_id = #{patrolStaffId,jdbcType=VARCHAR},
+      patrol_staff_name = #{patrolStaffName,jdbcType=VARCHAR},
+      execute_message_state = #{executeMessageState,jdbcType=INTEGER},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      si_area = #{siArea,jdbcType=VARCHAR},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_org = #{createdOrg,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP}
+    where patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR}
+  </update>
+</mapper>

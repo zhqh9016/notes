@@ -1,0 +1,197 @@
+post:
+  tags:
+  - insuredPerson
+  summary: 经办人员新增参保人待遇申请信息
+  description: 返回：暂无。
+  operationId: createTreatmentApplication
+  parameters: 
+    - name: insuredPersonName
+      in: formData
+      required: true
+      type: string
+      description: 参保人姓名
+    - name: insuredPersonGender
+      in: formData
+      required: true
+      type: string
+      description: 参保人性别[数字字典]
+    - name: nation
+      in: formData
+      required: true
+      type: string
+      description: 民族[数字字典]
+    - name: birthday
+      in: formData
+      type: string
+      required: true
+      description: 出生日期
+    - name: securityNumber
+      in: formData
+      type: string
+      required: true
+      description: 参保人社保卡号
+    - name: securityPersonalNumber
+      in: formData
+      type: string
+      required: false
+      description: 参保人个人编号
+    - name: idCard
+      in: formData
+      type: string
+      required: true
+      description: 参保人身份证号
+    - name: personnelIdentityCode
+      in: formData
+      type: string
+      required: false
+      description: 人员身份编码
+    - name: personnelIdentityName
+      in: formData
+      type: string
+      required: false
+      description: 人员身份名称
+    - name: mobile
+      in: formData
+      type: string
+      required: true
+      description: 联系方式
+    - name: address
+      in: formData
+      type: string
+      required: true
+      description: 家庭住址
+    - name: email
+      in: formData
+      type: string
+      required: false
+      description: 邮箱地址
+    - name: orgName
+      in: formData
+      type: string
+      required: true
+      description: 单位名称
+    - name: married
+      in: formData
+      type: string
+      required: true
+      description: 婚姻状况[数字字典]
+    - name: educationid
+      in: formData
+      type: string
+      required: true
+      description: 文化程度[数字字典]
+    - name: politicsid
+      in: formData
+      type: string
+      required: true
+      description: 政治面貌[数字字典]
+    - name: occupationid
+      in: formData
+      type: string
+      required: true
+      description: 所属职业[数字字典]
+    - name: provinceCode
+      in: formData
+      type: string
+      required: false
+      description: 所属省份[数字字典]
+    - name: cityCode
+      in: formData
+      type: string
+      required: false
+      description: 所属城市[数字字典]
+    - name: areaCode
+      in: formData
+      type: string
+      required: true
+      description: 所属区域[数字字典]
+    - name: deputyName
+      in: formData
+      required: true
+      type: string
+      description: 代理人姓名
+    - name: deputyIdType
+      in: formData
+      required: true
+      type: string
+      description: 代理人证件类型[数字字典]
+    - name: deputyIdCard
+      in: formData
+      required: true
+      type: string
+      description: 代理人身份证号
+    - name: deputyMobile
+      in: formData
+      required: true
+      type: string
+      description: 代理人联系方式
+    - name: deputyAddress
+      in: formData
+      required: true
+      type: string
+      description: 代理人家庭住址
+    - name: deputyIdCardScan
+      in: formData
+      required: true
+      type: string
+      description: 代理人身份证号附件ID
+    - name: bidType
+      in: formData
+      required: true
+      type: string
+      description: 申办类型[数字字典]
+    - name: disease
+      in: formData
+      required: true
+      type: string
+      description: 病种[数字字典]
+    - name: isTaskDeadline
+      in: formData
+      required: true
+      type: string
+      description: 是否紧急（任务期限）[数字字典]
+    - name: isRelativeCared
+      in: formData
+      required: true
+      type: string
+      description: 是否亲属照顾[数字字典]
+    - name: diseaseCause
+      in: formData
+      required: true
+      type: string
+      description: 病情原因
+    - name: securityNumberScan
+      in: formData
+      required: true
+      type: string
+      description: 社保卡号扫描件ID
+    - name: idCardScan
+      in: formData
+      required: true
+      type: string
+      description: 身份证扫描件ID
+    - name: caseHistoryScan
+      in: formData
+      required: true
+      type: string
+      description: 病例附件ID
+    - name: applicationFormScan
+      in: formData
+      required: true
+      type: string
+      description: 长护待遇申请表ID
+    - name: remark
+      in: formData
+      required: false
+      type: string
+      description: 备注
+
+  responses:
+      200:
+        description: 添加成功
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+
+

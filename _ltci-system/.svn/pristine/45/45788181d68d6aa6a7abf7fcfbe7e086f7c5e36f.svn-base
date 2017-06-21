@@ -1,0 +1,21 @@
+get:
+  tags:
+  - userManage
+  summary: 按用户名查询用户信息
+  description: 返回用户信息列表。测试数据：用户名[yue]。
+  operationId: listUser
+  parameters:
+  - name: userName
+    in: path
+    description: 用户名
+    required: true
+    type: string
+  responses:
+    200:
+      description: 查询成功
+      schema:
+          $ref: "../../ltci-system-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"

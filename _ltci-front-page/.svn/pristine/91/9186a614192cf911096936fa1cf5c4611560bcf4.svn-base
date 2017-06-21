@@ -1,0 +1,312 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/common.css" type="text/css" />
+    <link href="../../css/style.css?v=4.1.0" rel="stylesheet" />
+    <title>添加护理任务</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="panel-header" style="width: 100%;">
+            <div class="panel-title">添加护理任务</div>
+            <!-- <div class="panel-tool"></div> -->
+        </div>
+        <fieldset class="input_box">
+            <div id="searchListtb">
+                <div name="searchColums" id="searchColums">
+                    <form id="searchListForm">
+                        <!--<span class="inputLable">
+							<span class="inputLableText">省：</span>
+						<input type="text" id="provinceCode" editable="false" name="provinceCode" class="easyui-combobox" />
+						</span>
+						<span class="inputLable">
+							<span class="inputLableText">市：</span>
+						<input type="text" id="cityCode" editable="false" name="cityCode" class="easyui-combobox" />
+						</span>
+						<span class="inputLable">
+							<span class="inputLableText">区：</span>
+						<input type="text" id="areaCode" editable="false" name="areaCode" class="easyui-combobox" />
+						</span>-->
+                        <span class="inputLable">
+							<span class="inputLableText">机构名称：</span>
+                        <input id="orgCode" name="orgCode" type="text" class="input_text" />
+                        </span>
+                        <span class="inputLable">
+							<span class="inputLableText">服务开始时间：</span>
+                        <input name="beginTime" type="text" class="Wdate" />
+                        </span>
+                        <span class="inputLable">
+							<span class="inputLableText">服务结束时间：</span>
+                        <input name="endTime" type="text" class="Wdate" />
+                        </span>
+                        <span class="inputLable">
+							<span class="inputLableText">护理类型：</span>
+                        <input type="text" id="bidType" data-dictionary="bidType" name="serviceType" class="easyui-combobox dictionary query-condition" />
+                        </span>
+                        <span class="inputLable">
+							<span class="inputLableText">护理服务项目：</span>
+                        <input type="text" id="serviceItems" name="serviceItems" />
+                        </span>
+                        <span class="inputLable">
+							<span class="inputLableText">是否亲属照护：</span>
+                        <input type="text" id="isKinshipCare" data-dictionary="isKinshipCare" name="isKinshipCare" class="easyui-combobox dictionary query-condition" />
+                        </span>
+                        <span class="inputLable">
+							<span class="inputLableText">是否特权通过：</span>
+                        <input type="text" id="isPrivilege" data-dictionary="isPrivilege" name="isPrivilege" class="easyui-combobox dictionary query-condition" />
+                        </span>
+                        <a href="javascript:;" class="easyui-linkbutton" iconcls="icon-search" onclick="doSearch()">查询</a>
+                        <a href="javascript:;" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetSearch()">重置</a>
+                    </form>
+                </div>
+            </div>
+        </fieldset>
+        <table id="searchList"></table>
+        <fieldset class="input_box">
+            <!-- <div style="margin-top: 0px;"> -->
+            <a href="javascript:;" class="easyui-linkbutton" iconcls="icon-add" onclick="addToSend()">添加到已选择列表</a>
+            <a href="javascript:;" class="easyui-linkbutton" iconcls="icon-remove" onclick="removeFromSend()">移出已选择列表</a>
+            <!-- </div> -->
+        </fieldset>
+        <table id="sendList"></table>
+        <fieldset class="input_box">
+            <!-- <div style="margin-top: 20px; margin-bottom: 20px;"> -->
+            <a href="javascript:;" class="easyui-linkbutton" onclick="doSend()">提交</a>
+            <!-- </div> -->
+        </fieldset>
+    </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../../js/util/WdatePicker.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/validate.js"></script>
+<script type="text/javascript" src="../../js/treatmentApply/treatmentCommon.js"></script>
+<script type="text/javascript" src="../../js/nursingQC/nursingTask.js"></script>
+<script>
+$(function() {
+
+    //getAreaData("#provinceCode", "#cityCode", "#areaCode"); //初始化省市区数据
+    $('.Wdate').on('click', function() {
+        WdatePicker({
+            minDate: '%y-%M-%d'
+        });
+    });
+
+    var url = portalServiceUrl + "/api/v1/agency/list";
+    var agencyName = "";
+    var agencyType = "00"; //00：护理/  10：评估
+    var obj = {
+        agencyName: agencyName,
+        agencyType: agencyType
+    };
+    sendAjax(url, "post", obj, function(successdata) {
+        if (successdata.status == 200) {
+            if (successdata.datas.length > 0) {
+                $('#orgCode').combobox({
+                    valueField: 'agencyCode',
+                    textField: 'agencyName',
+                    data: successdata.datas
+                });
+            }
+        }
+    });
+    //动态查询请求机构名称
+    function getAgency() {
+        $("#orgCode").combobox({
+            delay: 1000,
+            onChange: function(newValue, oldValue) {
+                var url = portalServiceUrl + "/api/v1/agency/list";
+                var agencyName = newValue;
+                var agencyType = "00"; //00：护理/  10：评估
+                var obj = {
+                    agencyName: agencyName,
+                    agencyType: agencyType
+                };
+
+                sendAjax(url, "post", obj, function(successdata) {
+                    if (successdata.status == 200) {
+                        if (successdata.datas.length > 0) {
+                            var inputValue = $("input[name=orgCode]").val();
+                            var isValueOk = false;
+                            $.each(successdata.datas, function(index, value) {
+                                if (value.name == inputValue) {
+                                    isValueOk = true;
+                                }
+                            });
+                            if (isValueOk) {
+                                return;
+                            }
+                            $('#orgCode').combobox({
+                                valueField: 'agencyCode',
+                                textField: 'agencyName',
+                                data: successdata.datas
+                            });
+                            $('#orgCode').combobox("setText", newValue);
+                        }
+                    } else {
+                        $('#orgCode').combobox({
+                            onChange: function(newValue, oldValue) {}
+                        });
+                    }
+                });
+                //getAgency()
+            }
+        });
+    }
+    getAgency();
+
+});
+
+function doSearch() {
+    if (Date.parse($("input[name=beginTime]").val()) > Date.parse($("input[name=endTime]").val())) {
+        $.messager.alert('提示', '服务开始时间不能大于结束时间，请重新选择。');
+        return;
+    }
+    TableObj.page = 1;
+    TableObj.pageSize = 10;
+    doLoading();
+}
+//加载数据列表
+function doLoading() {
+    var obj = {
+        //provinceCode: $("input[name=provinceCode]").val(),
+        //cityCode: $("input[name=cityCode]").val(),
+        //areaCode: $("input[name=areaCode]").val(),
+        orgCode: $("input[name=orgCode]").val(),
+        beginTime: $("input[name=beginTime]").val(),
+        endTime: $("input[name=endTime]").val(),
+        isPrivilege: $("input[name=isPrivilege]").val(), //是否特权通过（是、否）
+        isKinshipCare: $("input[name=isKinshipCare]").val(), //是否亲属照护（是、否）
+        serviceType: $("input[name=serviceType]").val(), //服务类型(非全日居家护理、全日居家护理、机构护理、医疗护理)
+        serviceItems: $("input[name=serviceItems]").val(), //服务目录项（页面录入的）
+        page: TableObj.page,
+        pageSize: TableObj.pageSize
+    };
+    var url = portalServiceUrl + "/api/v1/nursingPatrolTask";
+    sendAjax(url, "post", obj, function(data) {
+        gridLoadData('searchList', data);
+    });
+}
+//重置搜索框
+function resetSearch() {
+    $('#searchListForm input').val('');
+    loadDictionary();
+}
+//从待选择列表里把选中的行添加到已选择列表里
+function addToSend() {
+    var searchListRows = $('#searchList').datagrid('getChecked');
+    var sendListRows = $('#sendList').datagrid('getRows');
+    if (searchListRows.length < 1) {
+        $.messager.alert('警告', '请在待选择列表里选择一行再进行操作！');
+        return;
+    }
+    //根据接口查询所选择的数据是否已被发送过
+    var url = portalServiceUrl + "/api/v1/isHaveNursingOrgTask";
+    var obj = {
+        json: JSON.stringify(searchListRows)
+    };
+    sendAjax(url, "post", obj, function(successdata) {
+        if (successdata.status == 200) {
+            var successArray = successdata.datas.notHaveTaskId; //数据库没有这条记录，可以添加
+            var failArray = successdata.datas.haveTaskId; //数据库已有此记录，无法添加，需提示用户
+            //根据任务id，对比可添加列表与待发送列表，把未在待发送列表里的添加进去
+            var message = "";
+            var isAddedStr = "";
+            $.each(successArray, function(searchListIndex, searchListValue) {
+                var isAdded = false;
+                $.each(sendListRows, function(sendListIndex, sendListValue) {
+                    //判断是否已添加在已选择列表里
+                    if (searchListValue.taskCode == sendListValue.taskCode) {
+                        isAddedStr += searchListValue.taskCode + " ；";
+                        isAdded = true;
+                    }
+                });
+                if (!isAdded) {
+                    $('#sendList').datagrid('appendRow', searchListValue);
+                }
+            });
+
+            //判断哪些id的数据已发送过，无法重复发送
+            var failArrayStr = "";
+            if (failArray.length > 0) {
+                $.each(failArray, function(index, value) {
+                    failArrayStr += value.taskCode + " ；";
+                });
+            }
+            //拼接提示信息
+            if (failArrayStr.length > 0) {
+                message += "*以下id的任务已添加为巡查任务，无法重复添加：</br>" + failArrayStr + "</br></br>";
+            }
+            if (isAddedStr.length > 0) {
+                message += "*以下id的任务已添加至已选择列表，无法重复添加：</br>" + isAddedStr;
+            }
+            if (message.length > 0) {
+                $.messager.alert("警告", message);
+            }
+
+            $('#searchList').datagrid('clearSelections'); //清除选择的行
+            $('#sendList').datagrid('autoSizeColumn'); //自动调整列宽度以适应内容		
+        } else {
+            $.messager.alert("提示", "查询选中的任务是否已发送失败！");
+        }
+    });
+}
+//从已选择列表里删除选中的行
+function removeFromSend() {
+    var sendListRows = $('#sendList').datagrid('getChecked');
+    if (sendListRows.length < 1) {
+        $.messager.alert('警告', '请在已选择列表里选择一行再进行操作！');
+        return;
+    }
+    for (var i = sendListRows.length - 1; i >= 0; i--) {
+        var rowIndex = $("#sendList").datagrid("getRowIndex", sendListRows[i]);
+        $("#sendList").datagrid("deleteRow", rowIndex);
+    }
+}
+//发送已选择列表的评估任务
+function doSend() {
+    var sendListRows = $('#sendList').datagrid('getRows');
+    if (sendListRows.length < 1) {
+        $.messager.alert('警告', '已选择列表当前为空，请添加后再进行操作！');
+        return;
+    }
+
+    $.messager.confirm('提示', '是否生成巡查任务？', function(isSure) {
+        if (isSure) {
+            var url = portalServiceUrl + "/api/v1/nursingTaskProfessionAdd";
+            var obj = {
+                json: JSON.stringify(sendListRows)
+            };
+            sendAjax(url, "post", obj, function(successdata) {
+                if (successdata.status == 201) {
+                    $.messager.show({
+                        title: '提示',
+                        msg: "成功添加护理任务！",
+                        timeout: 5000
+                    });
+                    $('#sendList').datagrid({
+                        data: []
+                    });
+                    doSearch();
+                } else {
+                    $.messager.alert('警告', successdata.message);
+                }
+            });
+        }
+    });
+
+}
+</script>
+
+</html>

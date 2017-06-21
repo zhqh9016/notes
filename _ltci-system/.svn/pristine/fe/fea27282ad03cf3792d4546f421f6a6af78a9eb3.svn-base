@@ -1,0 +1,17 @@
+get: 
+  tags:
+  - rRoleResManage
+  summary: 查询菜单列表
+  description: 查询所有菜单权限
+  operationId: listMenus
+  parameters:
+ 
+  responses:
+    200:
+      description: 查询成功
+      schema:
+          $ref: "../../ltci-system-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"

@@ -1,0 +1,21 @@
+get: 
+  tags:
+  - reconsider
+  summary: 申述复议查询接口
+  description: 根据任务ID查询复议列表
+  operationId: getReconsidersByPatrolTaskId
+  parameters: 
+    - name: patrolTaskId
+      in: path
+      description: 任务ID
+      required: true
+      type: string
+  responses:
+      200:
+        description: 查询成功
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"

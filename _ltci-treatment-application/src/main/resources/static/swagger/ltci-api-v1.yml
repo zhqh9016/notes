@@ -1,0 +1,1231 @@
+swagger: "2.0"
+
+info:
+  version: v1
+  title: 参保人待遇申请相关微服务
+  description: 参保人待遇申请相关微服务
+
+basePath: /api/v1
+schemes:
+- http
+produces:
+- application/json
+consumes:
+- application/json
+
+tags:
+- name: insuredPerson
+  description: 参保人表操作
+- name: application
+  description: 待遇申请表操作
+- name: applicationLog
+  description: 待遇申请日志表操作
+- name: mobileTreatmentApplication
+  description: 移动端待遇申请操作
+- name: todoList
+  description: 代办任务表操作
+- name: deputyBingding
+  description: 代理人绑定相关操作
+paths:
+  /insuredPerson:
+    $ref: v1/insuredPerson/ltci-insuredPerson-update.yml
+
+
+  /insuredPerson/{idCard}/and/{insuredPersonName}:
+    get:
+      tags:
+      - insuredPerson
+      summary: 按参保人身份证号和姓名查询用户信息
+      description: 返回用户信息(个人信息)。测试数据：用户身份证号[37241618763519]姓名[张三]。
+      operationId: getInsuredPerson
+      parameters:
+      - name: idCard
+        in: path
+        description: 用户身份证号
+        required: true
+        type: string 
+      - name: insuredPersonName
+        in: path
+        description: 用户姓名
+        required: true
+        type: string 
+      responses:
+        200:
+          description: 查询成功
+          schema:
+            $ref: "#/definitions/InsuredPersonDTO"
+        default:
+          description: 其他错误
+          schema:
+            $ref: "#/definitions/Response"
+        
+    
+  /todoList:
+    $ref: v1/todoList/ltci-todoList.yml
+    
+  /insuredPerson/{idCard}/{securityNumber}/{insuredPersonName}/deputy/{deputyIdCard}:
+    $ref: v1/application/ltci-application-state-query.yml
+
+  /application:
+    $ref: v1/application/ltci-application-put.yml
+
+    
+  /todoListByTitle:
+    $ref: v1/todoList/ltci-todoList-delete.yml
+
+  
+  /deputy/bindings:
+    $ref: v1/deputyBinding/ltci-deputy-binding-query.yml
+    
+  /deputy/binding/status:
+    $ref: v1/deputyBinding/ltci-deputy-binding-get.yml
+  
+  /deputy/bindings/{deputyBindingCode}:
+    $ref: v1/deputyBinding/ltci-deputy-binding-get-deputyBindingid.yml
+  /deputy/bindings/deputyBindingid/checkState:
+    $ref: v1/deputyBinding/ltci-deputy-binding-put.yml
+  /deputy/binding/list/{deputyIdCard}:    
+    $ref: v1/deputyBinding/ltci-deputy-binding-list-query.yml    
+
+  /mobileTreatmentApplications:
+    $ref: v1/treatmentApplication/treatmentApplication-getExample.yml
+            
+  /mobileTreatmentApplicationCase/{applicationCode}/{applicationStatus}/{applicationReason}/{createdBy}:
+    $ref: v1/treatmentApplication/treatmentApplication-put.yml
+  
+  /mobileTreatmentApplication/{applicationCode}:
+    $ref: v1/treatmentApplication/treatmentApplication-get.yml
+
+  /applicationLog:
+    post:
+      tags:
+      - applicationLog
+      summary: 新增待遇申请日志表信息
+      description: 新增待遇申请日志表信息
+      operationId: createApplicationLog
+      parameters:
+      - name: applicationCode
+        in: formData
+        required: true
+        type: string 
+        description: 待遇申请表编号
+      - name: securityNumber
+        in: formData
+        required: true
+        type: string
+        description: 社保卡号
+      - name: securityPersonalNumber
+        in: formData
+        required: true
+        type: string 
+        description: 社保卡个人编号
+      - name: deputyIdCard
+        in: formData
+        required: true
+        type: string 
+        description: 代理人身份证号
+      - name: applicationStatus
+        in: formData
+        required: true
+        type: string 
+        description: 申请状态
+      - name: createdBy
+        in: formData
+        required: true
+        type: string
+        description: 创建人
+      responses:
+        200:
+          description: 新增成功
+          schema: 
+            $ref: "#/definitions/RestResponseDTO"
+        default:
+          description: 其它错误
+          schema:
+            $ref: "#/definitions/RestResponseDTO"
+
+
+definitions:
+
+  RestBaseDTO: 
+    type: object 
+    description: 结果基本信息
+    properties: 
+        businessSerialid: 
+          type: string 
+          description: 流水号
+          example: xxxx-xxxx-xxxx-xxxx-xxxx
+        data: 
+          type: object 
+          description: 结果信息
+          example: xxx
+        timestamp: 
+          type: string 
+          description: 时间戳
+        systemCode:
+          type: string 
+          description: 系统编码
+        moduleCode: 
+          type: string  
+          description: 模块编码
+          example: xxx
+        nodeIP: 
+          type: string 
+          description: 微服务IP
+   
+  RestResponseDTO: 
+    type: object 
+    description: 结果基本信息
+    properties: 
+        businessSerialid: 
+          type: string 
+          description: 流水号
+          example: xxxx-xxxx-xxxx-xxxx
+        data: 
+          type: object 
+          description: 参数信息
+          example: xxx
+        timestamp: 
+          type: string 
+          description: 时间戳
+
+          
+  ResultDTO: 
+    type: object 
+    description: 结果基本信息
+    properties: 
+        status: 
+          type: integer
+          format: int32
+          description: 状态码
+          example: 200
+        datas: 
+          type: object 
+          description: 结果信息
+          example: xxx
+        message: 
+          type: string 
+          description: 结果状态描述
+        number:
+          type: integer
+          format: int32
+          description: 数量
+          example: 200  
+  PageResultDTO: 
+    type: object
+    description: 分页信息
+    properties: 
+      status: 
+        type: integer
+        format: int32
+        description: 状态码
+        example: 200
+      datas: 
+        type: object 
+        description: 结果信息
+        example: xxx
+      message: 
+        type: string 
+        description: 结果状态描述
+      page: 
+        type: integer
+        format: int32
+        description: 当前页码
+        example: 1
+      pageSize: 
+        type: integer
+        format: int32
+        description: 每页显示件数
+        example: 1
+      totalDataNum: 
+        type: integer
+        format: int32
+        description: 总件数
+        example: 10
+      totalPageNum: 
+        type: integer
+        format: int32
+        description: 总页数
+        example: 10
+
+
+  AttachmentDTO:
+    type: object
+    description: 附件基本信息
+    properties:
+        fileName:
+          type: string 
+          description: 文件名
+          example: "xxx"
+        suffix:
+          type: string 
+          description: 文件后缀
+          example: "xxx"
+        content:
+          type: string 
+          description: 文件base64
+          example: "xxx"
+        fileType:
+          type: string 
+          description: 文件类型
+          example: "0,1,2"
+          
+  DeputyBindingCheckDTO:  
+    type: object
+    description: 代理人绑定受理信息
+    properties:
+        deputyBindingid: 
+          type: string 
+          description: id
+          example: "dsadsad15s4d5s4a5d1sa21d2as"
+        idCard:
+          type: string 
+          description: 参保人身份证号码
+          example: "420801199205112719"        
+        insuredPersonName: 
+          type: string 
+          description: 参保人名字
+          example: "张三"    
+        securityNumber:
+          type: string 
+          description: 参保人身社保卡号码
+          example: "123"      
+        deputyName: 
+          type: string 
+          description: 代理人名字
+          example: "张三"            
+        deputyIdCard: 
+          type: string 
+          description: 代理人身份证号码
+          example: "420801199205112719"            
+        checkState:  
+          type: string 
+          description: 审核状态
+          example: "未受理"
+        checkReason:  
+          type: string 
+          description: 审核原因
+          example: "123"
+        deputyBindingCode:  
+          type: string 
+          description: 代理人绑定码
+          example: "未受理"             
+
+
+  InsuredPersonDTO: 
+    type: object
+    description: 参保人基本信息
+    properties:
+        insuredPersonid:
+          type: string 
+          description: 参保人表uuid类型主键
+          example: "asdasd"
+        insuredPersonCode:
+          type: string 
+          description: 参保人编号ID
+          example: "123123"
+        insuredPersonName:
+          type: string 
+          description: 参保人姓名
+          example: "张三"
+        insuredPersonGender:
+          type: string 
+          description: 参保人性别
+          example: "男"
+        nation:
+          type: string 
+          description: 民族
+          example: "汉"
+        age:
+          type: string 
+          description: 年龄
+          example: "16"
+        birthday:
+          type: string 
+          description: 出生日期
+          example: "2010-12-12"
+          
+        securityNumber:
+          type: string 
+          description: 参保人社保卡号
+          example: "123123123123"
+        securityPersonalNumber:
+          type: string 
+          description: 参保人个人编号
+          example: "123"
+        idCard:
+          type: string 
+          description: 参保人身份证号
+          example: "123123123123123123"
+        personnelIdentityCode:
+          type: string 
+          description: 人员身份编码
+          example: "123"
+        personnelIdentityName:
+          type: string 
+          description: 人员身份名称
+          example: "员工"
+        mobile:
+          type: string 
+          description: 联系方式
+          example: "12312345432"
+        address:
+          type: string 
+          description: 家庭住址
+          example: "北京昌平"
+        email:
+          type: string 
+          description: 邮箱地址
+          example: "123@hotmail.com"
+        orgName:
+          type: string 
+          description: 单位名称
+          example: "泰康人寿"
+        married:
+          type: string 
+          description: 婚姻状况
+          example: "未婚"
+        educationid:
+          type: string 
+          description: 文化程度
+          example: "123"
+        politicsid:
+          type: string 
+          description: 政治面貌
+          example: "123"
+        occupationid:
+          type: string 
+          description: 所属职业
+          example: "123"
+        provinceCode:
+          type: string 
+          description: 所属省份
+          example: "北京市"
+        cityCode:
+          type: string 
+          description: 所属城市
+          example: "北京市"
+        areaCode:
+          type: string 
+          description: 所属区域
+          example: "昌平区"
+        treatment:
+          type: string 
+          description: 是否享受待遇资格(0:否；1：是)
+          example: "否"
+        errorReasonCode:
+          type: string 
+          description: 错误原因代码
+          example: "404"
+        errorReason:
+          type: string 
+          description: 错误原因描述
+          example: "查无此人"
+        siArea:
+          type: string 
+          description: 统筹区
+          example: "荆门市"
+        orgCode:
+          type: string 
+          description: 机构编码
+          example: "420801"
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "王五"
+        createdOrg:
+          type: string 
+          description: 创建机构
+          example: "泰康人寿"  
+        operatedBy:  
+          type: string 
+          description: 经办人
+          example: "张三"
+        operatedOrg:  
+          type: string 
+          description: 经办机构
+          example: "政府" 
+
+  TreatmentApplicationDTO: 
+    type: object
+    description: 参保人提交审核所需的大DTO
+    properties: 
+        insuredPersonid:
+          type: string 
+          description: 参保人表uuid类型主键
+          example: "asdasd"
+        applicationCode:
+          type: string 
+          description: 申请表编号ID
+          example: "123123"
+        idCard:
+          type: string 
+          description: 参保人身份证号
+          example: "37241618763519"
+        insuredPersonName:
+          type: string 
+          description: 参保人姓名
+          example: "张三"
+        insuredPersonGender:
+          type: string 
+          description: 参保人性别
+          example: "男"
+        nation:
+          type: string 
+          description: 民族
+          example: "汉族"
+        birthday:
+          type: string 
+          description: 出生日期
+          example: "2012-12-12"
+          
+        securityNumber:
+          type: string 
+          description: 参保人社保卡号
+          example: "37241618763519"
+        securityPersonalNumber:
+          type: string 
+          description: 参保人个人编号
+          example: "123"
+        personnelIdentityCode:
+          type: string 
+          description: 人员身份编码
+          example: "123"
+        personnelIdentityName:
+          type: string 
+          description: 人员身份名称
+          example: "司机"
+        mobile:
+          type: string 
+          description: 联系方式
+          example: "123"
+        address:
+          type: string 
+          description: 家庭住址
+          example: "北京昌平"
+        email:
+          type: string 
+          description: 邮箱地址
+          example: "123@hotmail.com"
+        orgCode:
+          type: string 
+          description: 单位编号
+          example: "400801"
+        orgName:
+          type: string 
+          description: 单位名称
+          example: "泰康人寿"
+        married:
+          type: string 
+          description: 婚姻状况
+          example: "123"
+        educationid:
+          type: string 
+          description: 文化程度
+          example: "123"
+        politicsid:
+          type: string 
+          description: 政治面貌
+          example: "123"
+        occupationid:
+          type: string 
+          description: 所属职业
+          example: "123"
+        provinceCode:
+          type: string 
+          description: 所属省份
+          example: "123"
+        cityCode:
+          type: string 
+          description: 所属城市
+          example: "123"
+        areaCode:
+          type: string 
+          description: 所属区域
+          example: "123"
+        deputyName:
+          type: string 
+          description: 代理人姓名
+          example: "李四"
+        deputyIdType:
+          type: string 
+          description: 代理人证件类型
+          example: "123"
+        deputyIdCard:
+          type: string 
+          description: 代理人身份证号
+          example: "37241618763519"
+        deputyMobile:
+          type: string 
+          description: 代理人联系方式
+          example: "123"
+        deputyAddress:
+          type: string 
+          description: 代理人家庭住址
+          example: "北京昌平"
+        deputyIdCardScan:
+          type: string 
+          description: 代理人身份证号附件ID
+          example: "123;123"
+        bidType:
+          type: string 
+          description: 申办类型
+          example: "123"
+        disease:
+          type: string 
+          description: 病种
+          example: "123"
+        isTaskDeadline:
+          type: string 
+          description: 是否紧急（任务期限）
+          example: "1"
+        isRelativeCared:
+          type: string 
+          description: 是否亲属照顾
+          example: "1"
+        diseaseCause:
+          type: string 
+          description: 病情原因
+          example: "高血压"
+        securityNumberScan:
+          type: string 
+          description: 社保卡号扫描件ID
+          example: "123;123"
+        idCardScan:
+          type: string 
+          description: 身份证扫描件ID
+          example: "123;123"
+        caseHistoryScan:
+          type: string 
+          description: 病例附件ID
+          example: "123;123"
+        applicationFormScan:
+          type: string 
+          description: 长护待遇申请表ID
+          example: "123;123"
+        sources:
+          type: string 
+          description: 来源
+          example: "123"
+        applicationStatus:
+          type: string 
+          description: 申请状态
+          example: "123"
+        applicationReason:
+          type: string 
+          description: 审核原因
+          example: "附件有错"
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "王五"
+        createdOrg:
+          type: string 
+          description: 创建机构
+          example: "泰康人寿"
+        isValid:
+          type: string 
+          description: 是否有效
+          example: "1"
+        siArea:
+          type: string 
+          description: 统筹区
+          example: "123"
+        remark:
+          type: string 
+          description: 备注
+          example: "123"
+        operatedBy:  
+          type: string 
+          description: 经办人
+          example: "张三"      
+        operatedTime:  
+          type: string 
+          description: 经办时间
+          example: "2012-12-12 12:00:00"
+          
+        operatedOrg:  
+          type: string 
+          description: 经办机构
+          example: "政府"      
+          
+  ApplicationDTO:
+    type: object
+    description: 申请表基本信息
+    properties:
+        applicationid:
+          type: string 
+          description: 申请表uuid类型主键
+          example: "asdasd"
+        applicationCode:
+          type: string 
+          description: 申请表编号ID
+          example: "123123"
+        insuredPersonCode:
+          type: string 
+          description: 参保人编号ID
+          example: "123123"
+        mobile:
+          type: string 
+          description: 联系方式
+          example: "12312345432"
+        address:
+          type: string 
+          description: 家庭住址
+          example: "北京昌平"
+        deputyName:
+          type: string 
+          description: 代理人姓名
+          example: "张三"
+        deputyIdType:
+          type: string 
+          description: 代理人证件类型
+          example: "身份证"
+        deputyIdCard:
+          type: string 
+          description: 代理人身份证号
+          example: "123123123123123"
+        deputyMobile:
+          type: string 
+          description: 代理人联系方式
+          example: "13161417639"
+        deputyAddress:
+          type: string 
+          description: 代理人家庭住址
+          example: "北京市昌平区"
+        deputyIdCardScan:
+          type: string 
+          description: 代理人身份证号附件ID
+          example: "123;123"
+        bidType:
+          type: string 
+          description: 申办类型
+          example: "非全日居家护理"
+        disease:
+          type: string 
+          description: 病种
+          example: "123"
+        isTaskDeadline:
+          type: string 
+          description: 是否紧急（任务期限）
+          example: "7"
+        isRelativeCared:
+          type: string 
+          description: 是否亲属照顾
+          example: "1"
+        diseaseCause:
+          type: string 
+          description: 病情原因
+          example: "高血压"
+        securityNumberScan:
+          type: string 
+          description: 社保卡号扫描件ID
+          example: "123;123"
+        idCardScan:
+          type: string 
+          description: 身份证扫描件ID
+          example: "123;123"
+        caseHistoryScan:
+          type: string 
+          description: 病例附件ID
+          example: "123;123"
+        applicationFormScan:
+          type: string 
+          description: 长护待遇申请表ID
+          example: "123;123"
+        sources:
+          type: string 
+          description: 来源
+          example: "移动端"
+        applicationStatus:
+          type: string 
+          description: 申请状态
+          example: "未受理"
+        applicationReason:
+          type: string 
+          description: 申请不通过原因
+          example: "未受理"
+        operatedBy:
+          type: string 
+          description: 经办人
+          example: "张三"
+        operatedTime:
+          type: string 
+          description: 经办时间
+          example: "2012-12-12 12:00:00"
+          
+        operatedOrg:
+          type: string 
+          description: 经办机构
+          example: "泰康人寿"
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "张三"
+        createdTime:
+          type: string 
+          description: 创建时间
+          example: "2012-12-12 12:00:00"
+          
+        createdOrg:
+          type: string 
+          description: 创建机构
+          example: "泰康人寿"
+        isValid:
+          type: integer
+          format: int32
+          description: 是否有效
+          example: "0"
+        siArea:
+          type: string 
+          description: 统筹区
+          example: "北京市"
+        remark:
+          type: string 
+          description: 备注
+          example: "备注信息"
+        orgCode:
+          type: string 
+          description: 机构编码
+          example: "400801"
+
+  ApplicationLogDTO:
+    type: object
+    description: 待遇申请日志表基本信息
+    properties:
+        applicationLogid:
+          type: string 
+          description: 申请日志表uuid类型主键
+          example: "asdasd"
+        applicationCode:
+          type: string 
+          description: 申请表编号ID
+          example: "123123"
+        securityNumber:
+          type: string 
+          description: 社保卡号
+          example: "123123"
+        securityPersonalNumber:
+          type: string 
+          description: 社保个人编号
+          example: "123123"
+        deputyIdCard:
+          type: string 
+          description: 代理人身份证号
+          example: "123123"
+        applicationStatus:
+          type: string 
+          description: 申请状态
+          example: "未受理"
+        applicationReason:
+          type: string 
+          description: 申请不通过原因
+          example: "未受理"
+        operatedBy:
+          type: string 
+          description: 经办人
+          example: "张三"
+        operatedOrg:
+          type: string 
+          description: 经办机构
+          example: "泰康人寿"
+        version:
+          type: integer
+          format: int64
+          description: 版本号
+          example: 1
+
+  TodoListDTO:
+    type: object
+    description: 代办任务表基本信息
+    properties:
+        todoListid:
+          type: string 
+          description: 待办任务表ID
+          example: "asdasd"
+        todoListCode:
+          type: string 
+          description: 待办任务表编号
+          example: "123123"
+        title:
+          type: string 
+          description: 标题
+          example: "标题"
+        url:
+          type: string 
+          description: url
+          example: "http://localhost..."
+        type:
+          type: string 
+          description: 类型（待办、提醒）
+          example: "0"
+        receiveCharactar:
+          type: string 
+          description: 接收角色
+          example: "0"
+        administrativeRegion:
+          type: string 
+          description: 行政区域
+          example: "123123"
+        jumpWay:
+          type: string 
+          description: 跳转方式
+          example: "target"
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "张三"
+        createdTime:
+          type: string 
+          description: 创建时间
+          example: "2012-12-12 12:00:00"
+          
+        createdOrg:
+          type: string 
+          description: 创建机构
+          example: "泰康人寿"
+        isValid:
+          type: integer
+          format: int32
+          description: 是否有效标志
+          example: "1"
+        businessCode:
+          type: string 
+          description: 业务code
+          example: "122"
+        businessType:
+          type: string 
+          description: 业务类型
+          example: "01"
+        ip:
+          type: string 
+          description: 前台ip
+          example: "http:"
+        port:
+          type: string 
+          description: 前台端口号
+          example: "8080"
+        uri:
+          type: string 
+          description: 前台页面uri
+          example: "a/b/"
+
+  TreatApplyDTO:
+    type: object
+    description: 移动端待遇申请列表信息
+    properties:
+        applicationid:
+          type: string 
+          description: 待遇申请表uuid类型主键
+          example: "asdasd"
+        applicationCode:
+          type: string 
+          description: 待遇申请表编号
+          example: "123123"
+        insuredPersonCode:
+          type: string 
+          description: 参保人编号
+          example: "123123"
+        securityPersonalNumber:
+          type: string 
+          description: 参保人个人编号
+          example: "123"
+        insuredPersonName:
+          type: string 
+          description: 参保人姓名
+          example: "张三"
+        insuredPersonGender:
+          type: string 
+          description: 参保人性别
+          example: "男"
+        nation:
+          type: string 
+          description: 民族
+          example: "汉"
+        securityNumber:
+          type: string 
+          description: 参保人社保卡号
+          example: "123123123123"
+        idCard:
+          type: string 
+          description: 参保人身份证号
+          example: "123123123123123123"
+        age:
+          type: string 
+          description: 年龄
+          example: 80
+        bidType:
+          type: string 
+          description: 申办类型
+          example: "非全日居家护理"
+        isTaskDeadline:
+          type: string 
+          description: 是否紧急（任务期限）
+          example: "00"
+        disease:
+          type: string 
+          description: 病种
+          example: "123"
+        mobile:
+          type: string 
+          description: 联系方式
+          example: "12312345432"
+        address:
+          type: string 
+          description: 家庭住址
+          example: "北京昌平"
+        deputyIdCard:
+          type: string 
+          description: 代理人身份证号
+          example: "37241618763519"
+        deputyIdCardScan:
+          type: string 
+          description: 代理人身份证号附件ID
+          example: "123;123"
+        deputyAddress:
+          type: string 
+          description: 代理人家庭住址
+          example: "北京市昌平区"
+        deputyMobile:
+          type: string 
+          description: 代理人联系方式
+          example: "13161417639"
+        applicationStatus:
+          type: string 
+          description: 申请状态
+          example: "未受理"
+        applicationReason:
+          type: string 
+          description: 审核原因
+          example: "附件有错"
+        operatedBy:
+          type: string 
+          description: 经办人
+          example: "张三"
+        operatedTime:
+          type: string 
+          description: 经办时间
+          example: "2012-12-12 12:00:00"
+          
+        operatedOrg:  
+          type: string 
+          description: 经办机构
+          example: "政府"      
+        securityNumberScan:
+          type: string 
+          description: 社保卡号扫描件{[uuid,uuid],[uuid:dddd,uuid:cccc]}
+          example: "123;123"
+        idCardScan:
+          type: string 
+          description: 身份证扫描件{[uuid,uuid],[uuid:dddd,uuid:cccc]}
+          example: "123;123"
+        caseHistoryScan:
+          type: string 
+          description: 病例附件{[uuid,uuid],[uuid:dddd,uuid:cccc]}
+          example: "123;123"
+        applicationFormScan:
+          type: string 
+          description: 长护待遇申请表{[uuid,uuid],[uuid:dddd,uuid:cccc]}
+          example: "123;123"
+        siArea:
+          type: string 
+          description: 统筹区
+          example: "北京市"  
+        version:
+          type: integer
+          format: int64
+          description: 版本号
+          example: 1
+          
+  DeputyBindingSubmitDTO: 
+    type: object
+    description: 代理人绑定审核信息
+    properties:
+        serialNumber:
+          type: string 
+          description: 申请流水号(移动端生成的)
+          example: "123456"        
+        insuredPersonCode:
+          type: string 
+          description: 参保人ID
+          example: "123456"        
+        idCard:
+          type: string 
+          description: 参保人身份证号码
+          example: "420801199205112719"        
+        securityNumber:
+          type: string 
+          description: 参保人社保卡号码
+          example: "123"      
+        deputyName: 
+          type: string 
+          description: 代理人名字
+          example: "张三"            
+        deputyIdCard: 
+          type: string 
+          description: 代理人身份证号码
+          example: "420801199205112719"            
+        deputyMobile: 
+          type: string 
+          description: 代理人联系方式
+          example: "18090909090"            
+        deputyIdCardScan: 
+          type: string 
+          description: 代理人身份证扫描件id(json串存储多个地址ID)
+          example: "[{'id':'123'}]"            
+        securityNumberScan: 
+          type: string 
+          description: 社保卡扫描件附件id(json串存储多个地址ID)
+          example: "[{'id':'123'}]"            
+        idCardScan: 
+          type: string 
+          description: 身份证扫描件附件id(json串存储多个地址ID)
+          example: "[{'id':'123'}]"            
+        caseHistoryScan: 
+          type: string 
+          description: 病例扫描件附件id(json串存储多个地址ID)
+          example: "[{'id':'123'}]"            
+        applicationFormScan: 
+          type: string 
+          description: 长护待遇申请表附件id(json串存储多个地址ID)
+          example: "[{'id':'123'}]"            
+        createdBy: 
+          type: string 
+          description: 创建人
+          example: "张三"            
+        createdOrg: 
+          type: string 
+          description: 创建机构
+          example: "机构名称"            
+  
+  DeputyBindingDTO: 
+    type: object
+    description: 代理人绑定审核信息
+    properties:
+        deputyBindingid:
+          type: string 
+          description: 主键ID
+          example: "123"        
+        deputyBindingCode:
+          type: string 
+          description: 绑定审核表编号ID
+          example: "123"        
+        insuredPersonName:
+          type: string 
+          description: 参保人姓名
+          example: "许瑶"        
+        serialNumber:
+          type: string 
+          description: 申请流水号(移动端生成的)
+          example: "123"        
+        insuredPersonCode:
+          type: string 
+          description: 参保人ID
+          example: "123"        
+        idCard:
+          type: string 
+          description: 参保人身份证号码
+          example: "420801199205112719"        
+        securityNumber:
+          type: string 
+          description: 参保人身社保卡号码
+          example: "123"      
+        deputyName: 
+          type: string 
+          description: 代理人名字
+          example: "张三"            
+        deputyIdCard: 
+          type: string 
+          description: 代理人身份证号码
+          example: "420801199205112719"            
+        deputyMobile: 
+          type: string 
+          description: 代理人联系方式
+          example: "18090909090"            
+        deputyIdCardScan: 
+          type: string 
+          description: 代理人身份证扫描件id(json串存储多个地址ID)
+          example: "123"            
+        securityNumberScan: 
+          type: string 
+          description: 社保卡扫描件附件id(json串存储多个地址ID)
+          example: "123"            
+        idCardScan: 
+          type: string 
+          description: 身份证扫描件附件id(json串存储多个地址ID)
+          example: "123"            
+        caseHistoryScan: 
+          type: string 
+          description: 病例扫描件附件id(json串存储多个地址ID)
+          example: "123"            
+        applicationFormScan: 
+          type: string 
+          description: 长护待遇申请表附件id(json串存储多个地址ID)
+          example: "123"            
+        checkState:  
+          type: string 
+          description: 审核状态
+          example: "未受理"      
+        checkReason:  
+          type: string 
+          description: 审核原因
+          example: "原因"      
+        remark:  
+          type: string 
+          description: 备注
+          example: "原因"      
+        operatedBy:  
+          type: string 
+          description: 经办人
+          example: "张三"      
+        operatedTime:  
+          type: string 
+          description: 经办时间
+          example: "2012-12-12 12:00:00"
+          
+        operatedOrg:  
+          type: string 
+          description: 经办机构
+          example: "政府"      
+        createdBy:  
+          type: string 
+          description: 创建人
+          example: "张三"     
+        createdTime:  
+          type: string 
+          description: 创建时间
+          example: "2012-12-12 12:00:00" 
+          
+        createdOrg:  
+          type: string 
+          description: 创建机构
+          example: "政府"      
+        isValid:  
+          type: string 
+          description: 是否有效标志
+          example: "0"      
+        siArea:  
+          type: string 
+          description: 统筹区
+          example: "荆门"
+        businessCode:  
+          type: string 
+          description: 业务code
+          example: "123"
+        businessType:  
+          type: string 
+          description: 业务类型
+          example: "01"
+  
+  Response:
+    type: object
+    description: 出错时返回提示
+    properties:
+      traceId:
+        type: string 
+        description: 跟踪号
+        example: 9c0accee225d7074
+      message:
+        type: string 
+        description: 提示消息
+        example: 系统错误

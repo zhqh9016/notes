@@ -1,0 +1,986 @@
+<html>
+
+<head>
+    <title>申诉复议</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="renderer" content="webkit" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/common.css" type="text/css">
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/tablefrom.css" type="text/css" />
+</head>
+
+<body>
+    <div id="app" style="height: 100%;">
+        <table width="100%" id="userList" toolbar="#userListtb">
+        </table>
+        <div id="userListtb">
+            <div name="searchColums" id="searchColums">
+                <input id="isShowSearchId" type="hidden" value="false" />
+                <input id="_sqlbuilder" name="sqlbuilder" type="hidden" />
+                <form id="userListForm">
+                    <span class="inputLable">
+						<span class="inputLableText" title="name">被巡查对象：</span>
+                    <input type="text" class="patrolObjectName" name="patrolObjectName" />
+                    </span>
+                    <span class="inputLable">
+						<span class="inputLableText" title="name">类别：</span>
+                    <input type="text" id="patrolObjectType" data-dictionary="patrolObjectType" name="patrolObjectType" class="easyui-combobox dictionary query-condition" />
+                    </span>
+                    <span class="inputLable">
+						<span class="inputLableText" title="name">任务级别：</span>
+                    <input type="text" id="taskLevel" data-dictionary="taskLevel" name="taskLevel" class="easyui-combobox dictionary query-condition" />
+                    </span>
+                    <span class="inputLable">
+						<span class="inputLableText" title="name">巡查员：</span>
+                    <input type="text" class="patrolStaffName" name="patrolStaffName" />
+                    </span>
+                    <span class="inputLable">
+						<span class="inputLableText" title="name">时间：</span>
+                    <input type="text" id="operatedTime" name="operatedTime" class="Wdate" onclick="WdatePicker()" />
+                    </span>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-search" onclick="doSearch()">查询</a>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-reload" onclick="resetSearch()">重置</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- 查看 -->
+    <div style="display:none">
+        <div id="showInfo">
+            <div id="table2"></div>
+        </div>
+    </div>
+    <!-- 录入 -->
+    <div style="display:none">
+        <div id="entering">
+            <div id="table1"></div>
+            <div id="valuesCauseList">
+                <textarea id="cause" name="valuesCause" style="height:150px;width:98%;  resize: none;"></textarea> &nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#" class="easyui-linkbutton" onclick="reasonConfirm()">确定</a> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#" class="easyui-linkbutton" onclick="reasonClose()">取消</a>
+            </div>
+        </div>
+    </div>
+    <!--专项任务详情   -->
+    <div id="specificdetailsWindow" style="height:100%;display: ;">
+        <table cellpadding="0" cellspacing="1" class="formtable">
+            <tr>
+                <td align="right" class="lable">
+                    <label class="Validform_label">任务来源：</label>
+                </td>
+                <td class="value"><span id="taskCategory" class="Validform_label"></span></td>
+            </tr>
+            <tr>
+                <td align="right" class="lable">
+                    <label class="Validform_label">任务生成日期：</label>
+                </td>
+                <td class="value"><span id="createdTime" class="Validform_label"></span></td>
+            </tr>
+            <div id="jb" style="display:none;">
+                <tr class="jb">
+                    <td align="right" class="lable">
+                        <label class="Validform_label">被巡查对象类型：</label>
+                    </td>
+                    <td class="value"><span id="ObjectType" class="Validform_label"></span></td>
+                </tr>
+                <tr class="jb">
+                    <td align="right" class="lable">
+                        <label class="Validform_label">被巡查对象名称：</label>
+                    </td>
+                    <td class="value"><span id="patrolObjectName" class="Validform_label"></span></td>
+                </tr>
+                <tr class="jb">
+                    <td align="right" class="lable">
+                        <label class="Validform_label">联系电话：</label>
+                    </td>
+                    <td class="value"><span id="patrolObjectPhone" class="Validform_label"></span></td>
+                </tr>
+                <tr class="jb">
+                    <td align="right" class="lable">
+                        <label class="Validform_label">身份证/编号：</label>
+                    </td>
+                    <td class="value"><span id="patrolObjectId" class="Validform_label"></span></td>
+                </tr>
+                <tr class="jb">
+                    <td align="right" class="lable">
+                        <label class="Validform_label">巡查地址：</label>
+                    </td>
+                    <td class="value"><span id="patrolObjectAddr" class="Validform_label"></span></td>
+                </tr>
+                <tr class="jb">
+                    <td align="right" class="lable">
+                        <label class="Validform_label">备注事项：</label>
+                    </td>
+                    <td class="value"><span id="patrolRemark" class="Validform_label"></span></td>
+                </tr>
+            </div>
+            <div id="tousu" style="display:none;">
+                <tr class="tousu">
+                    <td align="right" class="lable">
+                        <label class="Validform_label">投诉人：</label>
+                    </td>
+                    <td class="value"><span id="deputyName" class="Validform_label"></span></td>
+                </tr>
+                <tr class="tousu">
+                    <td align="right" class="lable">
+                        <label class="Validform_label">违规项：</label>
+                    </td>
+                    <td class="value"><span id="violationItem" class="Validform_label"></span></td>
+                </tr>
+                <tr class="tousu">
+                    <td align="right" class="lable">
+                        <label class="Validform_label">投诉内容：</label>
+                    </td>
+                    <td class="value"><span id="complaintContent" class="Validform_label"></span></td>
+                </tr>
+                <tr class="tousu">
+                    <td align="right" class="lable">
+                        <label class="Validform_label">投诉时间：</label>
+                    </td>
+                    <td class="value"><span id="complaintTime" class="Validform_label"></span></td>
+                </tr>
+                <tr class="tousu">
+                    <td align="right" class="lable">
+                        <label class="Validform_label">备注事项：</label>
+                    </td>
+                    <td class="value"><span id="remark" class="Validform_label"></span></td>
+                </tr>
+                <tr class="tousu">
+                    <td align="right" class="lable">
+                        <label class="Validform_label">附件：</label>
+                    </td>
+                    <td>
+                        <div id="file_scan"></div>
+                    </td>
+                </tr>
+            </div>
+        </table>
+    </div>
+    <!--普通任务详情   -->
+    <div id="detailsWindow" style="height:100%;display: ;">
+        <span class="inputLable">
+			<span class="inputLableText">被巡查对象类型:</span>
+        <span id="ObjectType2" style="color:red"></span>
+        </span>
+        <span class="inputLable">
+			<span class="inputLableText">任务生成日期:</span>
+        <span id="ObjectType3"></span>
+        </span>
+        <table id="taskDetails" name="taskDetails"></table>
+        <div id="pg" style="display:none">
+        </div>
+        <div id="hl" style="display:none">
+        </div>
+    </div>
+    <!--巡查结果查看-->
+    <div id="chakan">
+        <div id="Execute">
+            <table cellpadding="0" cellspacing="1" class="formtable">
+                <tr>
+                    <td align="right" class="lable">
+                        <label class="Validform_label">巡查结果：</label>
+                    </td>
+                    <td class="value" id="resultDesc"></td>
+                </tr>
+                <tr>
+                    <td align="right" class="lable">
+                        <label class="Validform_label">违规项：</label>
+                    </td>
+                    <td class="value" id="violationItems" class="Validform_label"></td>
+                </tr>
+                <tr>
+                    <td align="right" class="lable">
+                        <label class="Validform_label">附件：</label>
+                    </td>
+                    <td class="value">
+                        <div id="file_scan_b"></div>
+                    </td>
+                </tr>
+            </table>
+            <div id="fileList"></div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../../js/util/WdatePicker.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/validate.js"></script>
+<script type="text/javascript" src="../../js/nursingQC/allageReconsider.js"></script>
+<script>
+$('#showInfo').window({
+    title: '复议意见查看',
+    width: 880,
+    height: 300,
+    closed: true,
+    modal: true,
+    collapsible: false,
+    minimizable: false,
+    maximizable: true
+});
+
+$('#entering').window({
+    title: '复议意见录入',
+    width: 1000,
+    height: 400,
+    closed: true,
+    modal: true,
+    collapsible: false,
+    minimizable: false,
+    maximizable: true
+});
+
+$('#specificdetailsWindow').window({
+    title: '专项详情',
+    width: 600,
+    height: 400,
+    closed: true,
+    modal: true,
+    collapsible: false,
+    minimizable: false,
+    maximizable: true
+
+});
+$('#detailsWindow').window({
+    title: '普通详情',
+    width: 990,
+    height: 440,
+    closed: true,
+    modal: true,
+    collapsible: false,
+    minimizable: false,
+    maximizable: true
+
+});
+
+$('#chakan').window({
+    title: '查看',
+    width: 500,
+    height: 400,
+    closed: true,
+    modal: true,
+    collapsible: false,
+    minimizable: false,
+    maximizable: true
+});
+
+var dg = $('#taskDetails');
+var tableData = [];
+
+//查询
+function doSearch() {
+    var taskState = "6,7";
+    if ($("input[name=taskState]").val()) {
+        taskState = $("input[name=taskState]").val();
+    }
+    var patrolObjectType = "0,1,2,3";
+    if ($("input[name=patrolObjectType]").val()) {
+        patrolObjectType = $("input[name=patrolObjectType]").val();
+    }
+    var taskLevel = "0,1";
+    if ($("input[name=taskLevel]").val()) {
+        taskLevel = $("input[name=taskLevel]").val();
+    }
+    TableObj.page = 1;
+    TableObj.pageSize = 10;
+    TableObj.query = { //查询条件
+        patrolObjectName: $("input[name=patrolObjectName]").val(), //被巡查对象
+        patrolObjectType: patrolObjectType, //类别
+        operatedTime: $("input[name=operatedTime]").val(), //经办时间
+        taskState: taskState, //任务状态
+        patrolStaffName: $("input[name=patrolStaffName]").val(), //巡查员姓名
+        taskLevel: taskLevel,
+        page: TableObj.page,
+        pageSize: TableObj.pageSize
+    };
+    loadGridData();
+}
+
+/*		function doLoading() {
+			var taskState = "6,7";
+	    if($("input[name=taskState]").val()) {
+				taskState = $("input[name=taskState]").val();
+		}
+		var patrolObjectType = "0,1,2,3";
+	    if($("input[name=patrolObjectType]").val()) {
+				patrolObjectType = $("input[name=patrolObjectType]").val();
+		}
+		var taskLevel = "0,1";
+		if($("input[name=taskLevel]").val()){
+					taskLevel =$("input[name=taskLevel]").val();
+				}
+		var obj = {	 
+					patrolObjectName:   $("input[name=patrolObjectName]").val(),//被巡查对象
+					patrolObjectType:   patrolObjectType,//类别
+					operatedTime:       $("input[name=operatedTime]").val(),//经办时间
+					taskState:          taskState,//任务状态
+					patrolStaffName:    $("input[name=patrolStaffName]").val(),//巡查员姓名
+					taskLevel:          taskLevel,
+					page: TableObj.page,
+					pageSize: TableObj.pageSize
+		}
+		var url=portalServiceUrl + "/api/v1/patrolTasks";
+		sendAjax(url, "post", obj, function(data){	
+			 gridLoadData('userList',data)	
+		});	
+		}*/
+
+//复议意见查看
+function suggestion(index) {
+    var row = $('#userList').datagrid('getRows')[index];
+    $('#showInfo').window('open');
+    organizations = [];
+    var url = portalServiceUrl + "/api/v1/reconsiders/" + row.patrolTaskId;
+    sendAjax(url, "get", "", function(data) {
+         if (data.status != "200") {
+            $.messager.alert('警告', data.message);
+            return false;
+        }
+        var organizationData = data;
+        organizations = data.datas;
+        console.log(organizations);
+        //写入一个HTML
+        var html =
+            '<table border=""  height="" cellspacing="0" cellpadding="0"  bordercolor="#ddd" style="font-size: 8px;min-width:695px;"> ' +
+            '<tr align=center bgcolor="#fafafa" font-weight="bold" >' +
+            '<td width="">复议申请人</td>' +
+            '<td width="">复议申请人联系方式</td>' +
+            '<td width="">申请内容</td>' +
+            '<td width="">申请时间 </td>' +
+            '<td width="">意见反馈人</td>' +
+            '<td width="">反馈人联系电话</td>' +
+            '<td width="">反馈信息</td>' +
+            '<td width="">反馈时间</td>' +
+            '<td width="">附件 </td></tr>';
+        //判断查询是否成功	
+        if (organizationData.status == 200) {
+            $.each(organizations, function(index, value) {
+                //判断返回值是否是 undefined
+                if (value.replyPerson === undefined) {
+                    value.replyPerson = "";
+                }
+                if (value.replyPhone === undefined) {
+                    value.replyPhone = "";
+                }
+                if (value.replyOpinion === undefined) {
+                    value.replyOpinion = "待回复";
+                }
+                if (value.operatedTime === undefined) {
+                    value.operatedTime = "";
+                }
+                //附件
+                var files = "";
+                if (value.files !== undefined) {
+                    var index_temp = 1;
+                    $.each(value.files, function(index1, value1) {
+                        files = files + "[<a href='" + portalServiceUrl + "/api/v1/reconsiderFile?fileId=" + value1.fileId + "&fileType=" + value1.fileType + "'>附件" + index_temp + "</a>]<br>";
+                        index_temp++;
+                    });
+                }
+                //赋值
+                html += '<tr height="80px">' +
+                    '<td><span class="appealPerson">' + value.appealPerson + '</span></td>' +
+                    '<td><span class="replyPhone">' + value.appealPhone + '</span></td>' +
+                    '<td><span class="replyOpinion">' + value.applealContent + '</span></td>' +
+                    '<td><span class="operatedTime1">' + value.appealTime + '</span></td>' +
+                    '<td><span class="replyPerson">' + value.replyPerson + '</span></td>' +
+                    '<td><span class="appealPhone">' + value.replyPhone + '</span></td>' +
+                    '<td><span class="applealContent">' + value.replyOpinion + '</span></td>' +
+                    '<td><span class="appealTime">' + value.operatedTime + '</span></td>' +
+                    '<td><span class="operatedOrg">' + files + '</span></td></tr>';
+            });
+            html += '</table>';
+            $("#table2").html(html);
+        }
+    });
+}
+
+//复议意见录入
+function doexpertAssess(index) {
+    var row = $('#userList').datagrid('getRows')[index];
+    $('#entering').window('open');
+    $('#entering textarea').val('');
+    organizations = [];
+    var getOrganizationUrl = portalServiceUrl + "/api/v1/reconsiders/" + row.patrolTaskId;
+    sendAjax(getOrganizationUrl, "get", "", function(data) {
+        if (data.status != "200") {
+            $.messager.alert('警告', data.message);
+            return false;
+        }
+        var organizationData = data;
+        organizations = data.datas;
+        console.log(organizations);
+        var html =
+            '<table border="" cellspacing="0" cellpadding="0" bordercolor="#ddd" style="font-size: 8px;min-width:975px;"> ' +
+            '<tr align=center bgcolor="#fafafa" font-weight="bold" ><td>复议申请人</td>' +
+            '<td>复议申请人联系方式</td>' +
+            '<td>申请内容</td>' +
+            '<td>申请时间 </td>' +
+            '<td>意见反馈人</td>' +
+            '<td>反馈人联系电话</td>' +
+            '<td>反馈信息</td>' +
+            '<td>反馈时间</td>' +
+            '<td>附件 </td></tr>';
+
+        if (organizationData.status == 200) {
+
+            $.each(organizations, function(index, value) {
+                if (value.replyPerson === undefined) {
+                    value.replyPerson = "";
+                }
+                if (value.replyPhone === undefined) {
+                    value.replyPhone = "";
+                }
+                if (value.replyOpinion === undefined) {
+                    value.replyOpinion = "待回复";
+                }
+                if (value.operatedTime === undefined) {
+                    value.operatedTime = "";
+                }
+                var files = "";
+                if (value.files !== undefined) {
+                    var index_temp = 1;
+                    $.each(value.files, function(index1, value1) {
+                        files = files + "[<a href='" + portalServiceUrl + "/api/v1/reconsiderFile?fileId=" + value1.fileId + "&fileType=" + value1.fileType + "'>附件" + index_temp + "</a>]";
+                        index_temp++;
+                    });
+                }
+
+                html += '<tr align=center height="50px" ><td><span class="replyPerson">' + value.appealPerson + '</span></td>' +
+                    '<td><span class="replyPhone">' + value.appealPhone + '</span></td>' +
+                    '<td><span class="replyOpinion">' + value.applealContent + '</span></td>' +
+                    '<td><span class="operatedTime1">' + value.appealTime + '</span></td>' +
+                    '<td><span class="appealPerson">' + value.replyPerson + '</span></td>' +
+                    '<td><span class="appealPhone">' + value.replyPhone + '</span></td>' +
+                    '<td><span class="applealContent">' + value.replyOpinion + '</span></td>' +
+                    '<td><span class="appealTime">' + value.operatedTime + '</span></td>' +
+                    '<td><span class="operatedOrg">' + files + '</span></td></tr>';
+            });
+            html += '</table>';
+            $("#table1").html(html);
+        }
+    });
+}
+
+//巡查结果
+function chakan(index) {
+    //获得行内数据
+    var row = $('#userList').datagrid('getRows')[index];
+    //获得行内ID
+    patrolTaskId = row.patrolTaskId;
+    var url = portalServiceUrl + "/api/v1/taskExecute/resources/" + patrolTaskId;
+    sendAjax(url, 'get', '', function(tableData) {
+        if (tableData.status != "200") {
+            $.messager.alert('警告', tableData.message);
+            return false;
+        }
+        //巡查结果复制
+        $("#resultDesc").html(tableData.datas.resultDesc);
+        //违规向
+        var s = transDictionary(tableData.datas.violationItem);
+        $("#violationItems").html(s);
+        files = "";
+        $.each(tableData.datas.executeFile, function(index1, value1) {
+            files = files + "[<a href='" + portalServiceUrl + "/api/v1/taskExecute/mongoDBMessage?executeResultId=" + value1.patrolTaskId +
+                "&fileId=" + value1.fileId + "&fileType=" + value1.fileType + "&fileName=" + value1.fileName + "." + value1.fileType + "'>附件:" + value1.fileName + "." + value1.fileType + "</a>]<br>";
+            //index_temp++;
+        });
+        $("#file_scan_b").html(files);
+        $('#chakan').window('open');
+    });
+}
+//字符串已,号分割
+function transDictionary(s) { //定义方法，传入字符串值，返回对应数据字典
+
+    var arr = s.split(','); //[1,2]
+    var str = "";
+    for (var i = 0; i < arr.length; i++) {
+        if (i !== 0) str += ",";
+        str += getTableDictionary('visitsItem', arr[i]);
+    }
+    return str;
+}
+//按钮
+function reasonConfirm() {
+    var reason = $("textarea[name=valuesCause]").val();
+    if (reason.length <= 0) {
+        showMsg('请输入复议意见');
+        return false;
+    }
+    var patrolTaskId = TableObj.rowData.patrolTaskId;
+    var obj = {
+        replyOpinion: reason,
+        patrolTaskId: patrolTaskId
+    };
+    var url = portalServiceUrl + "/api/v1/reconsiders";
+    sendAjax(url, "post", obj, function(data) {
+        if (data.status == "200") {
+            showMsg("意见录入成功！");
+            $('#entering').window('close');
+            loadGridData();
+        }
+        if (data.status == "407") {
+            console.log(data);
+            $.messager.alert('提示', data.message);
+            return false;
+        }
+        if (data.status != "407" && data.status != "200") {
+            console.log(data);
+            $.messager.alert('提示', '录入信息失败！');
+            return false;
+        }
+    });
+}
+
+//重置清空
+function resetSearch() {
+    $('#userListForm input').val('');
+    loadDictionary();
+}
+
+//取消按钮
+function reasonClose(id) {
+    $('#entering').window('close');
+    $('#cause textarea').val('');
+}
+
+//公用警告
+function isCheck() {
+    var arr = $('#userList').datagrid('getChecked');
+    if (arr.length < 1) {
+        $.messager.alert('警告', '请选择一行数据再进行操作');
+        return false;
+    }
+    return true;
+}
+
+//专项详情
+function zx(index) {
+    $("#taskCategory").html('');
+    $("#createdTime").html('');
+    $("#ObjectType").html('');
+    $("#patrolObjectName").html('');
+    $("#patrolObjectPhone").html('');
+    $("#patrolObjectId").html('');
+    $("#patrolObjectAddr").html('');
+    $("#patrolRemark").html('');
+    //获取详情任务来源
+    var row = $('#userList').datagrid('getRows')[index];
+    //调用接口获取数据
+    // 赋值	
+    patrolTaskId = row.patrolTaskId;
+    //console.log(patrolTaskId);
+    var url = portalServiceUrl + "/api/v1/patrolTasks/" + patrolTaskId;
+    sendAjax(url, "get", "", function(data) {
+        var response = data.datas;
+        if (data.status == '200') {
+            //经办发起
+            if (response.taskCategory == "0") {
+                $("#taskCategory").html("投诉");
+            }
+            if (response.taskCategory == "1") {
+                $("#taskCategory").html("经办发起");
+            }
+            if (response.createdTime !== null) {
+                var date = response.createdTime.substring(0, 10);
+                $("#createdTime").html(date); //任务生成日期		
+            }
+
+            if (row.patrolObjectType === 0) { //被巡查对象类型：
+                $("#ObjectType").html("护理机构");
+            }
+            if (row.patrolObjectType == 1) { //被巡查对象类型：
+                $("#ObjectType").html("评估机构");
+            }
+            if (row.patrolObjectType == 2) { //被巡查对象类型：
+                $("#ObjectType").html("护理人员");
+            }
+            if (row.patrolObjectType == 3) { //被巡查对象类型：
+                $("#ObjectType").html("评估人员");
+            }
+            $("#patrolObjectName").html(response.patrolObjectName); //被巡查对象名称
+            $("#patrolObjectPhone").html(response.patrolObjectPhone); //联系电话
+
+            if (row.patrolObjectType === 0 || row.patrolObjectType == 1) { //身份证/编号
+                $("#patrolObjectId").html("(编号)" + response.patrolObjectId);
+            }
+            if (row.patrolObjectType == 2 || row.patrolObjectType == 3) { //身份证/编号
+                $("#patrolObjectId").html("(身份证)" + response.idCard);
+            }
+            $("#patrolObjectAddr").html(response.patrolObjectAddr); //巡查地址
+            $("#patrolRemark").html('');
+            $("#patrolRemark").html(response.remark);
+            //投诉
+            $("#deputyName").html(response.deputyName); //投诉人
+            $("#violationItem").html(response.violationItem); //违规项
+            $("#complaintContent").html(response.complaintContent); //投诉内容
+            if (response.complaintTime !== null) {
+                value = response.complaintTime.split(' ');
+                $("#complaintTime").html(value[0]); //投诉时间：
+            } else {
+                $("#complaintTime").html(''); //投诉时间
+            }
+            $("#remark").html('');
+            $("#remark").html(response.remark); //备注事项：
+            //附件
+            arr = getTableData2(response);
+            console.log(arr);
+            files = "";
+            $.each(arr, function(index1, value1) {
+                files = files + "[<a href='" + portalServiceUrl + "/api/v1/reconsiderFile?fileId=" + value1.resourceMaterialInfoScan + "&fileType=" + value1.resourceMaterialType + "'>附件:" + value1.resourceFileName + '.' + value1.resourceMaterialType + "</a>]<br>";
+            });
+            $("#file_scan").html(files);
+        } else {
+            $.messager.alert('警告', data.message);
+        }
+    });
+    if (row.taskCategory == "0") {
+        //投诉		
+        $(".tousu").show();
+        $(".jb").hide();
+        $('#specificdetailsWindow').window('open');
+    } else if (row.taskCategory == "1") {
+        //经办发起			
+        $(".tousu").hide();
+        $(".jb").show();
+        $('#specificdetailsWindow').window('open');
+    }
+
+}
+
+//普通任务详情
+function pt(index) {
+    //获取详情任务来源
+    var row = $('#userList').datagrid('getRows')[index];
+    var patrolObjectType = row.patrolObjectType;
+    console.log(row.patrolObjectType);
+    if (patrolObjectType === 0) { //被巡查对象类型：
+        $("#ObjectType2").html("护理机构");
+    }
+    if (row.patrolObjectType == 1) { //被巡查对象类型：
+        $("#ObjectType2").html("评估机构");
+    }
+    if (row.patrolObjectType == 2) { //被巡查对象类型：
+        $("#ObjectType2").html("护理人员");
+    }
+    if (row.patrolObjectType == 3) { //被巡查对象类型：
+        $("#ObjectType2").html("评估人员");
+    }
+    val = row.createdTime;
+    if (val === null) {
+        $("#ObjectType3").html('');
+    }
+    if (val !== null) {
+        value = val.split(' ');
+        $("#ObjectType3").html(value[0]);
+    }
+
+    if (patrolObjectType == "1" || patrolObjectType == "3") {
+        //评估
+        pgColumns = [{
+            field: 'isCritical',
+            title: '是否紧急',
+            width: 12,
+            align: 'center',
+            formatter: function(value) {
+                return getTableDictionary(this.field, value);
+            }
+        }, {
+            field: 'personName',
+            width: 12,
+            align: 'center',
+            title: '评估人姓名'
+        }, {
+            field: 'personPhone',
+            width: 12,
+            align: 'center',
+            title: '评估人联系电话'
+        }, {
+            field: 'agencyName',
+            width: 18,
+            align: 'center',
+            title: '评估机构'
+        }, {
+            field: 'insuranceName',
+            width: 12,
+            align: 'center',
+            title: '被评估人姓名'
+        }, {
+            field: 'insurancePhone',
+            width: 15,
+            align: 'center',
+            title: '被评估人联系电话'
+        }, {
+            field: 'insuranceAddress',
+            width: 20,
+            align: 'center',
+            title: '被评估人地址'
+        }, {
+            field: 'preevaluateDate',
+            width: 12,
+            align: 'center',
+            title: '评估时间',
+            formatter: function(value) {
+                if (value === '') {
+                    return '';
+                } else if (value !== '') {
+                    var date = value.split(' ');
+                    return date[0];
+                }
+            }
+        }];
+        dg.datagrid({
+            columns: [pgColumns]
+        });
+        $("#pg").show();
+        $("#hl").hide();
+    } else if (patrolObjectType == "0" || patrolObjectType == "2") {
+        //护理
+        hlColumns = [{
+            field: 'isKinshipCare',
+            title: '是否亲属照护',
+            width: 12,
+            align: 'center',
+            formatter: function(value) {
+                return getTableDictionary('isRelativeCared', value);
+            },
+        }, {
+            field: 'isPrivilege',
+            width: 12,
+            align: 'center',
+            title: '是否特权通过',
+            formatter: function(value) {
+                return getTableDictionary('isPrivilege', value);
+            },
+        }, {
+            field: 'serviceType',
+            width: 12,
+            align: 'center',
+            title: '护理类型'
+        }, {
+            field: 'serviceItems',
+            width: 18,
+            align: 'center',
+            //hidden:idHidden(),// searchType
+            title: '护理服务项目'
+        }, {
+            field: 'preevaluateDate',
+            width: 12,
+            align: 'center',
+            title: '护理时间'
+        }, {
+            field: 'personName',
+            width: 12,
+            align: 'center',
+            title: '护理人员姓名'
+        }, {
+            field: 'personPhone',
+            width: 15,
+            align: 'center',
+            title: '护理人员联系电话'
+        }, {
+            field: 'agencyName',
+            width: 12,
+            align: 'center',
+            title: '护理机构'
+        }, {
+            field: 'insuranceName',
+            width: 12,
+            align: 'center',
+            title: '参保人姓名'
+        }, {
+            field: 'insurancePhone',
+            width: 15,
+            align: 'center',
+            title: '参保人联系电话'
+        }, {
+            field: 'insuranceAddress',
+            width: 15,
+            align: 'center',
+            title: '参保人地址'
+        }];
+        dg.datagrid({
+            columns: [hlColumns]
+        });
+        $("#pg").hide();
+        $("#hl").show();
+    }
+    //调用接口获取数据
+
+    // 赋值
+    var url = portalServiceUrl + "/api/v1/patrolTasks/" + row.patrolTaskId;
+    sendAjax(url, "get", "", function(data) {
+        var response = data.datas;
+        if (data.status != '200') {
+            $.messager.alert('警告', data.message);
+            return false;
+        }
+        //显示评估表格
+        var obj = getTableData(response);
+        //gridLoadData('taskDetails', obj);
+        dg.datagrid('loadData', obj);
+        dg.datagrid("fitColumns");
+        $('#detailsWindow').window('open');
+    });
+}
+
+function getTableData2(data) {
+    console.log(data);
+    var arr0 = [],
+        arr = [],
+        o, obj = null;
+    arr0 = data.complaintResourceDOList;
+    for (var i = 0; i < arr0.length; i++) {
+        o = arr0[i];
+        obj = {
+            agencyName: data.agencyName,
+            complainantId: data.complainantId,
+            complainantObjectType: data.complainantObjectType,
+            //isValid:data.isValid,
+            complaintContent: data.complaintContent,
+            complaintTime: data.complaintTime,
+            createdBy: data.createdBy,
+            createdOrg: data.createdOrg,
+            createdTime: data.createdTime,
+            deputyIdCard: data.deputyIdCard,
+            deputyMobile: data.deputyMobile,
+            deputyName: data.deputyName,
+            idCard: data.idCard,
+            isValid: data.isValid,
+            operatedBy: data.operatedBy,
+            operatedOrg: data.operatedOrg,
+            operatedTime: data.operatedTime,
+            //patrolObjectAddr:data.patrolObjectAddr,
+            patrolObjectId: data.patrolObjectId,
+            patrolObjectName: data.patrolObjectName,
+            patrolObjectPhone: data.patrolObjectPhone,
+            patrolObjectType: data.patrolObjectType,
+            patrolStaffId: data.patrolStaffId,
+            patrolStaffName: data.patrolStaffName,
+            patrolObjectAddr: data.patrolObjectAddr,
+            patrolTaskId: data.patrolTaskId,
+            siArea: data.siArea,
+            taskCategory: data.taskCategory,
+            taskLevel: data.taskLevel,
+            taskState: data.taskState,
+            violationItem: data.violationItem,
+
+            //complaintResourceDOList
+            currentPage: o.currentPage,
+            //isValid:o.isValid,
+            orderBy: o.orderBy,
+            orderType: o.orderType,
+            pageSize: o.pageSize,
+            //patrolTaskId:o.patrolTaskId,
+            resourceFileName: o.resourceFileName,
+            resourceId: o.resourceId,
+            resourceMaterialId: o.resourceMaterialId,
+            resourceMaterialInfoScan: o.resourceMaterialInfoScan,
+            resourceMaterialType: o.resourceMaterialType,
+        };
+        arr.push(obj);
+    }
+    return arr;
+}
+
+function getTableData(data) {
+    console.log(data);
+    var arr0 = [],
+        arr = [],
+        o, obj = null;
+    arr0 = data.patrolTaskDetailDOList;
+    for (var i = 0; i < arr0.length; i++) {
+        o = arr0[i];
+        obj = {
+            agencyName: data.agencyName,
+            createdBy: data.createdBy,
+            createdOrg: data.createdOrg,
+            //isValid:data.isValid,
+            operatedBy: data.operatedBy,
+            operatedTime1: data.operatedTime1,
+            patrolObjectAddr: data.patrolObjectAddr,
+            patrolObjectId: data.patrolObjectId,
+            patrolObjectName: data.patrolObjectName,
+            patrolObjectPhone: data.patrolObjectPhone,
+            patrolObjectType: data.patrolObjectType,
+            patrolStaffId: data.patrolStaffId,
+            patrolStaffName: data.patrolStaffName,
+
+            //patrolTaskDetailDOList
+            agencyCode: o.agencyCode,
+            createdTime: o.createdTime,
+            currentPage: o.currentPage,
+            insuranceAddress: o.insuranceAddress,
+            insuranceCode: o.insuranceCode,
+            insuranceName: o.insuranceName,
+            insurancePapersNo: o.insurancePapersNo,
+            insurancePapersType: o.insurancePapersType,
+            insurancePhone: o.insurancePhone,
+            isCritical: o.isCritical,
+            isKinshipCare: o.isKinshipCare,
+            isPrivilege: o.isPrivilege,
+            isValid: o.isValid,
+            latitude: o.latitude,
+            longitude: o.longitude,
+            orderBy: o.orderBy,
+            orderType: o.orderType,
+            orgTaskId: o.orgTaskId,
+            pageSize: o.pageSize,
+            patrolTaskId: o.patrolTaskId,
+            personCode: o.personCode,
+            personName: o.personName,
+            personPhone: o.personPhone,
+            preevaluateDate: o.preevaluateDate,
+            remark: o.remark,
+            taskDetailId: o.taskDetailId,
+
+            // patrolTaskId:data.patrolTaskId,
+            taskCategory: data.taskCategory,
+            taskLevel: data.taskLevel,
+            taskState: data.taskState,
+        };
+        arr.push(obj);
+    }
+    return arr;
+}
+//function loadSrarchGrid(){
+$(function() {
+    var tableColumns = [];
+    dg.datagrid({
+        idField: '',
+        //title: '查询列表',
+        data: tableData,
+        fit: true,
+        loadMsg: '',
+        pageSize: 10,
+        pagination: false,
+        pageList: [10, 20, 30],
+        rownumbers: true,
+        singleSelect: true,
+        fitColumns: true,
+        striped: true,
+        showFooter: true,
+        columns: [tableColumns],
+        onLoadSuccess: function(data) {
+            dg.datagrid("clearSelections");
+        },
+        onClickRow: function(rowIndex, rowData) {
+            TableObj.rowIndex = rowIndex;
+            TableObj.rowData = rowData;
+        },
+        onCheck: function(rowIndex, rowData) {
+            TableObj.rowIndex = rowIndex;
+            TableObj.rowData = rowData;
+            //setSearchValue(rowData);
+            //$('#searchDiv').window('close');
+        }
+    });
+});
+</script>
+
+</html>

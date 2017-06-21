@@ -1,0 +1,32 @@
+post:
+  tags:
+  - mediaFile
+  summary: 新增附件
+  description: 返回附件id
+  operationId: addAttachment
+  parameters:
+  - name: fileName
+    in: formdata
+    description: 附件名称
+    required: false
+  - name: suffix
+    in: formdata
+    description: 附件后缀
+    required: false
+  - name: content
+    in: formdata
+    description: 附件内容
+    required: true
+  - name: fileType
+    in: formdata
+    description: 附件类型
+    required: true
+  responses:
+    200:
+      description: 添加成功
+      schema:
+        $ref: "../../ltci-media-file-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-media-file-api-v1.yml/#/definitions/ResultDTO"

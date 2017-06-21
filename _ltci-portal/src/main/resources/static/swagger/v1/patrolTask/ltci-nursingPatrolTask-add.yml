@@ -1,0 +1,19 @@
+post:
+  tags:
+  - patrolTask
+  summary:  新增普通巡查护理任务
+  description: 传入json体
+  operationId: nursingTaskProfessionAdd
+  parameters:
+   - name: json
+     in: formData
+     description: 任务明细数组
+     required: true
+     type: string
+  responses:
+    200:
+      description: 创建成功
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/Response"

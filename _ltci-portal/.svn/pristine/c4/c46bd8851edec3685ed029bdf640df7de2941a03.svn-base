@@ -1,0 +1,53 @@
+post:
+  tags:
+  - checkInManage
+  summary: 协议退出处理
+  description: 协议退出处理
+  operationId: checkInProtocolExit
+  parameters:
+   - name: exitFrom
+     in: formData
+     description: 退出来源
+     required: true
+     type: string
+   - name: exitReason
+     in: formData
+     description: 退出原因（编号）
+     required: true
+     type: string
+   - name: exitReasonDetial
+     in: formData
+     description: 其他原因
+     required: false
+     type: string
+   - name: inHospState
+     in: formData
+     description: 在院状态
+     required: false
+     type: string
+   - name: realOutDate
+     in: formData
+     description: 退出时间即实际出院时间
+     required: true
+     type: string
+   - name: operatedBy
+     in: formData
+     description: 经办人
+     required: true
+     type: string
+   - name: checkInCode
+     in: formData
+     description: 协议编号
+     required: true
+     type: string
+  responses:
+    200:
+      description: 协议退出修改成功
+      schema:
+        type: object
+        items:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其它错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"

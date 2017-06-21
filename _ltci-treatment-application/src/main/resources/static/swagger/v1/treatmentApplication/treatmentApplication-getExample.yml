@@ -1,0 +1,59 @@
+post:
+  tags:
+  - mobileTreatmentApplication
+  summary: 分页查询移动端待遇申请信息
+  description: 根据条件查询的待遇申请信息
+  operationId: mobileTreatmentApplicationList
+  parameters:
+   - name: insuredPersonName
+     in: formData
+     description: 申请人
+     required: false
+     type: string
+   - name: idCard
+     in: formData
+     description: 身份证
+     required: false
+     type: string
+   - name: securityNumber
+     in: formData
+     description: 社会保障卡号
+     required: false
+     type: string
+   - name: disease
+     in: formData
+     description: 病种
+     required: false
+     type: string
+   - name: operatedTime
+     in: formData
+     description: 经办时间
+     required: false
+     type: date
+   - name: page
+     in: formData
+     description: 页数
+     required: false
+     type: string
+   - name: pageSize
+     in: formData
+     description: 条数
+     required: false
+     type: string  
+   - name: applicationStatus
+     in: formData
+     description: 申请状态
+     required: false
+     type: string
+  responses:
+    200:
+      description: 查询成功
+      schema:
+        type: array
+        items:
+          $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"
+    default:
+      description: 其它错误
+      schema:
+        $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"
+        

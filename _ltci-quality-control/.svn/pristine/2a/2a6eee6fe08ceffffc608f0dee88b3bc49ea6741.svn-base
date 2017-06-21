@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.PatrolTaskSpecialDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.PatrolTaskSpecialDO" >
+    <id column="patrol_task_id" property="patrolTaskId" jdbcType="VARCHAR" />
+    <result column="patrol_object_type" property="patrolObjectType" jdbcType="VARCHAR" />
+    <result column="patrol_object_id" property="patrolObjectId" jdbcType="VARCHAR" />
+    <result column="patrol_object_name" property="patrolObjectName" jdbcType="VARCHAR" />
+    <result column="patrol_object_phone" property="patrolObjectPhone" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="patrol_object_addr" property="patrolObjectAddr" jdbcType="VARCHAR" />
+    <result column="patrol_remark" property="patrolRemark" jdbcType="VARCHAR" />
+    <result column="task_category" property="taskCategory" jdbcType="INTEGER" />
+    <result column="task_level" property="taskLevel" jdbcType="VARCHAR" />
+    <result column="task_state" property="taskState" jdbcType="VARCHAR" />
+    <result column="complaint_object_id" property="complaintObjectId" jdbcType="VARCHAR" />
+    <result column="complainant_object_type" property="complainantObjectType" jdbcType="INTEGER" />
+    <result column="complaint_type" property="complaintType" jdbcType="INTEGER" />
+    <result column="complaint_time" property="complaintTime" jdbcType="VARCHAR" />
+    <result column="complainant_id" property="complainantId" jdbcType="VARCHAR" />
+    <result column="violation_item" property="violationItem" jdbcType="VARCHAR" />
+    <result column="complaint_content" property="complaintContent" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="patrol_staff_id" property="patrolStaffId" jdbcType="VARCHAR" />
+    <result column="patrol_staff_name" property="patrolStaffName" jdbcType="VARCHAR" />
+    <result column="execute_message_state" property="executeMessageState" jdbcType="INTEGER" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="VARCHAR" />
+    <result column="operated_time1" property="operatedTime1" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="VARCHAR" />
+    <result column="agency_name" property="agencyName" jdbcType="VARCHAR" />
+    <result column="complaint_object_type" property="complaintObjectType" jdbcType="INTEGER" />
+    <result column="deputy_name" property="deputyName" jdbcType="VARCHAR" />
+    <result column="deputy_mobile" property="deputyMobile" jdbcType="VARCHAR" />
+    <result column="deputy_id_card" property="deputyIdCard" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="listPatrolTask" parameterType="map" resultMap="BaseResultMap">
+  	select 
+	lpt.*,
+	date_format(lpt.operated_time,'%Y-%m-%d %H:%i:%s') operated_time1
+	from 
+	ltci_patrol_task lpt 
+    <where>
+       lpt.is_valid = 1
+        <if test="patrolObjectName!=null and patrolObjectName!='' and patrolObjectName!='undefind' ">
+            and lpt.patrol_object_name like concat('%',#{patrolObjectName},'%')
+        </if>
+        <if test="patrolObjectType!=null and patrolObjectType!='' and patrolObjectType!='undefind' ">
+            and lpt.patrol_object_type in 
+            <foreach collection="patrolObjectType" item="listItem" open="(" close=")" separator="," >
+               #{listItem}
+            </foreach>
+        </if>
+        <if test="patrolObjectId!=null and patrolObjectId!='' and patrolObjectId!='undefind' ">
+            and (lpt.id_card = #{patrolObjectId} or lpt.patrol_object_id = #{patrolObjectId})
+        </if>
+        <if test="patrolObjectPhone!=null and patrolObjectPhone!='' and patrolObjectPhone!='undefind' ">
+            and lpt.patrol_object_phone = #{patrolObjectPhone}
+        </if>
+        <if test="operatedTimeStart!=null">
+            and lpt.operated_time &gt;= #{operatedTimeStart} 
+        </if>
+        <if test="operatedTimeEnd!=null">
+            and lpt.operated_time &lt;= #{operatedTimeEnd} 
+        </if>
+        <if test="taskState!=null and taskState!='' and taskState!='undefind' ">
+            and lpt.task_state in 
+            <foreach collection="taskState" item="listItem" open="(" close=")" separator="," >
+               #{listItem}
+            </foreach>
+        </if>   
+        <if test="patrolStaffName!=null and patrolStaffName!='' and patrolStaffName!='undefind' ">
+            and lpt.patrol_staff_name like concat('%',#{patrolStaffName},'%')
+        </if>
+        <if test="taskLevel!=null and taskLevel!='' and taskLevel!='undefind' ">
+            and lpt.task_level in 
+            <foreach collection="taskLevel" item="listItem" open="(" close=")" separator="," >
+               #{listItem}
+            </foreach>
+        </if>   
+        <if test="operatedOrg != null and operatedOrg !='' " >
+        and (lpt.created_org = #{operatedOrg,jdbcType=VARCHAR} or lpt.operated_org = #{operatedOrg,jdbcType=VARCHAR})
+      </if>
+    </where>
+    <trim prefix="ORDER BY">
+        case when lpt.task_level= 0 then 0 else 1 end,
+        case when lpt.task_state= 0 then 0 else 1 end, 
+        lpt.task_state asc,
+        lpt.operated_time desc
+    </trim>
+    <if test="page>-1 and page>-1">
+    limit ${page},${pageSize}
+    </if>
+    </select>
+    
+    <select id="countPatrolTaskList" parameterType="map" resultType="java.lang.Integer">
+    select count(*) from ltci_patrol_task lpt 
+    <where>
+       lpt.is_valid = 1
+        <if test="patrolObjectName!=null and patrolObjectName!='' and patrolObjectName!='undefind' ">
+            and lpt.patrol_object_name like concat('%',#{patrolObjectName},'%')
+        </if>
+        <if test="patrolObjectType!=null and patrolObjectType!='' and patrolObjectType!='undefind' ">
+            and lpt.patrol_object_type in 
+            <foreach collection="patrolObjectType" item="listItem" open="(" close=")" separator="," >
+               #{listItem}
+            </foreach>
+        </if>
+        <if test="patrolObjectId!=null and patrolObjectId!='' and patrolObjectId!='undefind' ">
+            and (lpt.id_card = #{patrolObjectId} or lpt.patrol_object_id = #{patrolObjectId})
+        </if>
+        <if test="patrolObjectPhone!=null and patrolObjectPhone!='' and patrolObjectPhone!='undefind' ">
+            and lpt.patrol_object_phone = #{patrolObjectPhone}
+        </if>
+        <if test="operatedTimeStart!=null">
+            and lpt.operated_time &gt;= #{operatedTimeStart} 
+        </if>
+        <if test="operatedTimeEnd!=null">
+            and lpt.operated_time &lt;= #{operatedTimeEnd} 
+        </if>
+        <if test="taskState!=null and taskState!='' and taskState!='undefind' ">
+            and lpt.task_state in 
+            <foreach collection="taskState" item="listItem" open="(" close=")" separator="," >
+               #{listItem}
+            </foreach>
+        </if>   
+        <if test="patrolStaffName!=null and patrolStaffName!='' and patrolStaffName!='undefind' ">
+            and lpt.patrol_staff_name like concat('%',#{patrolStaffName},'%')
+        </if>
+        <if test="taskLevel!=null and taskLevel!='' and taskLevel!='undefind' ">
+            and lpt.task_level in 
+            <foreach collection="taskLevel" item="listItem" open="(" close=")" separator="," >
+               #{listItem}
+            </foreach>
+        </if>   
+        <if test="operatedOrg != null and operatedOrg !='' " >
+        and (lpt.created_org = #{operatedOrg,jdbcType=VARCHAR} or lpt.operated_org = #{operatedOrg,jdbcType=VARCHAR})
+      </if>
+    </where>
+  </select>
+  
+  
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+		select * from ltci_patrol_task where patrol_task_id = #{patrolTaskId}
+  </select>
+  
+  
+</mapper>

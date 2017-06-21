@@ -1,0 +1,24 @@
+post:
+  summary: 用户角色关系查询
+  description: 返回用户角色关系信息列表。测试数据：[用户ID/角色ID]。
+  operationId: selectRUserRole
+  parameters:
+  - name: userId
+    in: formData
+    description: 用户ID
+    required: true
+    type: string       
+  tags:
+  - roleManage
+  responses:
+    200:
+      description: 查询成功
+      schema:
+        type: array
+        items:
+          $ref: "../../ltci-system-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"
+    

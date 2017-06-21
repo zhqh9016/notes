@@ -1,0 +1,107 @@
+/*输入框标题*/
+
+.inputLable {
+	line-height: 35px;
+	display: inline-block;
+}
+
+.inputLable .inputLableText {
+	display: inline-block;
+	margin-right: 5px;
+	width: 140px;
+	text-align: right;
+}
+
+.inputLable label {
+	display: inline-block;
+	margin-right: 10px;
+	width: 140px;
+	text-align: right;
+}
+
+
+/*重置表单按钮*/
+
+.resetInput {
+	margin-left: 10px;
+	width: 60px;
+	height: 25px;
+	padding: 0 5px;
+	cursor: pointer;
+	line-height: 24px;
+	display: inline-block;
+	color: #8f0911;
+	border: 1px solid #cccccc;
+	border-radius: 4px;
+	background-color: white;
+	background-color: #eee;
+	background: -webkit-gradient(linear, 0 0, 0 100%, from(#f7f7f7), to(#f2f2f2));
+	background: -moz-gradient(linear, 0 0, 0 100%, from(#f7f7f7), to(#f2f2f2));
+	background: -o-gradient(linear, 0 0, 0 100%, from(#f7f7f7), to(#f2f2f2));
+	background: -ms-gradient(linear, 0 0, 0 100%, from(#f7f7f7), to(#f2f2f2));
+}
+
+textarea {
+	border: 1px solid #D7D7D7;
+	border-radius: 3PX;
+	resize: none;
+}
+
+.fileupload {
+	display: inline-block;
+	width: 150px;
+	height: 150px;
+	background: url(../images/upload.png) no-repeat center;
+	background-size: 100px 100px;
+	position: relative;
+}
+
+.fileupload input[type=file] {
+	position: absolute;
+	width: 120px;
+	height: 150px;
+	left: 15px;
+	top: 0;
+	cursor: pointer;
+	opacity: 0;
+	z-index: 5;
+}
+
+.fileupload a {
+	position: absolute;
+	z-index: 1;
+	bottom: 5px;
+	display: block;
+	width: 100%;
+	text-align: center;
+}
+
+.imageBox {
+	display: inline-block;
+}
+
+.singleImg {
+	display: inline-block;
+	width: 200px;
+	/*height: 200px;*/
+	margin-left: 15px;
+	margin-bottom: 6px;
+	position: relative;
+}
+
+.singleImg .removeImg {
+	position: absolute;
+	background: white;
+	width: 65px;
+	height: 26px;
+	line-height: 26px;
+	font-size: 12px;
+	right: 2px;
+	bottom: 2px;
+	opacity: 1;
+	text-align: center;
+	border-radius: 10px;
+	border: 2px gray;
+	cursor: pointer;
+	color: red;
+}

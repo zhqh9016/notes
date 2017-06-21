@@ -1,0 +1,633 @@
+---
+swagger: "2.0"
+
+info:
+  version: v1
+  title: 系统管理微服务
+  description: 系统管理相关微服务
+
+basePath: /api/v1
+schemes:
+- http
+produces:
+- application/json
+consumes:
+- application/json
+
+tags:
+- name: userManage
+  description: 用户管理
+- name: roleManage
+  description: 角色管理
+- name: resManage
+  description: 资源管理
+- name: dictionaryManage
+  description: 字典管理
+- name: organizationManage
+  description: 机构部门管理
+- name: areaManage
+  description: 区域管理
+- name: rRoleResManage
+  description: 角色资源关系管理
+- name: diseaseManage
+  description: 病种查询管理
+  
+paths:
+
+  /users/list:
+    $ref: v1/user/get-list.yml
+  /users:
+    $ref: v1/user/post-put.yml
+  /user/{id}:
+    $ref: v1/user/get-by-id.yml
+  /users/{userName}:
+    $ref: v1/user/get-by-username.yml
+  /users/{id}:
+    $ref: v1/user/delete.yml
+    
+  /roles/list:
+    $ref: v1/role/role-object.yml
+  /role:
+    $ref: v1/role/role-save-object.yml
+  /role/{id}:
+    $ref: v1/role/role-delete-object.yml
+  /role/RUserRole:
+    $ref: v1/role/role-user-object.yml
+  /rUserRole:
+    $ref: v1/role/role-user-select-object.yml
+  /role/roleName:
+    $ref: v1/role/role-name-select.yml
+    
+  /ress:
+    $ref: v1/res/res-save-object.yml
+  /ress/{id}:
+    $ref: v1/res/res-put-object.yml
+  /ress/{parentId}:
+    $ref: v1/res/res-select-object.yml
+  /rRoleRes/{roleId}:
+    $ref: v1/res/get-put.yml
+  /rRoleRes/res/{resId}:
+    $ref: v1/res/get-object.yml
+  /ress/all:
+    $ref: v1/res/get-multi-object.yml
+    
+  /dictionary:
+    $ref: v1/dictionary/dictionary-select-object.yml
+  /new/dictionary:
+    $ref: v1/dictionary/dictionary-add-object.yml
+  /diffrence/dictionary:
+    $ref: v1/dictionary/dictionary-update-object.yml
+  /dictionary/{id}/user/{operatedBy}:
+    $ref: v1/dictionary/dictionary-delete-object.yml
+#  /dictionary/{id}/operatedBy/{operatedBy}:
+#    $ref: v1/dictionary/dictionary-recover-object.yml
+   
+  /organization/list:
+    $ref: v1/organization/get.yml
+  /organization/{id}:
+    $ref: v1/organization/get-delete-by-id.yml
+  /organization/getByName:
+    $ref: v1/organization/get-by-name.yml
+  /organization/getByCode:
+    $ref: v1/organization/get-by-code.yml  
+  /organization/getBySocOrgCode:
+    $ref: v1/organization/get-by-socOrgCode.yml  
+  /organization/{orgid}:
+    $ref: v1/organization/update-object.yml
+  /organization:
+    $ref: v1/organization/post.yml
+  
+  /area/{id}:
+    $ref: v1/area/get-by-id.yml
+  /area/getByParentid:
+    $ref: v1/area/get-by-parentid.yml
+
+  /menu/list/{userId}:
+    $ref: v1/res/get-by-userid.yml
+  /menu/list:
+    $ref: v1/res/get-by-menu.yml
+    
+  /disease/list:
+    $ref: v1/disease/get-by-name.yml    
+    
+definitions:
+  ResultDTO: 
+    type: object 
+    description: 结果基本信息
+    properties: 
+        status: 
+          type: integer
+          format: int32
+          description: 状态码
+          example: 200
+        datas: 
+          type: object 
+          description: 结果信息
+          example: xxx
+        message: 
+          type: string 
+          description: 结果状态描述
+  
+  DictionaryDTO: 
+    type: object
+    description: 字典表信息
+    properties: 
+        id:
+          type: string 
+          description: 主键id
+          example: 1254258652142548
+        type: 
+          type: string    
+          description: 类型值
+          example: xx
+        typeName: 
+          type: string    
+          description: 类型名称
+          example: xx
+        value: 
+          type: string    
+          description: 属性值
+          example: xx
+        valueName: 
+          type: string    
+          description: 属性名称
+          example: xx  
+        isValid: 
+          type: integer
+          format: int32
+          description: 是否有效
+          example: 1：有效，0：无效
+          
+  PageResultDTO:
+    type: object
+    description: 分页信息
+    properties:
+        status: 
+          type: integer
+          format: int32
+          description: 状态码
+          example: 200
+        message: 
+          type: string 
+          description: 结果状态描述
+        page:
+          type: integer
+          format: int32
+          description: 当前页码
+          example: 1
+        pageSize:
+          type: integer
+          format: int32
+          description: 每页显示件数
+          example: 1
+        totalDataNum:
+          type: integer
+          format: int32
+          description: 总件数
+          example: 10
+        totalPageNum:
+          type: integer
+          format: int32
+          description: 总页数
+          example: 10
+        datas:
+          type: object
+          description: 结果信息
+          example: xxx
+          
+  UserDTO:
+    type: object
+    description: 用户基本信息
+    properties:
+        id:
+          type: string 
+          description: id
+          example: "1"
+        createTime:
+          type: string 
+          description: 创建时间
+          example: "2017-03-13 11:00"
+          
+        operatedTime:
+          type: string 
+          description: 经办时间
+          example: "2017-03-13 11:00"
+          
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "李悦华"
+        createdOrg:
+          type: string 
+          description: 创建机构
+          example: "1"
+        operatedBy:
+          type: string 
+          description: 经办人
+          example: "李悦华"
+        operatedOrg:
+          type: string 
+          description: 经办机构
+          example: "1"
+        siArea:
+          type: string 
+          description: 统筹区
+          example: "1"
+        isValid:
+          type: integer
+          format: int32
+          description: 是否删除状态(1:删除 0:未删除)
+          example: 0
+        departmentid:
+          type: string 
+          description: 所属部门ID
+          example: "1"
+        department:
+          $ref: "#/definitions/OrganizationDTO"
+          description: 所属组织
+        mobile:
+          type: string 
+          description: 手机号码
+          example: "15001158594"
+        telephone:
+          type: string 
+          description: 电话号码
+          example: "010-12345678"
+        email:
+          type: string 
+          description: 邮箱地址
+          example: "790768299@qq.com"
+        password:
+          type: string 
+          description: 密码（密码+随机盐）MD5
+          example: "1234567789"
+        salt:
+          type: string 
+          description: 随机盐
+          example: "123456"
+        userName:
+          type: string 
+          description: 用户名
+          example: "yuehua"
+        trueName:
+          type: string 
+          description: 真实姓名
+          example: "李悦华"
+        sex:
+          type: integer
+          format: int32
+          description: 性别(1为男、0为女、-1为保密)
+          example: 0
+        sequence:
+          type: integer
+          format: int32
+          description: 排序号
+          example: 1
+        isAuthority:
+          type: integer
+          format: int32
+          description: 是否对大屏监控有访问权限
+          example: 1
+
+  RUserRoleDTO:
+    type: object
+    description: 角色用户关系
+    properties:
+        userId:
+          type: string 
+          description: 用户id
+          example: "79bd2154deb7483a81bd8e7da55b9afa"
+        roleId:
+          type: string 
+          description: 角色id
+          example: "79bd2154deb7483a81bd8e7da55b9afa"
+          
+  RoleDTO:
+    type: object
+    description: 角色信息
+    properties:
+        id:
+          type: string 
+          description: id
+          example: "1"
+        createTime:
+          type: string 
+          description: 创建时间
+          format: date-time
+          example: "2017-03-13 11:00"
+          
+        updateTime:
+          type: string 
+          description: 修改时间
+          format: date-time
+          example: "2017-03-13 11:00"
+          
+        createBy:
+          type: string 
+          description: 创建人
+          example: "姓名"
+        updateBy:
+          type: string 
+          description: 修改人
+          example: "姓名"
+        isValid:
+          type: integer
+          format: int32
+          description: 是否删除状态(1:删除 0:未删除)
+          example: 0   
+        roleDescribe:
+          type: string 
+          description: 角色描述
+        roleCode:
+          type: string 
+          description: 角色编码
+        roleName:
+          type: string 
+          description: 角色名称
+        sequence:
+          type: integer
+          format: int32
+          description: 排序号   
+
+  ResDTO:
+    type: object
+    description: 资源信息
+    properties:
+        id:
+          type: string 
+          description: id
+          example: "1"
+        parentId:
+          type: string 
+          description: 父级id 顶级=0
+        resName:
+          type: string 
+          description: 资源名称
+        description:
+          type: string 
+          description: 资源描述
+        url:
+          type: string 
+          description: 资源链接
+        sequence:
+          type: string 
+          description: 资源显示顺序
+        isMenu:
+          type: integer
+          format: int32
+          description: 是否是菜单(1-是 0-否)
+        isValid:
+          type: integer
+          format: int32
+          description: 是否删除状态(1:删除 0:未删除)
+          example: 0
+        createBy:
+          type: string 
+          description: 创建人
+          example: "姓名"
+        updateBy:
+          type: string 
+          description: 修改人
+          example: "姓名"
+        roleRess:
+          type: array
+          items:
+            $ref: "#/definitions/RRoleResDTO"
+  RRoleResDTO:
+    type: object
+    description: 角色资源关系信息
+    properties:
+        roleId:
+          type: string 
+          description: 角色id
+          example: "1"
+        resId:
+          type: string 
+          description: 资源id
+          example: "1"
+  OrganizationDTO:
+    type: object
+    description: 组织信息
+    properties:
+        id:
+          type: string 
+          description: id
+          example: "1"
+        children: 
+          type: object 
+          description: 结果信息
+          example: xxx
+        parentid:
+          type: string 
+          description: 父级id 顶级=0
+        code:
+          type: string 
+          description: 组织编码
+        socOrgCode:
+          type: string 
+          description: 对应社保组织编码
+        name:
+          type: string 
+          description: 组织名称
+        description:
+          type: string 
+          description: 组织描述
+        sequence:
+          type: integer
+          format: int32
+          description: 资源显示顺序
+        isOrg:
+          type: integer
+          format: int32
+          description: 机构和部门标识(1:机构 2:组织)
+        isValid:
+          type: integer
+          format: int32
+          description: 是否删除状态(1:删除 0:未删除)
+          example: 0
+        provinceid:
+          type: string 
+          description: 省ID
+        provinceName:
+          type: string 
+          description: 省名称
+        cityid:
+          type: string 
+          description: 市ID
+        cityName:
+          type: string 
+          description: 市名称
+        countyid:
+          type: string 
+          description: 区县ID
+        countyName:
+          type: string 
+          description: 区县名称
+        street:
+          type: string 
+          description: 街道信息
+        phone:
+          type: string 
+          description: 联系电话
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "姓名"
+        operatedBy:
+          type: string 
+          description: 修改人
+          example: "姓名"
+        createdTime:
+          type: string 
+          description: 创建时间
+          example: "2017-03-13 11:00"
+          
+        operatedTime:
+          type: string 
+          description: 修改时间
+          example: "2017-03-13 11:00"
+          
+  AreaDTO:
+    type: object
+    description: 区域信息
+    properties:
+        id:
+          type: string 
+          description: id
+          example: "1"
+        parent:
+          type: object
+          description: 上级区域信息
+          example: "areaDTO"
+        parentid:
+          type: string 
+          description: 上级区域id 顶级=0
+        level:
+          type: integer
+          format: int32
+          description: 级别
+        areaName:
+          type: string 
+          description: 区域名称
+        common:
+          type: integer
+          format: int32
+          description: 是否常用区域(1:是 0:否)
+        sequence:
+          type: integer
+          format: int32
+          description: 排序
+        isValid:
+          type: integer
+          format: int32
+          description: 是否有效(1:有效 0:无效)
+          example: 0
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "姓名"
+        operatedBy:
+          type: string 
+          description: 修改人
+          example: "姓名"
+        createdTime:
+          type: string 
+          description: 创建时间
+          example: "2017-03-13 11:00"
+          
+        operatedTime:
+          type: string 
+          description: 修改时间
+          example: "2017-03-13 11:00"
+          
+          
+  RestResponseDTO: 
+    type: object 
+    description: 结果基本信息
+    properties: 
+        businessSerialid: 
+          type: string 
+          description: 流水号
+          example: xxxx-xxxx-xxxx-xxxx
+        data: 
+          type: object 
+          description: 参数信息
+          example: xxx
+        timestamp: 
+          type: string 
+          description: 时间戳
+          
+  TodoListDTO:
+    type: object
+    description: 代办任务表基本信息
+    properties:
+        todoListid:
+          type: string 
+          description: 待办任务表ID
+          example: "asdasd"
+        todoListCode:
+          type: string 
+          description: 待办任务表编号
+          example: "123123"
+        title:
+          type: string 
+          description: 标题
+          example: "标题"
+        url:
+          type: string 
+          description: url
+          example: "http://localhost..."
+        type:
+          type: string 
+          description: 类型（待办、提醒）
+          example: "0"
+        receiveCharactar:
+          type: string 
+          description: 接收角色
+          example: "0"
+        administrativeRegion:
+          type: string 
+          description: 行政区域
+          example: "123123"
+        jumpWay:
+          type: string 
+          description: 跳转方式
+          example: "target"
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "张三"
+        createdTime:
+          type: string 
+          description: 创建时间
+          example: "2012-12-12 12:00:00"
+          
+        createdOrg:
+          type: string 
+          description: 创建机构
+          example: "泰康人寿"
+        isValid:
+          type: integer
+          format: int32
+          description: 是否有效标志
+          example: "1"
+        businessCode:
+          type: string 
+          description: 业务code
+          example: "122"
+        businessType:
+          type: string 
+          description: 业务类型
+          example: "01"
+        ip:
+          type: string 
+          description: 前台ip
+          example: "http:"
+        port:
+          type: string 
+          description: 前台端口号
+          example: "8080"
+        uri:
+          type: string 
+          description: 前台页面uri
+          example: "a/b/"

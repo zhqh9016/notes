@@ -1,0 +1,42 @@
+put: 
+  tags:
+  - nursingTask
+  summary: 选择最终护理机构接口
+  description: 选择最终护理机构接口
+  operationId: updateNursingTaskFinalAgency
+  parameters:
+  - name: nursingTaskCodes
+    in: formData
+    description: 护理任务编号，可以是多个，但是需要用逗号分隔，例：9472b12f484a434083c3fbb4369c05a0
+    required: true
+    type: string
+  - name: finalAgencyCode 
+    in: formData
+    description: 护理机构Code
+    required: true
+    type: string
+  - name: finalAgencyName 
+    in: formData
+    description: 护理机构名称
+    required: true
+    type: string
+  - name: applyType
+    in: formData
+    description: 申办类型
+    required: true
+    type: string
+  - name: isRelativeCared 
+    in: formData
+    description: 是否亲属照顾
+    required: true
+    type: string
+  responses:
+    201: 
+      description: 选择最终护理机构成功
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 选择最终护理机构失败
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+ 

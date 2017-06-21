@@ -1,0 +1,28 @@
+post:
+  tags:
+  - todoList
+  summary: 删除待办提醒接口
+  description: 通过业务code[测试code],业务类型[测试类型]删除指定代办信息
+  operationId: deleteTodoList
+  parameters:
+  - name: businessCode
+    in: formData
+    description: 业务code
+    required: true
+    type: string
+  - name: businessType
+    in: formData
+    description: 业务类型
+    required: true
+    type: string
+  responses:
+    200:
+      description: 编辑成功
+      schema:
+        $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"
+
+        

@@ -1,0 +1,133 @@
+put:
+  summary: 编辑目录
+  description: 返回数值类型（大于0为成功）。
+  operationId: updateItem
+  parameters:
+  - name: id
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: 服务目录ID
+  - name: createdBy
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: 创建人
+  - name: serviceName
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: 服务项目名称
+  - name: serviceType
+    in: formData
+    type: integer
+    format: int64
+    required: true
+    description: 服务项目类别
+  - name: chargeType
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: 费用类别
+  - name: chargeLevel
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: 收费项目等级
+  - name: frequency
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: 服务频次
+  - name: taskTime
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: 服务项目持续时间
+  - name: description
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: 服务项目描述
+  - name: startTime
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: 生效开始时间
+  - name: endTime
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: 生效结束时间
+  - name: operatedTime
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: 经办时间
+  - name: price
+    in: formData
+    type: integer
+    format: int64
+    required: true
+    description: 单价
+  - name: limitPrice
+    in: formData
+    type: integer
+    format: int64
+    required: true
+    description: 最高限价
+  - name: siArea
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: 统筹区
+  - name: payType
+    in: formData
+    type: integer
+    format: int32
+    required: true
+    description: 付费方式
+  - name: operatedBy
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: 经办人(登录系统人员)
+  - name: operatedOrg
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: 经办机构
+  - name: createdOrg
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: 创建机构
+  tags:
+  - serviceItemManage
+  responses:
+    200:
+      description: 编辑目录成功
+      schema:
+        type: array
+        items:
+          $ref: "../../ltci-system-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"
+        

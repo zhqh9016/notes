@@ -1,0 +1,511 @@
+<html>
+
+<head>
+    <title>护理目录</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="renderer" content="webkit" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/common.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/detailStyle.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/tablefrom.css" type="text/css" />
+</head>
+
+<body>
+    <div id="app" style="height:100%;">
+        <table width="100%" id="userList" toolbar="#userListtb">
+        </table>
+        <div id="userListtb" style="padding:3px; height: auto">
+            <div name="searchColums" id="searchColums">
+                <input id="isShowSearchId" type="hidden" value="false" />
+                <input id="_sqlbuilder" name="sqlbuilder" type="hidden" />
+                <form id="userListForm">
+                    <span class="inputLable">
+                        <span class="inputLableText" title="name">服务项目编码：</span>
+                    <input type="text" class="inuptxt" name="serviceCodes" />
+                    </span>
+                    <span class="inputLable">
+                        <span class="inputLableText" title="name">服务项目名称：</span>
+                    <input type="text" class="inuptxt" name="serviceNames" />
+                    </span>
+                    <span class="inputLable">
+                        <span class="inputLableText" title="name">服务项目类型：</span>
+                    <input type="text" id="serviceType" data-dictionary="serviceType" name="serviceTypes" class="easyui-combobox dictionary query-condition" />
+                    </span>
+                    <span class="inputLable">
+                        <span class="inputLableText" title="name">收费项目等级：</span>
+                    <input type="text" id="chargeLevel" data-dictionary="chargeLevel" name="chargeLevels" class="easyui-combobox dictionary query-condition" />
+                    </span>
+                    <span class="inputLable">
+                        <span class="inputLableText" title="name">费用类别：</span>
+                    <input type="text" id="chargeType" data-dictionary="chargeType" name="chargeTypes" class="easyui-combobox dictionary query-condition" />
+                    </span>
+                    <span class="inputLable">
+                        <span class="inputLableText" title="name">有效标识：</span>
+                    <input type="text" id="isValid" data-dictionary="isValid" name="isValids" class="easyui-combobox dictionary query-condition" />
+                    </span>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-search" onclick="doSearch()">查询</a>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-reload" onclick="resetSearch()">重置</a>
+                </form>
+            </div>
+            <div style="height:30px;" class="datagrid-toolbar">
+                <span style="float:left;">
+                <a href="#" class="easyui-linkbutton" plain="true" icon="icon-add" onclick="doOpenAdd()">添加</a>
+                <a href="#" class="easyui-linkbutton" plain="true" icon="icon-edit" onclick="doOpenEdit()">编辑</a>
+                <a href="#" class="easyui-linkbutton" plain="true" icon="icon-remove" onclick="doDelete()">删除</a>
+                </span>
+            </div>
+        </div>
+        <div style="display:none;">
+            <div id="addWindow" class="easyui-window">
+                <form id="addForm">
+                    <table style="width: 500px;" cellpadding="0" cellspacing="1" class="formtable">
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 服务项目类型: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="serviceType" data-dictionary="serviceType" name="serviceType" class="easyui-combobox dictionary" />
+                            </td>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 服务项目名称: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" class="easyui-validatebox" id="serviceName" name="serviceName" data-options="required:true,validType:'name'" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 费用类别: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="chargeType" data-dictionary="chargeType" name="chargeType" class="easyui-combobox dictionary" />
+                                <!--<input type="text" class="easyui-combobox dictionary" id="chargeType" name="chargeType" />-->
+                            </td>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 收费项目等级: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="chargeLevel" data-dictionary="chargeLevel" name="chargeLevel" class="easyui-combobox dictionary" />
+                                <!--<input type="text" name="chargeLevel" id="chargeLevel" class="easyui-combobox dictionary"/>-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 服务频次: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="frequency" name="frequency" class="easyui-validatebox" data-options="required:true" />
+                            </td>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 服务项目持续时间: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="taskTime" name="taskTime" class="easyui-validatebox" data-options="required:true" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 服务项目描述: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="description" name="description" class="easyui-validatebox" data-options="required:true" />
+                            </td>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 单价（元）: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="price" name="price" class="easyui-validatebox" data-options="required:true,validType:'intOrFloatPrice'" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 生效开始时间: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="startTime_date" name="startTime" class="Wdate" data-options="required:true,validType:'date'" onfocus="WdatePicker({minDate:'%y-%M-%d'})" />
+                            </td>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 生效结束时间: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="endTime_date" name="endTime" data-options="required:true,validType:'date'" class="Wdate" onClick="WdatePicker({minDate:'%y-%M-{%d+1}'})" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable"><span class="Validform_label"> 最高限价（元）: </span></td>
+                            <td class="value">
+                                <input type="text" id="limitPrice" name="limitPrice" class="easyui-validatebox" data-options="required:true,validType:'intOrFloatPrice'" />
+                            </td>
+                            <td align="right" class="lable"><span class="Validform_label">统筹区:</span></td>
+                            <td class="value">
+                                <input type="text" id="siArea" data-dictionary="siArea" name="siArea" class="easyui-combobox dictionary" class="easyui-validatebox" data-options="required:true" />
+                                <!--<input type="text" name="type" class="easyui-combobox dictionary" />-->
+                            </td>
+                        </tr>
+                    </table>
+                    <div style="text-align: right; margin-top: 8px; margin-right: 10px">
+                        <a href="#" class="easyui-linkbutton" onclick="doAdd()">保存</a>
+                        <a href="#" class="easyui-linkbutton" onclick="doClose('addWindow')">取消</a>
+                    </div>
+                </form>
+            </div>
+            <div id="editWindow">
+                <form id="editForm">
+                    <input type="hidden" id="id" name="id" />
+                    <table style="width: 500px;" cellpadding="0" cellspacing="1" class="formtable">
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 服务项目编码: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="serviceCode" name="serviceCode" readonly unselectable="on" />
+                            </td>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 服务项目类别: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="serviceType" data-dictionary="serviceType" name="serviceType" class="easyui-combobox dictionary" />
+                                <!--<input type="text" id="serviceType" name="serviceType1" class="easyui-combobox dictionary query-condition"  />-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 服务项目名称: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="serviceNames" name="serviceName" class="easyui-validatebox" data-options="required:true" />
+                            </td>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 费用类别: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="chargeType" data-dictionary="chargeType" name="chargeType" class="easyui-combobox dictionary" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 收费项目等级: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" name="chargeLevel" id="chargeLevel" data-dictionary="chargeLevel" class="easyui-combobox dictionary" />
+                            </td>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 服务频次: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="frequencys" name="frequency" class="easyui-validatebox" data-options="required:true" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 服务项目持续时间: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="taskTimes" name="taskTime" class="easyui-validatebox" data-options="required:true" />
+                            </td>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 服务项目描述: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="descriptions" name="description" class="easyui-validatebox" data-options="required:true" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 生效开始时间: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="startTimes_date" name="startTime" class="Wdate" onfocus="WdatePicker()" class="easyui-validatebox" data-options="required:true" />
+                            </td>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 生效结束时间: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="endTimes_date" name="endTime" class="Wdate" onClick="WdatePicker()" class="easyui-validatebox" data-options="required:true" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 单价（元）: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="prices" name="price" class="easyui-validatebox" data-options="required:true,validType:'intOrFloatPrice'" />
+                            </td>
+                            <td align="right" class="lable"><span class="Validform_label"> 最高限价（元）: </span></td>
+                            <td class="value">
+                                <input type="text" id="limitPrices" name="limitPrice" class="easyui-validatebox" data-options="required:true,validType:'intOrFloatPrice'" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable"><span class="Validform_label">统筹区:</span></td>
+                            <td class="value">
+                                <input type="text" id="siArea" data-dictionary="siArea" name="siArea" class="easyui-combobox dictionary" />
+                            </td>
+                            <td align="right" class="lable"><span class="Validform_label"></span></td>
+                            <td class="value">
+                                <input type="hidden" />
+                            </td>
+                        </tr>
+                    </table>
+                    <div style="text-align: right; margin-top: 8px; margin-right: 10px">
+                        <a href="#" class="easyui-linkbutton" onclick="doUpdate()">更新</a>
+                        <a href="#" class="easyui-linkbutton" onclick="doClose('editWindow')">取消</a>
+                    </div>
+                </form>
+            </div>
+            <!--    <div id="roleWindow">
+                    <input type="hidden" id="role_userId" name="id" />
+                    <a href="#" class="easyui-linkbutton" onclick="doRoleSave()">保存</a>
+                    <a href="#" class="easyui-linkbutton" onclick="doClose('roleWindow')">取消</a>
+                    <ul id="roleTree" class="easyui-tree"></ul>
+                </div>
+
+                <div id="orgWindow">
+                    <ul id="orgTree" class="easyui-tree"></ul>
+                </div>
+            -->
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../../js/util/WdatePicker.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/validate.js"></script>
+<script type="text/javascript" src="../../js/basisMessage/nurseDirectory.js"></script>
+<script>
+$(function() {
+    $("#Type").hide();
+    $("#Tip").hide();
+});
+$('#addWindow').window({
+    title: '新增目录',
+    width: 600,
+    height: 330,
+    closed: true,
+    modal: true,
+    collapsible: false,
+    minimizable: false,
+    maximizable: false
+
+});
+$('#editWindow').window({
+    title: '编辑目录',
+    width: 600,
+    height: 360,
+    closed: true,
+    modal: false,
+    collapsible: false,
+    minimizable: false,
+    maximizable: false
+});
+
+
+function doSearch() {
+    var isValid = "1";
+    if ($("input[name=isValids]").val()) {
+        isValid = $("input[name=isValids]").val();
+    }
+    TableObj.page = 1;
+    TableObj.pageSize = 10;
+    TableObj.query = { //查询条件
+        serviceCode: $("input[name=serviceCodes]").val(), //机构名称
+        serviceName: $("input[name=serviceNames]").val(), //定点机构类别
+        serviceType: $("input[name=serviceTypes]").val(), //$("input[name=agencyServiceType]").val(),//定点服务机构类型
+        chargeLevel: $("input[name=chargeLevels]").val(), //$("input[name=agencyType]").val(),//机构类型（多个逗号分隔）
+        chargeType: $("input[name=chargeTypes]").val(), //$("input[name=agencyState]").val(),//确认状态
+        isValid: isValid, //经办开始日期
+        page: TableObj.page,
+        pageSize: TableObj.pageSize,
+    };
+    loadGridData();
+}
+
+/*function doLoading() {
+    var isValid = "1";
+    if($("input[name=isValids]").val()) {
+        isValid = $("input[name=isValids]").val();
+    }
+    var obj = {
+        serviceCode: $("input[name=serviceCodes]").val(), //机构名称
+        serviceName: $("input[name=serviceNames]").val(), //定点机构类别
+        serviceType: $("input[name=serviceTypes]").val(), //$("input[name=agencyServiceType]").val(),//定点服务机构类型
+        chargeLevel: $("input[name=chargeLevels]").val(), //$("input[name=agencyType]").val(),//机构类型（多个逗号分隔）
+        chargeType: $("input[name=chargeTypes]").val(), //$("input[name=agencyState]").val(),//确认状态
+        isValid: isValid, //经办开始日期
+        page: TableObj.page,
+        pageSize: TableObj.pageSize
+    };
+    url = portalServiceUrl + "/api/v1/serviceItem/list";
+    sendAjax(url, "post", obj, function(data) {
+        gridLoadData('userList', data);
+
+    }, fun ction(er ror) {
+        $.messager.alert('警告', '列表数据加载失败！');
+    });
+}*/
+
+//跳转到添加页面
+function doOpenAdd() {
+    $('#addForm input').val('');
+    loadDictionary();
+    $('#addWindow').window('open');
+}
+//添加目录
+function doAdd() {
+    if ($("#startTime_date").val() !== "" && $("#endTime_date").val() !== "") {
+        if (Date.parse($("#startTime_date").val()) > Date.parse($("#endTime_date").val())) {
+            $.messager.alert('提示', '开始日期不能大于终止日期。');
+            return false;
+        } else {
+            if ($("#addForm").form("validate")) {
+                if (!$("input[name=serviceType]").val()) {
+                    $.messager.alert('警告', '请选择服务项目类型');
+                    return false;
+                }
+                if ($("input[name=chargeType]").val() === "") {
+                    $.messager.alert('警告', '请选择费用类别');
+                    return false;
+                }
+                if ($("input[name=chargeLevel]").val() === "") {
+                    $.messager.alert('警告', '请选择收费项目等级');
+                    return false;
+                }
+                if ($("input[name=siArea]").val() === "") {
+                    $.messager.alert('警告', '请选择统筹区');
+                    return false;
+                }
+                url = portalServiceUrl + "/api/v1/serviceItem";
+                sendAjax(url, "post", $("#addForm").serialize(), function(tableData) {
+                    if (tableData.status != "200") {
+                        $.messager.alert('添加状态', tableData.message);
+                        return false;
+                    }
+                    showMsg("目录添加成功！");
+                    $('#addWindow').window('close');
+                    loadGridData();
+                });
+            }
+
+        }
+    } else {
+        if ($("#startTime_date").val() === "") {
+            $.messager.alert('警告', '开始时间不能为空');
+            return false;
+        }
+        if ($("#endTime_date").val() === "") {
+            $.messager.alert('警告', '结束时间不能为空');
+            return false;
+        }
+    }
+
+}
+//删除目录
+function doDelete(event) {
+    if (isCheck()) {
+        $.messager.confirm('确认', '您确认想要删除记录吗？', function(r) {
+            if (r) {
+                var isValid = TableObj.rowData.isValid;
+                if (isValid !== 0) {
+                    var rowid = TableObj.rowData.id;
+                    url = portalServiceUrl + "/api/v1/item/" + rowid;
+                    sendAjax(url, "delete", "", function(successdata) {
+                        if (successdata.status != '200') {
+                            $.messager.alert('删除状态', successdata.message);
+                        } else {
+                            showMsg("信息删除成功！");
+                            loadGridData();
+                        }
+                    });
+                } else {
+                    $.messager.alert('删除状态', "不能删除无效数据");
+                }
+            }
+        });
+    }
+
+}
+
+//维护目录反显
+function doOpenEdit() {
+    if (isCheck()) {
+        var rowid = TableObj.rowData.id;
+        url = portalServiceUrl + "/api/v1/items/" + rowid;
+        sendAjax(url, "get", "", function(successdata) {
+            if (successdata.status != "200") {
+                $.messager.alert('警告', successdata.message);
+                return false;
+            }
+            var datas = successdata.datas;
+            $("input[name=id]").val(datas.id);
+            $("input[name=serviceCode]").val(datas.serviceCode);
+            //$("input[name=serviceType1]").combobox('setValue',datas.serviceType);
+            $("input[name=serviceType]").val(datas.serviceType); //服务项目类别下拉框
+            $("input[name=serviceName]").val(datas.serviceName);
+            $("input[name=chargeType]").val(datas.chargeType); //下拉框
+            $("input[name=chargeLevel]").val(datas.chargeLevel); //下拉框
+            $("input[name=frequency]").val(datas.frequency);
+            $("input[name=taskTime]").val(datas.taskTime);
+            $("input[name=description]").val(datas.description);
+            $("input[name=startTime]").val(datas.startTime);
+            $("input[name=endTime]").val(datas.endTime);
+            $("input[name=price]").val(datas.price);
+            $("input[name=limitPrice]").val(datas.limitPrice);
+            $("input[name=siArea]").val(datas.siArea); //下拉框
+            comboboxSelected(); //同步下拉框和value
+            $('#editWindow').window('open');
+        });
+    }
+
+}
+//修改保存按钮
+function doUpdate() {
+    if ($("#startTimes_date").val() !== "" && $("#endTimes_date").val() !== "") {
+        if (Date.parse($("#startTimes_date").val()) > Date.parse($("#endTimes_date").val())) {
+            $.messager.alert('提示', '开始日期不能大于终止日期。');
+            return false;
+        }
+    }
+    if ($("#editForm").form("validate")) {
+        var url = portalServiceUrl + "/api/v1/service/item";
+        sendAjax(url, "put", $("#editForm").serialize(), function(successdata) {
+            if (successdata.status != "200") {
+                $.messager.alert('警告', successdata.message);
+                return false;
+            }
+            $('#editWindow').window('close');
+            showMsg("信息编辑成功！");
+            loadGridData();
+        });
+    }
+
+}
+//重置清空
+function resetSearch() {
+    $('#userListForm input').val('');
+    loadDictionary();
+}
+
+//取消按钮
+function doClose(id) {
+    $('#' + id).window('close');
+    $('#addForm input').val('');
+}
+//公用警告
+function isCheck() {
+    var arr = $('#userList').datagrid('getChecked');
+    if (arr.length < 1) {
+        $.messager.alert('警告', '请选择一行数据再进行操作');
+        return false;
+    }
+    return true;
+}
+</script>
+
+</html>

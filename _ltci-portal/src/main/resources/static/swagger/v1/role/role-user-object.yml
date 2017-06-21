@@ -1,0 +1,26 @@
+    put:
+      summary: 更新用户角色关系
+      description: 返回数值类型（大于0为成功）。
+      operationId: updateRUserRole
+      parameters:
+        - name: userId
+          in: formData
+          type: String
+          format: String
+          required: true
+          description: 用户ID
+        - name: roleId
+          in: formData
+          type: String
+          format: String
+          required: true
+          description: 角色ID[多个逗号分隔]
+      tags:
+      - roleManage
+      responses:
+        200:
+          description: 更新用户角色关系成功
+        default:
+          description: 其他错误
+          schema:
+            $ref: "../../ltci-portal-api-v1.yml/#/definitions/Response"

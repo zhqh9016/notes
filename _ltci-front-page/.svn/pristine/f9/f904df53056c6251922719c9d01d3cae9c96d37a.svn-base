@@ -1,0 +1,195 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/common.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/detailStyle.css" type="text/css" />
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div id="app" style="height: 100%;width: 100%;border: none;">
+        <table width="100%" id="userList" toolbar="#userListtb">
+        </table>
+        <div id="userListtb" style="padding:3px; height: auto">
+            <div name="searchColums" id="searchColums">
+                <input id="isShowSearchId" type="hidden" value="false" />
+                <input id="_sqlbuilder" name="sqlbuilder" type="hidden" />
+                <form id="userListForm">
+                    <span class="inputLable">
+							<span class="inputLableText">参保人：</span>
+                    <input type="text" name="beCarePersonName" class="inuptxt" />
+                    </span>
+                    <span class="inputLable">
+							<span class="inputLableText">身份证号码：</span>
+                    <input type="text" id="beCarePersonCard" name="beCarePersonCard" class="inuptxt easyui-validatebox" data-options="validType:'idCard'" />
+                    </span>
+                    <span class="inputLable">
+							<span class="inputLableText">护理机构：</span>
+                    <input type="text" name="orgName" class="inuptxt" />
+                    </span>
+                    <span class="inputLable">
+							<span class="inputLableText">经办时间：</span>
+                    <input name="operatedTime" type="text" class="WdatePicker" editable="false" />
+                    </span>
+                    <span class="inputLable">
+							<span class="inputLableText">人员状态：</span>
+                    <input type="text" id="inHospState" data-dictionary="inHospState" name="inHospState" class="easyui-combobox dictionary query-condition" />
+                    </span>
+                    <span class="inputLable"><span class="inputLableText">
+						<a href="#" class="easyui-linkbutton" iconcls="icon-search" onclick="doSearch()">查询</a>
+						<a href="#" class="easyui-linkbutton" iconcls="icon-search" onclick="resetSearch()">重置</a>
+						</span></span>
+                </form>
+            </div>
+            <!--<div style="height:30px;" class="datagrid-toolbar">
+					<span style="float:left;">
+				<a href="#" class="easyui-linkbutton" plain="true" icon="icon-putout" onclick="">批量标记为已通知</a>
+			</span>
+				</div>-->
+        </div>
+    </div>
+    <div style="display: none;">
+        <div id="realOutDateBox" style="margin: 8px;">
+            <div>
+                请选择退出时间：
+                <input name="realOutDate" type="text" class="WdatePicker" />
+            </div>
+            <div style="margin: 20px;">
+                <a href="#" class="easyui-linkbutton" iconcls="icon-search" onclick="quitWithOutDate()">确认退出</a>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/util/WdatePicker.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../../js/validate.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/treatmentApply/protocolManager.js"></script>
+<script type="text/javascript" src="../../js/treatmentApply/treatmentCommon.js"></script>
+<script>
+$('#realOutDateBox').window({
+    title: '协议退出时间',
+    width: 500,
+    height: 300,
+    minimizable: false,
+    collapsible: false,
+    closed: true,
+    modal: true
+});
+
+function doSearch() {
+    if (!$("#beCarePersonCard").validatebox("isValid")) {
+        $.messager.alert('警告', "请输入正确格式的身份证！");
+        return;
+    }
+    TableObj.page = 1;
+    TableObj.pageSize = 10;
+    doLoading();
+}
+
+function doLoading() {
+    var obj = {
+        beCarePersonName: $("input[name=beCarePersonName]").val(),
+        beCarePersonCard: $("input[name=beCarePersonCard]").val(),
+        orgName: $("input[name=orgName]").val(),
+        inHospState: $("input[name=inHospState]").val(),
+        operatedTime: $("input[name=operatedTime]").val(),
+        page: TableObj.page,
+        pageSize: TableObj.pageSize
+    };
+    var url = portalServiceUrl + "/api/v1/checkIn";
+    sendAjax(url, "post", obj, function(data) {
+        gridLoadData('userList', data);
+    });
+}
+
+function resetSearch() {
+    $('#userListForm input').val('');
+    loadDictionary();
+}
+
+function isCheck() {
+    var arr = $('#userList').datagrid('getChecked');
+    if (arr.length < 1) {
+        $.messager.alert('警告', '请选择一行数据再进行操作');
+        return false;
+    }
+    return true;
+}
+//选择退出时间后确认退出按钮
+var rowIndex = "";
+var exitReason = "";
+
+function quitWithOutDate() {
+    var rowData = $('#userList').datagrid('getRows')[rowIndex];
+    var realOutDate = $("input[name=realOutDate]").val(); //退出时间即实际出院时间
+    if (!realOutDate) {
+        $.messager.alert("提示", "请选择退出时间");
+        return;
+    }
+    //			console.log(rowData);
+    var exitFrom = "1"; //退出来源
+    // var exitReason = $("input[name=exitReason]").val(); //退出原因（编号）
+    var exitReasonDetial = ""; //其他原因
+    var inHospState = rowData.inHospState; //在院状态
+
+    var operatedBy = "经办人"; //经办人
+    var checkInCode = rowData.inRecordUuid; //协议编号
+
+    var httpData = {
+        exitFrom: exitFrom,
+        exitReason: exitReason,
+        realOutDate: realOutDate,
+        operatedBy: operatedBy,
+        checkInCode: checkInCode
+    };
+    console.log(httpData);
+    var url = portalServiceUrl + "/api/v1/checkInOut";
+    $.messager.confirm("提示", "是否确认退出？", function(isSureQuit) {
+        if (isSureQuit) {
+            // console.log(isSureQuit);
+            sendAjax(url, "post", httpData, function(data) {
+                console.log(data);
+                if (data.status == 201) {
+                    //$.messager.alert("消息", "所选数据确认退出成功！");
+                    $('#realOutDateBox').window('close');
+                    $.messager.show({
+                        title: '提示',
+                        msg: "所选数据确认退出成功!",
+                        timeout: 8000
+                    });
+                } else {
+                    $.messager.alert("警告", "所选数据确认退出失败！");
+                }
+                doLoading();
+            }, function() {
+                $.messager.alert("警告", "所选数据确认退出失败！");
+            });
+        }
+    });
+
+}
+
+//确认退出按钮
+function doQuit(index) {
+    rowIndex = index;
+    exitReason = $("tr[datagrid-row-index=" + index + "] input[name=exitReason]").val(); //退出原因（编号）
+    if (!$("tr[datagrid-row-index=" + index + "] input[name=exitReason]").val()) {
+        $.messager.alert("提示", "请选择退出原因！");
+        return;
+    }
+    $('#realOutDateBox').window('open');
+    $("input[name=realOutDate]").val(""); //清空退出时间
+}
+</script>
+
+</html>

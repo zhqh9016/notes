@@ -1,0 +1,1036 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.INurseDetailDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.NurseDetailDO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="in_recorduuid" property="inRecorduuid" jdbcType="VARCHAR" />
+    <result column="fee_set_code" property="feeSetCode" jdbcType="VARCHAR" />
+    <result column="org_code" property="orgCode" jdbcType="VARCHAR" />
+    <result column="org_name" property="orgName" jdbcType="VARCHAR" />
+    <result column="soc_sec_num" property="socSecNum" jdbcType="VARCHAR" />
+    <result column="be_care_person_card" property="beCarePersonCard" jdbcType="VARCHAR" />
+    <result column="card_type" property="cardType" jdbcType="INTEGER" />
+    <result column="be_care_person_name" property="beCarePersonName" jdbcType="VARCHAR" />
+    <result column="building_No" property="buildingNo" jdbcType="VARCHAR" />
+    <result column="Room_no" property="roomNo" jdbcType="VARCHAR" />
+    <result column="disease_area" property="diseaseArea" jdbcType="VARCHAR" />
+    <result column="bed_num" property="bedNum" jdbcType="VARCHAR" />
+    <result column="trade_num" property="tradeNum" jdbcType="VARCHAR" />
+    <result column="tra_type" property="traType" jdbcType="INTEGER" />
+    <result column="refund_num" property="refundNum" jdbcType="VARCHAR" />
+    <result column="charge_level" property="chargeLevel" jdbcType="INTEGER" />
+    <result column="medical_type" property="medicalType" jdbcType="VARCHAR" />
+    <result column="Is_relative_care" property="isRelativeCare" jdbcType="INTEGER" />
+    <result column="medicare_code" property="medicareCode" jdbcType="VARCHAR" />
+    <result column="care_org_service_code" property="careOrgServiceCode" jdbcType="VARCHAR" />
+    <result column="medicare_name" property="medicareName" jdbcType="VARCHAR" />
+    <result column="care_org_service_name" property="careOrgServiceName" jdbcType="VARCHAR" />
+    <result column="charge_type" property="chargeType" jdbcType="VARCHAR" />
+    <result column="fee_date" property="feeDate" jdbcType="TIMESTAMP" />
+    <result column="count" property="count" jdbcType="DOUBLE" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="man_hour" property="manHour" jdbcType="INTEGER" />
+    <result column="nurse_code" property="nurseCode" jdbcType="VARCHAR" />
+    <result column="nurse_name" property="nurseName" jdbcType="VARCHAR" />
+    <result column="nurse_time" property="nurseTime" jdbcType="TIMESTAMP" />
+    <result column="unr_fee" property="unrFee" jdbcType="DECIMAL" />
+    <result column="is_syn_for_social" property="isSynForSocial" jdbcType="INTEGER" />
+    <result column="is_sys_for_org" property="isSysForOrg" jdbcType="INTEGER" />
+    <result column="charge_person_cd" property="chargePersonCd" jdbcType="VARCHAR" />
+    <result column="charge_person_name" property="chargePersonName" jdbcType="VARCHAR" />
+    <result column="charge_dept_cd" property="chargeDeptCd" jdbcType="VARCHAR" />
+    <result column="approve_flag" property="approveFlag" jdbcType="INTEGER" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+    <result column="over_cost" property="overCost" jdbcType="DECIMAL" />
+    <result column="nurse_total_amount" property="nurseTotalAmount" jdbcType="DECIMAL" />
+    <result column="si_pay" property="siPay" jdbcType="DECIMAL" />
+    <result column="pay_self" property="paySelf" jdbcType="DECIMAL" />
+    <result column="expense_self" property="expenseSelf" jdbcType="DECIMAL" />
+    <result column="transaction_num" property="transactionNum" jdbcType="VARCHAR" />
+    <result column="cycle_num" property="cycleNum" jdbcType="VARCHAR" />
+    <result column="project_type" property="projectType" jdbcType="VARCHAR" />
+    <result column="count_type" property="countType" jdbcType="VARCHAR" />
+    <result column="per_settle_falg" property="perSettleFalg" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, in_recorduuid, fee_set_code, org_code, org_name, soc_sec_num, be_care_person_card, 
+    card_type, be_care_person_name, building_No, Room_no, disease_area, bed_num, trade_num, 
+    tra_type, refund_num, charge_level, medical_type, Is_relative_care, medicare_code, 
+    care_org_service_code, medicare_name, care_org_service_name, charge_type, fee_date, 
+    count, price, amount, man_hour, nurse_code, nurse_name, nurse_time, unr_fee, is_syn_for_social, 
+    is_sys_for_org, charge_person_cd, charge_person_name, charge_dept_cd, approve_flag, 
+    is_valid, operated_by, operated_time, operated_org, created_by, created_time, created_org, 
+    si_area, over_cost, nurse_total_amount, si_pay, pay_self, expense_self, transaction_num, 
+    cycle_num, project_type, count_type, per_settle_falg
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.NurseDetailDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ltci_nurse_fee_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ltci_nurse_fee_detail
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_nurse_fee_detail
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.NurseDetailDOExample" >
+    delete from ltci_nurse_fee_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.NurseDetailDO" >
+    insert into ltci_nurse_fee_detail (id, in_recorduuid, fee_set_code, 
+      org_code, org_name, soc_sec_num, 
+      be_care_person_card, card_type, be_care_person_name, 
+      building_No, Room_no, disease_area, 
+      bed_num, trade_num, tra_type, 
+      refund_num, charge_level, medical_type, 
+      Is_relative_care, medicare_code, care_org_service_code, 
+      medicare_name, care_org_service_name, charge_type, 
+      fee_date, count, price, 
+      amount, man_hour, nurse_code, 
+      nurse_name, nurse_time, unr_fee, 
+      is_syn_for_social, is_sys_for_org, charge_person_cd, 
+      charge_person_name, charge_dept_cd, approve_flag, 
+      is_valid, operated_by, operated_time, 
+      operated_org, created_by, created_time, 
+      created_org, si_area, over_cost, 
+      nurse_total_amount, si_pay, pay_self, 
+      expense_self, transaction_num, cycle_num, 
+      project_type, count_type, per_settle_falg
+      )
+    values (#{id,jdbcType=VARCHAR}, #{inRecorduuid,jdbcType=VARCHAR}, #{feeSetCode,jdbcType=VARCHAR}, 
+      #{orgCode,jdbcType=VARCHAR}, #{orgName,jdbcType=VARCHAR}, #{socSecNum,jdbcType=VARCHAR}, 
+      #{beCarePersonCard,jdbcType=VARCHAR}, #{cardType,jdbcType=INTEGER}, #{beCarePersonName,jdbcType=VARCHAR}, 
+      #{buildingNo,jdbcType=VARCHAR}, #{roomNo,jdbcType=VARCHAR}, #{diseaseArea,jdbcType=VARCHAR}, 
+      #{bedNum,jdbcType=VARCHAR}, #{tradeNum,jdbcType=VARCHAR}, #{traType,jdbcType=INTEGER}, 
+      #{refundNum,jdbcType=VARCHAR}, #{chargeLevel,jdbcType=INTEGER}, #{medicalType,jdbcType=VARCHAR}, 
+      #{isRelativeCare,jdbcType=INTEGER}, #{medicareCode,jdbcType=VARCHAR}, #{careOrgServiceCode,jdbcType=VARCHAR}, 
+      #{medicareName,jdbcType=VARCHAR}, #{careOrgServiceName,jdbcType=VARCHAR}, #{chargeType,jdbcType=VARCHAR}, 
+      #{feeDate,jdbcType=TIMESTAMP}, #{count,jdbcType=DOUBLE}, #{price,jdbcType=DECIMAL}, 
+      #{amount,jdbcType=DECIMAL}, #{manHour,jdbcType=INTEGER}, #{nurseCode,jdbcType=VARCHAR}, 
+      #{nurseName,jdbcType=VARCHAR}, #{nurseTime,jdbcType=TIMESTAMP}, #{unrFee,jdbcType=DECIMAL}, 
+      #{isSynForSocial,jdbcType=INTEGER}, #{isSysForOrg,jdbcType=INTEGER}, #{chargePersonCd,jdbcType=VARCHAR}, 
+      #{chargePersonName,jdbcType=VARCHAR}, #{chargeDeptCd,jdbcType=VARCHAR}, #{approveFlag,jdbcType=INTEGER}, 
+      #{isValid,jdbcType=INTEGER}, #{operatedBy,jdbcType=VARCHAR}, #{operatedTime,jdbcType=TIMESTAMP}, 
+      #{operatedOrg,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{createdOrg,jdbcType=VARCHAR}, #{siArea,jdbcType=VARCHAR}, #{overCost,jdbcType=DECIMAL}, 
+      #{nurseTotalAmount,jdbcType=DECIMAL}, #{siPay,jdbcType=DECIMAL}, #{paySelf,jdbcType=DECIMAL}, 
+      #{expenseSelf,jdbcType=DECIMAL}, #{transactionNum,jdbcType=VARCHAR}, #{cycleNum,jdbcType=VARCHAR}, 
+      #{projectType,jdbcType=VARCHAR}, #{countType,jdbcType=VARCHAR}, #{perSettleFalg,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.NurseDetailDO" >
+    insert into ltci_nurse_fee_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="inRecorduuid != null" >
+        in_recorduuid,
+      </if>
+      <if test="feeSetCode != null" >
+        fee_set_code,
+      </if>
+      <if test="orgCode != null" >
+        org_code,
+      </if>
+      <if test="orgName != null" >
+        org_name,
+      </if>
+      <if test="socSecNum != null" >
+        soc_sec_num,
+      </if>
+      <if test="beCarePersonCard != null" >
+        be_care_person_card,
+      </if>
+      <if test="cardType != null" >
+        card_type,
+      </if>
+      <if test="beCarePersonName != null" >
+        be_care_person_name,
+      </if>
+      <if test="buildingNo != null" >
+        building_No,
+      </if>
+      <if test="roomNo != null" >
+        Room_no,
+      </if>
+      <if test="diseaseArea != null" >
+        disease_area,
+      </if>
+      <if test="bedNum != null" >
+        bed_num,
+      </if>
+      <if test="tradeNum != null" >
+        trade_num,
+      </if>
+      <if test="traType != null" >
+        tra_type,
+      </if>
+      <if test="refundNum != null" >
+        refund_num,
+      </if>
+      <if test="chargeLevel != null" >
+        charge_level,
+      </if>
+      <if test="medicalType != null" >
+        medical_type,
+      </if>
+      <if test="isRelativeCare != null" >
+        Is_relative_care,
+      </if>
+      <if test="medicareCode != null" >
+        medicare_code,
+      </if>
+      <if test="careOrgServiceCode != null" >
+        care_org_service_code,
+      </if>
+      <if test="medicareName != null" >
+        medicare_name,
+      </if>
+      <if test="careOrgServiceName != null" >
+        care_org_service_name,
+      </if>
+      <if test="chargeType != null" >
+        charge_type,
+      </if>
+      <if test="feeDate != null" >
+        fee_date,
+      </if>
+      <if test="count != null" >
+        count,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="manHour != null" >
+        man_hour,
+      </if>
+      <if test="nurseCode != null" >
+        nurse_code,
+      </if>
+      <if test="nurseName != null" >
+        nurse_name,
+      </if>
+      <if test="nurseTime != null" >
+        nurse_time,
+      </if>
+      <if test="unrFee != null" >
+        unr_fee,
+      </if>
+      <if test="isSynForSocial != null" >
+        is_syn_for_social,
+      </if>
+      <if test="isSysForOrg != null" >
+        is_sys_for_org,
+      </if>
+      <if test="chargePersonCd != null" >
+        charge_person_cd,
+      </if>
+      <if test="chargePersonName != null" >
+        charge_person_name,
+      </if>
+      <if test="chargeDeptCd != null" >
+        charge_dept_cd,
+      </if>
+      <if test="approveFlag != null" >
+        approve_flag,
+      </if>
+      <if test="isValid != null" >
+        is_valid,
+      </if>
+      <if test="operatedBy != null" >
+        operated_by,
+      </if>
+      <if test="operatedTime != null" >
+        operated_time,
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="createdOrg != null" >
+        created_org,
+      </if>
+      <if test="siArea != null" >
+        si_area,
+      </if>
+      <if test="overCost != null" >
+        over_cost,
+      </if>
+      <if test="nurseTotalAmount != null" >
+        nurse_total_amount,
+      </if>
+      <if test="siPay != null" >
+        si_pay,
+      </if>
+      <if test="paySelf != null" >
+        pay_self,
+      </if>
+      <if test="expenseSelf != null" >
+        expense_self,
+      </if>
+      <if test="transactionNum != null" >
+        transaction_num,
+      </if>
+      <if test="cycleNum != null" >
+        cycle_num,
+      </if>
+      <if test="projectType != null" >
+        project_type,
+      </if>
+      <if test="countType != null" >
+        count_type,
+      </if>
+      <if test="perSettleFalg != null" >
+        per_settle_falg,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="inRecorduuid != null" >
+        #{inRecorduuid,jdbcType=VARCHAR},
+      </if>
+      <if test="feeSetCode != null" >
+        #{feeSetCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null" >
+        #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null" >
+        #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="socSecNum != null" >
+        #{socSecNum,jdbcType=VARCHAR},
+      </if>
+      <if test="beCarePersonCard != null" >
+        #{beCarePersonCard,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null" >
+        #{cardType,jdbcType=INTEGER},
+      </if>
+      <if test="beCarePersonName != null" >
+        #{beCarePersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingNo != null" >
+        #{buildingNo,jdbcType=VARCHAR},
+      </if>
+      <if test="roomNo != null" >
+        #{roomNo,jdbcType=VARCHAR},
+      </if>
+      <if test="diseaseArea != null" >
+        #{diseaseArea,jdbcType=VARCHAR},
+      </if>
+      <if test="bedNum != null" >
+        #{bedNum,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNum != null" >
+        #{tradeNum,jdbcType=VARCHAR},
+      </if>
+      <if test="traType != null" >
+        #{traType,jdbcType=INTEGER},
+      </if>
+      <if test="refundNum != null" >
+        #{refundNum,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeLevel != null" >
+        #{chargeLevel,jdbcType=INTEGER},
+      </if>
+      <if test="medicalType != null" >
+        #{medicalType,jdbcType=VARCHAR},
+      </if>
+      <if test="isRelativeCare != null" >
+        #{isRelativeCare,jdbcType=INTEGER},
+      </if>
+      <if test="medicareCode != null" >
+        #{medicareCode,jdbcType=VARCHAR},
+      </if>
+      <if test="careOrgServiceCode != null" >
+        #{careOrgServiceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="medicareName != null" >
+        #{medicareName,jdbcType=VARCHAR},
+      </if>
+      <if test="careOrgServiceName != null" >
+        #{careOrgServiceName,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeType != null" >
+        #{chargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="feeDate != null" >
+        #{feeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=DOUBLE},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="manHour != null" >
+        #{manHour,jdbcType=INTEGER},
+      </if>
+      <if test="nurseCode != null" >
+        #{nurseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="nurseName != null" >
+        #{nurseName,jdbcType=VARCHAR},
+      </if>
+      <if test="nurseTime != null" >
+        #{nurseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="unrFee != null" >
+        #{unrFee,jdbcType=DECIMAL},
+      </if>
+      <if test="isSynForSocial != null" >
+        #{isSynForSocial,jdbcType=INTEGER},
+      </if>
+      <if test="isSysForOrg != null" >
+        #{isSysForOrg,jdbcType=INTEGER},
+      </if>
+      <if test="chargePersonCd != null" >
+        #{chargePersonCd,jdbcType=VARCHAR},
+      </if>
+      <if test="chargePersonName != null" >
+        #{chargePersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeDeptCd != null" >
+        #{chargeDeptCd,jdbcType=VARCHAR},
+      </if>
+      <if test="approveFlag != null" >
+        #{approveFlag,jdbcType=INTEGER},
+      </if>
+      <if test="isValid != null" >
+        #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="operatedBy != null" >
+        #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatedOrg != null" >
+        #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdOrg != null" >
+        #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="siArea != null" >
+        #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="overCost != null" >
+        #{overCost,jdbcType=DECIMAL},
+      </if>
+      <if test="nurseTotalAmount != null" >
+        #{nurseTotalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="siPay != null" >
+        #{siPay,jdbcType=DECIMAL},
+      </if>
+      <if test="paySelf != null" >
+        #{paySelf,jdbcType=DECIMAL},
+      </if>
+      <if test="expenseSelf != null" >
+        #{expenseSelf,jdbcType=DECIMAL},
+      </if>
+      <if test="transactionNum != null" >
+        #{transactionNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cycleNum != null" >
+        #{cycleNum,jdbcType=VARCHAR},
+      </if>
+      <if test="projectType != null" >
+        #{projectType,jdbcType=VARCHAR},
+      </if>
+      <if test="countType != null" >
+        #{countType,jdbcType=VARCHAR},
+      </if>
+      <if test="perSettleFalg != null" >
+        #{perSettleFalg,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.NurseDetailDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_nurse_fee_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_nurse_fee_detail
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inRecorduuid != null" >
+        in_recorduuid = #{record.inRecorduuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.feeSetCode != null" >
+        fee_set_code = #{record.feeSetCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgCode != null" >
+        org_code = #{record.orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgName != null" >
+        org_name = #{record.orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.socSecNum != null" >
+        soc_sec_num = #{record.socSecNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beCarePersonCard != null" >
+        be_care_person_card = #{record.beCarePersonCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardType != null" >
+        card_type = #{record.cardType,jdbcType=INTEGER},
+      </if>
+      <if test="record.beCarePersonName != null" >
+        be_care_person_name = #{record.beCarePersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buildingNo != null" >
+        building_No = #{record.buildingNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roomNo != null" >
+        Room_no = #{record.roomNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.diseaseArea != null" >
+        disease_area = #{record.diseaseArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bedNum != null" >
+        bed_num = #{record.bedNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tradeNum != null" >
+        trade_num = #{record.tradeNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.traType != null" >
+        tra_type = #{record.traType,jdbcType=INTEGER},
+      </if>
+      <if test="record.refundNum != null" >
+        refund_num = #{record.refundNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chargeLevel != null" >
+        charge_level = #{record.chargeLevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.medicalType != null" >
+        medical_type = #{record.medicalType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isRelativeCare != null" >
+        Is_relative_care = #{record.isRelativeCare,jdbcType=INTEGER},
+      </if>
+      <if test="record.medicareCode != null" >
+        medicare_code = #{record.medicareCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.careOrgServiceCode != null" >
+        care_org_service_code = #{record.careOrgServiceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.medicareName != null" >
+        medicare_name = #{record.medicareName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.careOrgServiceName != null" >
+        care_org_service_name = #{record.careOrgServiceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chargeType != null" >
+        charge_type = #{record.chargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.feeDate != null" >
+        fee_date = #{record.feeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.count != null" >
+        count = #{record.count,jdbcType=DOUBLE},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.manHour != null" >
+        man_hour = #{record.manHour,jdbcType=INTEGER},
+      </if>
+      <if test="record.nurseCode != null" >
+        nurse_code = #{record.nurseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nurseName != null" >
+        nurse_name = #{record.nurseName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nurseTime != null" >
+        nurse_time = #{record.nurseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.unrFee != null" >
+        unr_fee = #{record.unrFee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isSynForSocial != null" >
+        is_syn_for_social = #{record.isSynForSocial,jdbcType=INTEGER},
+      </if>
+      <if test="record.isSysForOrg != null" >
+        is_sys_for_org = #{record.isSysForOrg,jdbcType=INTEGER},
+      </if>
+      <if test="record.chargePersonCd != null" >
+        charge_person_cd = #{record.chargePersonCd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chargePersonName != null" >
+        charge_person_name = #{record.chargePersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chargeDeptCd != null" >
+        charge_dept_cd = #{record.chargeDeptCd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approveFlag != null" >
+        approve_flag = #{record.approveFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.isValid != null" >
+        is_valid = #{record.isValid,jdbcType=INTEGER},
+      </if>
+      <if test="record.operatedBy != null" >
+        operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedTime != null" >
+        operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.operatedOrg != null" >
+        operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null" >
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdOrg != null" >
+        created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.siArea != null" >
+        si_area = #{record.siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.overCost != null" >
+        over_cost = #{record.overCost,jdbcType=DECIMAL},
+      </if>
+      <if test="record.nurseTotalAmount != null" >
+        nurse_total_amount = #{record.nurseTotalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.siPay != null" >
+        si_pay = #{record.siPay,jdbcType=DECIMAL},
+      </if>
+      <if test="record.paySelf != null" >
+        pay_self = #{record.paySelf,jdbcType=DECIMAL},
+      </if>
+      <if test="record.expenseSelf != null" >
+        expense_self = #{record.expenseSelf,jdbcType=DECIMAL},
+      </if>
+      <if test="record.transactionNum != null" >
+        transaction_num = #{record.transactionNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cycleNum != null" >
+        cycle_num = #{record.cycleNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectType != null" >
+        project_type = #{record.projectType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.countType != null" >
+        count_type = #{record.countType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.perSettleFalg != null" >
+        per_settle_falg = #{record.perSettleFalg,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_nurse_fee_detail
+    set id = #{record.id,jdbcType=VARCHAR},
+      in_recorduuid = #{record.inRecorduuid,jdbcType=VARCHAR},
+      fee_set_code = #{record.feeSetCode,jdbcType=VARCHAR},
+      org_code = #{record.orgCode,jdbcType=VARCHAR},
+      org_name = #{record.orgName,jdbcType=VARCHAR},
+      soc_sec_num = #{record.socSecNum,jdbcType=VARCHAR},
+      be_care_person_card = #{record.beCarePersonCard,jdbcType=VARCHAR},
+      card_type = #{record.cardType,jdbcType=INTEGER},
+      be_care_person_name = #{record.beCarePersonName,jdbcType=VARCHAR},
+      building_No = #{record.buildingNo,jdbcType=VARCHAR},
+      Room_no = #{record.roomNo,jdbcType=VARCHAR},
+      disease_area = #{record.diseaseArea,jdbcType=VARCHAR},
+      bed_num = #{record.bedNum,jdbcType=VARCHAR},
+      trade_num = #{record.tradeNum,jdbcType=VARCHAR},
+      tra_type = #{record.traType,jdbcType=INTEGER},
+      refund_num = #{record.refundNum,jdbcType=VARCHAR},
+      charge_level = #{record.chargeLevel,jdbcType=INTEGER},
+      medical_type = #{record.medicalType,jdbcType=VARCHAR},
+      Is_relative_care = #{record.isRelativeCare,jdbcType=INTEGER},
+      medicare_code = #{record.medicareCode,jdbcType=VARCHAR},
+      care_org_service_code = #{record.careOrgServiceCode,jdbcType=VARCHAR},
+      medicare_name = #{record.medicareName,jdbcType=VARCHAR},
+      care_org_service_name = #{record.careOrgServiceName,jdbcType=VARCHAR},
+      charge_type = #{record.chargeType,jdbcType=VARCHAR},
+      fee_date = #{record.feeDate,jdbcType=TIMESTAMP},
+      count = #{record.count,jdbcType=DOUBLE},
+      price = #{record.price,jdbcType=DECIMAL},
+      amount = #{record.amount,jdbcType=DECIMAL},
+      man_hour = #{record.manHour,jdbcType=INTEGER},
+      nurse_code = #{record.nurseCode,jdbcType=VARCHAR},
+      nurse_name = #{record.nurseName,jdbcType=VARCHAR},
+      nurse_time = #{record.nurseTime,jdbcType=TIMESTAMP},
+      unr_fee = #{record.unrFee,jdbcType=DECIMAL},
+      is_syn_for_social = #{record.isSynForSocial,jdbcType=INTEGER},
+      is_sys_for_org = #{record.isSysForOrg,jdbcType=INTEGER},
+      charge_person_cd = #{record.chargePersonCd,jdbcType=VARCHAR},
+      charge_person_name = #{record.chargePersonName,jdbcType=VARCHAR},
+      charge_dept_cd = #{record.chargeDeptCd,jdbcType=VARCHAR},
+      approve_flag = #{record.approveFlag,jdbcType=INTEGER},
+      is_valid = #{record.isValid,jdbcType=INTEGER},
+      operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      si_area = #{record.siArea,jdbcType=VARCHAR},
+      over_cost = #{record.overCost,jdbcType=DECIMAL},
+      nurse_total_amount = #{record.nurseTotalAmount,jdbcType=DECIMAL},
+      si_pay = #{record.siPay,jdbcType=DECIMAL},
+      pay_self = #{record.paySelf,jdbcType=DECIMAL},
+      expense_self = #{record.expenseSelf,jdbcType=DECIMAL},
+      transaction_num = #{record.transactionNum,jdbcType=VARCHAR},
+      cycle_num = #{record.cycleNum,jdbcType=VARCHAR},
+      project_type = #{record.projectType,jdbcType=VARCHAR},
+      count_type = #{record.countType,jdbcType=VARCHAR},
+      per_settle_falg = #{record.perSettleFalg,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.NurseDetailDO" >
+    update ltci_nurse_fee_detail
+    <set >
+      <if test="inRecorduuid != null" >
+        in_recorduuid = #{inRecorduuid,jdbcType=VARCHAR},
+      </if>
+      <if test="feeSetCode != null" >
+        fee_set_code = #{feeSetCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null" >
+        org_code = #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null" >
+        org_name = #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="socSecNum != null" >
+        soc_sec_num = #{socSecNum,jdbcType=VARCHAR},
+      </if>
+      <if test="beCarePersonCard != null" >
+        be_care_person_card = #{beCarePersonCard,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null" >
+        card_type = #{cardType,jdbcType=INTEGER},
+      </if>
+      <if test="beCarePersonName != null" >
+        be_care_person_name = #{beCarePersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingNo != null" >
+        building_No = #{buildingNo,jdbcType=VARCHAR},
+      </if>
+      <if test="roomNo != null" >
+        Room_no = #{roomNo,jdbcType=VARCHAR},
+      </if>
+      <if test="diseaseArea != null" >
+        disease_area = #{diseaseArea,jdbcType=VARCHAR},
+      </if>
+      <if test="bedNum != null" >
+        bed_num = #{bedNum,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNum != null" >
+        trade_num = #{tradeNum,jdbcType=VARCHAR},
+      </if>
+      <if test="traType != null" >
+        tra_type = #{traType,jdbcType=INTEGER},
+      </if>
+      <if test="refundNum != null" >
+        refund_num = #{refundNum,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeLevel != null" >
+        charge_level = #{chargeLevel,jdbcType=INTEGER},
+      </if>
+      <if test="medicalType != null" >
+        medical_type = #{medicalType,jdbcType=VARCHAR},
+      </if>
+      <if test="isRelativeCare != null" >
+        Is_relative_care = #{isRelativeCare,jdbcType=INTEGER},
+      </if>
+      <if test="medicareCode != null" >
+        medicare_code = #{medicareCode,jdbcType=VARCHAR},
+      </if>
+      <if test="careOrgServiceCode != null" >
+        care_org_service_code = #{careOrgServiceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="medicareName != null" >
+        medicare_name = #{medicareName,jdbcType=VARCHAR},
+      </if>
+      <if test="careOrgServiceName != null" >
+        care_org_service_name = #{careOrgServiceName,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeType != null" >
+        charge_type = #{chargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="feeDate != null" >
+        fee_date = #{feeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="count != null" >
+        count = #{count,jdbcType=DOUBLE},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="manHour != null" >
+        man_hour = #{manHour,jdbcType=INTEGER},
+      </if>
+      <if test="nurseCode != null" >
+        nurse_code = #{nurseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="nurseName != null" >
+        nurse_name = #{nurseName,jdbcType=VARCHAR},
+      </if>
+      <if test="nurseTime != null" >
+        nurse_time = #{nurseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="unrFee != null" >
+        unr_fee = #{unrFee,jdbcType=DECIMAL},
+      </if>
+      <if test="isSynForSocial != null" >
+        is_syn_for_social = #{isSynForSocial,jdbcType=INTEGER},
+      </if>
+      <if test="isSysForOrg != null" >
+        is_sys_for_org = #{isSysForOrg,jdbcType=INTEGER},
+      </if>
+      <if test="chargePersonCd != null" >
+        charge_person_cd = #{chargePersonCd,jdbcType=VARCHAR},
+      </if>
+      <if test="chargePersonName != null" >
+        charge_person_name = #{chargePersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeDeptCd != null" >
+        charge_dept_cd = #{chargeDeptCd,jdbcType=VARCHAR},
+      </if>
+      <if test="approveFlag != null" >
+        approve_flag = #{approveFlag,jdbcType=INTEGER},
+      </if>
+      <if test="isValid != null" >
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="operatedBy != null" >
+        operated_by = #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdOrg != null" >
+        created_org = #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="siArea != null" >
+        si_area = #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="overCost != null" >
+        over_cost = #{overCost,jdbcType=DECIMAL},
+      </if>
+      <if test="nurseTotalAmount != null" >
+        nurse_total_amount = #{nurseTotalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="siPay != null" >
+        si_pay = #{siPay,jdbcType=DECIMAL},
+      </if>
+      <if test="paySelf != null" >
+        pay_self = #{paySelf,jdbcType=DECIMAL},
+      </if>
+      <if test="expenseSelf != null" >
+        expense_self = #{expenseSelf,jdbcType=DECIMAL},
+      </if>
+      <if test="transactionNum != null" >
+        transaction_num = #{transactionNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cycleNum != null" >
+        cycle_num = #{cycleNum,jdbcType=VARCHAR},
+      </if>
+      <if test="projectType != null" >
+        project_type = #{projectType,jdbcType=VARCHAR},
+      </if>
+      <if test="countType != null" >
+        count_type = #{countType,jdbcType=VARCHAR},
+      </if>
+      <if test="perSettleFalg != null" >
+        per_settle_falg = #{perSettleFalg,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.NurseDetailDO" >
+    update ltci_nurse_fee_detail
+    set in_recorduuid = #{inRecorduuid,jdbcType=VARCHAR},
+      fee_set_code = #{feeSetCode,jdbcType=VARCHAR},
+      org_code = #{orgCode,jdbcType=VARCHAR},
+      org_name = #{orgName,jdbcType=VARCHAR},
+      soc_sec_num = #{socSecNum,jdbcType=VARCHAR},
+      be_care_person_card = #{beCarePersonCard,jdbcType=VARCHAR},
+      card_type = #{cardType,jdbcType=INTEGER},
+      be_care_person_name = #{beCarePersonName,jdbcType=VARCHAR},
+      building_No = #{buildingNo,jdbcType=VARCHAR},
+      Room_no = #{roomNo,jdbcType=VARCHAR},
+      disease_area = #{diseaseArea,jdbcType=VARCHAR},
+      bed_num = #{bedNum,jdbcType=VARCHAR},
+      trade_num = #{tradeNum,jdbcType=VARCHAR},
+      tra_type = #{traType,jdbcType=INTEGER},
+      refund_num = #{refundNum,jdbcType=VARCHAR},
+      charge_level = #{chargeLevel,jdbcType=INTEGER},
+      medical_type = #{medicalType,jdbcType=VARCHAR},
+      Is_relative_care = #{isRelativeCare,jdbcType=INTEGER},
+      medicare_code = #{medicareCode,jdbcType=VARCHAR},
+      care_org_service_code = #{careOrgServiceCode,jdbcType=VARCHAR},
+      medicare_name = #{medicareName,jdbcType=VARCHAR},
+      care_org_service_name = #{careOrgServiceName,jdbcType=VARCHAR},
+      charge_type = #{chargeType,jdbcType=VARCHAR},
+      fee_date = #{feeDate,jdbcType=TIMESTAMP},
+      count = #{count,jdbcType=DOUBLE},
+      price = #{price,jdbcType=DECIMAL},
+      amount = #{amount,jdbcType=DECIMAL},
+      man_hour = #{manHour,jdbcType=INTEGER},
+      nurse_code = #{nurseCode,jdbcType=VARCHAR},
+      nurse_name = #{nurseName,jdbcType=VARCHAR},
+      nurse_time = #{nurseTime,jdbcType=TIMESTAMP},
+      unr_fee = #{unrFee,jdbcType=DECIMAL},
+      is_syn_for_social = #{isSynForSocial,jdbcType=INTEGER},
+      is_sys_for_org = #{isSysForOrg,jdbcType=INTEGER},
+      charge_person_cd = #{chargePersonCd,jdbcType=VARCHAR},
+      charge_person_name = #{chargePersonName,jdbcType=VARCHAR},
+      charge_dept_cd = #{chargeDeptCd,jdbcType=VARCHAR},
+      approve_flag = #{approveFlag,jdbcType=INTEGER},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      created_org = #{createdOrg,jdbcType=VARCHAR},
+      si_area = #{siArea,jdbcType=VARCHAR},
+      over_cost = #{overCost,jdbcType=DECIMAL},
+      nurse_total_amount = #{nurseTotalAmount,jdbcType=DECIMAL},
+      si_pay = #{siPay,jdbcType=DECIMAL},
+      pay_self = #{paySelf,jdbcType=DECIMAL},
+      expense_self = #{expenseSelf,jdbcType=DECIMAL},
+      transaction_num = #{transactionNum,jdbcType=VARCHAR},
+      cycle_num = #{cycleNum,jdbcType=VARCHAR},
+      project_type = #{projectType,jdbcType=VARCHAR},
+      count_type = #{countType,jdbcType=VARCHAR},
+      per_settle_falg = #{perSettleFalg,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

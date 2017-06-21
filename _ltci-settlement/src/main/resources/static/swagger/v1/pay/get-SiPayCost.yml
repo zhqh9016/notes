@@ -1,0 +1,31 @@
+get:
+  tags:
+  - pay
+  summary: 护理机构统筹支付金额查询
+  description: 护理机构统筹支付金额查询，调用格式：url?clientCode=XXX&siArea=XXX&agencyCode=XXX
+  operationId: getSiPayCost
+  parameters:
+  - name: clientCode
+    in: query
+    description: 接口调用方的代码
+    required: true
+    type: string
+  - name: siArea
+    in: query
+    description: 多个区号用逗号分隔：123,132
+    required: true
+    type: string
+  - name: agencyCode
+    in: query
+    description: 护理机构代码
+    required: false
+    type: string
+  responses:
+    200:
+      description: 查询成功
+      schema:
+          $ref: "../../ltci-settlement-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-settlement-api-v1.yml/#/definitions/Response"

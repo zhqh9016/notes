@@ -1,0 +1,224 @@
+﻿<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../css/detailStyle.css" />
+    <style type="text/css">
+
+    </style>
+</head>
+
+<body onload="doSearch()">
+    <div id="app" style="height: 100%;width: 100%;border: none;">
+        <div class="mainTitle">1、基本信息</div>
+        <div class="mainWapper">
+            <table class="info_box">
+                <!--<tr><th>Header</th></tr>-->
+                <tr>
+                    <td class="info_name">姓名：</td>
+                    <td class="info_value"><span id="insuredPersonName"></span></td>
+                </tr>
+                <tr>
+                    <td class="info_name">身份证：</td>
+                    <td class="info_value"><span id="idCard"></span></td>
+                </tr>
+                <tr>
+                    <td class="info_name">社保卡：</td>
+                    <td class="info_value"><span id="deputyBindingid"></span></td>
+                </tr>
+                <tr>
+                    <td class="info_name">状态：</td>
+                    <td class="info_value"><span id="checkState"></span></td>
+                </tr>
+                <tr>
+                    <td class="info_name">代理人姓名：</td>
+                    <td class="info_value"><span id="deputyName"></span></td>
+                </tr>
+                <tr>
+                    <td class="info_name">代理人电话：</td>
+                    <td class="info_value"><span id="deputyMobile"></span></td>
+                </tr>
+                <tr>
+                    <td class="info_name">代理人身份证：</td>
+                    <td class="info_value"><span id="deputyIdCard"></span></td>
+                </tr>
+                <tr>
+                    <td class="info_name">绑定流水号：</td>
+                    <td class="info_value"><span id="serialNumber"></span></td>
+                </tr>
+                <tr>
+                    <td class="info_name">参保人编号：</td>
+                    <td class="info_value"><span id="insuredPersonCode"></span></td>
+                </tr>
+                <tr>
+                    <td class="info_name">原因：</td>
+                    <td class="info_value"><span id="checkReason"></span></td>
+                </tr>
+                <tr>
+                    <td class="info_name">代理人绑定编号：</td>
+                    <td class="info_value"><span id="deputyBindingCode"></span></td>
+                </tr>
+                <tr>
+                    <td class="info_name">社保卡：</td>
+                    <td class="info_value"><span id="securityNumber"></span></td>
+                </tr>
+            </table>
+        </div>
+        <div class="mainTitle">1、附件信息</div>
+        <div class="mainWapper">
+            <div>
+                <div class="imgTitle">身份证扫描件</div>
+                <div class="imgBox" id="idCardScan_images"></div>
+            </div>
+            <div>
+                <div class="imgTitle">社会保障卡扫描件</div>
+                <div class="imgBox" id="securityNumberScan_images"></div>
+            </div>
+            <div>
+                <div class="imgTitle">代理人身份证扫描件</div>
+                <div class="imgBox" id="deputyIdCardScan_images"></div>
+            </div>
+            <div>
+                <div class="imgTitle">病历描件</div>
+                <div class="imgBox" id="caseHistoryScan_images"></div>
+            </div>
+            <div>
+                <div class="imgTitle">申请表扫描件</div>
+                <div class="imgBox" id="applicationFormScan_images"></div>
+            </div>
+        </div>
+        <div style="margin-left: 200px">
+            <a href="#" style="display: none;" class="easyui-linkbutton doAccept" plain="true" onclick="doAccept(true)">审核通过</a> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <a href="#" style="display: none;" class="easyui-linkbutton doAccept" plain="true" onclick="doAccept(false)">审核不通过</a>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../../js/treatmentApply/treatmentCommon.js"></script>
+<script>
+var fa = window.parent; //father
+var checkState = "";
+var applicationCode = getUrlParam("applicationCode");
+// function loadImages(id, sData) {
+// 	var o = JSON.parse(sData);
+// 	for(var k in o) {
+// 		temp = o[k];
+// 		for(var i in temp) {
+// 			sData = temp[i];
+// 		}
+// 		$('#' + id).append("<img width=\"100\" height=\"100\" src=\"data:image/gif;base64," + sData + "\">");
+// 	}
+// }
+function doSearch() {
+    sendAjax(portalServiceUrl + "/api/v1/deputy/bindings/" + applicationCode, "get", "", function(response) {
+        if (response.status == 404 || response.status == 500) {
+            $.messager.alert('警告', response.message);
+            return true;
+        }
+        var data = response.datas;
+        $("#insuredPersonName").html(data.insuredPersonName);
+        $("#securityNumber").html(data.securityNumber);
+
+        $("#idCard").html(data.idCard);
+
+        $("#deputyBindingid").html(data.deputyBindingid);
+
+        $("#checkState").html(getTableDictionary("checkState", data.checkState));
+        $("#deputyName").html(data.deputyName);
+
+        $("#deputyMobile").html(data.deputyMobile);
+
+        $("#deputyIdCard").html(data.deputyIdCard);
+        $("#serialNumber").html(data.serialNumber);
+        $("#insuredPersonCode").html(data.insuredPersonCode);
+        $("#checkReason").html(data.checkReason);
+        $("#deputyBindingCode").html(data.deputyBindingCode);
+
+        if (data.checkState == 02) {
+            $(".doAccept").show();
+        }
+        doLoadImage(data.idCardScan, "idCardScan_images");
+        doLoadImage(data.securityNumberScan, "securityNumberScan_images");
+        doLoadImage(data.applicationFormScan, "applicationFormScan_images");
+        doLoadImage(data.deputyIdCardScan, "deputyIdCardScan_images");
+        doLoadImage(data.caseHistoryScan, "caseHistoryScan_images");
+    });
+
+}
+
+function doAcceptFunc(b, reason) { //reason 不通过原因  -- b 是否通过
+    var obj = {
+        deputyBindingid: $("#deputyBindingid").html(),
+        checkState: checkState,
+        checkReason: reason
+    };
+    var sUrl = portalServiceUrl + "/api/v1/deputy/bindings/deputyBindingid/checkState";
+    sendAjax(sUrl, "put", obj, function(returndata) {
+        if (returndata.status == 200) {
+            if (b) {
+                fa.$.messager.show({
+                    title: '提示',
+                    msg: '审核成功',
+                    timeout: 8000
+                });
+                fa.$('#showInfo').window('close');
+                fa.doSearch();
+
+            } else {
+                fa.$.messager.show({
+                    title: '提示',
+                    msg: '审核不通过',
+                    timeout: 8000
+                });
+                fa.$('#showInfo').window('close');
+                fa.doSearch();
+            }
+        } else {
+            fa.$.messager.alert('警告', returndata.message);
+            fa.$('#showInfo').window('close');
+            fa.doSearch();
+        }
+    });
+}
+
+function doAccept(b) { //受理01，不受理02
+    if (b) {
+        checkState = "03"; //审核通过
+        fa.$.messager.confirm('提示', '是否确认审核通过？', function(r) {
+            if (r) {
+                doAcceptFunc(b, '');
+            }
+        });
+    } else {
+        checkState = "01"; //审核不通过
+        // fa.$.messager.prompt('提示信息', '请输入不通过原因：', function(r) {
+        // 	if(r.length > 0) {
+        // 		reason = r;
+        // 		doAcceptFunc(b, reason);
+        // 	} else {
+        // 		fa.$.messager.alert('警告', '请输入不通过原因。');
+        // 		return false;
+        // 	}
+        // });
+        fa.windowObj.prompt('请输入不通过原因', function(r) {
+            if (r.length > 0) {
+                reason = r;
+                doAcceptFunc(b, reason);
+                return true;
+            } else {
+                fa.$.messager.alert('警告', '请输入不通过原因。');
+                return false;
+            }
+        });
+    }
+}
+</script>
+
+</html>

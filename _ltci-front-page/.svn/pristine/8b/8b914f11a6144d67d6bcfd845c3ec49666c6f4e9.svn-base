@@ -1,0 +1,413 @@
+<html>
+
+<head>
+    <title>角色信息</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="renderer" content="webkit" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/tablefrom.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/common.css" type="text/css">
+</head>
+
+<body>
+    <div id="app" style="height:100%;">
+        <table width="100%" id="userList" toolbar="#userListtb">
+        </table>
+        <div id="userListtb" style="padding:3px; height: auto">
+            <div name="searchColums" id="searchColums">
+                <input id="isShowSearchId" type="hidden" value="false" />
+                <input id="_sqlbuilder" name="sqlbuilder" type="hidden" />
+                <form id="roleListForm">
+                    <span class="inputLable">
+						<span class="inputLableText" title="name">角色名称：</span>
+                    <input type="text" name="realName" class="inuptxt" />
+                    </span>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-search" onclick="doSearch()">查询</a>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-reload" onclick="resetSearch()">重置</a>
+                </form>
+            </div>
+            <div style="height:30px;" class="datagrid-toolbar">
+                <span style="float:left;">
+						<a href="#" class="easyui-linkbutton" plain="true" icon="icon-add" onclick="doOpenAdd()">添加</a>
+						<a href="#" class="easyui-linkbutton" plain="true" icon="icon-cancel" onclick="doDelete()">删除</a>
+						<a href="#" class="easyui-linkbutton" plain="true" icon="icon-edit" onclick="doOpenRoleMenu()">设置菜单</a>
+					</span>
+            </div>
+        </div>
+        <div style="display:none">
+            <div id="addWindow">
+                <form id="addForm">
+                    <table cellpadding="0" cellspacing="1" class="formtable">
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 角色名称: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="roleName" class="easyui-validatebox" name="roleName" data-options="required:true,validType:'chinese'" onblur="validateName()" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 角色描述: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" class="easyui-validatebox" name="roleDescribe" data-options="length:[0,200]" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 排序号: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="sequence" class="easyui-validatebox" name="sequence" data-options="required:true,validType:'intOrFloat'" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="ui_buttons">
+                                    <a href="#" class="easyui-linkbutton" onclick="doAdd()">保存</a>
+                                    <a href="#" class="easyui-linkbutton" onclick="doClose('addWindow')">取消</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div id="menuWindow">
+                <form id="menuForm">
+                    <input type="hidden" class="inputxt" id="menu_roleId" name="id" />
+                    <a href="#" class="easyui-linkbutton" style="margin-left:180" onclick="doRoleSave()">保存</a>
+                    <a href="#" class="easyui-linkbutton" onclick="doClose('menuWindow')">取消</a>
+                    <ul id="menuTree" class="easyui-tree"></ul>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="fee_detailsWindow" style="height:100%;display: ;">
+        <iframe id="fee_detailsIframe" src="" style="width:100%;height:100%;border:0;"></iframe>
+    </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/userMangerment/role.js"></script>
+<!--<script type="text/javascript" src="../../js/vu e.m in.js"></script>-->
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/validate.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script>
+$('#addWindow').window({
+    title: '新增角色信息',
+    width: 330,
+    height: 230,
+    collapsible: false,
+    minimizable: false,
+    maximizable: false,
+    onClose: function() {
+        $(".validatebox-tip").remove();
+    }
+});
+$('#addWindow').window('close');
+
+$('#menuWindow').window({
+    title: '角色菜单赋权',
+    width: 300,
+    height: 400,
+    collapsible: false,
+    minimizable: false,
+    maximizable: false,
+    onClose: function() {
+        $(".validatebox-tip").remove();
+    }
+});
+
+$('#fee_detailsWindow').window({
+    title: '用户信息',
+    width: 990,
+    height: 440,
+    closed: true,
+    modal: true,
+    collapsible: false,
+    minimizable: false
+
+});
+
+var global_UserRoleData = null;
+$('#menuWindow').window('close');
+
+
+function doSearch() {
+    TableObj.page = 1;
+    TableObj.pageSize = 10;
+    TableObj.query = { //查询条件
+        roleName: $("input[name=realName]").val(),
+        page: TableObj.page,
+        pageSize: TableObj.pageSize,
+    };
+    loadGridData();
+}
+
+/*	function doLoading() {
+		var obj = {
+			roleName: $("input[name=realName]").val(),
+			page: TableObj.page,
+			pageSize: TableObj.pageSize,
+		}
+		var url = portalServiceUrl + "/api/v1/roles/list";
+		sendAjax(url, "post", obj, function(data) {
+			gridLoadData('userList', data)
+		})
+	}*/
+
+//添加跳转
+function doOpenAdd() {
+    $('#addForm input').val('');
+    $('#addWindow').window('open');
+}
+//保存
+function doAdd() {
+    if ($("#addForm").form("validate")) {
+        var url = portalServiceUrl + "/api/v1/role";
+        sendAjax(url, "post", $("#addForm").serialize(), function(data) {
+            if (data.status != '200') {
+                $.messager.alert('提示', data.message);
+            } else {
+                $(".validatebox-tip").remove();
+                $('#addWindow').window('close');
+                showMsg("角色添加成功！");
+                loadGridData();
+            }
+        });
+    }
+}
+//删除
+function doDelete() {
+    if (isCheck()) {
+        $.messager.confirm('确认', '您确认想要删除记录吗？', function(r) {
+            if (r) {
+                var vue_id = TableObj.rowData.id;
+                var url = portalServiceUrl + "/api/v1/role/" + vue_id;
+                sendAjax(url, "delete", "", function(data) {
+                    if (data.status != '200') {
+                        $.messager.alert('删除失败', data.message);
+                    } else {
+                        showMsg("角色删除成功！");
+                        loadGridData();
+                    }
+                });
+            }
+        });
+    }
+}
+
+//设置菜单按钮
+function doOpenRoleMenu() {
+    if (isCheck()) {
+        //查询所有资源
+        //设置父级节点为0
+        var parentId = 0;
+        //定义所有菜单路径
+        var reqUrl = portalServiceUrl + '/api/v1/menu/list'; //所有菜单
+        //树形结构
+        $('#menuTree').tree({
+            //菜单路径
+            url: reqUrl, //portalServiceUrl+"/api/v1/ress/"+parentId+"?page=1&pageSize=100" ,
+            //提交方法
+            method: 'get',
+            //是否显示复选框
+            checkbox: true,
+            //是否选中父节点子节点同时被选中
+            cascadeCheck: true,
+            /*onCheck:function(node){
+            	console.log(node);
+            	if(node.attributes.parentId == '0'){
+            		//console.log(node.attributes.parentId);
+            		//cascadeCheck: true;
+            		$('#menuTree').tree('getChildren','checked');
+            	}
+            },*/
+            //返回过滤过的数据进行展示。返回数据是标准树格式。该函数具备以下参数：data：加载的原始数据。
+            loadFilter: function(data) {
+                //获取选中行ID
+                var vue_id = TableObj.rowData.id;
+                //判断返回值是否是undefined
+                if (data.datas === undefined)
+                //如果是直接返回
+                    return data;
+                //查询资源所有角色
+                //查询参数为选中行ID
+                var obj = {
+                    roleId: vue_id
+                };
+                //路径
+                var url = portalServiceUrl + "/api/v1/rRoleRes/" + vue_id;
+                //定义一个空的数组
+                var arr = [];
+                //sendAjax提交方法
+                sendAjax(url, "get", obj, function(tableData) {
+                    /*global_UserRoleData = tableData
+                    var tableData = global_UserRoleData*/
+                    if (tableData.status != "200") {
+                        showMsg(tableData.message);
+                        return false;
+                    }
+                    tableData = tableData.datas;
+                    //循环遍历出父级菜单
+                    for (var i = 0; i < data.datas.length; i++) {
+                        var con = false;
+                        var isClosed = 'closed';
+                        //循环遍历出所得父级菜单的名称
+                        for (var k = 0; k < tableData.length; k++) {
+                            //console.log(tableData[k].roleId+"=="+data.datas[i].id);
+                            if (tableData[k].resId == data.datas[i].id) {
+                                con = false;
+                                break;
+                            }
+                        }
+                        //定义变量接收菜单中的值
+                        var child = data.datas[i].childMenu;
+                        var parseData = [];
+                        //循环遍历所有子级菜单
+                        for (var f = 0; child !== undefined && f < child.length; f++) {
+                            var con1 = false;
+                            //子级菜单所需展示
+                            for (var t = 0; t < tableData.length; t++) {
+                                if (tableData[t].resId == child[f].id) {
+                                    con1 = true;
+                                    break;
+                                }
+                            }
+                            //子级值展示的值
+                            var obj1 = {
+                                id: child[f].id,
+                                text: child[f].resName,
+                                attributes: {
+                                    parentId: child[f].parentId
+                                },
+                                state: 'open', //isClosed,
+                                checked: con1
+                            };
+                            parseData[f] = obj1;
+                        }
+                        //判断是否是父节点
+                        if (data.datas[i].parentId != '0')
+                            isClosed = 'open';
+                        //父节点展示的值
+                        var obj2 = {
+                            id: data.datas[i].id,
+                            text: data.datas[i].resName,
+                            attributes: {
+                                parentId: data.datas[i].parentId
+                            },
+                            children: parseData,
+                            state: 'open', //isClosed,
+                            checked: con
+                        };
+                        arr[i] = obj2;
+                    }
+                }, false);
+                return arr;
+            }
+        });
+        $('#menuWindow').window('open');
+    }
+}
+//保存
+function doRoleSave() {
+    var nodes = $('#menuTree').tree('getChecked');
+    console.log(nodes);
+    var userId = $("#role_userId").val();
+    var resIds = '';
+    var vue_id = TableObj.rowData.id;
+    console.log(nodes);
+    for (var i = 0; i < nodes.length; i++) {
+        if (nodes[i].attributes.parentId == '0') {
+            resIds += nodes[i].id + ",";
+        }
+    }
+    for (var o = 0; o < nodes.length; o++) {
+        if (nodes[o].attributes.parentId != '0') {
+            if (resIds.indexOf(nodes[o].attributes.parentId) == -1) {
+                resIds += nodes[o].attributes.parentId + ",";
+            }
+            resIds += nodes[o].id + ",";
+        }
+    }
+    if (resIds.length === 0) {
+        $.messager.alert('提示', '菜单最少选择一个！');
+        return false;
+    }
+
+    if (resIds.length > 2) {
+        resIds = resIds.substring(0, resIds.length - 1);
+    }
+    console.log(resIds);
+    var obj = {
+        roleId: vue_id,
+        resIds: resIds
+    };
+    url = portalServiceUrl + "/api/v1/rRoleRes/" + vue_id;
+    sendAjax(url, "put", obj, function(tableData) {
+        if (tableData.status != '200') {
+            $.messager.alert('提示', tableData.message);
+        } else {
+            $(".validatebox-tip").remove();
+            doClose('menuWindow');
+            showMsg("菜单设置成功！");
+        }
+    });
+}
+
+function validateName() {
+    var returnBol = false;
+    var roleNames = $("#roleName").val();
+    var obj = {
+        roleName: roleNames
+    };
+    var url = portalServiceUrl + "/api/v1/role/roleName";
+    sendAjax(url, "post", obj, function(tableData) {
+        if (tableData.status != '1') {
+            returnBol = true;
+        } else {
+            returnBol = false;
+        }
+    }, false);
+    return returnBol;
+}
+//取消
+function doClose(id) {
+    $('#' + id).window('close');
+    $('#addForm input').val('');
+    loadGridData();
+}
+//警告
+function isCheck() {
+    var arr = $('#userList').datagrid('getChecked');
+    if (arr.length < 1) {
+        //showMsg("请选择一行数据再进行操作")
+        $.messager.alert('警告', '请选择一行数据再进行操作');
+        return false;
+    }
+    return true;
+}
+
+//重置
+function resetSearch() {
+    $('#roleListForm input').val('');
+    loadDictionary();
+}
+
+function zx(index) {
+    var row = $('#userList').datagrid('getRows')[index];
+    var roleCode = row.roleCode;
+    var url = "../userMangerment/fee_user_org_role.html?";
+    url += "&roleCode=" + roleCode;
+    $("#fee_detailsIframe").attr('src', url);
+    $('#fee_detailsWindow').window('open');
+}
+</script>
+
+</html>

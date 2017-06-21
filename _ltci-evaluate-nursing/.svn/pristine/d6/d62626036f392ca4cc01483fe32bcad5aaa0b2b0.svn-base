@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.taikang.dic.ltci.dao.ExpertEvaluateSpecialDAO">
+  <resultMap id="rEvaluateSpecial" type="com.taikang.dic.ltci.model.ExpertEvaluateSpecialDO">
+    <id column="expert_evaluate_code" property="expertEvaluateCode" jdbcType="VARCHAR"/>
+    <result column="first_evaluate_code" property="firstEvaluateCode" jdbcType="VARCHAR"/>
+    <result column="accessory_address" property="accessoryAddress" jdbcType="VARCHAR"/>
+    <result column="fraction" property="fraction" jdbcType="INTEGER"/>
+    <result column="opinion" property="opinion" jdbcType="VARCHAR"/>
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR"/>
+    <result column="operated_time" property="operatedTime" jdbcType="VARCHAR"/>
+    <result column="evaluate_content" property="evaluateContent" jdbcType="LONGVARCHAR"/>
+    <result column="insured_person_code" property="insuredPersonCode" jdbcType="VARCHAR"/>
+    <result column="insured_person_name" property="insuredPersonName" jdbcType="VARCHAR"/>
+    <result column="address" property="address" jdbcType="VARCHAR"/>
+    <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
+    <result column="evaluate_task_code" property="evaluateTaskCode" jdbcType="VARCHAR"/>
+    <result column="score" property="score" jdbcType="DECIMAL" />
+    <result column="evaluatorid" property="evaluatorid" jdbcType="VARCHAR" />
+    <result column="evaluate_name" property="evaluateName" jdbcType="VARCHAR" />
+    <result column="evaluator_org" property="evaluatorOrg" jdbcType="VARCHAR" />
+    <result column="evaluate_agency_name" property="evaluateAgencyName" jdbcType="VARCHAR" />
+    <result column="detail_json" property="detailJson" jdbcType="LONGVARCHAR" />
+        <result column="task_state" property="taskState" jdbcType="VARCHAR"/>
+        <result column="application_form_scan" property="applicationFormScan" jdbcType="VARCHAR"/>
+        <result column="application_code" property="applicationCode" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  
+  <resultMap id="rEvaluateTaskDO" type="com.taikang.dic.ltci.model.EvaluateTaskDO">
+    <id column="evaluate_taskid" property="evaluateTaskid" jdbcType="VARCHAR"/>
+    <result column="evaluate_task_code" property="evaluateTaskCode" jdbcType="VARCHAR"/>
+    <result column="application_code" property="applicationCode" jdbcType="VARCHAR"/>
+    <result column="insured_person_code" property="insuredPersonCode" jdbcType="VARCHAR"/>
+    <result column="task_state" property="taskState" jdbcType="VARCHAR"/>
+    <result column="task_deadline" property="taskDeadline" jdbcType="INTEGER"/>
+    <result column="evaluate_agency_code" property="evaluateAgencyCode" jdbcType="VARCHAR"/>
+    <result column="evaluate_agency_name" property="evaluateAgencyName" jdbcType="VARCHAR"/>
+    <result column="evaluate_code" property="evaluateCode" jdbcType="VARCHAR"/>
+    <result column="send_time" property="sendTime" jdbcType="TIMESTAMP"/>
+    <result column="print_state" property="printState" jdbcType="VARCHAR"/>
+    <result column="is_reevaluate" property="isReevaluate" jdbcType="VARCHAR"/>
+    <result column="reevalueate_result" property="reevalueateResult" jdbcType="VARCHAR"/>
+    <result column="reevaluate_parent_code" property="reevaluateParentCode" jdbcType="VARCHAR"/>
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR"/>
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP"/>
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR"/>
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR"/>
+    <result column="is_valid" property="isValid" jdbcType="INTEGER"/>
+    <result column="si_area" property="siArea" jdbcType="VARCHAR"/>
+    <result column="remark" property="remark" jdbcType="VARCHAR"/>
+  </resultMap>  
+    
+    <select id="getExpertEvaluate" parameterType="map" resultMap="rEvaluateSpecial">
+    select a.expert_evaluate_code,
+		   a.accessory_address,
+           a.first_evaluate_code,
+		   a.evaluate_content,
+           a.fraction,
+           a.opinion,
+           date_format(a.operated_time,'%Y-%m-%d %H:%i:%s') operated_time,
+		   a.operated_by,
+		   b.score,
+		   b.detail_json,
+		   b.evaluatorid,
+           b.evaluate_name,
+           c.evaluate_agency_name,
+           b.evaluate_task_code,
+           c.insured_person_code,
+		   c.id_card,
+		   c.insured_person_name,
+		   c.task_state,
+           c.application_code
+    from ltci_expert_evaluate a,ltci_first_evaluate b,ltci_evaluate_task c
+		 		              
+		 
+    where a.is_valid='1' and 
+          a.first_evaluate_code=b.first_evaluate_code and 
+          c.evaluate_task_code = b.evaluate_task_code and 
+          b.is_valid='1' and 
+          c.is_valid='1' 
+   		  <if test="insuredPersonName != null and insuredPersonName !='' ">
+   		  	and c.insured_person_name like concat('%',#{insuredPersonName},'%')
+   		  </if>
+   		  <if test="idCard != null and idCard !='' ">
+   		  	and c.id_card = #{idCard,jdbcType=VARCHAR}
+   		  </if> 
+   		  <if test="evaluateAgencyName != null and evaluateAgencyName !='' ">
+   		  	and c.evaluate_agency_name like concat('%',#{evaluateAgencyName},'%')
+   		  </if> 
+   		  <if test="operatedStartTime != null and operatedStartTime !='' ">
+   		  	and a.operated_time &gt; concat(#{operatedStartTime}, ' 00:00:00')
+   		  </if>
+   		  <if test="operatedEndTime != null and operatedEndTime !='' ">
+   		  	and a.operated_time &lt; concat(#{operatedEndTime}, ' 23:59:59')
+   		  </if>
+   		  <if test="operatedOrg != null and operatedOrg !='' " >
+            and (a.created_org = #{operatedOrg,jdbcType=VARCHAR} or a.operated_org = #{operatedOrg,jdbcType=VARCHAR})
+          </if>
+   		  	order by a.operated_time desc
+			limit ${page}, ${pageSize}      
+    </select>
+    
+    <select id="countExpertEvaluateList" parameterType="map" resultType="java.lang.Integer">
+    select count(form.expert_evaluate_code) 
+    from(
+    select a.expert_evaluate_code,
+		   a.accessory_address,
+           a.first_evaluate_code,
+		   a.evaluate_content,
+           a.fraction,
+           a.opinion,
+           date_format(a.operated_time,'%Y-%m-%d %H:%i:%s') operated_time,
+		   a.operated_by,
+		   b.score,
+		   b.detail_json,
+		   b.evaluatorid,
+           b.evaluate_name,
+           c.evaluate_agency_name,
+           b.evaluate_task_code,
+           c.insured_person_code,
+		   c.id_card,
+		   c.insured_person_name,
+		   c.task_state,
+		   c.application_code
+    from ltci_expert_evaluate a,ltci_first_evaluate b,ltci_evaluate_task c
+		 		              
+		 
+    where a.is_valid='1' and 
+          a.first_evaluate_code=b.first_evaluate_code and 
+          c.evaluate_task_code = b.evaluate_task_code and 
+          b.is_valid='1' and 
+          c.is_valid='1' 
+   		  <if test="insuredPersonName != null and insuredPersonName !='' ">
+   		  	and c.insured_person_name like concat('%',#{insuredPersonName},'%')
+   		  </if>
+   		  <if test="idCard != null and idCard !='' ">
+   		  	and c.id_card = #{idCard,jdbcType=VARCHAR}
+   		  </if> 
+   		  <if test="evaluateAgencyName != null and evaluateAgencyName !='' ">
+   		  	and c.evaluate_agency_name like concat('%',#{evaluateAgencyName},'%')
+   		  </if> 
+   		  <if test="operatedStartTime != null and operatedStartTime !='' ">
+            and a.operated_time &gt; concat(#{operatedStartTime},' 00:00:00')
+          </if>
+          <if test="operatedEndTime != null and operatedEndTime !='' ">
+            and a.operated_time &lt; concat(#{operatedEndTime},' 23:59:59')
+          </if>
+   		  <if test="operatedOrg != null and operatedOrg !='' " >
+            and (a.created_org = #{operatedOrg,jdbcType=VARCHAR} or a.operated_org = #{operatedOrg,jdbcType=VARCHAR})
+          </if>   
+	) form   
+    </select>
+    
+    <select id="getExpertEvaluateScan" parameterType="string" resultType="HashMap">
+		select 
+		lee.accessory_address accessoryAddress,
+		lee.expert_evaluate_code expertEvaluateCode,
+		let.application_code applicationCode
+		from 
+		ltci_expert_evaluate lee
+		join 
+		ltci_first_evaluate lfe
+		on 
+		lee.first_evaluate_code = lfe.first_evaluate_code
+		join
+		ltci_evaluate_task let
+		on 
+		lfe.evaluate_task_code = let.evaluate_task_code
+		where 
+		lee.expert_evaluate_code = #{expertEvaluateCode}
+    </select>
+    
+    
+    <select id="getEvaluateTask" parameterType="string" resultMap="rEvaluateTaskDO">
+    select a.*
+	from ltci_evaluate_task a ,ltci_first_evaluate b, ltci_expert_evaluate c
+	where a.evaluate_task_code =b.evaluate_task_code and b.first_evaluate_code =c.first_evaluate_code
+    and c.expert_evaluate_code =#{a.expertEvaluateCode,jdbcType=VARCHAR}
+    </select>
+</mapper>

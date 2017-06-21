@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.TreatmentApplicationDAO" >
+  <!--   
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.TreatmentApplicationDO" 
+             extends="com.taikang.dic.ltci.dao.ApplicationDAO.BaseResultMap">
+    <association property="insuredPersonDO" javaType="com.taikang.dic.ltci.model.InsuredPersonDO"></association>
+    
+  </resultMap>
+   -->
+   
+   <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.TreatmentApplicationDO" >
+    <id column="applicationid" property="applicationid" jdbcType="VARCHAR" />
+    <result column="insured_person_code" property="insuredPersonCode" jdbcType="VARCHAR" />
+    <result column="insured_person_name" property="insuredPersonName" jdbcType="VARCHAR" />
+    <result column="insured_person_gender" property="insuredPersonGender" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+    <result column="security_number" property="securityNumber" jdbcType="VARCHAR" />
+    <result column="security_personal_number" property="securityPersonalNumber" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="personnel_identity_code" property="personnelIdentityCode" jdbcType="VARCHAR" />
+    <result column="personnel_identity_name" property="personnelIdentityName" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="org_name" property="orgName" jdbcType="VARCHAR" />
+    <result column="married" property="married" jdbcType="VARCHAR" />
+    <result column="educationid" property="educationid" jdbcType="VARCHAR" />
+    <result column="politicsid" property="politicsid" jdbcType="VARCHAR" />
+    <result column="occupationid" property="occupationid" jdbcType="VARCHAR" />
+    <result column="province_code" property="provinceCode" jdbcType="VARCHAR" />
+    <result column="city_code" property="cityCode" jdbcType="VARCHAR" />
+    <result column="area_code" property="areaCode" jdbcType="VARCHAR" />
+    <result column="nation" property="nation" jdbcType="VARCHAR" />
+    
+    <result column="application_code" property="applicationCode" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="deputy_name" property="deputyName" jdbcType="VARCHAR" />
+    <result column="deputy_id_type" property="deputyIdType" jdbcType="VARCHAR" />
+    <result column="deputy_id_card" property="deputyIdCard" jdbcType="VARCHAR" />
+    <result column="deputy_address" property="deputyAddress" jdbcType="VARCHAR" />
+    <result column="deputy_mobile" property="deputyMobile" jdbcType="VARCHAR" />
+    <result column="deputy_id_card_scan" property="deputyIdCardScan" jdbcType="VARCHAR" />
+    <result column="bid_type" property="bidType" jdbcType="VARCHAR" />
+    <result column="disease" property="disease" jdbcType="VARCHAR" />
+    <result column="is_task_deadline" property="isTaskDeadline" jdbcType="VARCHAR" />
+    <result column="is_relative_cared" property="isRelativeCared" jdbcType="VARCHAR" />
+    <result column="disease_cause" property="diseaseCause" jdbcType="VARCHAR" />
+    <result column="security_number_scan" property="securityNumberScan" jdbcType="VARCHAR" />
+    <result column="id_card_scan" property="idCardScan" jdbcType="VARCHAR" />
+    <result column="case_history_scan" property="caseHistoryScan" jdbcType="VARCHAR" />
+    <result column="application_form_scan" property="applicationFormScan" jdbcType="VARCHAR" />
+    <result column="sources" property="sources" jdbcType="VARCHAR" />
+    <result column="application_status" property="applicationStatus" jdbcType="VARCHAR" />
+    <result column="application_reason" property="applicationReason" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+  </resultMap>
+   
+  <resultMap id="ApplicationResultMap" type="com.taikang.dic.ltci.model.ApplicationDO" >
+    <id column="applicationid" property="applicationid" jdbcType="VARCHAR" />
+    <result column="application_code" property="applicationCode" jdbcType="VARCHAR" />
+    <result column="insured_person_code" property="insuredPersonCode" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="deputy_name" property="deputyName" jdbcType="VARCHAR" />
+    <result column="deputy_id_type" property="deputyIdType" jdbcType="VARCHAR" />
+    <result column="deputy_id_card" property="deputyIdCard" jdbcType="VARCHAR" />
+    <result column="deputy_address" property="deputyAddress" jdbcType="VARCHAR" />
+    <result column="deputy_mobile" property="deputyMobile" jdbcType="VARCHAR" />
+    <result column="deputy_id_card_scan" property="deputyIdCardScan" jdbcType="VARCHAR" />
+    <result column="bid_type" property="bidType" jdbcType="VARCHAR" />
+    <result column="disease" property="disease" jdbcType="VARCHAR" />
+    <result column="is_task_deadline" property="isTaskDeadline" jdbcType="VARCHAR" />
+    <result column="is_relative_cared" property="isRelativeCared" jdbcType="VARCHAR" />
+    <result column="disease_cause" property="diseaseCause" jdbcType="VARCHAR" />
+    <result column="security_number_scan" property="securityNumberScan" jdbcType="VARCHAR" />
+    <result column="id_card_scan" property="idCardScan" jdbcType="VARCHAR" />
+    <result column="case_history_scan" property="caseHistoryScan" jdbcType="VARCHAR" />
+    <result column="application_form_scan" property="applicationFormScan" jdbcType="VARCHAR" />
+    <result column="sources" property="sources" jdbcType="VARCHAR" />
+    <result column="application_status" property="applicationStatus" jdbcType="VARCHAR" />
+    <result column="application_reason" property="applicationReason" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+  </resultMap>
+   
+   
+  <select id="findByTreatmentApplicationCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    a.applicationid, a.application_code, a.insured_person_code, a.mobile, a.address, a.deputy_name, 
+    a.deputy_id_type, a.deputy_id_card, a.deputy_address, a.deputy_mobile, a.deputy_id_card_scan, 
+    a.bid_type, a.disease, a.is_task_deadline, a.is_relative_cared, a.disease_cause, a.security_number_scan, 
+    a.id_card_scan, a.case_history_scan, a.application_form_scan, a.sources, a.application_status, a.application_reason,
+    a.remark, a.operated_by, a.operated_time, a.operated_org, a.created_by, a.created_time, a.created_org, 
+    a.is_valid, a.si_area,a.version,
+    p.insured_personid, p.insured_person_name, p.insured_person_code,p.insured_person_gender, 
+    p.birthday, p.security_number, p.security_personal_number, p.id_card, p.personnel_identity_code, 
+    p.personnel_identity_name, p.mobile, p.email, p.address, p.org_name, p.married, p.educationid, 
+    p.politicsid, p.occupationid, p.province_code, p.city_code, p.area_code, p.nation 
+    
+    from ltci_application a,ltci_insured_person p  
+    where a.insured_person_code = p.insured_person_code 
+    and a.application_code = #{applicationCode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findTreatmentApplicationList" parameterType="map" resultMap="BaseResultMap">
+    select 
+    a.applicationid, a.application_code, a.insured_person_code, a.mobile, a.address, a.deputy_name, 
+    a.deputy_id_type, a.deputy_id_card, a.deputy_address, a.deputy_mobile, a.deputy_id_card_scan, 
+    a.bid_type, a.disease, a.is_task_deadline, a.is_relative_cared, a.disease_cause, a.security_number_scan, 
+    a.id_card_scan, a.case_history_scan, a.application_form_scan, a.sources, a.application_status, a.application_reason,
+    a.remark, a.operated_by, a.operated_time, a.operated_org, a.created_by, a.created_time, a.created_org, 
+    a.is_valid, a.si_area,a.version,
+    p.insured_personid, p.insured_person_name, p.insured_person_code,p.insured_person_gender, 
+    p.birthday, p.security_number, p.security_personal_number, p.id_card, p.personnel_identity_code, 
+    p.personnel_identity_name, p.mobile, p.email, p.address, p.org_name, p.married, p.educationid, 
+    p.politicsid, p.occupationid, p.province_code, p.city_code, p.area_code, p.nation 
+    
+    from ltci_application a,ltci_insured_person p  
+    <where>
+        a.insured_person_code = p.insured_person_code and a.is_valid = 1 
+        <if test="insuredPersonName!=null and insuredPersonName!='' and insuredPersonName!='undefind' ">
+            and p.insured_person_name like concat('%',#{insuredPersonName},'%')
+        </if>
+        <if test="idCard!=null and idCard!='' and idCard!='undefind' ">
+            and p.id_card = #{idCard} 
+        </if>
+        <if test="securityNumber!=null and securityNumber!='' and securityNumber!='undefind' ">
+            and p.security_number = #{securityNumber}
+        </if>
+        <if test="disease!=null and disease!='' and disease!='undefind' ">
+            and a.disease = #{disease} 
+        </if>
+        <if test="operatedTimeStart!=null">
+            and a.operated_time &gt;= #{operatedTimeStart} 
+        </if>
+        <if test="operatedTimeEnd!=null">
+            and a.operated_time &lt;= #{operatedTimeEnd} 
+        </if>
+        <if test="applicationStatus!=null">
+            and a.application_status in 
+            <foreach collection="applicationStatus" item="listItem" open="(" close=")" separator="," >
+               #{listItem}
+            </foreach>
+        </if>   
+        <if test="operatedOrg != null and operatedOrg !='' " >
+	        and (a.created_org = #{operatedOrg,jdbcType=VARCHAR} or a.operated_org = #{operatedOrg,jdbcType=VARCHAR})
+	    </if>
+    </where>
+    <trim prefix="ORDER BY">
+        a.operated_time ${orderDirectionStr}
+    </trim>
+    <if test="pageStart>-1 and pageSize>-1">
+    limit ${pageStart},${pageSize}
+    </if>
+    </select>
+    
+    <select id="countTreatmentApplicationList" parameterType="map" resultType="java.lang.Integer">
+    select count(a.applicationid) from ltci_application a,ltci_insured_person p  
+    <where>
+        a.insured_person_code = p.insured_person_code and a.is_valid = 1 
+        <if test="insuredPersonName!=null and insuredPersonName!='' and insuredPersonName!='undefind' ">
+            and p.insured_person_name like  concat('%',#{insuredPersonName},'%')
+        </if>
+        <if test="idCard!=null and idCard!='' and idCard!='undefind' ">
+            and p.id_card = #{idCard} 
+        </if>
+        <if test="securityNumber!=null and securityNumber!='' and securityNumber!='undefind' ">
+            and p.security_number = #{securityNumber}
+        </if>
+        <if test="disease!=null and disease!='' and disease!='undefind' ">
+            and a.disease = #{disease} 
+        </if>
+        <if test="operatedTimeStart!=null">
+            and a.operated_time &gt;= #{operatedTimeStart} 
+        </if>
+        <if test="operatedTimeEnd!=null">
+            and a.operated_time &lt;= #{operatedTimeEnd} 
+        </if>
+        <if test="applicationStatus!=null">
+            and a.application_status in 
+            <foreach collection="applicationStatus" item="listItem" open="(" close=")" separator="," >
+               #{listItem}
+            </foreach>
+        </if>
+        <if test="operatedOrg != null and operatedOrg !='' " >
+            and (a.created_org = #{operatedOrg,jdbcType=VARCHAR} or a.operated_org = #{operatedOrg,jdbcType=VARCHAR})
+        </if>   
+    </where>
+  </select>
+  
+    <select id="getApplicationState" resultMap="ApplicationResultMap" parameterType="java.lang.String" >
+	select 
+  	a.application_status
+	from ltci_application a,ltci_insured_person b
+	where a.insured_person_code=b.insured_person_code 
+				and a.is_valid=1
+				and b.id_card = #{idCard,jdbcType=VARCHAR} 
+	      and b.security_number = #{securityNumber,jdbcType=VARCHAR} 
+	      and a.deputy_id_card = #{deputyIdCard,jdbcType=VARCHAR}
+				and b.insured_person_name = #{insuredPersonName,jdbcType=VARCHAR}
+	order by a.created_time desc
+	limit 0,1
+    </select>
+  
+  <update id="updateApplicationStatusByApplicationCode" parameterType="map" >
+    update ltci_application set
+      application_status = #{applicationStatus,jdbcType=VARCHAR},
+      application_reason = #{applicationReason,jdbcType=VARCHAR},
+      version = #{versionAfter,jdbcType=VARCHAR},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP}
+    where application_code = #{applicationCode,jdbcType=VARCHAR} 
+    and version = #{versionNow,jdbcType=VARCHAR}
+  </update>
+  
+  <resultMap id="applicationSimpleDOMap" type="com.taikang.dic.ltci.model.ApplicationSimpleDO" >
+    <id column="application_code" property="applicationCode" jdbcType="VARCHAR" />
+    <result column="insured_person_code" property="insuredPersonCode" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="insured_person_name" property="insuredPersonName" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="application_form_scan" property="applicationFormScan" jdbcType="VARCHAR" />
+    <result column="security_number" property="securityNumber" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getApplicationSimple" resultMap="applicationSimpleDOMap">
+  select a.application_code,
+         a.insured_person_code,
+         a.application_form_scan,
+         b.id_card,
+         b.insured_person_name,
+         b.address,
+         b.security_number
+   from ltci_application a left join ltci_insured_person b on a.insured_person_code =b.insured_person_code
+   where a.application_code in 
+   
+    <foreach collection="applicationSimples" item="listItem" open="(" separator="," close=")">
+      #{listItem}
+    </foreach>
+  </select>
+  
+    <select id="getApplicationComplex" resultMap="BaseResultMap">
+  select 
+    a.applicationid, a.application_code, a.insured_person_code, a.mobile, a.address, a.deputy_name, 
+    a.deputy_id_type, a.deputy_id_card, a.deputy_address, a.deputy_mobile, a.deputy_id_card_scan, 
+    a.bid_type, a.disease, a.is_task_deadline, a.is_relative_cared, a.disease_cause, a.security_number_scan, 
+    a.id_card_scan, a.case_history_scan, a.application_form_scan, a.sources, a.application_status, a.application_reason,
+    a.remark, a.operated_by, a.operated_time, a.operated_org, a.created_by, a.created_time, a.created_org, 
+    a.is_valid, p.si_area,
+    p.insured_personid, p.insured_person_name, p.insured_person_code,p.insured_person_gender, 
+    p.birthday, p.security_number, p.security_personal_number, p.id_card, p.personnel_identity_code, 
+    p.personnel_identity_name, p.mobile, p.email, p.address, p.org_name, p.married, p.educationid, 
+    p.politicsid, p.occupationid, p.province_code, p.city_code, p.area_code, p.nation 
+    
+   from ltci_application a left join ltci_insured_person p on a.insured_person_code = p.insured_person_code
+   where a.application_code = #{applicationCodes,jdbcType=VARCHAR}
+  </select>
+  
+</mapper>

@@ -1,0 +1,29 @@
+get: 
+  tags:
+  - mobileTask
+  summary: c端投诉进度查询(移动端->经办)
+  description: 移动端查询投诉进度结果
+  operationId: getPatrolTask
+  parameters: 
+    - name: patrolTaskId
+      in: path
+      description: 投诉编号
+      required: true
+      type: string
+  responses:
+      200:
+        description: 查询成功
+        schema:
+          $ref: "../../ltci-quality-control-api-v1.yml/#/definitions/ResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-quality-control-api-v1.yml/#/definitions/ResultDTO"
+
+
+
+
+
+
+
+

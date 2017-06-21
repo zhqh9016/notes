@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.CustomNurseDetailDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.DaySetPerDO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="fee_set_code" property="feeSetCode" jdbcType="VARCHAR" />
+    <result column="org_set_code" property="orgSetCode" jdbcType="VARCHAR" />
+    <result column="in_recorduuid" property="inRecorduuid" jdbcType="VARCHAR" />
+    <result column="invoice_num" property="invoiceNum" jdbcType="VARCHAR" />
+    <result column="soc_sec_num" property="socSecNum" jdbcType="VARCHAR" />
+    <result column="be_care_person_card" property="beCarePersonCard" jdbcType="VARCHAR" />
+    <result column="card_type" property="cardType" jdbcType="INTEGER" />
+    <result column="be_care_person_name" property="beCarePersonName" jdbcType="VARCHAR" />
+    <result column="be_care_person_sex" property="beCarePersonSex" jdbcType="INTEGER" />
+    <result column="fee_date" property="feeDate" jdbcType="TIMESTAMP" />
+    <result column="nurse_time" property="nurseTime" jdbcType="TIMESTAMP" />
+    <result column="nurse_style" property="nurseStyle" jdbcType="INTEGER" />
+    <result column="org_code" property="orgCode" jdbcType="VARCHAR" />
+    <result column="org_name" property="orgName" jdbcType="VARCHAR" />
+    <result column="nurse_total_amount" property="nurseTotalAmount" jdbcType="DECIMAL" />
+    <result column="si_pay" property="siPay" jdbcType="DECIMAL" />
+    <result column="pay_self" property="paySelf" jdbcType="DECIMAL" />
+    <result column="expense_self" property="expenseSelf" jdbcType="DECIMAL" />
+    <result column="account_pay" property="accountPay" jdbcType="DECIMAL" />
+    <result column="bank_card_pay" property="bankCardPay" jdbcType="DECIMAL" />
+    <result column="unr_fee" property="unrFee" jdbcType="DECIMAL" />
+    <result column="charge_level" property="chargeLevel" jdbcType="VARCHAR" />
+    <result column="over_cost" property="overCost" jdbcType="DECIMAL" />
+    <result column="pub_pay_status" property="pubPayStatus" jdbcType="INTEGER" />
+    <result column="per_pay_status" property="perPayStatus" jdbcType="INTEGER" />
+    <result column="audit_state" property="auditState" jdbcType="INTEGER" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="countDaySetPer" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    SELECT soc_sec_num,in_recorduuid,operated_org operated_org, operated_org created_org, SUM(over_cost) as over_cost , SUM(nurse_total_amount) nurse_total_amount,SUM(si_pay) si_pay,SUM(pay_self) pay_self,SUM(expense_self) expense_self
+    FROM ltci_nurse_fee_detail 
+    <where>
+    	is_syn_for_social = 1
+      <if test="socSecNum !=null and socSecNum != ''">
+	      AND soc_sec_num = #{socSecNum}
+      </if>
+      <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+		  AND fee_date BETWEEN #{startTime} AND #{endTime} 
+      </if>
+      <if test="orgCode != null and orgCode != ''">
+      	AND org_code = #{orgCode}
+      </if>
+    </where>
+    GROUP BY soc_sec_num,in_recorduuid;
+  </select>
+  <select id="getUnSynForSocialPers" resultType="java.lang.String"  parameterType="java.util.Map">
+  	SELECT CONCAT(soc_sec_num,in_recorduuid) 
+  	FROM ltci_nurse_fee_detail
+  	<where>
+  		is_syn_for_social != 1
+  		<if test = "startTime != null and startTime != '' and endTime != null and endTime != ''">
+  			AND fee_date BETWEEN #{startTime} AND #{endTime}
+  		</if>
+  		<if test = "socSecNum !=null and socSecNum != ''">
+  			AND soc_sec_num = #{socSecNum}
+  		</if>
+  	</where>
+  	 GROUP BY soc_sec_num,in_recorduuid
+  </select>
+</mapper>

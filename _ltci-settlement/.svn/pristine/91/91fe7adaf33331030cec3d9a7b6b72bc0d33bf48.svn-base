@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.ServiceItemDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.ServiceItemDO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="service_code" property="serviceCode" jdbcType="VARCHAR" />
+    <result column="service_type" property="serviceType" jdbcType="INTEGER" />
+    <result column="service_name" property="serviceName" jdbcType="VARCHAR" />
+    <result column="frequency" property="frequency" jdbcType="VARCHAR" />
+    <result column="task_time" property="taskTime" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="pay_type" property="payType" jdbcType="INTEGER" />
+    <result column="charge_type" property="chargeType" jdbcType="VARCHAR" />
+    <result column="charge_level" property="chargeLevel" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="limit_price" property="limitPrice" jdbcType="DECIMAL" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, service_code, service_type, service_name, frequency, task_time, description, 
+    pay_type, charge_type, charge_level, start_time, end_time, limit_price, price, is_valid, 
+    si_area, operated_by, operated_org, operated_time, created_by, created_org, created_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.ServiceItemDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ltci_service_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ltci_service_item
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_service_item
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.ServiceItemDOExample" >
+    delete from ltci_service_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.ServiceItemDO" >
+    insert into ltci_service_item (id, service_code, service_type, 
+      service_name, frequency, task_time, 
+      description, pay_type, charge_type, 
+      charge_level, start_time, end_time, 
+      limit_price, price, is_valid, 
+      si_area, operated_by, operated_org, 
+      operated_time, created_by, created_org, 
+      created_time)
+    values (#{id,jdbcType=VARCHAR}, #{serviceCode,jdbcType=VARCHAR}, #{serviceType,jdbcType=INTEGER}, 
+      #{serviceName,jdbcType=VARCHAR}, #{frequency,jdbcType=VARCHAR}, #{taskTime,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{payType,jdbcType=INTEGER}, #{chargeType,jdbcType=VARCHAR}, 
+      #{chargeLevel,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{limitPrice,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{isValid,jdbcType=INTEGER}, 
+      #{siArea,jdbcType=VARCHAR}, #{operatedBy,jdbcType=VARCHAR}, #{operatedOrg,jdbcType=VARCHAR}, 
+      #{operatedTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, #{createdOrg,jdbcType=VARCHAR}, 
+      #{createdTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.ServiceItemDO" >
+    insert into ltci_service_item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="serviceCode != null" >
+        service_code,
+      </if>
+      <if test="serviceType != null" >
+        service_type,
+      </if>
+      <if test="serviceName != null" >
+        service_name,
+      </if>
+      <if test="frequency != null" >
+        frequency,
+      </if>
+      <if test="taskTime != null" >
+        task_time,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="payType != null" >
+        pay_type,
+      </if>
+      <if test="chargeType != null" >
+        charge_type,
+      </if>
+      <if test="chargeLevel != null" >
+        charge_level,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="limitPrice != null" >
+        limit_price,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="isValid != null" >
+        is_valid,
+      </if>
+      <if test="siArea != null" >
+        si_area,
+      </if>
+      <if test="operatedBy != null" >
+        operated_by,
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org,
+      </if>
+      <if test="operatedTime != null" >
+        operated_time,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="createdOrg != null" >
+        created_org,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceCode != null" >
+        #{serviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceType != null" >
+        #{serviceType,jdbcType=INTEGER},
+      </if>
+      <if test="serviceName != null" >
+        #{serviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="frequency != null" >
+        #{frequency,jdbcType=VARCHAR},
+      </if>
+      <if test="taskTime != null" >
+        #{taskTime,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="chargeType != null" >
+        #{chargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeLevel != null" >
+        #{chargeLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="limitPrice != null" >
+        #{limitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="isValid != null" >
+        #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="siArea != null" >
+        #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedOrg != null" >
+        #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdOrg != null" >
+        #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.ServiceItemDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_service_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_service_item
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serviceCode != null" >
+        service_code = #{record.serviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serviceType != null" >
+        service_type = #{record.serviceType,jdbcType=INTEGER},
+      </if>
+      <if test="record.serviceName != null" >
+        service_name = #{record.serviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frequency != null" >
+        frequency = #{record.frequency,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskTime != null" >
+        task_time = #{record.taskTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payType != null" >
+        pay_type = #{record.payType,jdbcType=INTEGER},
+      </if>
+      <if test="record.chargeType != null" >
+        charge_type = #{record.chargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chargeLevel != null" >
+        charge_level = #{record.chargeLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startTime != null" >
+        start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null" >
+        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.limitPrice != null" >
+        limit_price = #{record.limitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isValid != null" >
+        is_valid = #{record.isValid,jdbcType=INTEGER},
+      </if>
+      <if test="record.siArea != null" >
+        si_area = #{record.siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedBy != null" >
+        operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedOrg != null" >
+        operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedTime != null" >
+        operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdBy != null" >
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdOrg != null" >
+        created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null" >
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_service_item
+    set id = #{record.id,jdbcType=VARCHAR},
+      service_code = #{record.serviceCode,jdbcType=VARCHAR},
+      service_type = #{record.serviceType,jdbcType=INTEGER},
+      service_name = #{record.serviceName,jdbcType=VARCHAR},
+      frequency = #{record.frequency,jdbcType=VARCHAR},
+      task_time = #{record.taskTime,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      pay_type = #{record.payType,jdbcType=INTEGER},
+      charge_type = #{record.chargeType,jdbcType=VARCHAR},
+      charge_level = #{record.chargeLevel,jdbcType=VARCHAR},
+      start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      limit_price = #{record.limitPrice,jdbcType=DECIMAL},
+      price = #{record.price,jdbcType=DECIMAL},
+      is_valid = #{record.isValid,jdbcType=INTEGER},
+      si_area = #{record.siArea,jdbcType=VARCHAR},
+      operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.ServiceItemDO" >
+    update ltci_service_item
+    <set >
+      <if test="serviceCode != null" >
+        service_code = #{serviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceType != null" >
+        service_type = #{serviceType,jdbcType=INTEGER},
+      </if>
+      <if test="serviceName != null" >
+        service_name = #{serviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="frequency != null" >
+        frequency = #{frequency,jdbcType=VARCHAR},
+      </if>
+      <if test="taskTime != null" >
+        task_time = #{taskTime,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="chargeType != null" >
+        charge_type = #{chargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeLevel != null" >
+        charge_level = #{chargeLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="limitPrice != null" >
+        limit_price = #{limitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="isValid != null" >
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="siArea != null" >
+        si_area = #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        operated_by = #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdOrg != null" >
+        created_org = #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.ServiceItemDO" >
+    update ltci_service_item
+    set service_code = #{serviceCode,jdbcType=VARCHAR},
+      service_type = #{serviceType,jdbcType=INTEGER},
+      service_name = #{serviceName,jdbcType=VARCHAR},
+      frequency = #{frequency,jdbcType=VARCHAR},
+      task_time = #{taskTime,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      pay_type = #{payType,jdbcType=INTEGER},
+      charge_type = #{chargeType,jdbcType=VARCHAR},
+      charge_level = #{chargeLevel,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      limit_price = #{limitPrice,jdbcType=DECIMAL},
+      price = #{price,jdbcType=DECIMAL},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      si_area = #{siArea,jdbcType=VARCHAR},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_org = #{createdOrg,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

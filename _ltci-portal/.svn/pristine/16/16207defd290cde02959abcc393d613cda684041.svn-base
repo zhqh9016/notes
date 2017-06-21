@@ -1,0 +1,48 @@
+post:
+  tags:
+  - evaluateTask
+  summary: 分页查询评估任务信息
+  description: 根据条件查询的评估任务信息
+  operationId: evaluateTaskList
+  parameters:
+   - name: insuredPersonName
+     in: formData
+     description: 申请人
+     required: false
+     type: string
+   - name: mobile
+     in: formData
+     description: 手机号码
+     required: false
+     type: string
+   - name: operatedTime
+     in: formData
+     description: 经办时间
+     required: false
+     type: string
+   - name: page
+     in: formData
+     description: 页数
+     required: false
+     type: string
+   - name: pageSize
+     in: formData
+     description: 条数
+     required: false
+     type: string
+   - name: taskState
+     in: formData
+     description: 评估任务状态
+     required: false
+     type: string  
+  responses:
+    200:
+      description: 查询成功
+      schema:
+        type: array
+        items:
+          $ref: "../../ltci-portal-api-v1.yml/definitions/EvaluateTaskDTO"
+    default:
+      description: 其它错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml#/definitions/Response"

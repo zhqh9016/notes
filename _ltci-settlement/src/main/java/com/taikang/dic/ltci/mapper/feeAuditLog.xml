@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.FeeAuditLogDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.FeeAuditLogDO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="org_set_code" property="orgSetCode" jdbcType="VARCHAR" />
+    <result column="audit_type" property="auditType" jdbcType="INTEGER" />
+    <result column="reject_reason" property="rejectReason" jdbcType="VARCHAR" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.taikang.dic.ltci.model.FeeAuditLogDO" extends="BaseResultMap" >
+    <result column="reject_scene" property="rejectScene" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, org_set_code, audit_type, reject_reason, operated_by, operated_org, operated_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    reject_scene
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.taikang.dic.ltci.model.FeeAuditLogDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ltci_fee_audit_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.FeeAuditLogDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ltci_fee_audit_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ltci_fee_audit_log
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_fee_audit_log
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.FeeAuditLogDOExample" >
+    delete from ltci_fee_audit_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.FeeAuditLogDO" >
+    insert into ltci_fee_audit_log (id, org_set_code, audit_type, 
+      reject_reason, operated_by, operated_org, 
+      operated_time, reject_scene)
+    values (#{id,jdbcType=VARCHAR}, #{orgSetCode,jdbcType=VARCHAR}, #{auditType,jdbcType=INTEGER}, 
+      #{rejectReason,jdbcType=VARCHAR}, #{operatedBy,jdbcType=VARCHAR}, #{operatedOrg,jdbcType=VARCHAR}, 
+      #{operatedTime,jdbcType=TIMESTAMP}, #{rejectScene,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.FeeAuditLogDO" >
+    insert into ltci_fee_audit_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orgSetCode != null" >
+        org_set_code,
+      </if>
+      <if test="auditType != null" >
+        audit_type,
+      </if>
+      <if test="rejectReason != null" >
+        reject_reason,
+      </if>
+      <if test="operatedBy != null" >
+        operated_by,
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org,
+      </if>
+      <if test="operatedTime != null" >
+        operated_time,
+      </if>
+      <if test="rejectScene != null" >
+        reject_scene,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orgSetCode != null" >
+        #{orgSetCode,jdbcType=VARCHAR},
+      </if>
+      <if test="auditType != null" >
+        #{auditType,jdbcType=INTEGER},
+      </if>
+      <if test="rejectReason != null" >
+        #{rejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedOrg != null" >
+        #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rejectScene != null" >
+        #{rejectScene,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.FeeAuditLogDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_fee_audit_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_fee_audit_log
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgSetCode != null" >
+        org_set_code = #{record.orgSetCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditType != null" >
+        audit_type = #{record.auditType,jdbcType=INTEGER},
+      </if>
+      <if test="record.rejectReason != null" >
+        reject_reason = #{record.rejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedBy != null" >
+        operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedOrg != null" >
+        operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedTime != null" >
+        operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.rejectScene != null" >
+        reject_scene = #{record.rejectScene,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update ltci_fee_audit_log
+    set id = #{record.id,jdbcType=VARCHAR},
+      org_set_code = #{record.orgSetCode,jdbcType=VARCHAR},
+      audit_type = #{record.auditType,jdbcType=INTEGER},
+      reject_reason = #{record.rejectReason,jdbcType=VARCHAR},
+      operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      reject_scene = #{record.rejectScene,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_fee_audit_log
+    set id = #{record.id,jdbcType=VARCHAR},
+      org_set_code = #{record.orgSetCode,jdbcType=VARCHAR},
+      audit_type = #{record.auditType,jdbcType=INTEGER},
+      reject_reason = #{record.rejectReason,jdbcType=VARCHAR},
+      operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      operated_time = #{record.operatedTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.FeeAuditLogDO" >
+    update ltci_fee_audit_log
+    <set >
+      <if test="orgSetCode != null" >
+        org_set_code = #{orgSetCode,jdbcType=VARCHAR},
+      </if>
+      <if test="auditType != null" >
+        audit_type = #{auditType,jdbcType=INTEGER},
+      </if>
+      <if test="rejectReason != null" >
+        reject_reason = #{rejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        operated_by = #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rejectScene != null" >
+        reject_scene = #{rejectScene,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.taikang.dic.ltci.model.FeeAuditLogDO" >
+    update ltci_fee_audit_log
+    set org_set_code = #{orgSetCode,jdbcType=VARCHAR},
+      audit_type = #{auditType,jdbcType=INTEGER},
+      reject_reason = #{rejectReason,jdbcType=VARCHAR},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      reject_scene = #{rejectScene,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.FeeAuditLogDO" >
+    update ltci_fee_audit_log
+    set org_set_code = #{orgSetCode,jdbcType=VARCHAR},
+      audit_type = #{auditType,jdbcType=INTEGER},
+      reject_reason = #{rejectReason,jdbcType=VARCHAR},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

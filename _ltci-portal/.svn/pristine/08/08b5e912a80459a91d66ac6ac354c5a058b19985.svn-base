@@ -1,0 +1,26 @@
+post:
+  tags:
+  - retryManage
+  summary: mq接收失败消息重试
+  description: 返回数值类型（返回值为200代表成功）。
+  operationId: retryFailMessage
+  parameters:
+  - name: url
+    in: formData
+    description: 重试url
+    required: true
+    type: string
+  - name: message
+    in: formData
+    description: 重试json消息体
+    required: true
+    type: string
+  responses:
+    200:
+      description: 重试成功
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"

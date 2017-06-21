@@ -1,0 +1,196 @@
+#访问路径前缀
+restBasePath: /api/v1
+
+#服务启动端口号
+server.port: 8083
+
+#系统编码
+systemCode: LCPM
+
+#MQ编码
+system_charset: UTF-8
+
+#指定保证金比例, 0.3 表示30%,必须使用小数,否则程序可能会计算错误
+rate.warranty: 0 
+#mq 发送、接收失败消息定时重试 ‘时间’，同时key也是锁表中的‘业务模块类型’
+retryFailMessageTiming: 0 0/10 * * * ?
+
+#mybatis的xml映射文件路径
+mybatis.mapperLocations: classpath*:com/taikang/dic/ltci/mapper/*.xml
+
+#需要注册别名的POJO类所在包
+mybatis.typeAliasesPackage: com.taikang.dic.ltci.model
+
+#是否开启feign中集成的hystrix功能,默认开启.如果开启建议手动调试hystrix响应超时时间,建议关闭.
+feign.hystrix.enabled: false
+
+#数据库连接配置默认连接是开发环境
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.130.206.191:3306/tklcpm
+    username: tklcpm
+    password: tklcpm
+   
+spring.datasource.tomcat:
+    max-active: 50
+    max-wait: 30000
+    test-on-borrow:  true
+    max-idle: 10
+    min-idle: 5
+    test-on-connect: true
+    test-on-return: true
+    test-while-idle: true
+    validation-query: SELECT 1 FROM DUAL
+    validation-query-timeout: -1
+
+#rabbitmq连接配置默认连接是开发环境   
+spring.rabbitmq:
+  host: 10.130.202.57
+  port: 5672
+  username: longtermcare
+  password: longtermcare
+  virtualHost: longtermcare
+
+#护理明细接收
+ltci.mursedetail.queue: q.careFaiDetail.jingmen
+ltci.nurse.exechange: x.careFairDetail
+ltci.mursedetail.messageCode: LTC_CHA_DAY_001
+
+#服务项目同步
+ltci.serviceItem.queue: q.longTermService
+ltci.serviceItem.exechange: x.serviceItem
+ltci.sendServiceItem.messageCode: LTC_SRV_001
+
+#护理明细回传专业系统
+ltci.murseDetailBack.queue: q.longTermService
+ltci.murseDetailBack.exechange: x.dailyCareFair
+ltci.murseDetailBack.messageCode: LTC_CHA_DAY_002
+
+#个人刷卡月结
+ltci.monSetPer.queue: q.MonthlyCareFair.jingmen
+ltci.monSetPer.exechange: x.MonthlyCareFair
+ltci.monSetPer.messageCode: LTC_CHA_MON_001
+
+#webservice接口地址
+#soap.nurse.wsdl.url: http://jcpt.tunnel.qydev.com/services/care?wsdl
+soap.nurse.wsdl.url: http://10.135.45.81/services/care?wsdl
+
+#是否是webservice接口测试，默认不开启：false; 开启：true
+isWebserviceDebug: false
+#城市编码
+service.item.cityId: 420800
+
+#定时任务执行时间配置
+#     定时重发到第三方接口（护理费用明细及日结算交易）  测试 每小时执行一次
+scheduled.cron.reSend2ThirdOfNurseFeeDetail: 1 0/1 * * * ?
+#     定时重发到第三方接口（服务项目推送）  测试 每小时执行一次
+scheduled.cron.reSend2ThirdOfServiceProject: 1 1 0/1 * * ?
+
+#参保人信息查询链接
+feign.insured.person.client: ltci-treatment-application
+feign.insured.person.url: http://localhost:8090
+
+#评估护理微服务地址
+feign.evaluate.nursing.url: http://localhost:8086
+feign.evaluate.nursing.client: ltci-evaluate-nursing
+
+#机构人员微服务地址
+feign.agency.person.url: http://localhost:8087
+feign.agency.person.client: ltci-agency-person
+
+#基础微服务调用地址
+feign.system.url: http://localhost:8082
+#基础微服务名字(暂不用修改)
+feign.system: ltci-system
+#外部请求的接口（大病），一天的最多调用次数
+ltci.interface.request.times: 5
+
+#测试环境  
+---
+spring.profiles: test
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.130.206.186:3306/ltci_settlement
+    username: tklcpm
+    password: tklcpm
+    
+spring.rabbitmq:
+  host: 10.135.45.77,10.135.45.79
+  port: 5672
+  username: longtermcare
+  password: longtermcare
+  virtualHost: longtermcare
+
+#webservice接口地址 
+#soap.nurse.wsdl.url: http://jcpt.tunnel.qydev.com/services/care?wsdl
+soap.nurse.wsdl.url: http://10.135.45.81/services/care?wsdl
+
+#参保人信息查询链接
+feign.insured.person.client: ltci-treatment-application
+feign.insured.person.url: http://localhost:8090
+
+#开发环境  
+---
+spring.profiles: dev
+
+#是否是webservice接口测试，默认不开启：false; 开启：true
+isWebserviceDebug: false
+
+#mysql 开发环境
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.130.206.191:3306/ltci_settlement
+    username: tklcpm
+    password: tklcpm
+    
+#rabbitmq 开发环境
+spring.rabbitmq:
+  host: 10.130.202.57
+  port: 5672
+  username: longtermcare
+  password: longtermcare
+  virtualHost: longtermcare
+    
+#webservice接口地址
+#soap.nurse.wsdl.url: http://jcpt.tunnel.qydev.com/services/care?wsdl
+soap.nurse.wsdl.url: http://10.135.45.81/services/care?wsdl
+
+#参保人信息查询链接
+feign.insured.person.client: ltci-treatment-application
+feign.insured.person.url: http://localhost:8090
+  
+#生产环境  
+---
+spring.profiles: pro
+
+#mysql 生产环境
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.128.128.94:3306/ltci_settlement
+    username: tklcpm
+    password: tklcpm@2ol7
+
+#rabbitmq 生产环境
+spring.rabbitmq:
+  host: 172.16.70.96,172.16.70.97
+  port: 5672
+  username: longtermcare
+  password: rA20gq
+  virtualHost: longtermcare
+
+#是否是webservice接口测试，默认不开启：false; 开启：true
+isWebserviceDebug: false
+
+#webservice接口地址
+soap.nurse.wsdl.url: http://10.135.45.81/services/care?wsdl
+
+#参保人信息查询链接
+feign.insured.person.client: ltci-treatment-application
+feign.insured.person.url: http://localhost:8090
+
+#定时任务执行时间配置
+#     定时重发到第三方接口（护理费用明细及日结算交易）每小时执行一次
+scheduled.cron.reSend2ThirdOfNurseFeeDetail: 1 1 0/1 * * ?
+#     定时重发到第三方接口（服务项目推送）每小时执行一次
+scheduled.cron.reSend2ThirdOfServiceProject: 1 1 0/1 * * ?
+

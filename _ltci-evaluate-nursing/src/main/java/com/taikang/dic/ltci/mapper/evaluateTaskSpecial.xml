@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.EvaluateTaskSpecialDAO" >
+
+   <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.EvaluateTaskSpecialDO" >
+    <id column="evaluate_taskid" property="evaluateTaskid" jdbcType="VARCHAR"/>
+    <result column="evaluate_task_code" property="evaluateTaskCode" jdbcType="VARCHAR"/>
+    <result column="application_code" property="applicationCode" jdbcType="VARCHAR"/>
+    <result column="insuregetExpertTaskListd_person_code" property="insuredPersonCode" jdbcType="VARCHAR"/>
+    <result column="task_state" property="taskState" jdbcType="VARCHAR"/>
+    <result column="task_deadline" property="taskDeadline" jdbcType="VARCHAR"/>
+    <result column="evaluate_agency_code" property="evaluateAgencyCode" jdbcType="VARCHAR"/>
+    <result column="evaluate_agency_name" property="evaluateAgencyName" jdbcType="VARCHAR"/>
+    <result column="evaluate_code" property="evaluateCode" jdbcType="VARCHAR"/>
+    <result column="send_time" property="sendTime" jdbcType="TIMESTAMP"/>
+    <result column="print_state" property="printState" jdbcType="VARCHAR"/>
+    <result column="is_reevaluate" property="isReevaluate" jdbcType="VARCHAR"/>
+    <result column="reevalueate_result" property="reevalueateResult" jdbcType="VARCHAR"/>
+    <result column="reevaluate_parent_code" property="reevaluateParentCode" jdbcType="VARCHAR"/>
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR"/>
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP"/>
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR"/>
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR"/>
+    <result column="is_valid" property="isValid" jdbcType="INTEGER"/>
+    <result column="si_area" property="siArea" jdbcType="VARCHAR"/>
+    <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    
+    <result column="insured_person_code" property="insuredPersonCode" jdbcType="VARCHAR"/>
+    <result column="insured_person_name" property="insuredPersonName" jdbcType="VARCHAR" />
+    <result column="insured_person_gender" property="insuredPersonGender" jdbcType="VARCHAR" />
+    <result column="nation" property="nation" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+    <result column="security_number" property="securityNumber" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="org_name" property="orgName" jdbcType="VARCHAR" />
+    <result column="married" property="married" jdbcType="VARCHAR" />
+    <result column="educationid" property="educationid" jdbcType="VARCHAR" />
+    <result column="politicsid" property="politicsid" jdbcType="VARCHAR" />
+    <result column="occupationid" property="occupationid" jdbcType="VARCHAR" />
+    <result column="province_code" property="provinceCode" jdbcType="VARCHAR" />
+    <result column="city_code" property="cityCode" jdbcType="VARCHAR" />
+    <result column="area_code" property="areaCode" jdbcType="VARCHAR" />
+    
+    <result column="deputy_name" property="deputyName" jdbcType="VARCHAR" />
+    <result column="deputy_id_type" property="deputyIdType" jdbcType="VARCHAR" />
+    <result column="deputy_id_card" property="deputyIdCard" jdbcType="VARCHAR" />
+    <result column="deputy_address" property="deputyAddress" jdbcType="VARCHAR" />
+    <result column="deputy_mobile" property="deputyMobile" jdbcType="VARCHAR" />
+    
+    <result column="bid_type" property="bidType" jdbcType="VARCHAR" />
+    <result column="disease" property="disease" jdbcType="VARCHAR" />
+    
+    <result column="is_task_deadline" property="isTaskDeadline" jdbcType="VARCHAR" />
+    <result column="is_relative_cared" property="isRelativeCared" jdbcType="VARCHAR" />
+    
+    <result column="case_history_scan" property="caseHistoryScan" jdbcType="VARCHAR" />
+    <result column="security_number_scan" property="securityNumberScan" jdbcType="VARCHAR"/>
+    <result column="id_card_scan" property="idCardScan" jdbcType="VARCHAR"/>
+    <result column="deputy_id_card_scan" property="deputyIdCardScan" jdbcType="VARCHAR"/>
+    
+    
+    <result column="accessory_address" property="accessoryAddress" jdbcType="VARCHAR"/>
+    <result column="fraction" property="fraction" jdbcType="INTEGER"/>
+    <result column="opinion" property="opinion" jdbcType="VARCHAR"/>
+    
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+   <resultMap id="DeliveryResultMap" type="com.taikang.dic.ltci.model.EvaluateTaskDeliveryDO" >
+    <id column="evaluate_taskid" property="evaluateTaskid" jdbcType="VARCHAR"/>
+    <result column="evaluate_task_code" property="evaluateTaskCode" jdbcType="VARCHAR"/>
+    <result column="application_code" property="applicationCode" jdbcType="VARCHAR"/>
+    <result column="insured_person_code" property="insuredPersonCode" jdbcType="VARCHAR"/>
+    <result column="task_state" property="taskState" jdbcType="VARCHAR"/>
+    <result column="task_deadline" property="taskDeadline" jdbcType="VARCHAR"/>
+    <result column="evaluate_agency_code" property="evaluateAgencyCode" jdbcType="VARCHAR"/>
+    <result column="evaluate_agency_name" property="evaluateAgencyName" jdbcType="VARCHAR"/>
+    <result column="evaluate_code" property="evaluateCode" jdbcType="VARCHAR"/>
+    <result column="send_time" property="sendTime" jdbcType="TIMESTAMP"/>
+    <result column="print_state" property="printState" jdbcType="VARCHAR"/>
+    <result column="is_reevaluate" property="isReevaluate" jdbcType="VARCHAR"/>
+    <result column="reevalueate_result" property="reevalueateResult" jdbcType="VARCHAR"/>
+    <result column="reevaluate_parent_code" property="reevaluateParentCode" jdbcType="VARCHAR"/>
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR"/>
+    <result column="operated_time" property="operatedTime" jdbcType="VARCHAR"/>
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR"/>
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+    <result column="created_time" property="createdTime" jdbcType="VARCHAR"/>
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR"/>
+    <result column="is_valid" property="isValid" jdbcType="INTEGER"/>
+    <result column="si_area" property="siArea" jdbcType="VARCHAR"/>
+    <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    <result column="application_code" property="applicationCode" jdbcType="VARCHAR"/>
+    
+    <result column="security_number" property="securityNumber" jdbcType="VARCHAR" />
+    <result column="insuredPersonName" property="insuredPersonName" jdbcType="VARCHAR" />
+    <result column="idCard" property="idCard" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="evaluateName" property="evaluateName" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="VARCHAR" />
+    <result column="fraction" property="fraction" jdbcType="VARCHAR" />
+    <result column="evaluateContent" property="evaluateContent" jdbcType="VARCHAR" />
+    <result column="detailJson" property="detailJson" jdbcType="VARCHAR" />
+    <result column="accessoryAddress" property="accessoryAddress" jdbcType="VARCHAR" />
+    <result column="opinion" property="opinion" jdbcType="VARCHAR" />
+    <result column="suggestion" property="suggestion" jdbcType="VARCHAR" />
+    <result column="first_evaluate_code" property="firstEvaluateCode" jdbcType="VARCHAR" />
+  </resultMap>
+   
+  <select id="getEvaluateTaskSpecialDOByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    t.evaluate_taskid, t.evaluate_task_code, t.application_code, t.insured_person_code, t.task_state, 
+    t.task_deadline, t.evaluate_agency_code, t.evaluate_agency_name, t.evaluate_code, t.send_time, t.print_state, 
+    t.is_reevaluate, t.reevalueate_result, t.reevaluate_parent_code, t.operated_by, t.operated_time, t.operated_org, 
+    t.created_by, t.created_time, t.created_org, t.is_valid, t.remark,
+    t.insured_person_code,t.insured_person_name,t.id_card,t.mobile, t.si_area,
+    lee.fraction, lee.opinion, lee.accessory_address
+    from ltci_evaluate_task t left join ltci_first_evaluate lfe on t.evaluate_task_code = lfe.evaluate_task_code left join ltci_expert_evaluate lee on lfe.first_evaluate_code = lee.first_evaluate_code
+    where t.evaluate_task_code = #{evaluateTaskCode,jdbcType=VARCHAR} and t.is_valid = '1'
+  </select>
+  
+  <select id="queryEvaluateTaskList" parameterType="map" resultMap="BaseResultMap">
+    select 
+    t.evaluate_taskid, t.evaluate_task_code, t.application_code, t.insured_person_code, t.task_state, 
+    t.task_deadline, t.evaluate_agency_code, t.evaluate_agency_name, t.evaluate_code, t.send_time, t.print_state, 
+    t.is_reevaluate, t.reevalueate_result, t.reevaluate_parent_code, t.operated_by, t.operated_time, t.operated_org, 
+    t.created_by, t.created_time, t.created_org, t.is_valid, t.remark,
+    t.insured_person_code,t.insured_person_name,t.id_card,t.mobile
+
+    from ltci_evaluate_task t    
+    
+    <where> 
+        t.is_valid = '1' 
+        <if test="insuredPersonName!=null and insuredPersonName!='' and insuredPersonName!='undefind' ">
+            and t.insured_person_name like concat('%',#{insuredPersonName},'%')
+        </if>
+        <if test="mobile!=null and mobile!='' and mobile!='undefind' ">
+            and t.mobile = #{mobile} 
+        </if>
+        <if test="operatedTimeStart!=null">
+            and t.operated_time &gt;= #{operatedTimeStart} 
+        </if>
+        <if test="operatedTimeEnd!=null">
+            and t.operated_time &lt;= #{operatedTimeEnd} 
+        </if>
+        <if test="taskState!=null">
+            and t.task_state in 
+            <foreach collection="taskState" item="listItem" open="(" close=")" separator="," >
+	           #{listItem}
+	        </foreach>
+        </if>   
+        <if test="operatedOrg != null and operatedOrg !='' " >
+            and (t.created_org = #{operatedOrg,jdbcType=VARCHAR} or t.operated_org = #{operatedOrg,jdbcType=VARCHAR})
+        </if>
+    </where>
+    <trim prefix="ORDER BY">
+        t.task_deadline DESC,t.operated_time ${orderDirectionStr}
+    </trim>
+    <if test="pageStart>-1 and pageSize>-1">
+    limit ${pageStart},${pageSize}
+    </if>
+    </select>
+    
+    
+    <select id="getToDoListEvaluateTaskList" parameterType="map" resultMap="BaseResultMap">
+	    select 
+	    t.evaluate_taskid, t.evaluate_task_code, t.application_code, t.insured_person_code, t.task_state, 
+	    t.task_deadline, t.evaluate_agency_code, t.evaluate_agency_name, t.evaluate_code, t.send_time, t.print_state, 
+	    t.is_reevaluate, t.reevalueate_result, t.reevaluate_parent_code, t.operated_by, t.operated_time, t.operated_org, 
+	    t.created_by, t.created_time, t.created_org, t.is_valid, t.remark,    
+	    
+	    from ltci_evaluate_task t    
+	    where
+	        a.insured_person_code = p.insured_person_code and t.application_code = a.application_code 
+	        and t.is_valid = #{isValid} and t.task_state = #{taskState}
+	        and (
+	        	(t.task_deadline = #{urgentConfig} and #{urgentDateTime} > t.send_time) or 
+	       		(t.task_deadline = #{notUrgentConfig} and #{notUrgentDateTime} > t.send_time)
+       		)
+        	and not exists(select first_evaluateid from ltci_first_evaluate lfe where t.evaluate_task_code = lfe.evaluate_task_code)
+	        and t.created_org = #{operatedOrg}
+	        order by a.is_task_deadline ASC,t.operated_time desc
+    </select>
+    
+    <select id="countEvaluateTaskDOList" parameterType="map" resultType="java.lang.Integer">
+    select count(t.evaluate_taskid) from ltci_evaluate_task t  
+    <where>
+         t.is_valid = '1' 
+        <if test="insuredPersonName!=null and insuredPersonName!='' and insuredPersonName!='undefind' ">
+            and t.insured_person_name like concat('%',#{insuredPersonName},'%')
+        </if>
+        <if test="mobile!=null and mobile!='' and mobile!='undefind' ">
+            and t.mobile = #{mobile} 
+        </if>
+        <if test="operatedTimeStart!=null">
+            and t.operated_time &gt;= #{operatedTimeStart} 
+        </if>
+        <if test="operatedTimeEnd!=null">
+            and t.operated_time &lt;= #{operatedTimeEnd} 
+        </if>
+        <if test="taskState!=null">
+            and t.task_state in 
+            <foreach collection="taskState" item="listItem" open="(" close=")" separator="," >
+               #{listItem}
+            </foreach>
+        </if>   
+        <if test="operatedOrg != null and operatedOrg !='' " >
+            and (t.created_org = #{operatedOrg,jdbcType=VARCHAR} or t.operated_org = #{operatedOrg,jdbcType=VARCHAR})
+        </if>
+    </where>
+  </select>
+    
+  <select id="getExpertTaskList" parameterType="map" resultMap="DeliveryResultMap">
+  	select 
+	let.evaluate_task_code evaluateTaskCode,
+	let.insured_person_name insuredPersonName,
+	let.id_card idCard,
+	let.application_code,
+	let.evaluate_agency_name,
+	lfe.evaluate_name evaluateName,
+	lfe.score,
+	lee.fraction,
+	lfe.detail_json detailJson,
+	lfe.first_evaluate_code,
+	lee.evaluate_content evaluateContent,
+	lee.opinion,
+	lee.accessory_address accessoryAddress,
+	let.is_reevaluate,
+	let.reevalueate_result,
+	let.task_state,
+	let.operated_by,
+	date_format(let.operated_time,'%Y-%m-%d %H:%i:%s') operated_time
+	from 
+	ltci_evaluate_task let 
+	join 
+	ltci_first_evaluate lfe
+	on 
+	let.evaluate_task_code = lfe.evaluate_task_code
+	join 
+	ltci_expert_evaluate lee
+	on 
+	lee.first_evaluate_code = lfe.first_evaluate_code
+    <where>
+       1=1
+        <if test="insuredPersonName!=null and insuredPersonName!='' and insuredPersonName!='undefind' ">
+            and let.insured_person_name like concat('%',#{insuredPersonName},'%')
+        </if>
+        <if test="idCard!=null and idCard!='' and idCard!='undefind' ">
+            and let.id_card = #{idCard} 
+        </if>
+        <if test="evaluateOrg!=null and evaluateOrg!='' and evaluateOrg!='undefind' ">
+            and let.evaluate_agency_name like concat('%',#{evaluateOrg},'%')
+        </if>
+        <if test="operatedTimeStart!=null">
+            and let.operated_time &gt;= #{operatedTimeStart} 
+        </if>
+        <if test="operatedTimeEnd!=null">
+            and let.operated_time &lt;= #{operatedTimeEnd} 
+        </if>
+        <if test="taskState!=null and taskState!='' and taskState!='undefind' ">
+            and let.task_state in (${taskState})
+        </if>
+        <if test="operatedOrg != null and operatedOrg !='' " >
+            and (let.created_org = #{operatedOrg,jdbcType=VARCHAR} or let.operated_org = #{operatedOrg,jdbcType=VARCHAR})
+        </if>   
+    </where>
+    <trim prefix="ORDER BY">
+        let.operated_time desc
+    </trim>
+    <if test="page>-1 and page>-1">
+    limit ${page},${pageSize}
+    </if>
+    </select>
+    
+  <select id="countExpertTaskList" parameterType="map" resultType="java.lang.Integer">
+  	select 
+	count(*)
+	from 
+	ltci_evaluate_task let 
+	join 
+	ltci_first_evaluate lfe
+	on 
+	let.evaluate_task_code = lfe.evaluate_task_code
+	join 
+	ltci_expert_evaluate lee
+	on 
+	lee.first_evaluate_code = lfe.first_evaluate_code
+    <where>
+      1=1
+        <if test="insuredPersonName!=null and insuredPersonName!='' and insuredPersonName!='undefind' ">
+            and let.insured_person_name like concat('%',#{insuredPersonName},'%')
+        </if>
+        <if test="idCard!=null and idCard!='' and idCard!='undefind' ">
+            and let.id_card = #{idCard} 
+        </if>
+        <if test="evaluateOrg!=null and evaluateOrg!='' and evaluateOrg!='undefind' ">
+            and let.evaluate_agency_name like concat('%',#{evaluateOrg},'%')
+        </if>
+        <if test="operatedTimeStart!=null">
+            and let.operated_time &gt;= #{operatedTimeStart} 
+        </if>
+        <if test="operatedTimeEnd!=null">
+            and let.operated_time &lt;= #{operatedTimeEnd} 
+        </if>
+        <if test="taskState!=null and taskState!='' and taskState!='undefind' ">
+            and let.task_state in (${taskState})
+        </if>
+        <if test="operatedOrg != null and operatedOrg !='' " >
+            and (let.created_org = #{operatedOrg,jdbcType=VARCHAR} or let.operated_org = #{operatedOrg,jdbcType=VARCHAR})
+        </if>    
+    </where>
+    </select>
+    
+  <select id="checkEvaluateTaskUrgent" parameterType="map" resultType="java.lang.String">
+    select distinct let.created_org from ltci_evaluate_task let
+    <where>
+        (
+        	(let.task_deadline = #{urgentConfig} and #{urgentDateTime} > let.send_time) or 
+       		(let.task_deadline = #{notUrgentConfig} and #{notUrgentDateTime} > let.send_time)
+       	)
+        and let.is_valid = #{isValid} and let.task_state = #{taskState}
+        and not exists(select first_evaluateid from ltci_first_evaluate lfe where let.evaluate_task_code = lfe.evaluate_task_code)
+    </where>
+  </select>
+  
+  <update id="batchUpdateEvaluateTaskStatusByEvaluateTaskCodes" parameterType="map" >
+    update ltci_evaluate_task set
+      task_state = #{taskState,jdbcType=VARCHAR},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP}
+    where evaluate_task_code in
+    <foreach collection="array" item="listItem" open="(" separator="," close=")">
+      #{listItem}
+    </foreach>
+  </update>
+  
+  <select id="getEvaluateTaskSpecialStateByCode" resultMap="DeliveryResultMap">
+    select 
+	let.id_card idCard,
+	let.insured_person_name insuredPersonName,
+	let.application_code,
+	let.is_reevaluate,
+	let.reevalueate_result,
+	let.task_state,
+	let.operated_time,
+	lfe.score,
+	lfe.suggestion,
+	lee.fraction,
+	lee.opinion,
+	lfe.evaluate_name evaluateName
+	from 
+	ltci_evaluate_task let 
+	left join 
+	ltci_first_evaluate lfe
+	on 
+	let.evaluate_task_code = lfe.evaluate_task_code
+	left join 
+	ltci_expert_evaluate lee
+	on 
+	lfe.first_evaluate_code = lee.first_evaluate_code 
+    <where>
+       1=1
+        <if test="evaluateTaskCode!=null and evaluateTaskCode!='' and evaluateTaskCode!='undefind' ">
+            and let.evaluate_task_code = #{evaluateTaskCode} 
+        </if>
+    </where>
+  </select>
+  
+  <select id="getInsPersonByIdCard" resultMap="DeliveryResultMap">
+    select 
+	id_card idCard,
+	insured_person_name insuredPersonName,
+	security_number
+	from 
+	ltci_insured_person
+    <where>
+       1=1
+        <if test="idCard!=null and idCard!='' and idCard!='undefind' ">
+            and id_card = #{idCard} 
+        </if>
+    </where>
+  </select>
+  
+   <select id="getEvaluateTaskByIdCard" resultMap="DeliveryResultMap">
+    select 
+    let.evaluate_task_code,
+	let.is_reevaluate,
+	let.reevalueate_result,
+	let.task_state,
+	let.operated_time,
+	lfe.score,
+	lfe.suggestion,
+	lee.fraction,
+	lee.opinion
+	from 
+	ltci_evaluate_task let 
+	left join 
+	ltci_first_evaluate lfe
+	on 
+	let.evaluate_task_code = lfe.evaluate_task_code
+	left join 
+	ltci_expert_evaluate lee
+	on 
+	lfe.first_evaluate_code = lee.first_evaluate_code 
+    <where>
+       1=1
+        <if test="idCard!=null and idCard!='' and idCard!='undefind' ">
+            and let.id_card = #{idCard} 
+        </if>
+    </where>
+  </select>
+  
+  
+   <select id="getTaskStateByIdCardOrEvaluateTaskCode" resultType="java.lang.String">
+    select 
+	let.task_state
+	from 
+	ltci_evaluate_task let 
+    <where>
+       1=1
+        <if test="idCard!=null and idCard!='' and idCard!='undefind' ">
+            and let.id_card = #{idCard} 
+        </if>
+        <if test="evaluateTaskCode!=null and evaluateTaskCode!='' and evaluateTaskCode!='undefind' ">
+            and let.evaluate_task_code = #{evaluateTaskCode} 
+        </if>
+    </where>
+  </select>
+</mapper>

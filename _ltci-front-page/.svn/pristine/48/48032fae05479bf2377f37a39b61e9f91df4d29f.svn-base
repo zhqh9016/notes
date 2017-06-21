@@ -1,0 +1,431 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/common.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/detailStyle.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <title>人员申请在线受理</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div id="app" style="height: 100%;">
+        <table id="searchList" toolbar="#searchListtb"></table>
+        <div id="searchListtb">
+            <div name="searchColums" id="searchColums">
+                <form id="searchListForm">
+                    <span class="inputLable">
+							<span class="inputLableText">姓名：</span>
+                    <input name="staffName" type="text" />
+                    </span>
+                    <span class="inputLable">
+							<span class="inputLableText">申请机构名称：</span>
+                    <input name="agencyName" type="text" />
+                    </span>
+                    <span class="inputLable">
+							<span class="inputLableText">定点机构类别：</span>
+                    <input id="agencyLevel" data-dictionary="agencyLevel" name="dsignatedAgencyLevel" type="text" class="easyui-combobox dictionary query-condition" />
+                    </span>
+                    <span class="inputLable">
+							<span class="inputLableText">定点服务机构类型：</span>
+                    <input id="agencyServiceType" data-dictionary="agencyServiceType" name="dsignatedAgencyType" type="text" class="easyui-combobox dictionary multiple" />
+                    </span>
+                    <span class="inputLable">
+							<span class="inputLableText">机构类型：</span>
+                    <input id="agencyType" data-dictionary="agencyType" name="agencyType" type="text" class="easyui-combobox multiple dictionary" />
+                    </span>
+                    <span class="inputLable">
+							<span class="inputLableText">受理状态：</span>
+                    <input id="acceptState" data-dictionary="acceptState" name="acceptState" type="text" data-value="1,2,3" class="easyui-combobox dictionary query-condition" />
+                    </span>
+                    <span class="inputLable">
+							<span class="inputLableText">申请开始日期：</span>
+                    <input id="applyBeginDate" name="applyBeginDate" type="text" class="Wdate" onclick="WdatePicker({maxDate:'#F{$dp.$D(\'applyEndDate\')}'})" />
+                    </span>
+                    <span class="inputLable">
+							<span class="inputLableText">申请结束日期：</span>
+                    <input id="applyEndDate" name="applyEndDate" type="text" class="Wdate" onclick="WdatePicker({minDate:'#F{$dp.$D(\'applyBeginDate\')}'})" />
+                    </span>
+                    <a href="javascript:;" class="easyui-linkbutton" iconcls="icon-search" onclick="doSearch()">查询</a>
+                    <a href="javascript:;" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetSearch()">重置</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div style="display: none;">
+        <div id="showInfo">
+            <div class="mainTitle">人员基本信息</div>
+            <div class="mainWapper">
+                <table class="info_box">
+                    <!--<tr><th>Header</th></tr>-->
+                    <tr>
+                        <td class="info_name">隶属机构：</td>
+                        <td id="agencyName" class="info_value"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">姓名：</td>
+                        <td id="staffName" class="info_value"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">性别：</td>
+                        <td id="staffGender" class="info_value"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">身份证号码：</td>
+                        <td id="credentialNumber" class="info_value"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">最高学历：</td>
+                        <td id="highestEducation" class="info_value"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">学位：</td>
+                        <td id="acquireDegree" class="info_value"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">毕业证发证日期：</td>
+                        <td id="diplomaDate" class="info_value"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">学位证发证日期：</td>
+                        <td id="degreeDate" class="info_value"></td>
+                    </tr>
+                </table>
+                <div>
+                    <div class="imgTitle">身份证（附件）：</div>
+                    <div id="idCardScan_images" data-accessoryType="111" class="imgBox"></div>
+                </div>
+                <div>
+                    <div class="imgTitle">学历证明（附件）：</div>
+                    <div id="idCardScan_images" data-accessoryType="225" class="imgBox"></div>
+                    <div id="idCardScan_images" data-accessoryType="231" class="imgBox"></div>
+                </div>
+            </div>
+            <div class="mainTitle">服务信息</div>
+            <div class="mainWapper">
+                <table class="info_box">
+                    <tr>
+                        <td class="info_name">申请从业范围：</td>
+                        <td id="jobScope" class="info_value"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">职称：</td>
+                        <td id="staffLevel" class="info_value"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">类别：</td>
+                        <td id="category" class="info_value"></td>
+                    </tr>
+                    <!--<tr>
+							<td class="info_name">执业证书编码：</td>
+							<td id="qualificationCertificationNumber" class="info_value"></td>
+						</tr>
+						<tr>
+							<td class="info_name">证书发证日期：</td>
+							<td id="qualificationCertificationDate" class="info_value"></td>
+						</tr>
+						<tr>
+							<td class="info_name">职称：</td>
+							<td id="qualificationLevel" class="info_value"></td>
+						</tr>-->
+                </table>
+            </div>
+            <div class="mainTitle">其他证明文件</div>
+            <div class="mainWapper">
+                <div class="imgBox" data-accessoryType="801"></div>
+                <div class="imgBox" data-accessoryType="802"></div>
+                <div class="imgBox" data-accessoryType="803"></div>
+                <div class="imgBox" data-accessoryType="804"></div>
+                <div class="imgBox" data-accessoryType="805"></div>
+                <div class="imgBox" data-accessoryType="806"></div>
+                <div class="imgBox" data-accessoryType="807"></div>
+                <div class="imgBox" data-accessoryType="808"></div>
+                <div class="imgBox" data-accessoryType="990"></div>
+            </div>
+            <div class="mainWapper">
+                <div id="infoBtn" style="text-align: right;">
+                    <a id="btnAccept" href="javascript:;" class="easyui-linkbutton btnAccept" style="display:none ;" onclick="doAccept()">受理</a>
+                    <a id="btnRefuseAccept" href="javascript:;" class="easyui-linkbutton btnRefuseAccept" style="display: none;" onclick="showRefuseAcceptInfo()">暂不受理</a>
+                </div>
+                <div id="refuseAcceptInfo" style="display: none; text-align: right; margin-top: 16px;">
+                    <textarea name="refuseAcceptReason" rows="6" style="display: inline-block; width: 100%;" placeholder="请在此输入暂不受理原因"></textarea>
+                    <div>
+                        <a href="javascript:;" class="easyui-linkbutton" style="margin-top: 16px;" onclick="doRefuseAccept()">确认暂不受理</a>
+                        <a href="javascript:;" class="easyui-linkbutton" style="margin-top: 16px;" onclick="quitRefuseAccept()">取消</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../../js/util/WdatePicker.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/validate.js"></script>
+<script type="text/javascript" src="../../js/organizationPersonnel/personnelAcceptance.js"></script>
+<script>
+$(function() {
+    $('#showInfo').window({
+        title: '详情',
+        width: 900,
+        height: 450,
+        closed: true,
+        modal: true,
+        collapsible: false,
+        minimizable: false,
+        maximizable: false
+    });
+});
+
+function doSearch() {
+    if (Date.parse($("input[name=applyBeginDate]").val()) > Date.parse($("input[name=applyEndDate]").val())) {
+        $.messager.alert('提示', '申请开始日期不能大于申请结束日期，请重新选择。');
+        return;
+    }
+    TableObj.page = 1;
+    TableObj.pageSize = 10;
+    doLoading();
+}
+//加载数据列表
+function doLoading() {
+    var actionType = "1"; //1申请/2变更
+    var staffName = $("input[name=staffName]").val(); //姓名（模糊查询）
+    var agencyName = $("input[name=agencyName]").val(); //申请机构名称（模糊查询）
+    var dsignatedAgencyLevel = $("input[name=dsignatedAgencyLevel]").val(); //定点机构类别
+    var dsignatedAgencyType = arrayToStringBySymbol($("#agencyServiceType").combobox("getValues")); //定点服务机构类型(多选)
+    var agencyType = arrayToStringBySymbol($("#agencyType").combobox("getValues")); //机构类型(多选)
+    var acceptState = $("input[name=acceptState]").val(); //受理状态，默认查询未处理（值为1）的数据
+
+    var applyBeginDate = $("input[name=applyBeginDate]").val(); //申请开始时间
+    var applyEndDate = $("input[name=applyEndDate]").val(); //申请结束时间
+
+    var obj = {
+        actionType: actionType,
+        staffName: staffName,
+        agencyName: agencyName,
+        dsignatedAgencyLevel: dsignatedAgencyLevel,
+        dsignatedAgencyType: dsignatedAgencyType,
+        agencyType: agencyType,
+        acceptState: acceptState,
+        applyBeginDate: applyBeginDate,
+        applyEndDate: applyEndDate,
+        page: TableObj.page,
+        pageSize: TableObj.pageSize
+    };
+    var url = portalServiceUrl + "/api/v1/staffHistory/list";
+    sendAjax(url, "post", obj, function(data) {
+
+        gridLoadData('searchList', data);
+
+    });
+}
+//重置搜索框
+function resetSearch() {
+    $('#searchListForm input').val('');
+    loadDictionary();
+    $("#acceptState").combobox('setValue', '1'); //受理状态，默认查询未处理（值为1）的数据
+}
+
+//如果是不受理状态，点击“暂不受理”需弹出不受理原因
+function showRefuseReason(index) {
+    var refuseReason = $('#searchList').datagrid('getRows')[index].cause;
+    $.messager.alert('暂不受理原因', refuseReason);
+}
+
+//清空重置详情页信息
+function resetInfo() {
+    $("#showInfo .info_value").html(""); //清空文字展示区
+    $("#showInfo .imgBox").html(""); //清空图片
+    $("#refuseAcceptInfo").hide(); //隐藏不通过原因输入区域
+    $("textarea[name=refuseAcceptReason]").val(""); //清空不通过原因输入区
+    //默认隐藏掉通过不通过按钮
+    $(".btnAccept").hide();
+    $(".btnRefuseAccept").hide();
+    $("#infoBtn").show();
+}
+
+//点击操作按钮，显示详情页面,展示详情页信息
+var infoObj = {}; //详情页信息
+function act(index) {
+    //获取选中行的流水号
+    var rowData = $('#searchList').datagrid('getRows')[index];
+    var serialNo = rowData.serialNo;
+    var url = portalServiceUrl + "/api/v1/staffHistory/" + serialNo;
+    sendAjax(url, "get", "", function(successdata) {
+        if (successdata.status == 200) {
+            resetInfo(); //清空重置详情页信息
+            if (rowData.auditState == "1") {
+                $(".btnAccept").show();
+                $(".btnRefuseAccept").show();
+            }
+            $('#showInfo').window("open");
+            var data = successdata.datas;
+            infoObj = data;
+            $("#agencyName").html(data.agencyName); //隶属机构
+            $("#staffName").html(data.staffName); //姓名
+            //根据数据字典查询性别
+            $("#staffGender").html(getTableDictionary("sex", data.staffGender));
+
+            $("#credentialNumber").html(data.credentialNumber); //身份证号码
+            $("#highestEducation").html(getTableDictionary("highestEducation", data.highestEducation)); //最高学历
+            $("#acquireDegree").html(getTableDictionary("acquireDegree", data.acquireDegree)); //学位	
+            $("#diplomaDate").html(data.diplomaDate); //毕业证发证日期					
+            $("#degreeDate").html(data.degreeDate); //学位证发证日期
+            //根据数据字典获取申请从业范围
+            var jobScope = "";
+            if (data.jobScope) {
+                var arr = data.jobScope.split(",");
+                if (arr.length == 1) {
+                    jobScope += getTableDictionary("jobScope", arr[0]);
+                } else {
+                    $.each(arr, function(index, value) {
+                        if (index < arr.length - 1) {
+                            jobScope += getTableDictionary("jobScope", value) + "；";
+                        } else {
+                            jobScope += getTableDictionary("jobScope", value);
+                        }
+                    });
+                }
+            }
+            $("#jobScope").html(jobScope);
+
+            //根据数据字典获取职称与类别
+            $("#staffLevel").html(getTableDictionary("staffLevel", data.staffLevel)); //职称
+            $("#category").html(getTableDictionary("category", data.category)); //类别
+
+            //					$("#qualificationCertificationNumber").html(data.qualificationCertificationNumber); //执业证书编码
+            //					$("#qualificationCertificationDate").html(data.qualificationCertificationDate); //证书发证日期
+            //					$("#qualificationLevel").html(data.qualificationLevel); //职称
+            //根据accessoryType填入图片 
+            $.each(data.staffFiles, function(index, value) {
+                var imgId = value.fileId;
+                var jqObj = $("div.imgBox[data-accessoryType=" + value.accessoryType + "]");
+                //801 护士资格证; 802 护士执业资格证;803 护理证;804 护师;805 主管护师;806 营养师
+                //807 医师资格证; 808 医师执业资格证;111 身份证;225 学历证;231 学位证; 990 其他
+                if (value.accessoryType != "111" && value.accessoryType != "225" && value.accessoryType != "231") { //990为其他,显示其他信息							
+                    var credentialName = value.credentialName; //证件名称
+                    var credentialLevel = value.credentialLevel; //证件等级
+                    var credentialDate = formatDate(value.credentialDate); //发证日期，已格式化日期
+                    var credentialCode = value.credentialCode; //证件编号
+                    var html = '<table class="info_box" style="margin-top:20px" >';
+                    html += '<tr><td class="info_name">证件名称：</td><td  class="info_value">' + credentialName + '</td></tr>';
+                    html += '<tr><td class="info_name">证件等级：</td><td  class="info_value">' + getTableDictionary("credentialLevel", credentialLevel) + '</td></tr>';
+                    html += '<tr><td class="info_name">发证日期：</td><td  class="info_value">' + credentialDate + '</td></tr>';
+                    html += '<tr><td class="info_name">证件编号：</td><td  class="info_value">' + credentialCode + '</td></tr>';
+                    html += "</table>";
+                    jqObj.append(html);
+                }
+                loadImg(imgId, jqObj); //传入图片id和要写入的jq对象，append图片html
+            });
+
+        }
+    });
+}
+
+//受理
+function doAccept() {
+    $.messager.confirm('确认', '是否确认受理此条纪录？', function(isSure) {
+        if (isSure) {
+            var url = portalServiceUrl + "/api/v1/staffHistoryStateCase";
+            var serialNo = infoObj.serialNo;
+            var staffCode = infoObj.staffCode;
+            var empCode = infoObj.empCode;
+            var actionType = infoObj.actionType;
+            var auditState = "2"; //受理\审核状态 1待受理 2待审核（已受理）3不受理 4审核通过 5审核不通过
+            var credentialNumber = infoObj.credentialNumber;
+            var obj = {
+                serialNo: serialNo,
+                staffCode: staffCode,
+                empCode: empCode,
+                actionType: actionType,
+                auditState: auditState,
+                credentialNumber: credentialNumber
+            };
+            sendAjax(url, "put", obj, function(successdata) {
+                if (successdata.status == 201) {
+                    $.messager.show({
+                        title: '提示',
+                        msg: '受理成功',
+                        timeout: 5000
+                    });
+                    doSearch();
+                    $('#showInfo').window("close");
+                } else {
+                    $.messager.alert("提示", successdata.message);
+                }
+            });
+        }
+    });
+
+}
+
+//点击暂不受理按钮，显示暂不受理原因输入框，隐去按钮
+function showRefuseAcceptInfo() {
+    $("#refuseAcceptInfo").show();
+    $("#infoBtn").hide();
+}
+//取消暂不受理
+function quitRefuseAccept() {
+    $("#refuseAcceptInfo").hide(); //隐藏不通过原因输入区域
+    $("#infoBtn").show(); //显示操作按钮
+}
+//确认暂不受理
+function doRefuseAccept() {
+    var refuseAcceptReason = $("textarea[name=refuseAcceptReason]").val();
+    if (refuseAcceptReason.length < 1) {
+        $.messager.alert("提示", "请输入暂不受理原因");
+        return;
+    }
+    $.messager.confirm('确认', '确定把此条记录设为暂不受理状态吗？', function(isSure) {
+        if (isSure) {
+            var url = portalServiceUrl + "/api/v1/staffHistoryStateCase";
+
+            var serialNo = infoObj.serialNo;
+            var staffCode = infoObj.staffCode;
+            var empCode = infoObj.empCode;
+            var actionType = infoObj.actionType;
+            var auditState = "3"; //受理\审核状态 1待受理 2待审核（已受理）3暂不受理 4审核通过 5审核不通过
+            var credentialNumber = infoObj.credentialNumber;
+            var cause = refuseAcceptReason;
+            var obj = {
+                serialNo: serialNo,
+                staffCode: staffCode,
+                empCode: empCode,
+                actionType: actionType,
+                auditState: auditState,
+                credentialNumber: credentialNumber,
+                cause: cause
+            };
+            sendAjax(url, "put", obj, function(successdata) {
+                if (successdata.status == 201) {
+                    $.messager.show({
+                        title: '提示',
+                        msg: '已设为暂不受理',
+                        timeout: 5000
+                    });
+                    doSearch();
+                    $('#showInfo').window("close");
+                } else {
+                    $.messager.alert("提示", successdata.message);
+                }
+            });
+        }
+    });
+
+}
+
+//		$(".combo-text").on("click",function(){
+//			$(this).parent().find(".combo-arrow").trigger("click");
+//		})
+</script>
+
+</html>

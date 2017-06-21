@@ -1,0 +1,340 @@
+<html>
+
+<head>
+    <title>费用复核</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="renderer" content="webkit" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/common.css" type="text/css" />
+    <style>
+    .l-btn-left-d {
+        border: 1px solid rgba(41, 112, 179, 0.91);
+        border-radius: 4px;
+        background-color: rgba(41, 112, 179, 0.91);
+        height: 24px;
+        padding: 0 5px;
+        cursor: pointer;
+        line-height: 24px;
+        display: inline-block;
+        color: #fff;
+        white-space: nowrap;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="searchShow" style="height: 100%;">
+        <table width="100%" id="feeCheckList" toolbar="#feeCheckListtb">
+        </table>
+        <div id="feeCheckListtb" style="padding:3px; height: auto">
+            <div name="searchColums" id="searchColums">
+                <input id="isShowSearchId" type="hidden" value="false" />
+                <input id="_sqlbuilder" name="sqlbuilder" type="hidden" />
+                <form id="form1">
+                    <span class="inputLable">
+						<span  class = "inputLableText" >机构名称：</span>
+                    <input type="text" name="orgName" class="inuptxt" />
+                    </span>
+                    <span class="inputLable">
+						<span class = "inputLableText">机构编码：</span>
+                    <input type="text" name="orgCode" class="inuptxt" />
+                    </span>
+                    <span class="inputLable">					  
+						<span class = "inputLableText">审核状态：</span>
+                    <input type="text" id="inspection" data-dictionary="inspection" data-value="2,3,4" name="auditState" class="easyui-combobox dictionary " />
+                    <!--<select name="auditState" class="easyui-combobox" style="width:150px;height:auto">
+							<option value="">审核通过</option>
+							<option value="3">复核通过</option>
+							<option value="4">复核未通过</option>
+						</select>-->
+                    </span>
+                    <span class="inputLable">
+						<span class = "inputLableText">开始日期：</span>
+                    <input type="text" id="search_feeStarttime" name="feeStarttime" class="Wdate" />
+                    </span>
+                    <span class="inputLable">
+						<span class = "inputLableText" >结束日期：</span>
+                    <input type="text" id="search_feeEndtime" name="feeEndtime" class="Wdate" />
+                    </span>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-search" style="margin-left:160" onclick="doLoading()">查询</a>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-reload" onclick="resetSearch()">重置</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div style="display:none;">
+        <div id="cause" style="height:100%;"></div>
+    </div>
+    <div id="cause1">
+        <textarea id="cause2" name="" style="height:150;width:380; resize: none;"></textarea>
+        <a href="#" class="easyui-linkbutton" style="margin-top:3;margin-left:250" onclick="reasonConfirm()">确定</a> &nbsp;&nbsp;
+        <a href="#" class="easyui-linkbutton" style="margin-top:3;margin-left:10" onclick="reasonClose()">取消</a>
+    </div>
+    <div id="chooseOrganization" style="height:100%;display: none;">
+        <table id="chooseOrgList" toolbar="#chooseOrgListtb"></table>
+        <div id="chooseOrgListtb" style="padding:3px; height: auto">
+            <div name="search" id="search">
+                <input id="ShowSearchId" type="hidden" value="false" />
+                <input id="qlbuilder" name="qlbuilder" type="hidden" />
+                <form id="form2">
+                    <span class="inputLable">
+							<span class = "inputLableText" >姓名：</span>
+                    <input type="text" name="name" class="inuptxt" id="search_Name" />
+                    </span>
+                    <span class="inputLable">
+							<span class = "inputLableText" >身份证号码：</span>
+                    <input type="text" name="idCard" class="inuptxt" id="search_idCard" />
+                    </span>
+                    <span class="inputLable">						
+							<span class = "inputLableText" >结算开始日期：</span>
+                    <input type="text" id="search_startDate" name="startDate" class="Wdate" />
+                    </span>
+                    <span class="inputLable">							
+							<span class = "inputLableText" >结算终止日期：</span>
+                    <input type="text" id="search_endDate" name="endDate" class="Wdate" />
+                    </span>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-search" onclick="doLoading2(unrfee)">查询</a>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-reload" onclick="resetSearch1()">重置</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="fee_detailsWindow" style="height:100%;display: ;">
+        <iframe id="fee_detailsIframe" src="" style="width:100%;height:100%;border:0;"></iframe>
+    </div>
+    <input type="hidden" id="index">
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/util/WdatePicker.js"></script>
+<script type="text/javascript" src="../../js/feeBalanceManage/fee_check.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script>
+$('#fee_detailsWindow').window({
+    title: '个人护理明细',
+    width: 990,
+    height: 440,
+    closed: true,
+    modal: true,
+    collapsible: false,
+    minimizable: false
+});
+$('#cause').window({
+    title: '复核不通过原因',
+    width: 387,
+    height: 220,
+    closed: true,
+    modal: true,
+    collapsible: false,
+    minimizable: false,
+    maximizable: false
+});
+$('#cause1').window({
+    title: '录入不通过原因',
+    width: 387,
+    height: 220,
+    closed: true,
+    modal: true,
+    collapsible: false,
+    minimizable: false,
+    maximizable: false,
+    resizable: false
+});
+var xrows = {};
+var unrfee;
+//查询机构日结汇总	
+function doLoading() {
+    // 判断日期条件开始日期、结束日期是否符合规范
+    if ($("#search_feeStarttime").val() !== "" && $("#search_feeEndtime").val() !== "") {
+        if (Date.parse($("#search_feeStarttime").val()) > Date.parse($("#search_feeEndtime").val())) {
+            $.messager.alert('提示', '开始日期不能大于终止日期。');
+            return false;
+        }
+    }
+    TableObj.page = 1; //设置页码 必须
+    TableObj.pageSize = 10; //设置每页数据 必须
+    var feeStarttime = ($("input[name=feeStarttime]").val() !== '') ? $("input[name=feeStarttime]").val() + "-01" : '';
+    var feeEndtime = ($("input[name=feeEndtime]").val() !== '') ? $("input[name=feeEndtime]").val() + "-01" : '';
+    TableObj.query = { //查询条件
+        orgCode: $("input[name=orgCode]").val(),
+        orgName: $("input[name=orgName]").val(),
+        startDate: feeStarttime,
+        auditState: $("input[name=auditState]").val(),
+        //feeStarttime: feeStarttime,
+        endDate: feeEndtime,
+        //feeEndtime: feeEndtime,
+        page: TableObj.page,
+        pageSize: TableObj.pageSize
+    };
+    loadGridData(); //原来的 doLoading();
+}
+//查询日结算明细和不合理费用明细
+function doLoading2(fee) {
+    console.log("xrows:", xrows);
+    // 判断日期条件开始日期、结束日期是否符合规范
+    if ($("#search_startDate").val() !== "" && $("#search_endDate").val() !== "") {
+        if (Date.parse($("#search_startDate").val()) > Date.parse($("#search_endDate").val())) {
+            $.messager.alert('提示', '开始日期不能大于终止日期。');
+            return false;
+        }
+    }
+    // 日结算明细查询判断日期条件是否在机构月结范围内
+    if ($("#search_startDate").val() !== "") {
+        if ((Date.parse($("#search_startDate").val()) < Date.parse(xrows.feeStarttime)) ||
+            (Date.parse($("#search_startDate").val()) > Date.parse(xrows.feeEndtime))) {
+            $.messager.alert('提示', '查询日期需在' + xrows.feeStarttime.split(' ')[0] + '～' + xrows.feeEndtime.split(' ')[0] + '范围之内。');
+            return false;
+        }
+    }
+    if ($("#search_endDate").val() !== "") {
+        if ((Date.parse($("#search_endDate").val()) < Date.parse(xrows.feeStarttime)) ||
+            (Date.parse($("#search_endDate").val()) > Date.parse(xrows.feeEndtime))) {
+            $.messager.alert('提示', '查询日期需在' + xrows.feeStarttime.split(' ')[0] + '～' + xrows.feeEndtime.split(' ')[0] + '范围之内。');
+            return false;
+        }
+    }
+    var startDate = ($("#search_startDate").val() !== "") ? $("#search_startDate").val() : xrows.feeStarttime;
+    var endDate = ($("#search_endDate").val() !== "") ? $("#search_endDate").val() : xrows.feeEndtime;
+    TableObj.page = 1; //设置页码 必须
+    TableObj.pageSize = 10; //设置每页数据 必须
+    TableObj = getGridObjById('chooseOrgList'); //TableObj切换当前表格为激活状态
+    TableObj.query = { //查询条件
+        orgCode: xrows.orgCode,
+        startDate: startDate,
+        endDate: endDate,
+        name: $("input[name=name]").val(),
+        idCard: $("input[name=idCard]").val(),
+        unrFee: fee,
+        operateOrgCode: xrows.createdOrg,
+        page: TableObj.page,
+        pageSize: TableObj.pageSize
+    };
+    initDataGrid(); //初始化表格
+    loadGridData(); //加载表格数据
+}
+
+function showNext() {
+    $("#searchShow").hide();
+    $("#chooseOrganization").show();
+}
+
+function showParent() {
+    resetSearch1();
+    $("#searchShow").show();
+    $("#chooseOrganization").hide();
+    loadGridData();
+}
+//重置	
+function resetSearch() {
+    $('#form1 input').val('');
+}
+
+function resetSearch1() {
+    $('#form2 input').val('');
+}
+
+function doAccept(index, fee) {
+    unrfee = fee;
+    $("#search_startDate").val('');
+    $("#search_endDate").val('');
+    var row = $('#feeCheckList').datagrid('getRows')[index];
+    console.log(row);
+    showNext();
+    xrows = row;
+    doLoading2(fee);
+}
+//复核机构时通过操作
+function tg(index) {
+    $.messager.confirm('确认', '确认通过吗？', function(r) {
+        if (r) {
+            var row = $('#feeCheckList').datagrid('getRows')[index];
+            row.auditState = "3";
+            var s = "&auditState=" + row.auditState + "&id=" + row.id + "&createdOrg=" + row.createdOrg;
+            var url = portalServiceUrl + "/api/v1/orgSettlement/check/" + row.id;
+            //					trans Object.send(portalServiceUrl + "/api/v1/orgSettlement/check/" + row.id, "put", s)
+            //					var tableData = JSON.parse(trans Object._response)
+            //					if(tableData.status != "200") {
+            //						console.log(tableData)
+            //						$.messager.alert('提示', '通过失败！');
+            //						return false;
+            //					}
+            //					doLoading();
+            sendAjax(url, "put", s, function(tableData) {
+                if (tableData.status == "200") {
+                    showMsg("通过成功");
+                    loadGridData();
+                } else {
+                    $.messager.alert('提示', '通过失败！');
+                }
+            });
+        }
+    });
+}
+//复核机构时不通过操作
+function ntg(index) {
+    $('#cause2').val('');
+    $('#cause1').window('open');
+    $("#index").val(index);
+}
+
+function reasonConfirm() {
+    var reason = $('#cause2').val().trim();
+    var index = $("#index").val();
+    if (reason.length <= 0) {
+        showMsg('请输入不通过原因');
+        return false;
+    } else {
+        var row = $('#feeCheckList').datagrid('getRows')[index];
+        row.auditState = "4";
+        var s = "&auditState=" + row.auditState + "&rejectReason=" + reason + "&id=" + row.id + "&createdOrg=" + row.createdOrg;
+        var url = portalServiceUrl + "/api/v1/orgSettlement/check/" + row.id;
+        //				trans Object.send(portalServiceUrl + "/api/v1/orgSettlement/check/" + row.id, "put", s)
+        //				var tableData = JSON.parse(trans Object._response)
+        //				if(tableData.status != "200") {
+        //					console.log(tableData)
+        //					$.messager.alert('提示', '不通过失败！');
+        //					return false;
+        //				}
+        //				$('#cause1').window('close');
+        //				doLoading();
+        sendAjax(url, "put", s, function(tableData) {
+            if (tableData.status == "200") {
+                showMsg("不通过成功");
+                $('#cause1').window('close');
+                loadGridData();
+            } else {
+                $.messager.alert('提示', '不通过失败！');
+            }
+        });
+    }
+}
+//不合理费用查看原因
+function cause(index) {
+    var row = $('#feeCheckList').datagrid('getRows')[index];
+    $('#cause').window('open');
+    $('#cause').html(row.rejectReason);
+}
+
+function reasonClose() {
+    $('#cause2').val('');
+    $('#cause1').window('close');
+}
+
+function feeDetail(target) {
+    var url = "../feeBalanceManage/fee_details.html?orgCode=" + xrows.orgCode;
+    var index = getRowIndex(target);
+    var rows = $('#chooseOrgList').datagrid('getRows');
+    url += "&beCarePersonCard=" + rows[index].beCarePersonCardNum + "&feeBeginDate=" + rows[index].nurseStarttime + "&feeEndDate=" + rows[index].nurseEndtime + "&inRecorduuid=" + rows[index].inRecorduuid;
+    $("#fee_detailsIframe").attr('src', url);
+
+    $('#fee_detailsWindow').window('open');
+}
+</script>
+
+</html>

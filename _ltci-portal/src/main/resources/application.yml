@@ -1,0 +1,282 @@
+#访问路径前缀
+restBasePath: /api/v1
+
+#MQ编码
+systemCharset: UTF-8
+
+#服务启动端口号
+server.port: 8080
+
+#设置session过期时间,单位为s,建议设置值为分钟的倍数,默认值为1800
+server.session-timeout: 1800
+
+#上传附件大小
+spring:
+  http:
+    multipart:
+      max-file-size: 4MB
+      maxRequestSize: 4MB
+
+#待遇申请调用地址
+feignClient: http://localhost:8090
+#待遇申请调用服务名字(暂不用修改)
+feign.treatment.application: ltci-treatment-application
+
+#基础微服务调用地址
+feign.system.url: http://localhost:8082
+#基础微服务名字(暂不用修改)
+feign.system: ltci-system
+
+#结算微服务调用地址
+feign.settlement.url: http://localhost:8083
+feign.settlement: ltci-settlement
+
+#评估护理微服务地址
+feign.evaluate.nursing.url: http://localhost:8086
+feign.evaluate.nursing.client: ltci-evaluate-nursing
+
+#质量控制微服务地址
+feign.quality.control.url: http://localhost:8085
+feign.quality.control.client: ltci-quality-control
+
+#文件微服务地址
+feign.media.file.url: http://localhost:8084
+feign.media.file.client: ltci-media-file
+
+#机构人员微服务地址
+feign.agency.person.url: http://localhost:8087
+feign.agency.person.client: ltci-agency-person
+
+#质量控制添加评估/护理普通任务服务，专业服务地址
+feign.quality.control.profession.url: http://10.130.207.115:8000
+#feign.quality.control.profession.url: http://10.135.45.81/gw/
+feign.quality.control.profession.client: ltci-quality-control-profession
+
+#用户推送服务调用地址,大数据服务地址
+feign.user.push.url: http://10.130.207.162:8080
+#feign.user.push.url: http://10.135.45.81/gw/
+feign.user.push: lcrm
+
+#根据行政区编号和机构类型获取机构列表，专业服务地址
+feign.evaluate.department.url: http://10.130.207.115:8005
+#feign.evaluate.department.url: http://10.135.45.81/gw/
+feign.evaluate.department.client: ltci-evaluate-department
+
+#第三方接口  待遇申请审核通过后  评估任务调用失败，定时重试，实现类ScheduleServiceImpl
+reSend2ExpertTaskAdd: 0 0 0/1 * * ?
+
+#统筹区ID暂时没有用到
+user.push.cityId: 420800
+
+#是否是模拟接口报文
+isIntefaceDebug : false
+
+# 是否开启shiro认证
+shiro.custom:
+# 是否开启shiro认证(关闭后保留登录功能,但不登陆也能访问所有页面)
+  enabled: false 
+  #是否使用redis存储session信息,如果开启需要提供有效的redis服务,否则无法正常启动项目.
+  redisSession.enabled: false
+#是否开启feign中集成的hystrix功能,默认开启.如果开启建议手动调试hystrix响应超时时间,建议关闭.
+feign.hystrix.enabled: false
+
+#mybatis的xml映射文件路径
+mybatis.mapperLocations: classpath*:com/taikang/dic/ltci/portal/mapper/*.xml
+
+#需要注册别名的POJO类所在包
+mybatis.typeAliasesPackage: com.taikang.dic.ltci.portal.model
+
+#mysql数据库配置
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.130.206.191:3306/ltci_portal
+    username: tklcpm
+    password: tklcpm
+    
+spring.datasource.tomcat:
+    max-active: 50
+    max-wait: 30000
+    test-on-borrow:  true
+    max-idle: 10
+    min-idle: 5
+    test-on-connect: true
+    test-on-return: true
+    test-while-idle: true
+    validation-query: SELECT 1 FROM DUAL
+    validation-query-timeout: -1
+    
+#测试环境
+---
+spring.profiles: test
+#待遇申请调用地址
+feignClient: http://localhost:8090
+
+#基础微服务调用地址
+feign.system.url: http://localhost:8082
+
+#结算微服务调用地址
+feign.settlement.url: http://localhost:8083
+
+#评估护理微服务地址
+feign.evaluate.nursing.url: http://localhost:8086
+feign.evaluate.nursing.client: ltci-evaluate-nursing
+
+#质量控制微服务地址
+feign.quality.control.url: http://localhost:8085
+feign.quality.control.client: ltci-quality-control
+
+#文件微服务地址
+feign.media.file.url: http://localhost:8084
+feign.media.file.client: ltci-media-file
+
+#质量控制添加评估/护理普通任务服务，专业服务地址
+#feign.quality.control.profession.url: http://10.130.207.115:8000
+feign.quality.control.profession.url: http://10.135.45.81/gw/
+feign.quality.control.profession.client: ltci-quality-control-profession
+
+#用户推送服务调用地址,大数据服务地址
+#feign.user.push.url: http://10.130.207.162:8080
+feign.user.push.url: http://10.135.45.81/gw/
+feign.user.push: lcrm
+
+#根据行政区编号和机构类型获取机构列表，专业服务地址
+#feign.evaluate.department.url: http://10.130.207.115:8005
+feign.evaluate.department.url: http://10.135.45.81/gw/
+feign.evaluate.department.client: ltci-evaluate-department
+
+#机构人员微服务地址
+feign.agency.person.url: http://localhost:8087
+feign.agency.person.client: ltci-agency-person
+
+#mysql数据库配置
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.130.206.186:3306/ltci_portal
+    username: tklcpm
+    password: tklcpm
+
+shiro.custom:
+# 是否开启shiro认证(关闭后保留登录功能,但不登陆也能访问所有页面)
+  enabled: true
+  #是否使用redis存储session信息,如果开启需要提供有效的redis服务,否则无法正常启动项目.
+  redisSession.enabled: true
+
+#redis地址和端口默认地址为localhost,默认端口为6379
+spring.redis.host: 10.130.206.185
+spring.redis.port: 6379
+
+#开发环境   
+---
+spring.profiles: dev
+#待遇申请调用地址
+feignClient: http://localhost:8090
+
+#基础微服务调用地址
+feign.system.url: http://localhost:8082
+
+#结算微服务调用地址
+feign.settlement.url: http://localhost:8083
+
+#评估护理微服务地址
+feign.evaluate.nursing.url: http://localhost:8086
+feign.evaluate.nursing.client: ltci-evaluate-nursing
+
+#质量控制微服务地址
+feign.quality.control.url: http://localhost:8085
+feign.quality.control.client: ltci-quality-control
+
+#文件微服务地址
+feign.media.file.url: http://localhost:8084
+feign.media.file.client: ltci-media-file
+
+#质量控制添加评估/护理普通任务服务，专业服务地址
+feign.quality.control.profession.url: http://10.130.207.115:8000
+feign.quality.control.profession.client: ltci-quality-control-profession
+
+#机构人员微服务地址
+feign.agency.person.url: http://localhost:8087
+feign.agency.person.client: ltci-agency-person
+
+#用户推送服务调用地址,大数据服务地址
+#feign.user.push.url: http://10.130.207.162:8080
+feign.user.push.url: http://10.135.45.81/gw/
+feign.user.push: lcrm
+
+#mysql数据库配置
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.130.206.191:3306/ltci_portal
+    username: tklcpm
+    password: tklcpm
+    
+shiro.custom:
+# 是否开启shiro认证(关闭后保留登录功能,但不登陆也能访问所有页面)
+  enabled: false
+  #是否使用redis存储session信息,如果开启需要提供有效的redis服务,否则无法正常启动项目.
+  redisSession.enabled: true
+
+#redis地址和端口默认地址为localhost,默认端口为6379
+spring.redis.host: 10.130.206.190
+spring.redis.port: 6379
+
+#生产环境  
+---
+spring.profiles: pro
+
+#待遇申请调用地址
+feignClient: http://10.128.128.91:8090
+
+#基础微服务调用地址
+feign.system.url: http://10.128.128.91:8082
+
+#结算微服务调用地址
+feign.settlement.url: http://10.128.128.91:8083
+
+#评估护理微服务地址
+feign.evaluate.nursing.url: http://10.128.128.91:8086
+feign.evaluate.nursing.client: ltci-evaluate-nursing
+
+#质量控制微服务地址
+feign.quality.control.url: http://10.128.128.91:8085
+feign.quality.control.client: ltci-quality-control
+
+#文件微服务地址
+feign.media.file.url: http://10.128.128.91:8084
+feign.media.file.client: ltci-media-file
+
+#机构人员微服务地址
+feign.agency.person.url: http://10.128.128.91:8087
+feign.agency.person.client: ltci-agency-person
+
+#质量控制添加评估/护理普通任务服务，专业服务地址
+#feign.quality.control.profession.url: http://172.16.70.98/gw/
+feign.quality.control.profession.url: http://172.16.70.99/gw/
+feign.quality.control.profession.client: ltci-quality-control-profession
+
+#用户推送服务调用地址,大数据服务地址
+#feign.user.push.url: http://172.16.70.98/gw/
+feign.user.push.url: http://172.16.70.99/gw/
+feign.user.push: lcrm
+
+#根据行政区编号和机构类型获取机构列表，专业服务地址
+#feign.evaluate.department.url: http://172.16.70.98/gw/
+feign.evaluate.department.url: http://172.16.70.99/gw/
+feign.evaluate.department.client: ltci-evaluate-department
+
+#mysql数据库配置
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.128.128.94:3306/ltci_portal
+    username: tklcpm
+    password: tklcpm@2ol7
+    
+shiro.custom:
+#是否开启shiro认证(关闭后保留登录功能,但不登陆也能访问所有页面)
+  enabled: true
+  #是否使用redis存储session信息,如果开启需要提供有效的redis服务,否则无法正常启动项目.
+  redisSession.enabled: true
+
+#redis地址和端口默认地址为localhost,默认端口为6379
+spring.redis.host: 10.128.128.92
+spring.redis.port: 6379
+    

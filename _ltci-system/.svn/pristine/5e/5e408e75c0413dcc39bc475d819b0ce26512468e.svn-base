@@ -1,0 +1,54 @@
+post:
+  summary: 新增角色
+  description: 返回数值类型（大于0为成功）。
+  operationId: addRole
+  parameters:
+  - name: createBy
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: 创建人
+  - name: updateBy
+    in: formData
+    type: string
+    format: int
+    required: true
+    description: 修改人
+  - name: roleDescribe
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: 角色描述
+  - name: roleCode
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: 角色编码
+  - name: roleName
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: 角色名称
+  - name: sequence
+    in: formData
+    type: Integer
+    format: int64
+    required: true
+    description: 排序号
+  tags:
+  - roleManage
+  responses:
+    200:
+      description: 新增角色成功
+      schema:
+        type: array
+        items:
+          $ref: "../../ltci-system-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"

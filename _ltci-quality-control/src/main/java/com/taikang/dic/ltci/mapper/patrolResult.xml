@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.IPatrolResultDAO" >
+  
+  <select id="getPatrolResult" resultType="map" >
+    select 
+    pt.patrol_task_id patrolTaskId,
+    pt.patrol_object_type patrolObjectType,
+    pt.patrol_object_id patrolObjectId,
+    pt.patrol_object_name patrolObjectName,
+    pt.patrol_object_phone patrolObjectPhone,
+    pt.id_card idCard,
+    pt.patrol_object_addr patrolObjectAddr,
+    pt.patrol_remark patrolRemark,
+    pt.task_category taskCategory,
+    pt.task_level taskLevel,
+    pt.complaint_object_id complaintObjectId,
+    pt.complainant_object_type complainantObjectType,
+    pt.complaint_object_type complaintObjectType,
+    pt.complaint_time complaintTime,
+    pt.complaint_content complaintContent,
+    pt.violation_item violationItem,
+    pt.complainant_card complainantCard,
+    pt.complaint_type complaintType,
+    er.auditor auditor,
+    er.auditor_phone auditorPhone,
+    er.result_desc resultDesc,
+    er.partol_time patrolTime
+    from 
+    ltci_patrol_task pt
+    join
+    ltci_execute_result er
+    on
+    pt.patrol_task_id = er.patrol_task_id
+    where pt.patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getOrgTaskId" resultType="map" >
+    select 
+    org_task_id orgTaskId
+    from 
+    ltci_patrol_task_detail
+    where patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getExecuteFile" resultType="map" >
+    select 
+    ref.file_type fileType,
+    ref.file_name patrolInfo
+    from 
+    ltci_r_execute_file ref
+    join
+    ltci_execute_result er
+    on
+    er.execute_result_id = ref.execute_result_id
+    where er.patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getComplaintResource" resultType="map" >
+    select 
+    cr.resource_material_type resourceMaterialType,
+    cr.resource_material_id resourceMaterialId
+    from 
+    ltci_complaint_resource cr
+    where cr.patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR}
+  </select>
+  
+    <update id="updatePatrolTask">
+    update ltci_patrol_task
+    set task_state = #{auditState}
+    where patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateExecuteResult">
+    update ltci_execute_result
+    <set >
+    <if test="auditState != null" >
+        audit_state = #{auditState,jdbcType=INTEGER},
+    </if>
+    <if test="rejectionReason != null" >
+        rejection_reason = #{rejectionReason,jdbcType=VARCHAR},
+    </if>
+    </set>
+    where patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR}
+    </update>
+  
+  
+</mapper>

@@ -1,0 +1,30 @@
+put:
+  tags:
+  - daySetPer
+  summary: 不合理费用录入
+  description: 返回个人日结算信息列表。
+  operationId: enterUnrFee
+  parameters:
+  - name: id
+    in: formData
+    description: 主键
+    required: true
+    type: string
+  - name: unrFee
+    in: formData
+    description: 不合理费用
+    required: true
+    type: number
+    format: double
+  - name: operatedBy
+    in: formData
+    description: 经办人
+    required: true
+    type: string
+  responses:
+    200:
+      description: 更新成功
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-settlement-api-v1.yml/#/definitions/Response"

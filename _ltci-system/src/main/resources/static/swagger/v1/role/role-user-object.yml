@@ -1,0 +1,30 @@
+    put:
+      summary: 更新用户角色关系
+      description: 返回数值类型（大于0为成功）。
+      operationId: updataUserRole
+      parameters:
+        - name: userId
+          in: formData
+          type: String
+          format: String
+          required: true
+          description: 用户ID
+        - name: roleId
+          in: formData
+          type: String
+          format: String
+          required: true
+          description: 角色ID
+      tags:
+      - roleManage
+      responses:
+        200:
+          description: 更新用户角色关系成功
+          schema:
+            type: array
+            items:
+              $ref: "../../ltci-system-api-v1.yml/#/definitions/ResultDTO"
+        default:
+          description: 其他错误
+          schema:
+            $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"

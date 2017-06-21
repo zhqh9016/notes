@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.EvaluateTaskLogDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.EvaluateTaskLogDO" >
+    <id column="evaluate_task_logid" property="evaluateTaskLogid" jdbcType="VARCHAR" />
+    <result column="evaluate_task_code" property="evaluateTaskCode" jdbcType="VARCHAR" />
+    <result column="task_state" property="taskState" jdbcType="VARCHAR" />
+    <result column="task_deadline" property="taskDeadline" jdbcType="VARCHAR" />
+    <result column="evaluate_agency_code" property="evaluateAgencyCode" jdbcType="VARCHAR" />
+    <result column="evaluate_agency_name" property="evaluateAgencyName" jdbcType="VARCHAR" />
+    <result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    evaluate_task_logid, evaluate_task_code, task_state, task_deadline, evaluate_agency_code, 
+    evaluate_agency_name, send_time, created_by, created_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.EvaluateTaskLogDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ltci_evaluate_task_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ltci_evaluate_task_log
+    where evaluate_task_logid = #{evaluateTaskLogid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_evaluate_task_log
+    where evaluate_task_logid = #{evaluateTaskLogid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.EvaluateTaskLogDOExample" >
+    delete from ltci_evaluate_task_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.EvaluateTaskLogDO" >
+    insert into ltci_evaluate_task_log (evaluate_task_logid, evaluate_task_code, 
+      task_state, task_deadline, evaluate_agency_code, 
+      evaluate_agency_name, send_time, created_by, 
+      created_time)
+    values (#{evaluateTaskLogid,jdbcType=VARCHAR}, #{evaluateTaskCode,jdbcType=VARCHAR}, 
+      #{taskState,jdbcType=VARCHAR}, #{taskDeadline,jdbcType=VARCHAR}, #{evaluateAgencyCode,jdbcType=VARCHAR}, 
+      #{evaluateAgencyName,jdbcType=VARCHAR}, #{sendTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createdTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.EvaluateTaskLogDO" >
+    insert into ltci_evaluate_task_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="evaluateTaskLogid != null" >
+        evaluate_task_logid,
+      </if>
+      <if test="evaluateTaskCode != null" >
+        evaluate_task_code,
+      </if>
+      <if test="taskState != null" >
+        task_state,
+      </if>
+      <if test="taskDeadline != null" >
+        task_deadline,
+      </if>
+      <if test="evaluateAgencyCode != null" >
+        evaluate_agency_code,
+      </if>
+      <if test="evaluateAgencyName != null" >
+        evaluate_agency_name,
+      </if>
+      <if test="sendTime != null" >
+        send_time,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="evaluateTaskLogid != null" >
+        #{evaluateTaskLogid,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateTaskCode != null" >
+        #{evaluateTaskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="taskState != null" >
+        #{taskState,jdbcType=VARCHAR},
+      </if>
+      <if test="taskDeadline != null" >
+        #{taskDeadline,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateAgencyCode != null" >
+        #{evaluateAgencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateAgencyName != null" >
+        #{evaluateAgencyName,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.EvaluateTaskLogDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_evaluate_task_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_evaluate_task_log
+    <set >
+      <if test="record.evaluateTaskLogid != null" >
+        evaluate_task_logid = #{record.evaluateTaskLogid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evaluateTaskCode != null" >
+        evaluate_task_code = #{record.evaluateTaskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskState != null" >
+        task_state = #{record.taskState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskDeadline != null" >
+        task_deadline = #{record.taskDeadline,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evaluateAgencyCode != null" >
+        evaluate_agency_code = #{record.evaluateAgencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evaluateAgencyName != null" >
+        evaluate_agency_name = #{record.evaluateAgencyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sendTime != null" >
+        send_time = #{record.sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdBy != null" >
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null" >
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_evaluate_task_log
+    set evaluate_task_logid = #{record.evaluateTaskLogid,jdbcType=VARCHAR},
+      evaluate_task_code = #{record.evaluateTaskCode,jdbcType=VARCHAR},
+      task_state = #{record.taskState,jdbcType=VARCHAR},
+      task_deadline = #{record.taskDeadline,jdbcType=VARCHAR},
+      evaluate_agency_code = #{record.evaluateAgencyCode,jdbcType=VARCHAR},
+      evaluate_agency_name = #{record.evaluateAgencyName,jdbcType=VARCHAR},
+      send_time = #{record.sendTime,jdbcType=TIMESTAMP},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.EvaluateTaskLogDO" >
+    update ltci_evaluate_task_log
+    <set >
+      <if test="evaluateTaskCode != null" >
+        evaluate_task_code = #{evaluateTaskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="taskState != null" >
+        task_state = #{taskState,jdbcType=VARCHAR},
+      </if>
+      <if test="taskDeadline != null" >
+        task_deadline = #{taskDeadline,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateAgencyCode != null" >
+        evaluate_agency_code = #{evaluateAgencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateAgencyName != null" >
+        evaluate_agency_name = #{evaluateAgencyName,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        send_time = #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where evaluate_task_logid = #{evaluateTaskLogid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.EvaluateTaskLogDO" >
+    update ltci_evaluate_task_log
+    set evaluate_task_code = #{evaluateTaskCode,jdbcType=VARCHAR},
+      task_state = #{taskState,jdbcType=VARCHAR},
+      task_deadline = #{taskDeadline,jdbcType=VARCHAR},
+      evaluate_agency_code = #{evaluateAgencyCode,jdbcType=VARCHAR},
+      evaluate_agency_name = #{evaluateAgencyName,jdbcType=VARCHAR},
+      send_time = #{sendTime,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP}
+    where evaluate_task_logid = #{evaluateTaskLogid,jdbcType=VARCHAR}
+  </update>
+</mapper>

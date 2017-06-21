@@ -1,0 +1,1008 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.AgencyHistoryDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.AgencyHistoryDO" >
+    <id column="serial_num" property="serialNum" jdbcType="VARCHAR" />
+    <result column="action_type" property="actionType" jdbcType="VARCHAR" />
+    <result column="agency_code" property="agencyCode" jdbcType="VARCHAR" />
+    <result column="org_code" property="orgCode" jdbcType="VARCHAR" />
+    <result column="agency_name" property="agencyName" jdbcType="VARCHAR" />
+    <result column="province_code" property="provinceCode" jdbcType="VARCHAR" />
+    <result column="city_code" property="cityCode" jdbcType="VARCHAR" />
+    <result column="area_code" property="areaCode" jdbcType="VARCHAR" />
+    <result column="agency_address_detail" property="agencyAddressDetail" jdbcType="VARCHAR" />
+    <result column="agency_type" property="agencyType" jdbcType="VARCHAR" />
+    <result column="agency_level" property="agencyLevel" jdbcType="INTEGER" />
+    <result column="agency_state" property="agencyState" jdbcType="INTEGER" />
+    <result column="agency_service_type" property="agencyServiceType" jdbcType="VARCHAR" />
+    <result column="valid_state" property="validState" jdbcType="INTEGER" />
+    <result column="ownership_form" property="ownershipForm" jdbcType="INTEGER" />
+    <result column="practice_license" property="practiceLicense" jdbcType="VARCHAR" />
+    <result column="agency_registration_num" property="agencyRegistrationNum" jdbcType="VARCHAR" />
+    <result column="legal_representative" property="legalRepresentative" jdbcType="VARCHAR" />
+    <result column="legal_papers_type" property="legalPapersType" jdbcType="VARCHAR" />
+    <result column="legal_id_card" property="legalIdCard" jdbcType="VARCHAR" />
+    <result column="legal_phone_no" property="legalPhoneNo" jdbcType="VARCHAR" />
+    <result column="agency_service_contact" property="agencyServiceContact" jdbcType="VARCHAR" />
+    <result column="agency_contact_phone" property="agencyContactPhone" jdbcType="VARCHAR" />
+    <result column="agency_contact_email" property="agencyContactEmail" jdbcType="VARCHAR" />
+    <result column="service_content" property="serviceContent" jdbcType="VARCHAR" />
+    <result column="agency_bed_num" property="agencyBedNum" jdbcType="INTEGER" />
+    <result column="home_service_num" property="homeServiceNum" jdbcType="INTEGER" />
+    <result column="construction_area" property="constructionArea" jdbcType="DOUBLE" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="agency_coordinates" property="agencyCoordinates" jdbcType="VARCHAR" />
+    <result column="agency_applicat" property="agencyApplicat" jdbcType="VARCHAR" />
+    <result column="agency_apply_date" property="agencyApplyDate" jdbcType="TIMESTAMP" />
+    <result column="advanced_doctor_num" property="advancedDoctorNum" jdbcType="INTEGER" />
+    <result column="intermediate_doctor_num" property="intermediateDoctorNum" jdbcType="INTEGER" />
+    <result column="primary_doctor_num" property="primaryDoctorNum" jdbcType="INTEGER" />
+    <result column="advanced_nurse_num" property="advancedNurseNum" jdbcType="INTEGER" />
+    <result column="intermediate_nurse_num" property="intermediateNurseNum" jdbcType="INTEGER" />
+    <result column="primary_nurse_num" property="primaryNurseNum" jdbcType="INTEGER" />
+    <result column="advanced_carer_num" property="advancedCarerNum" jdbcType="INTEGER" />
+    <result column="intermediate_carer_num" property="intermediateCarerNum" jdbcType="INTEGER" />
+    <result column="primary_carer_num" property="primaryCarerNum" jdbcType="INTEGER" />
+    <result column="advanced_misc_num" property="advancedMiscNum" jdbcType="INTEGER" />
+    <result column="intermediate_misc_num" property="intermediateMiscNum" jdbcType="INTEGER" />
+    <result column="primary_misc_num" property="primaryMiscNum" jdbcType="INTEGER" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="cause" property="cause" jdbcType="VARCHAR" />
+    <result column="no_doctor_num" property="noDoctorNum" jdbcType="INTEGER" />
+    <result column="no_nurse_num" property="noNurseNum" jdbcType="INTEGER" />
+    <result column="no_carer_num" property="noCarerNum" jdbcType="INTEGER" />
+    <result column="no_misc_num" property="noMiscNum" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    serial_num, action_type, agency_code, org_code, agency_name, province_code, city_code, 
+    area_code, agency_address_detail, agency_type, agency_level, agency_state, agency_service_type, 
+    valid_state, ownership_form, practice_license, agency_registration_num, legal_representative, 
+    legal_papers_type, legal_id_card, legal_phone_no, agency_service_contact, agency_contact_phone, 
+    agency_contact_email, service_content, agency_bed_num, home_service_num, construction_area, 
+    remark, agency_coordinates, agency_applicat, agency_apply_date, advanced_doctor_num, 
+    intermediate_doctor_num, primary_doctor_num, advanced_nurse_num, intermediate_nurse_num, 
+    primary_nurse_num, advanced_carer_num, intermediate_carer_num, primary_carer_num, 
+    advanced_misc_num, intermediate_misc_num, primary_misc_num, operated_by, operated_org, 
+    operated_time, created_by, created_org, created_time, cause, no_doctor_num, no_nurse_num, 
+    no_carer_num, no_misc_num
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.AgencyHistoryDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ltci_agency_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ltci_agency_history
+    where serial_num = #{serialNum,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_agency_history
+    where serial_num = #{serialNum,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.AgencyHistoryDOExample" >
+    delete from ltci_agency_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.AgencyHistoryDO" >
+    insert into ltci_agency_history (serial_num, action_type, agency_code, 
+      org_code, agency_name, province_code, 
+      city_code, area_code, agency_address_detail, 
+      agency_type, agency_level, agency_state, 
+      agency_service_type, valid_state, ownership_form, 
+      practice_license, agency_registration_num, 
+      legal_representative, legal_papers_type, legal_id_card, 
+      legal_phone_no, agency_service_contact, agency_contact_phone, 
+      agency_contact_email, service_content, agency_bed_num, 
+      home_service_num, construction_area, remark, 
+      agency_coordinates, agency_applicat, agency_apply_date, 
+      advanced_doctor_num, intermediate_doctor_num, 
+      primary_doctor_num, advanced_nurse_num, intermediate_nurse_num, 
+      primary_nurse_num, advanced_carer_num, intermediate_carer_num, 
+      primary_carer_num, advanced_misc_num, intermediate_misc_num, 
+      primary_misc_num, operated_by, operated_org, 
+      operated_time, created_by, created_org, 
+      created_time, cause, no_doctor_num, 
+      no_nurse_num, no_carer_num, no_misc_num
+      )
+    values (#{serialNum,jdbcType=VARCHAR}, #{actionType,jdbcType=VARCHAR}, #{agencyCode,jdbcType=VARCHAR}, 
+      #{orgCode,jdbcType=VARCHAR}, #{agencyName,jdbcType=VARCHAR}, #{provinceCode,jdbcType=VARCHAR}, 
+      #{cityCode,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR}, #{agencyAddressDetail,jdbcType=VARCHAR}, 
+      #{agencyType,jdbcType=VARCHAR}, #{agencyLevel,jdbcType=INTEGER}, #{agencyState,jdbcType=INTEGER}, 
+      #{agencyServiceType,jdbcType=VARCHAR}, #{validState,jdbcType=INTEGER}, #{ownershipForm,jdbcType=INTEGER}, 
+      #{practiceLicense,jdbcType=VARCHAR}, #{agencyRegistrationNum,jdbcType=VARCHAR}, 
+      #{legalRepresentative,jdbcType=VARCHAR}, #{legalPapersType,jdbcType=VARCHAR}, #{legalIdCard,jdbcType=VARCHAR}, 
+      #{legalPhoneNo,jdbcType=VARCHAR}, #{agencyServiceContact,jdbcType=VARCHAR}, #{agencyContactPhone,jdbcType=VARCHAR}, 
+      #{agencyContactEmail,jdbcType=VARCHAR}, #{serviceContent,jdbcType=VARCHAR}, #{agencyBedNum,jdbcType=INTEGER}, 
+      #{homeServiceNum,jdbcType=INTEGER}, #{constructionArea,jdbcType=DOUBLE}, #{remark,jdbcType=VARCHAR}, 
+      #{agencyCoordinates,jdbcType=VARCHAR}, #{agencyApplicat,jdbcType=VARCHAR}, #{agencyApplyDate,jdbcType=TIMESTAMP}, 
+      #{advancedDoctorNum,jdbcType=INTEGER}, #{intermediateDoctorNum,jdbcType=INTEGER}, 
+      #{primaryDoctorNum,jdbcType=INTEGER}, #{advancedNurseNum,jdbcType=INTEGER}, #{intermediateNurseNum,jdbcType=INTEGER}, 
+      #{primaryNurseNum,jdbcType=INTEGER}, #{advancedCarerNum,jdbcType=INTEGER}, #{intermediateCarerNum,jdbcType=INTEGER}, 
+      #{primaryCarerNum,jdbcType=INTEGER}, #{advancedMiscNum,jdbcType=INTEGER}, #{intermediateMiscNum,jdbcType=INTEGER}, 
+      #{primaryMiscNum,jdbcType=INTEGER}, #{operatedBy,jdbcType=VARCHAR}, #{operatedOrg,jdbcType=VARCHAR}, 
+      #{operatedTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, #{createdOrg,jdbcType=VARCHAR}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{cause,jdbcType=VARCHAR}, #{noDoctorNum,jdbcType=INTEGER}, 
+      #{noNurseNum,jdbcType=INTEGER}, #{noCarerNum,jdbcType=INTEGER}, #{noMiscNum,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.AgencyHistoryDO" >
+    insert into ltci_agency_history
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="serialNum != null" >
+        serial_num,
+      </if>
+      <if test="actionType != null" >
+        action_type,
+      </if>
+      <if test="agencyCode != null" >
+        agency_code,
+      </if>
+      <if test="orgCode != null" >
+        org_code,
+      </if>
+      <if test="agencyName != null" >
+        agency_name,
+      </if>
+      <if test="provinceCode != null" >
+        province_code,
+      </if>
+      <if test="cityCode != null" >
+        city_code,
+      </if>
+      <if test="areaCode != null" >
+        area_code,
+      </if>
+      <if test="agencyAddressDetail != null" >
+        agency_address_detail,
+      </if>
+      <if test="agencyType != null" >
+        agency_type,
+      </if>
+      <if test="agencyLevel != null" >
+        agency_level,
+      </if>
+      <if test="agencyState != null" >
+        agency_state,
+      </if>
+      <if test="agencyServiceType != null" >
+        agency_service_type,
+      </if>
+      <if test="validState != null" >
+        valid_state,
+      </if>
+      <if test="ownershipForm != null" >
+        ownership_form,
+      </if>
+      <if test="practiceLicense != null" >
+        practice_license,
+      </if>
+      <if test="agencyRegistrationNum != null" >
+        agency_registration_num,
+      </if>
+      <if test="legalRepresentative != null" >
+        legal_representative,
+      </if>
+      <if test="legalPapersType != null" >
+        legal_papers_type,
+      </if>
+      <if test="legalIdCard != null" >
+        legal_id_card,
+      </if>
+      <if test="legalPhoneNo != null" >
+        legal_phone_no,
+      </if>
+      <if test="agencyServiceContact != null" >
+        agency_service_contact,
+      </if>
+      <if test="agencyContactPhone != null" >
+        agency_contact_phone,
+      </if>
+      <if test="agencyContactEmail != null" >
+        agency_contact_email,
+      </if>
+      <if test="serviceContent != null" >
+        service_content,
+      </if>
+      <if test="agencyBedNum != null" >
+        agency_bed_num,
+      </if>
+      <if test="homeServiceNum != null" >
+        home_service_num,
+      </if>
+      <if test="constructionArea != null" >
+        construction_area,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="agencyCoordinates != null" >
+        agency_coordinates,
+      </if>
+      <if test="agencyApplicat != null" >
+        agency_applicat,
+      </if>
+      <if test="agencyApplyDate != null" >
+        agency_apply_date,
+      </if>
+      <if test="advancedDoctorNum != null" >
+        advanced_doctor_num,
+      </if>
+      <if test="intermediateDoctorNum != null" >
+        intermediate_doctor_num,
+      </if>
+      <if test="primaryDoctorNum != null" >
+        primary_doctor_num,
+      </if>
+      <if test="advancedNurseNum != null" >
+        advanced_nurse_num,
+      </if>
+      <if test="intermediateNurseNum != null" >
+        intermediate_nurse_num,
+      </if>
+      <if test="primaryNurseNum != null" >
+        primary_nurse_num,
+      </if>
+      <if test="advancedCarerNum != null" >
+        advanced_carer_num,
+      </if>
+      <if test="intermediateCarerNum != null" >
+        intermediate_carer_num,
+      </if>
+      <if test="primaryCarerNum != null" >
+        primary_carer_num,
+      </if>
+      <if test="advancedMiscNum != null" >
+        advanced_misc_num,
+      </if>
+      <if test="intermediateMiscNum != null" >
+        intermediate_misc_num,
+      </if>
+      <if test="primaryMiscNum != null" >
+        primary_misc_num,
+      </if>
+      <if test="operatedBy != null" >
+        operated_by,
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org,
+      </if>
+      <if test="operatedTime != null" >
+        operated_time,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="createdOrg != null" >
+        created_org,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="cause != null" >
+        cause,
+      </if>
+      <if test="noDoctorNum != null" >
+        no_doctor_num,
+      </if>
+      <if test="noNurseNum != null" >
+        no_nurse_num,
+      </if>
+      <if test="noCarerNum != null" >
+        no_carer_num,
+      </if>
+      <if test="noMiscNum != null" >
+        no_misc_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="serialNum != null" >
+        #{serialNum,jdbcType=VARCHAR},
+      </if>
+      <if test="actionType != null" >
+        #{actionType,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyCode != null" >
+        #{agencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null" >
+        #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyName != null" >
+        #{agencyName,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceCode != null" >
+        #{provinceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null" >
+        #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null" >
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyAddressDetail != null" >
+        #{agencyAddressDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyType != null" >
+        #{agencyType,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyLevel != null" >
+        #{agencyLevel,jdbcType=INTEGER},
+      </if>
+      <if test="agencyState != null" >
+        #{agencyState,jdbcType=INTEGER},
+      </if>
+      <if test="agencyServiceType != null" >
+        #{agencyServiceType,jdbcType=VARCHAR},
+      </if>
+      <if test="validState != null" >
+        #{validState,jdbcType=INTEGER},
+      </if>
+      <if test="ownershipForm != null" >
+        #{ownershipForm,jdbcType=INTEGER},
+      </if>
+      <if test="practiceLicense != null" >
+        #{practiceLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyRegistrationNum != null" >
+        #{agencyRegistrationNum,jdbcType=VARCHAR},
+      </if>
+      <if test="legalRepresentative != null" >
+        #{legalRepresentative,jdbcType=VARCHAR},
+      </if>
+      <if test="legalPapersType != null" >
+        #{legalPapersType,jdbcType=VARCHAR},
+      </if>
+      <if test="legalIdCard != null" >
+        #{legalIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="legalPhoneNo != null" >
+        #{legalPhoneNo,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyServiceContact != null" >
+        #{agencyServiceContact,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyContactPhone != null" >
+        #{agencyContactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyContactEmail != null" >
+        #{agencyContactEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceContent != null" >
+        #{serviceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyBedNum != null" >
+        #{agencyBedNum,jdbcType=INTEGER},
+      </if>
+      <if test="homeServiceNum != null" >
+        #{homeServiceNum,jdbcType=INTEGER},
+      </if>
+      <if test="constructionArea != null" >
+        #{constructionArea,jdbcType=DOUBLE},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyCoordinates != null" >
+        #{agencyCoordinates,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyApplicat != null" >
+        #{agencyApplicat,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyApplyDate != null" >
+        #{agencyApplyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="advancedDoctorNum != null" >
+        #{advancedDoctorNum,jdbcType=INTEGER},
+      </if>
+      <if test="intermediateDoctorNum != null" >
+        #{intermediateDoctorNum,jdbcType=INTEGER},
+      </if>
+      <if test="primaryDoctorNum != null" >
+        #{primaryDoctorNum,jdbcType=INTEGER},
+      </if>
+      <if test="advancedNurseNum != null" >
+        #{advancedNurseNum,jdbcType=INTEGER},
+      </if>
+      <if test="intermediateNurseNum != null" >
+        #{intermediateNurseNum,jdbcType=INTEGER},
+      </if>
+      <if test="primaryNurseNum != null" >
+        #{primaryNurseNum,jdbcType=INTEGER},
+      </if>
+      <if test="advancedCarerNum != null" >
+        #{advancedCarerNum,jdbcType=INTEGER},
+      </if>
+      <if test="intermediateCarerNum != null" >
+        #{intermediateCarerNum,jdbcType=INTEGER},
+      </if>
+      <if test="primaryCarerNum != null" >
+        #{primaryCarerNum,jdbcType=INTEGER},
+      </if>
+      <if test="advancedMiscNum != null" >
+        #{advancedMiscNum,jdbcType=INTEGER},
+      </if>
+      <if test="intermediateMiscNum != null" >
+        #{intermediateMiscNum,jdbcType=INTEGER},
+      </if>
+      <if test="primaryMiscNum != null" >
+        #{primaryMiscNum,jdbcType=INTEGER},
+      </if>
+      <if test="operatedBy != null" >
+        #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedOrg != null" >
+        #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdOrg != null" >
+        #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cause != null" >
+        #{cause,jdbcType=VARCHAR},
+      </if>
+      <if test="noDoctorNum != null" >
+        #{noDoctorNum,jdbcType=INTEGER},
+      </if>
+      <if test="noNurseNum != null" >
+        #{noNurseNum,jdbcType=INTEGER},
+      </if>
+      <if test="noCarerNum != null" >
+        #{noCarerNum,jdbcType=INTEGER},
+      </if>
+      <if test="noMiscNum != null" >
+        #{noMiscNum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.AgencyHistoryDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_agency_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_agency_history
+    <set >
+      <if test="record.serialNum != null" >
+        serial_num = #{record.serialNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actionType != null" >
+        action_type = #{record.actionType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyCode != null" >
+        agency_code = #{record.agencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgCode != null" >
+        org_code = #{record.orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyName != null" >
+        agency_name = #{record.agencyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.provinceCode != null" >
+        province_code = #{record.provinceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cityCode != null" >
+        city_code = #{record.cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.areaCode != null" >
+        area_code = #{record.areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyAddressDetail != null" >
+        agency_address_detail = #{record.agencyAddressDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyType != null" >
+        agency_type = #{record.agencyType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyLevel != null" >
+        agency_level = #{record.agencyLevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.agencyState != null" >
+        agency_state = #{record.agencyState,jdbcType=INTEGER},
+      </if>
+      <if test="record.agencyServiceType != null" >
+        agency_service_type = #{record.agencyServiceType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.validState != null" >
+        valid_state = #{record.validState,jdbcType=INTEGER},
+      </if>
+      <if test="record.ownershipForm != null" >
+        ownership_form = #{record.ownershipForm,jdbcType=INTEGER},
+      </if>
+      <if test="record.practiceLicense != null" >
+        practice_license = #{record.practiceLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyRegistrationNum != null" >
+        agency_registration_num = #{record.agencyRegistrationNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.legalRepresentative != null" >
+        legal_representative = #{record.legalRepresentative,jdbcType=VARCHAR},
+      </if>
+      <if test="record.legalPapersType != null" >
+        legal_papers_type = #{record.legalPapersType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.legalIdCard != null" >
+        legal_id_card = #{record.legalIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.legalPhoneNo != null" >
+        legal_phone_no = #{record.legalPhoneNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyServiceContact != null" >
+        agency_service_contact = #{record.agencyServiceContact,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyContactPhone != null" >
+        agency_contact_phone = #{record.agencyContactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyContactEmail != null" >
+        agency_contact_email = #{record.agencyContactEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serviceContent != null" >
+        service_content = #{record.serviceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyBedNum != null" >
+        agency_bed_num = #{record.agencyBedNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.homeServiceNum != null" >
+        home_service_num = #{record.homeServiceNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.constructionArea != null" >
+        construction_area = #{record.constructionArea,jdbcType=DOUBLE},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyCoordinates != null" >
+        agency_coordinates = #{record.agencyCoordinates,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyApplicat != null" >
+        agency_applicat = #{record.agencyApplicat,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyApplyDate != null" >
+        agency_apply_date = #{record.agencyApplyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.advancedDoctorNum != null" >
+        advanced_doctor_num = #{record.advancedDoctorNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.intermediateDoctorNum != null" >
+        intermediate_doctor_num = #{record.intermediateDoctorNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.primaryDoctorNum != null" >
+        primary_doctor_num = #{record.primaryDoctorNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.advancedNurseNum != null" >
+        advanced_nurse_num = #{record.advancedNurseNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.intermediateNurseNum != null" >
+        intermediate_nurse_num = #{record.intermediateNurseNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.primaryNurseNum != null" >
+        primary_nurse_num = #{record.primaryNurseNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.advancedCarerNum != null" >
+        advanced_carer_num = #{record.advancedCarerNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.intermediateCarerNum != null" >
+        intermediate_carer_num = #{record.intermediateCarerNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.primaryCarerNum != null" >
+        primary_carer_num = #{record.primaryCarerNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.advancedMiscNum != null" >
+        advanced_misc_num = #{record.advancedMiscNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.intermediateMiscNum != null" >
+        intermediate_misc_num = #{record.intermediateMiscNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.primaryMiscNum != null" >
+        primary_misc_num = #{record.primaryMiscNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.operatedBy != null" >
+        operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedOrg != null" >
+        operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedTime != null" >
+        operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdBy != null" >
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdOrg != null" >
+        created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null" >
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cause != null" >
+        cause = #{record.cause,jdbcType=VARCHAR},
+      </if>
+      <if test="record.noDoctorNum != null" >
+        no_doctor_num = #{record.noDoctorNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.noNurseNum != null" >
+        no_nurse_num = #{record.noNurseNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.noCarerNum != null" >
+        no_carer_num = #{record.noCarerNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.noMiscNum != null" >
+        no_misc_num = #{record.noMiscNum,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_agency_history
+    set serial_num = #{record.serialNum,jdbcType=VARCHAR},
+      action_type = #{record.actionType,jdbcType=VARCHAR},
+      agency_code = #{record.agencyCode,jdbcType=VARCHAR},
+      org_code = #{record.orgCode,jdbcType=VARCHAR},
+      agency_name = #{record.agencyName,jdbcType=VARCHAR},
+      province_code = #{record.provinceCode,jdbcType=VARCHAR},
+      city_code = #{record.cityCode,jdbcType=VARCHAR},
+      area_code = #{record.areaCode,jdbcType=VARCHAR},
+      agency_address_detail = #{record.agencyAddressDetail,jdbcType=VARCHAR},
+      agency_type = #{record.agencyType,jdbcType=VARCHAR},
+      agency_level = #{record.agencyLevel,jdbcType=INTEGER},
+      agency_state = #{record.agencyState,jdbcType=INTEGER},
+      agency_service_type = #{record.agencyServiceType,jdbcType=VARCHAR},
+      valid_state = #{record.validState,jdbcType=INTEGER},
+      ownership_form = #{record.ownershipForm,jdbcType=INTEGER},
+      practice_license = #{record.practiceLicense,jdbcType=VARCHAR},
+      agency_registration_num = #{record.agencyRegistrationNum,jdbcType=VARCHAR},
+      legal_representative = #{record.legalRepresentative,jdbcType=VARCHAR},
+      legal_papers_type = #{record.legalPapersType,jdbcType=VARCHAR},
+      legal_id_card = #{record.legalIdCard,jdbcType=VARCHAR},
+      legal_phone_no = #{record.legalPhoneNo,jdbcType=VARCHAR},
+      agency_service_contact = #{record.agencyServiceContact,jdbcType=VARCHAR},
+      agency_contact_phone = #{record.agencyContactPhone,jdbcType=VARCHAR},
+      agency_contact_email = #{record.agencyContactEmail,jdbcType=VARCHAR},
+      service_content = #{record.serviceContent,jdbcType=VARCHAR},
+      agency_bed_num = #{record.agencyBedNum,jdbcType=INTEGER},
+      home_service_num = #{record.homeServiceNum,jdbcType=INTEGER},
+      construction_area = #{record.constructionArea,jdbcType=DOUBLE},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      agency_coordinates = #{record.agencyCoordinates,jdbcType=VARCHAR},
+      agency_applicat = #{record.agencyApplicat,jdbcType=VARCHAR},
+      agency_apply_date = #{record.agencyApplyDate,jdbcType=TIMESTAMP},
+      advanced_doctor_num = #{record.advancedDoctorNum,jdbcType=INTEGER},
+      intermediate_doctor_num = #{record.intermediateDoctorNum,jdbcType=INTEGER},
+      primary_doctor_num = #{record.primaryDoctorNum,jdbcType=INTEGER},
+      advanced_nurse_num = #{record.advancedNurseNum,jdbcType=INTEGER},
+      intermediate_nurse_num = #{record.intermediateNurseNum,jdbcType=INTEGER},
+      primary_nurse_num = #{record.primaryNurseNum,jdbcType=INTEGER},
+      advanced_carer_num = #{record.advancedCarerNum,jdbcType=INTEGER},
+      intermediate_carer_num = #{record.intermediateCarerNum,jdbcType=INTEGER},
+      primary_carer_num = #{record.primaryCarerNum,jdbcType=INTEGER},
+      advanced_misc_num = #{record.advancedMiscNum,jdbcType=INTEGER},
+      intermediate_misc_num = #{record.intermediateMiscNum,jdbcType=INTEGER},
+      primary_misc_num = #{record.primaryMiscNum,jdbcType=INTEGER},
+      operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      cause = #{record.cause,jdbcType=VARCHAR},
+      no_doctor_num = #{record.noDoctorNum,jdbcType=INTEGER},
+      no_nurse_num = #{record.noNurseNum,jdbcType=INTEGER},
+      no_carer_num = #{record.noCarerNum,jdbcType=INTEGER},
+      no_misc_num = #{record.noMiscNum,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.AgencyHistoryDO" >
+    update ltci_agency_history
+    <set >
+      <if test="actionType != null" >
+        action_type = #{actionType,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyCode != null" >
+        agency_code = #{agencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null" >
+        org_code = #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyName != null" >
+        agency_name = #{agencyName,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceCode != null" >
+        province_code = #{provinceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null" >
+        city_code = #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null" >
+        area_code = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyAddressDetail != null" >
+        agency_address_detail = #{agencyAddressDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyType != null" >
+        agency_type = #{agencyType,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyLevel != null" >
+        agency_level = #{agencyLevel,jdbcType=INTEGER},
+      </if>
+      <if test="agencyState != null" >
+        agency_state = #{agencyState,jdbcType=INTEGER},
+      </if>
+      <if test="agencyServiceType != null" >
+        agency_service_type = #{agencyServiceType,jdbcType=VARCHAR},
+      </if>
+      <if test="validState != null" >
+        valid_state = #{validState,jdbcType=INTEGER},
+      </if>
+      <if test="ownershipForm != null" >
+        ownership_form = #{ownershipForm,jdbcType=INTEGER},
+      </if>
+      <if test="practiceLicense != null" >
+        practice_license = #{practiceLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyRegistrationNum != null" >
+        agency_registration_num = #{agencyRegistrationNum,jdbcType=VARCHAR},
+      </if>
+      <if test="legalRepresentative != null" >
+        legal_representative = #{legalRepresentative,jdbcType=VARCHAR},
+      </if>
+      <if test="legalPapersType != null" >
+        legal_papers_type = #{legalPapersType,jdbcType=VARCHAR},
+      </if>
+      <if test="legalIdCard != null" >
+        legal_id_card = #{legalIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="legalPhoneNo != null" >
+        legal_phone_no = #{legalPhoneNo,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyServiceContact != null" >
+        agency_service_contact = #{agencyServiceContact,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyContactPhone != null" >
+        agency_contact_phone = #{agencyContactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyContactEmail != null" >
+        agency_contact_email = #{agencyContactEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceContent != null" >
+        service_content = #{serviceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyBedNum != null" >
+        agency_bed_num = #{agencyBedNum,jdbcType=INTEGER},
+      </if>
+      <if test="homeServiceNum != null" >
+        home_service_num = #{homeServiceNum,jdbcType=INTEGER},
+      </if>
+      <if test="constructionArea != null" >
+        construction_area = #{constructionArea,jdbcType=DOUBLE},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyCoordinates != null" >
+        agency_coordinates = #{agencyCoordinates,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyApplicat != null" >
+        agency_applicat = #{agencyApplicat,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyApplyDate != null" >
+        agency_apply_date = #{agencyApplyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="advancedDoctorNum != null" >
+        advanced_doctor_num = #{advancedDoctorNum,jdbcType=INTEGER},
+      </if>
+      <if test="intermediateDoctorNum != null" >
+        intermediate_doctor_num = #{intermediateDoctorNum,jdbcType=INTEGER},
+      </if>
+      <if test="primaryDoctorNum != null" >
+        primary_doctor_num = #{primaryDoctorNum,jdbcType=INTEGER},
+      </if>
+      <if test="advancedNurseNum != null" >
+        advanced_nurse_num = #{advancedNurseNum,jdbcType=INTEGER},
+      </if>
+      <if test="intermediateNurseNum != null" >
+        intermediate_nurse_num = #{intermediateNurseNum,jdbcType=INTEGER},
+      </if>
+      <if test="primaryNurseNum != null" >
+        primary_nurse_num = #{primaryNurseNum,jdbcType=INTEGER},
+      </if>
+      <if test="advancedCarerNum != null" >
+        advanced_carer_num = #{advancedCarerNum,jdbcType=INTEGER},
+      </if>
+      <if test="intermediateCarerNum != null" >
+        intermediate_carer_num = #{intermediateCarerNum,jdbcType=INTEGER},
+      </if>
+      <if test="primaryCarerNum != null" >
+        primary_carer_num = #{primaryCarerNum,jdbcType=INTEGER},
+      </if>
+      <if test="advancedMiscNum != null" >
+        advanced_misc_num = #{advancedMiscNum,jdbcType=INTEGER},
+      </if>
+      <if test="intermediateMiscNum != null" >
+        intermediate_misc_num = #{intermediateMiscNum,jdbcType=INTEGER},
+      </if>
+      <if test="primaryMiscNum != null" >
+        primary_misc_num = #{primaryMiscNum,jdbcType=INTEGER},
+      </if>
+      <if test="operatedBy != null" >
+        operated_by = #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdOrg != null" >
+        created_org = #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cause != null" >
+        cause = #{cause,jdbcType=VARCHAR},
+      </if>
+      <if test="noDoctorNum != null" >
+        no_doctor_num = #{noDoctorNum,jdbcType=INTEGER},
+      </if>
+      <if test="noNurseNum != null" >
+        no_nurse_num = #{noNurseNum,jdbcType=INTEGER},
+      </if>
+      <if test="noCarerNum != null" >
+        no_carer_num = #{noCarerNum,jdbcType=INTEGER},
+      </if>
+      <if test="noMiscNum != null" >
+        no_misc_num = #{noMiscNum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where serial_num = #{serialNum,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.AgencyHistoryDO" >
+    update ltci_agency_history
+    set action_type = #{actionType,jdbcType=VARCHAR},
+      agency_code = #{agencyCode,jdbcType=VARCHAR},
+      org_code = #{orgCode,jdbcType=VARCHAR},
+      agency_name = #{agencyName,jdbcType=VARCHAR},
+      province_code = #{provinceCode,jdbcType=VARCHAR},
+      city_code = #{cityCode,jdbcType=VARCHAR},
+      area_code = #{areaCode,jdbcType=VARCHAR},
+      agency_address_detail = #{agencyAddressDetail,jdbcType=VARCHAR},
+      agency_type = #{agencyType,jdbcType=VARCHAR},
+      agency_level = #{agencyLevel,jdbcType=INTEGER},
+      agency_state = #{agencyState,jdbcType=INTEGER},
+      agency_service_type = #{agencyServiceType,jdbcType=VARCHAR},
+      valid_state = #{validState,jdbcType=INTEGER},
+      ownership_form = #{ownershipForm,jdbcType=INTEGER},
+      practice_license = #{practiceLicense,jdbcType=VARCHAR},
+      agency_registration_num = #{agencyRegistrationNum,jdbcType=VARCHAR},
+      legal_representative = #{legalRepresentative,jdbcType=VARCHAR},
+      legal_papers_type = #{legalPapersType,jdbcType=VARCHAR},
+      legal_id_card = #{legalIdCard,jdbcType=VARCHAR},
+      legal_phone_no = #{legalPhoneNo,jdbcType=VARCHAR},
+      agency_service_contact = #{agencyServiceContact,jdbcType=VARCHAR},
+      agency_contact_phone = #{agencyContactPhone,jdbcType=VARCHAR},
+      agency_contact_email = #{agencyContactEmail,jdbcType=VARCHAR},
+      service_content = #{serviceContent,jdbcType=VARCHAR},
+      agency_bed_num = #{agencyBedNum,jdbcType=INTEGER},
+      home_service_num = #{homeServiceNum,jdbcType=INTEGER},
+      construction_area = #{constructionArea,jdbcType=DOUBLE},
+      remark = #{remark,jdbcType=VARCHAR},
+      agency_coordinates = #{agencyCoordinates,jdbcType=VARCHAR},
+      agency_applicat = #{agencyApplicat,jdbcType=VARCHAR},
+      agency_apply_date = #{agencyApplyDate,jdbcType=TIMESTAMP},
+      advanced_doctor_num = #{advancedDoctorNum,jdbcType=INTEGER},
+      intermediate_doctor_num = #{intermediateDoctorNum,jdbcType=INTEGER},
+      primary_doctor_num = #{primaryDoctorNum,jdbcType=INTEGER},
+      advanced_nurse_num = #{advancedNurseNum,jdbcType=INTEGER},
+      intermediate_nurse_num = #{intermediateNurseNum,jdbcType=INTEGER},
+      primary_nurse_num = #{primaryNurseNum,jdbcType=INTEGER},
+      advanced_carer_num = #{advancedCarerNum,jdbcType=INTEGER},
+      intermediate_carer_num = #{intermediateCarerNum,jdbcType=INTEGER},
+      primary_carer_num = #{primaryCarerNum,jdbcType=INTEGER},
+      advanced_misc_num = #{advancedMiscNum,jdbcType=INTEGER},
+      intermediate_misc_num = #{intermediateMiscNum,jdbcType=INTEGER},
+      primary_misc_num = #{primaryMiscNum,jdbcType=INTEGER},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_org = #{createdOrg,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      cause = #{cause,jdbcType=VARCHAR},
+      no_doctor_num = #{noDoctorNum,jdbcType=INTEGER},
+      no_nurse_num = #{noNurseNum,jdbcType=INTEGER},
+      no_carer_num = #{noCarerNum,jdbcType=INTEGER},
+      no_misc_num = #{noMiscNum,jdbcType=INTEGER}
+    where serial_num = #{serialNum,jdbcType=VARCHAR}
+  </update>
+</mapper>

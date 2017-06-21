@@ -1,0 +1,155 @@
+package com.taikang.dic.ltci.controller;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.taikang.dic.ltci.api.model.MonSetPerDTO;
+import com.taikang.dic.ltci.api.model.PageResultDTO;
+import com.taikang.dic.ltci.api.model.ResultDTO;
+import com.taikang.dic.ltci.common.ConstantUtil;
+import com.taikang.dic.ltci.common.enumeration.StatusCodeEnum;
+import com.taikang.dic.ltci.common.util.DateFormatUtil;
+import com.taikang.dic.ltci.model.MonSetPerDO;
+import com.taikang.dic.ltci.service.IMonSetPerService;
+import com.taikang.dic.ltci.service.ServiceException;
+
+@RestController
+@RequestMapping(path = "/api/v1", produces = "application/json;charset=utf-8")
+public class MonSetPerController {
+
+  private static final Logger logger = LoggerFactory.getLogger(MonSetPerController.class);
+
+  @Autowired private IMonSetPerService monSetPerService;
+
+  /**
+   * 个人月结算刷卡接收MQ消息重试链接地址
+   *
+   * @param message
+   * @throws Exception
+   */
+  @RequestMapping(path = ConstantUtil.RETRY_URL_MON_SET_PER, method = RequestMethod.POST)
+  public void retry(@RequestParam("message") String message) throws Exception {
+    logger.debug("____retry_message=" + message);
+    monSetPerService.saveMonSetPerData(message);
+  }
+
+  /**
+   * 按条件分页查询个人月结算信息
+   *
+   * @param name 姓名
+   * @param idCard 身份证号码
+   * @param startDate 费用开始日期
+   * @param endDate 费用终止日期
+   * @param orgId 机构编号
+   * @param unrFee 不合理费用
+   * @param page 当前页
+   * @param pageSize 每页显示件数
+   * @return 个人月结算信息列表
+   */
+  @SuppressWarnings("unchecked")
+  @RequestMapping(path = "/monSetPer/list", method = RequestMethod.POST)
+  @ResponseBody
+  public PageResultDTO listMonSetPer(
+      String name,
+      String idCard,
+      String startDate,
+      String endDate,
+      String orgCode,
+      Double unrFee,
+      Integer page,
+      Integer pageSize,
+      String operateOrgCode) {
+
+    Map<String, Object> model =
+        monSetPerService.listMonSetPer(
+            name, idCard, startDate, endDate, orgCode, unrFee, page, pageSize, operateOrgCode);
+    PageResultDTO pageRet = new PageResultDTO();
+    pageRet.setPage(page);
+    pageRet.setPageSize(pageSize);
+    pageRet.setTotalDataNum(Integer.parseInt(model.get("totalDataNum").toString()));
+    pageRet.setTotalPageNum(Integer.parseInt(model.get("totalPageNum").toString()));
+    List<MonSetPerDO> monSetPerList = (List<MonSetPerDO>) model.get("monSetPerList");
+
+    List<MonSetPerDTO> monSetPerDtoList = new ArrayList<>();
+
+    for (MonSetPerDO monSetPerDO : monSetPerList) {
+      MonSetPerDTO monSetPerDto = new MonSetPerDTO();
+      BeanUtils.copyProperties(monSetPerDO, monSetPerDto);
+      if (monSetPerDO.getNurseStarttime() != null) {
+        monSetPerDto.setNurseStarttime(
+            DateFormatUtil.dateToStr(
+                monSetPerDO.getNurseStarttime(), DateFormatUtil.DATE_FORMAT_YYYY_MM_DD));
+      }
+      if (monSetPerDO.getNurseEndtime() != null) {
+        monSetPerDto.setNurseEndtime(
+            DateFormatUtil.dateToStr(
+                monSetPerDO.getNurseEndtime(), DateFormatUtil.DATE_FORMAT_YYYY_MM_DD));
+      }
+      if (monSetPerDO.getSetDate() != null) {
+        monSetPerDto.setSetDate(
+            DateFormatUtil.dateToStr(
+                monSetPerDO.getSetDate(), DateFormatUtil.DATE_FORMAT_YYYY_MM_DD));
+      }
+      monSetPerDto.setNurseTotalAmount(
+          Double.parseDouble(monSetPerDO.getNurseTotalAmount().toString()));
+      monSetPerDto.setSiPay(Double.parseDouble(monSetPerDO.getSiPay().toString()));
+      monSetPerDto.setPaySelf(Double.parseDouble(monSetPerDO.getPaySelf().toString()));
+      monSetPerDto.setExpenseSelf(Double.parseDouble(monSetPerDO.getExpenseSelf().toString()));
+      monSetPerDto.setAccountPay(Double.parseDouble(monSetPerDO.getAccountPay().toString()));
+      monSetPerDto.setBankCardPay(Double.parseDouble(monSetPerDO.getBankCardPay().toString()));
+      monSetPerDto.setUnrFee(Double.parseDouble(monSetPerDO.getUnrFee().toString()));
+      monSetPerDto.setOverLimitFee(Double.parseDouble(monSetPerDO.getOverLimitFee().toString()));
+      monSetPerDtoList.add(monSetPerDto);
+    }
+    pageRet.setStatus(200);
+    // 个人日结算列表
+    pageRet.setDatas(monSetPerDtoList);
+    return pageRet;
+  }
+
+  /**
+   * 不合理费用录入
+   *
+   * @param daySetPerDto
+   * @return
+   */
+  @RequestMapping(path = "/monSetPer", method = RequestMethod.PUT)
+  @ResponseBody
+  public ResultDTO enterUnrFee(@RequestBody MonSetPerDTO monSetPerDto) {
+    logger.debug("_enterUniFee___monSetPerDto=" + monSetPerDto);
+    ResultDTO resultDto = new ResultDTO();
+    try {
+      List<MonSetPerDO> monList =
+          monSetPerService.getMonSetByIdAndVersion(monSetPerDto.getId(), monSetPerDto.getVersion());
+      if (monList == null || monList.isEmpty()) {
+        resultDto.setStatus(StatusCodeEnum.INSERT_REPEAT.getValue());
+        resultDto.setMessage("记录已被他人操作，请刷新界面，重新选择数据！");
+        return resultDto;
+      }
+      MonSetPerDO monSetPerDo = new MonSetPerDO();
+      BeanUtils.copyProperties(monSetPerDto, monSetPerDo);
+      monSetPerDo.setUnrFee(new BigDecimal(monSetPerDto.getUnrFee()));
+      monSetPerService.enterUnrFee(monSetPerDo);
+      resultDto.setStatus(200);
+    } catch (ServiceException e) {
+      resultDto.setStatus(e.getErrorCode());
+      resultDto.setMessage(e.getMessage());
+      logger.error("_enterUnrFee_", e);
+      return resultDto;
+    }
+    return resultDto;
+  }
+}

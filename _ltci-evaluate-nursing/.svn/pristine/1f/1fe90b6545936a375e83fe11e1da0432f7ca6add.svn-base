@@ -1,0 +1,29 @@
+get: 
+  tags:
+  - evaluateTask
+  summary: 移动端通过code查询评估任务状态
+  description: 返回评估状态 初评结果 专家评定结果
+  operationId: getEvaluateTaskState
+  parameters: 
+    - name: evaluateTaskCode
+      in: path
+      description: 评估任务表的code
+      required: true
+      type: string
+  responses:
+      200:
+        description: 查询成功
+        schema:
+          $ref: "../../ltci-evaluate-nursing-api-v1.yml/#/definitions/RestResponseDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-evaluate-nursing-api-v1.yml/#/definitions/RestResponseDTO"
+
+
+
+
+
+
+
+

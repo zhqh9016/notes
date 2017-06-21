@@ -1,0 +1,80 @@
+post: 
+  tags:
+  - patrolTask
+  summary: 新建专项巡查接口
+  description: 作为经办人员我希望可以新建专项巡查任务
+  operationId: addPatrol
+  parameters: 
+    - name: patrolObjectType
+      in: formData
+      description: 被巡查对象类型（0护理机构、1评估机构、2护理人员、3评估人员）
+      required: true
+      type: string
+      
+    - name: patrolObjectId
+      in: formData
+      description: 被巡查对象编号
+      required: true
+      type: string
+      
+    - name: patrolObjectName
+      in: formData
+      description: 被巡查对象名称
+      required: true
+      type: string
+
+    - name: patrolObjectPhone
+      in: formData
+      description: 被巡查对象电话
+      required: true
+      type: string
+      
+    - name: idCard
+      in: formData
+      description: 被巡查对象身份证号码
+      required: false
+      type: string
+      
+    - name: patrolObjectAddr
+      in: formData
+      description: 被巡查对象地址
+      required: true
+      type: string
+      
+    - name: patrolRemark
+      in: formData
+      description: 巡查备注
+      required: true
+      type: string
+      
+    - name: createdBy
+      in: formData
+      description: 创建人
+      required: true
+      type: string            
+      
+    - name: createdOrg
+      in: formData
+      description: 创建机构
+      required: true
+      type: string      
+
+
+                                                         
+  responses:
+      200:
+        description: 添加成功
+        schema:
+          $ref: "../../ltci-quality-control-api-v1.yml/#/definitions/ResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-quality-control-api-v1.yml/#/definitions/ResultDTO"
+
+
+
+
+
+
+
+

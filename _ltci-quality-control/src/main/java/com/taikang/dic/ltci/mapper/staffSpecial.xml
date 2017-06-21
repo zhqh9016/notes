@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.StaffSpecialDAO" >
+  <resultMap id="staffMap" type="com.taikang.dic.ltci.model.StaffSpecialDO" >
+    <result column="staff_code" property="staffCode" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+    <result column="agency_code" property="agencyCode" jdbcType="VARCHAR" />
+    <result column="agency_name" property="agencyName" jdbcType="VARCHAR" />
+    <result column="staff_phone" property="staffPhone" jdbcType="VARCHAR" />
+    <result column="credential_type" property="credentialType" jdbcType="INTEGER" />
+    <result column="credential_number" property="credentialNumber" jdbcType="VARCHAR" />
+    <result column="agency_address_detail" property="agencyAddressDetail" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  
+  <select id="getStaffs" resultMap="staffMap">
+  select b.agency_code,a.agency_name,b.staff_code,b.staff_name,b.staff_phone,b.credential_number,a.agency_address_detail
+	from ltci_agency a,ltci_staff b
+	where b.agency_code=a.agency_code
+		and a.is_valid=1 
+		and b.is_valid=1
+		and b.credential_type = 0
+  <if test="name != null and name != '' ">
+  	and b.staff_name like concat('%',#{name},'%')
+  </if>
+  </select>
+  
+  <select id="getStaffByCredentialNumber" resultMap="staffMap" parameterType="java.lang.String" >
+  select b.agency_code,a.agency_name,b.staff_code,b.staff_name,b.staff_phone,b.credential_type,b.credential_number,a.agency_address_detail
+	from ltci_agency a,ltci_staff b
+	where b.agency_code=a.agency_code
+		and a.is_valid=1 
+		and b.is_valid=1
+  	and b.credential_number = #{credentialNumber}
+  </select>
+  
+  <select id="getAgencyByStaff" resultMap="staffMap">
+  select b.agency_code,a.agency_name
+  	from ltci_agency a,ltci_staff b
+	where b.agency_code=a.agency_code
+		  and a.is_valid=1 
+		  and b.is_valid=1
+  <if test="name != null and name != '' ">
+  	and b.staff_name = #{name}
+  </if>
+    <if test="code != null and code != '' ">
+  	and b.staff_code = #{code}
+  </if>
+  limit 0,1
+  </select>
+</mapper>

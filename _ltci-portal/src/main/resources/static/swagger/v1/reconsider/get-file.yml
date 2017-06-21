@@ -1,0 +1,26 @@
+get: 
+  tags:
+  - reconsider
+  summary: 申述复议附件
+  description: 下载申述复议附件
+  operationId: getReconsiderFile
+  parameters: 
+    - name: fileId
+      in: query
+      description: 文件id
+      required: true
+      type: string
+    - name: fileType
+      in: query
+      description: 文件类型
+      required: false
+      type: string
+  responses:
+      200:
+        description: 查询成功
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"

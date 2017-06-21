@@ -1,0 +1,90 @@
+put:
+  tags:
+  - insuredInfo
+  summary: 保存编辑好的参保人信息
+  description: 保存编辑好的参保人信息
+  operationId: updateInsuredInfo
+  parameters: 
+    - name: insuredPersonid
+      in: formData
+      required: true
+      type: string
+      description: 参保人id
+    - name: insuredPersonName
+      in: formData
+      required: false
+      type: string
+      description: 参保人姓名
+    - name: insuredPersonGender
+      in: formData
+      required: false
+      type: string
+      description: 参保人性别
+    - name: nation
+      in: formData
+      required: false
+      type: string
+      description: 民族
+    - name: idCard
+      in: formData
+      required: false
+      type: string
+      description: 身份证号码
+    - name: securityNumber
+      in: formData
+      required: false
+      type: string
+      description: 社保卡号
+    - name: personnelIdentityCode
+      in: formData
+      required: false
+      type: string
+      description: 个人编码
+    - name: siArea
+      in: formData
+      required: false
+      type: string
+      description: 护理对象所属统筹区
+    - name: personnelType
+      in: formData
+      required: false
+      type: string
+      description: 医疗人员类别
+    - name: residencyProperty
+      in: formData
+      required: false
+      type: string
+      description: 户口性质（1城镇；2农村(农民工)；3暂住证）
+    - name: personnelIdentityName
+      in: formData
+      required: false
+      type: string
+      description: 个人身份
+    - name: treatment
+      in: formData
+      required: false
+      type: string
+      description: 长护待遇享受资格（(0不能享受1可以享受)）
+    - name: noRreatmentReason
+      in: formData
+      required: false
+      type: string
+      description: 不能享受长护待遇原因
+   
+
+  responses:
+      200:
+        description: 添加成功
+        schema: 
+          $ref: "../../ltci-api-v1.yml/#/definitions/ResultDTO"
+      default:
+        description: 其他错误
+        schema: 
+          $ref: "../../ltci-api-v1.yml/#/definitions/ResultDTO"
+
+
+
+
+
+
+

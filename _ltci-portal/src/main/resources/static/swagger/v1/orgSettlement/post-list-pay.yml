@@ -1,0 +1,62 @@
+post:
+  tags:
+  - orgSettlement
+  summary: 费用支付列表查询
+  description: 返回复核通过已结算已支付列表。默认返回复核通过和已结算的记录
+  operationId: listOrgSetForPayment
+  parameters:
+  
+  - name: orgName
+    in: formData
+    description: 组织名称,模糊查询
+    required: false
+    type: string
+    
+  - name: orgCode
+    in: formData
+    description: 机构编号,精确查询
+    required: false
+    type: string
+    
+  - name: auditState
+    in: formData
+    description: 审核状态码,3,复核通过,5,已结算,6,已支付,可以用逗号隔开,传递多个状态,默认为(3,5,6)
+    required: false
+    type: string
+    
+  - name: startDate
+    in: formData
+    description: 费用开始日期,格式:'2017-04-15'
+    required: false
+    type: string
+    
+  - name: endDate
+    in: formData
+    description: 费用终止日期,格式:'2017-04-15'
+    required: false
+    type: string
+    
+    
+  - name: page
+    in: formData
+    description: 当前页码
+    required: true
+    type: integer
+    format: int32
+    
+  - name: pageSize
+    in: formData
+    description: 每页显示件数
+    required: true
+    type: integer
+    format: int32
+    
+  responses:
+    200:
+      description: 查询成功
+      schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/PageResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/Response"

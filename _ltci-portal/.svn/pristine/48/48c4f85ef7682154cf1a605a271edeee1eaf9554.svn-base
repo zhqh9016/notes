@@ -1,0 +1,35 @@
+get:
+  tags:
+  - patrolExecute
+  summary: 查看执行结果资源附件
+  description: 查看执行结果资源附件。
+  operationId: getPatrolTaskExecuteFile
+  parameters: 
+    - name: patrolTaskId
+      in: path
+      required: true
+      type: string
+      description: 巡查任务ID
+
+
+  responses:
+      200:
+        description: 附件查询成功
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+
+
+
+
+
+
+
+
+
+
+
+

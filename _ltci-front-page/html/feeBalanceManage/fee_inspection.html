@@ -1,0 +1,298 @@
+<html>
+
+<head>
+    <title>费用审核</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="renderer" content="webkit" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/common.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/tablefrom.css" type="text/css" />
+    <style>
+    .l-btn-left-d {
+        border: 1px solid rgba(41, 112, 179, 0.91);
+        border-radius: 4px;
+        background-color: rgba(41, 112, 179, 0.91);
+        height: 24px;
+        padding: 0 5px;
+        cursor: pointer;
+        line-height: 24px;
+        display: inline-block;
+        color: #fff;
+        white-space: nowrap;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="searchShow" style="height: 100%;">
+        <table id="userList" toolbar="#userListtb"></table>
+        <div id="userListtb" style="padding:3px; height: auto">
+            <div name="searchColums" id="searchColums">
+                <input id="isShowSearchId" type="hidden" value="false" />
+                <input id="_sqlbuilder" name="sqlbuilder" type="hidden" />
+                <form id="form1">
+                    <span class="inputLable">
+							<span class = "inputLableText">机构名称：</span>
+                    <input type="text" name="orgName" class="inuptxt" id="search_orgName" />
+                    </span>
+                    <span class="inputLable">						
+							<span class = "inputLableText">机构编码：</span>
+                    <input type="text" name="orgCode" class="inuptxt" id="search_orgCode" />
+                    </span>
+                    <span class="inputLable">						
+							<span class = "inputLableText">审核状态：</span>
+                    <input type="text" id="inspection" data-dictionary="inspection" name="auditState" data-value="1,4" class="easyui-combobox dictionary " />
+                    </span>
+                    <span class="inputLable">	
+							<span class = "inputLableText">开始日期：</span>
+                    <input type="text" id="search_feeStarttime" name="feeStarttime" class="Wdate" />
+                    </span>
+                    <span class="inputLable">									
+							<span class = "inputLableText">终止日期：</span>
+                    <input type="text" id="search_feeEndtime" name="feeEndtime" class="Wdate" />
+                    </span>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-search" style="margin-left:160" onclick="doLoading()">查询</a>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-reload" onclick="resetSearch()">重置</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div style="display:none;">
+        <div id="cause" style="height:100%;"></div>
+    </div>
+    <div id="chooseOrganization" style="height:100%;display: none;">
+        <table id="List" toolbar="#Listtb"></table>
+        <div id="Listtb" style="padding:3px; height: auto">
+            <div name="search" id="search">
+                <input id="ShowSearchId" type="hidden" value="false" />
+                <input id="qlbuilder" name="qlbuilder" type="hidden" />
+                <form id="form2">
+                    <span class="inputLable">
+							<span class = "inputLableText">姓名：</span>
+                    <input type="text" name="name" class="inuptxt" id="search_Name" />
+                    </span>
+                    <span class="inputLable">						
+							<span class = "inputLableText">身份证号码：</span>
+                    <input type="text" name="idCard" class="inuptxt" id="search_idCard" />
+                    </span>
+                    <span class="inputLable">
+							<span class = "inputLableText">结算开始日期：</span>
+                    <input type="text" id="search_startDate" name="startDate" class="Wdate" />
+                    </span>
+                    <span class="inputLable">						
+							<span class = "inputLableText">结算终止日期：</span>
+                    <input type="text" id="search_endDate" name="endDate" class="Wdate" />
+                    </span>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-search" onclick="doLoading2(unrfee)">查询</a>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-reload" onclick="resetSearch1()">重置</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="fee_detailsWindow" style="height:100%;display: ;">
+        <iframe id="fee_detailsIframe" src="" style="width:100%;height:100%;border:0;"></iframe>
+    </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/util/WdatePicker.js"></script>
+<script type="text/javascript" src="../../js/feeBalanceManage/fee_inspection.js"></script>
+<script>
+$('#cause').window({
+    title: '复核不通过原因',
+    width: 387,
+    height: 220,
+    closed: true,
+    modal: true,
+    collapsible: false,
+    minimizable: false,
+    maximizable: false
+});
+$('#fee_detailsWindow').window({
+    title: '个人护理明细',
+    width: 990,
+    height: 440,
+    closed: true,
+    modal: true,
+    collapsible: false,
+    minimizable: false
+
+});
+var xrows = {};
+var unrfee;
+var feeStarttime = "";
+//保存审核通过的机构费用信息
+function bc(index) {
+    $.messager.confirm('确认', '您确认想要保存吗？', function(r) {
+        if (r) {
+            var row = $('#userList').datagrid('getRows')[index];
+            console.log(row);
+            var app = {};
+            //if(row.auditState==4){
+            //  app.id=row.id
+            //}else{
+            //app.id='';
+            //	}			
+            app.vue_orgCode = row.orgCode; //机构编码
+            app.vue_createdOrg = row.createdOrg; //经办机构编号
+            app.vue_feeStarttime = row.feeStarttime; //开始日期
+            app.vue_feeEndtime = row.feeEndtime; //结束日期app.id
+            var url = portalServiceUrl + "/api/v1/orgSettlement/save";
+            var s = "&orgCode=" + app.vue_orgCode + "&feeStarttime=" + app.vue_feeStarttime + "&feeEndtime=" + app.vue_feeEndtime + "&createdOrg=" + app.vue_createdOrg;
+            //					trans Object.send(portalServiceUrl + "/api/v1/orgSettlement/save", "post", s)
+            //					var tableData = JSON.parse(trans Object._response)
+            //					if(tableData.status != "200") {
+            //						console.log
+            //						$.messager.alert('提示', '保存失败！');;
+            //						return false;
+            //					}
+            //					doLoading();
+
+            sendAjax(url, "post", s, function(tableData) {
+                if (tableData.status == "200") {
+                    showMsg("保存成功");
+                    loadGridData();
+                } else {
+                    $.messager.alert('提示', '保存失败！');
+                }
+            });
+        }
+    });
+}
+
+function showNext() {
+    $("#searchShow").hide();
+    $("#chooseOrganization").show();
+}
+//明细页面返回按钮
+function showParent() {
+    resetSearch1(); //重置明细页面搜索条件
+    //doLoading2();//调用查询方法，
+    $("#chooseOrganization").hide(); //隐藏明细页面
+    $("#searchShow").show(); //显现审核页面
+    //doLoading2();//调用查询方法，
+    TableObj.grid.datagrid('loadData', []); //清空表格数据，第二个表格
+    TableObj = getGridObjById('userList'); //TableObj切换当前表格为激活状态  （切换到第一个表格）
+    loadGridData(); //调用查询方法，
+}
+//查询机构日结汇总
+function doLoading() {
+    // 判断日期条件开始日期、结束日期是否符合规范
+    if ($("#search_feeStarttime").val() !== "" && $("#search_feeEndtime").val() !== "") {
+        if (Date.parse($("#search_feeStarttime").val()) > Date.parse($("#search_feeEndtime").val())) {
+            $.messager.alert('提示', '开始日期不能大于终止日期。');
+            return false;
+        }
+    }
+    TableObj.page = 1; //设置页码 必须
+    TableObj.pageSize = 10; //设置每页数据 必须
+    var feeStarttime = ($("input[name=feeStarttime]").val() !== '') ? $("input[name=feeStarttime]").val() + "-01" : '';
+    var feeEndtime = ($("input[name=feeEndtime]").val() !== '') ? $("input[name=feeEndtime]").val() + "-01" : '';
+
+    TableObj.query = { //查询条件
+        orgCode: $("input[name=orgCode]").val(),
+        orgName: $("input[name=orgName]").val(),
+        //startDate: feeStarttime,
+        auditState: $("input[name=auditState]").val(),
+        feeStarttime: feeStarttime,
+        feeEndtime: feeEndtime,
+        page: TableObj.page,
+        pageSize: TableObj.pageSize
+    };
+    loadGridData(); //原来的 doLoading();
+}
+//查询日结算明细和不合理费用明细
+function doLoading2(fee) {
+
+    console.log("xrows:", xrows);
+    // 判断日期条件开始日期、结束日期是否符合规范
+    if ($("#search_startDate").val() !== "" && $("#search_endDate").val() !== "") {
+        if (Date.parse($("#search_startDate").val()) > Date.parse($("#search_endDate").val())) {
+            $.messager.alert('提示', '开始日期不能大于终止日期。');
+            return false;
+        }
+    }
+    // 日结算明细查询判断日期条件是否在机构月结范围内
+    if ($("#search_startDate").val() !== "") {
+        if ((Date.parse($("#search_startDate").val()) < Date.parse(xrows.feeStarttime)) ||
+            (Date.parse($("#search_startDate").val()) > Date.parse(xrows.feeEndtime))) {
+            $.messager.alert('提示', '查询日期需在' + xrows.feeStarttime.split(' ')[0] + '～' + xrows.feeEndtime.split(' ')[0] + '范围之内。');
+            return false;
+        }
+    }
+    if ($("#search_endDate").val() !== "") {
+        if ((Date.parse($("#search_endDate").val()) < Date.parse(xrows.feeStarttime)) ||
+            (Date.parse($("#search_endDate").val()) > Date.parse(xrows.feeEndtime))) {
+            $.messager.alert('提示', '查询日期需在' + xrows.feeStarttime.split(' ')[0] + '～' + xrows.feeEndtime.split(' ')[0] + '范围之内。');
+            return false;
+        }
+    }
+    var startDate = ($("#search_startDate").val() !== "") ? $("#search_startDate").val() : xrows.feeStarttime;
+    var endDate = ($("#search_endDate").val() !== "") ? $("#search_endDate").val() : xrows.feeEndtime;
+    TableObj.page = 1; //设置页码 必须
+    TableObj.pageSize = 10; //设置每页数据 必须
+    TableObj = getGridObjById('List'); //TableObj切换当前表格为激活状态
+    TableObj.query = { //查询条件
+        orgCode: xrows.orgCode,
+        startDate: startDate,
+        endDate: endDate,
+        name: $("input[name=name]").val(),
+        idCard: $("input[name=idCard]").val(),
+        unrFee: fee,
+        operateOrgCode: xrows.createdOrg,
+        page: TableObj.page,
+        pageSize: TableObj.pageSize
+    };
+    initDataGrid(); //初始化表格
+    loadGridData(); //加载表格数据
+
+}
+//查询		 	
+
+//重置
+function resetSearch() {
+    $('#form1 input').val('');
+    loadDictionary();
+}
+
+function resetSearch1() {
+    $('#form2 input').val('');
+}
+
+//不合理费用查看原因
+function cause(index) {
+    var row = $('#userList').datagrid('getRows')[index];
+    $('#cause').window('open');
+    $('#cause').html(row.rejectReason);
+}
+//明细
+function doAccept(index, fee) {
+    unrfee = fee; //不合理费用
+    $("#search_startDate").val('');
+    $("#search_endDate").val(''); //日期置空
+    var row = $('#userList').datagrid('getRows')[index]; //获取当前行
+    showNext(); //显现明细页面，
+    xrows = row; //当前行row给xrows
+    //loadTable2(unrfee);//调用明细页面的表格，并加载数据
+    doLoading2(unrfee);
+}
+
+function feeDetail(target) {
+    var url = "../feeBalanceManage/fee_details.html?orgCode=" + xrows.orgCode;
+    var index = getRowIndex(target);
+    var rows = $('#List').datagrid('getRows');
+    url += "&beCarePersonCard=" + rows[index].beCarePersonCardNum + "&feeBeginDate=" + rows[index].nurseStarttime + "&feeEndDate=" + rows[index].nurseEndtime + "&inRecorduuid=" + rows[index].inRecorduuid;
+    $("#fee_detailsIframe").attr('src', url);
+
+    $('#fee_detailsWindow').window('open');
+}
+</script>
+
+</html>

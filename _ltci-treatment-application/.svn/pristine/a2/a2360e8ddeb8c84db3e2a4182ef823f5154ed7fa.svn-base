@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.DeputyBindingDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.DeputyBindingDO" >
+    <id column="deputy_bindingid" property="deputyBindingid" jdbcType="VARCHAR" />
+    <result column="deputy_binding_code" property="deputyBindingCode" jdbcType="VARCHAR" />
+    <result column="serial_number" property="serialNumber" jdbcType="VARCHAR" />
+    <result column="insured_person_code" property="insuredPersonCode" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="security_number" property="securityNumber" jdbcType="VARCHAR" />
+    <result column="deputy_name" property="deputyName" jdbcType="VARCHAR" />
+    <result column="deputy_id_card" property="deputyIdCard" jdbcType="VARCHAR" />
+    <result column="deputy_mobile" property="deputyMobile" jdbcType="VARCHAR" />
+    <result column="deputy_id_card_scan" property="deputyIdCardScan" jdbcType="VARCHAR" />
+    <result column="security_number_scan" property="securityNumberScan" jdbcType="VARCHAR" />
+    <result column="id_card_scan" property="idCardScan" jdbcType="VARCHAR" />
+    <result column="case_history_scan" property="caseHistoryScan" jdbcType="VARCHAR" />
+    <result column="application_form_scan" property="applicationFormScan" jdbcType="VARCHAR" />
+    <result column="check_state" property="checkState" jdbcType="VARCHAR" />
+    <result column="check_reason" property="checkReason" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    deputy_bindingid, deputy_binding_code, serial_number, insured_person_code, id_card, 
+    security_number, deputy_name, deputy_id_card, deputy_mobile, deputy_id_card_scan, 
+    security_number_scan, id_card_scan, case_history_scan, application_form_scan, check_state, 
+    check_reason, remark, operated_by, operated_time, operated_org, created_by, created_time, 
+    created_org, is_valid, si_area
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.DeputyBindingDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ltci_deputy_binding
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ltci_deputy_binding
+    where deputy_bindingid = #{deputyBindingid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_deputy_binding
+    where deputy_bindingid = #{deputyBindingid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.DeputyBindingDOExample" >
+    delete from ltci_deputy_binding
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.DeputyBindingDO" >
+    insert into ltci_deputy_binding (deputy_bindingid, deputy_binding_code, 
+      serial_number, insured_person_code, id_card, 
+      security_number, deputy_name, deputy_id_card, 
+      deputy_mobile, deputy_id_card_scan, security_number_scan, 
+      id_card_scan, case_history_scan, application_form_scan, 
+      check_state, check_reason, remark, 
+      operated_by, operated_time, operated_org, 
+      created_by, created_time, created_org, 
+      is_valid, si_area)
+    values (#{deputyBindingid,jdbcType=VARCHAR}, #{deputyBindingCode,jdbcType=VARCHAR}, 
+      #{serialNumber,jdbcType=VARCHAR}, #{insuredPersonCode,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, 
+      #{securityNumber,jdbcType=VARCHAR}, #{deputyName,jdbcType=VARCHAR}, #{deputyIdCard,jdbcType=VARCHAR}, 
+      #{deputyMobile,jdbcType=VARCHAR}, #{deputyIdCardScan,jdbcType=VARCHAR}, #{securityNumberScan,jdbcType=VARCHAR}, 
+      #{idCardScan,jdbcType=VARCHAR}, #{caseHistoryScan,jdbcType=VARCHAR}, #{applicationFormScan,jdbcType=VARCHAR}, 
+      #{checkState,jdbcType=VARCHAR}, #{checkReason,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{operatedBy,jdbcType=VARCHAR}, #{operatedTime,jdbcType=TIMESTAMP}, #{operatedOrg,jdbcType=VARCHAR}, 
+      #{createdBy,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{createdOrg,jdbcType=VARCHAR}, 
+      #{isValid,jdbcType=VARCHAR}, #{siArea,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.DeputyBindingDO" >
+    insert into ltci_deputy_binding
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="deputyBindingid != null" >
+        deputy_bindingid,
+      </if>
+      <if test="deputyBindingCode != null" >
+        deputy_binding_code,
+      </if>
+      <if test="serialNumber != null" >
+        serial_number,
+      </if>
+      <if test="insuredPersonCode != null" >
+        insured_person_code,
+      </if>
+      <if test="idCard != null" >
+        id_card,
+      </if>
+      <if test="securityNumber != null" >
+        security_number,
+      </if>
+      <if test="deputyName != null" >
+        deputy_name,
+      </if>
+      <if test="deputyIdCard != null" >
+        deputy_id_card,
+      </if>
+      <if test="deputyMobile != null" >
+        deputy_mobile,
+      </if>
+      <if test="deputyIdCardScan != null" >
+        deputy_id_card_scan,
+      </if>
+      <if test="securityNumberScan != null" >
+        security_number_scan,
+      </if>
+      <if test="idCardScan != null" >
+        id_card_scan,
+      </if>
+      <if test="caseHistoryScan != null" >
+        case_history_scan,
+      </if>
+      <if test="applicationFormScan != null" >
+        application_form_scan,
+      </if>
+      <if test="checkState != null" >
+        check_state,
+      </if>
+      <if test="checkReason != null" >
+        check_reason,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="operatedBy != null" >
+        operated_by,
+      </if>
+      <if test="operatedTime != null" >
+        operated_time,
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="createdOrg != null" >
+        created_org,
+      </if>
+      <if test="isValid != null" >
+        is_valid,
+      </if>
+      <if test="siArea != null" >
+        si_area,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="deputyBindingid != null" >
+        #{deputyBindingid,jdbcType=VARCHAR},
+      </if>
+      <if test="deputyBindingCode != null" >
+        #{deputyBindingCode,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNumber != null" >
+        #{serialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredPersonCode != null" >
+        #{insuredPersonCode,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="securityNumber != null" >
+        #{securityNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="deputyName != null" >
+        #{deputyName,jdbcType=VARCHAR},
+      </if>
+      <if test="deputyIdCard != null" >
+        #{deputyIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="deputyMobile != null" >
+        #{deputyMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="deputyIdCardScan != null" >
+        #{deputyIdCardScan,jdbcType=VARCHAR},
+      </if>
+      <if test="securityNumberScan != null" >
+        #{securityNumberScan,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardScan != null" >
+        #{idCardScan,jdbcType=VARCHAR},
+      </if>
+      <if test="caseHistoryScan != null" >
+        #{caseHistoryScan,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationFormScan != null" >
+        #{applicationFormScan,jdbcType=VARCHAR},
+      </if>
+      <if test="checkState != null" >
+        #{checkState,jdbcType=VARCHAR},
+      </if>
+      <if test="checkReason != null" >
+        #{checkReason,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatedOrg != null" >
+        #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdOrg != null" >
+        #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        #{isValid,jdbcType=VARCHAR},
+      </if>
+      <if test="siArea != null" >
+        #{siArea,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.DeputyBindingDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_deputy_binding
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_deputy_binding
+    <set >
+      <if test="record.deputyBindingid != null" >
+        deputy_bindingid = #{record.deputyBindingid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deputyBindingCode != null" >
+        deputy_binding_code = #{record.deputyBindingCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serialNumber != null" >
+        serial_number = #{record.serialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insuredPersonCode != null" >
+        insured_person_code = #{record.insuredPersonCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idCard != null" >
+        id_card = #{record.idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.securityNumber != null" >
+        security_number = #{record.securityNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deputyName != null" >
+        deputy_name = #{record.deputyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deputyIdCard != null" >
+        deputy_id_card = #{record.deputyIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deputyMobile != null" >
+        deputy_mobile = #{record.deputyMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deputyIdCardScan != null" >
+        deputy_id_card_scan = #{record.deputyIdCardScan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.securityNumberScan != null" >
+        security_number_scan = #{record.securityNumberScan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idCardScan != null" >
+        id_card_scan = #{record.idCardScan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caseHistoryScan != null" >
+        case_history_scan = #{record.caseHistoryScan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applicationFormScan != null" >
+        application_form_scan = #{record.applicationFormScan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkState != null" >
+        check_state = #{record.checkState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkReason != null" >
+        check_reason = #{record.checkReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedBy != null" >
+        operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedTime != null" >
+        operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.operatedOrg != null" >
+        operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null" >
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdOrg != null" >
+        created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isValid != null" >
+        is_valid = #{record.isValid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.siArea != null" >
+        si_area = #{record.siArea,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_deputy_binding
+    set deputy_bindingid = #{record.deputyBindingid,jdbcType=VARCHAR},
+      deputy_binding_code = #{record.deputyBindingCode,jdbcType=VARCHAR},
+      serial_number = #{record.serialNumber,jdbcType=VARCHAR},
+      insured_person_code = #{record.insuredPersonCode,jdbcType=VARCHAR},
+      id_card = #{record.idCard,jdbcType=VARCHAR},
+      security_number = #{record.securityNumber,jdbcType=VARCHAR},
+      deputy_name = #{record.deputyName,jdbcType=VARCHAR},
+      deputy_id_card = #{record.deputyIdCard,jdbcType=VARCHAR},
+      deputy_mobile = #{record.deputyMobile,jdbcType=VARCHAR},
+      deputy_id_card_scan = #{record.deputyIdCardScan,jdbcType=VARCHAR},
+      security_number_scan = #{record.securityNumberScan,jdbcType=VARCHAR},
+      id_card_scan = #{record.idCardScan,jdbcType=VARCHAR},
+      case_history_scan = #{record.caseHistoryScan,jdbcType=VARCHAR},
+      application_form_scan = #{record.applicationFormScan,jdbcType=VARCHAR},
+      check_state = #{record.checkState,jdbcType=VARCHAR},
+      check_reason = #{record.checkReason,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      is_valid = #{record.isValid,jdbcType=VARCHAR},
+      si_area = #{record.siArea,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.DeputyBindingDO" >
+    update ltci_deputy_binding
+    <set >
+      <if test="deputyBindingCode != null" >
+        deputy_binding_code = #{deputyBindingCode,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNumber != null" >
+        serial_number = #{serialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredPersonCode != null" >
+        insured_person_code = #{insuredPersonCode,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="securityNumber != null" >
+        security_number = #{securityNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="deputyName != null" >
+        deputy_name = #{deputyName,jdbcType=VARCHAR},
+      </if>
+      <if test="deputyIdCard != null" >
+        deputy_id_card = #{deputyIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="deputyMobile != null" >
+        deputy_mobile = #{deputyMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="deputyIdCardScan != null" >
+        deputy_id_card_scan = #{deputyIdCardScan,jdbcType=VARCHAR},
+      </if>
+      <if test="securityNumberScan != null" >
+        security_number_scan = #{securityNumberScan,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardScan != null" >
+        id_card_scan = #{idCardScan,jdbcType=VARCHAR},
+      </if>
+      <if test="caseHistoryScan != null" >
+        case_history_scan = #{caseHistoryScan,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationFormScan != null" >
+        application_form_scan = #{applicationFormScan,jdbcType=VARCHAR},
+      </if>
+      <if test="checkState != null" >
+        check_state = #{checkState,jdbcType=VARCHAR},
+      </if>
+      <if test="checkReason != null" >
+        check_reason = #{checkReason,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        operated_by = #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdOrg != null" >
+        created_org = #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        is_valid = #{isValid,jdbcType=VARCHAR},
+      </if>
+      <if test="siArea != null" >
+        si_area = #{siArea,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where deputy_bindingid = #{deputyBindingid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.DeputyBindingDO" >
+    update ltci_deputy_binding
+    set deputy_binding_code = #{deputyBindingCode,jdbcType=VARCHAR},
+      serial_number = #{serialNumber,jdbcType=VARCHAR},
+      insured_person_code = #{insuredPersonCode,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      security_number = #{securityNumber,jdbcType=VARCHAR},
+      deputy_name = #{deputyName,jdbcType=VARCHAR},
+      deputy_id_card = #{deputyIdCard,jdbcType=VARCHAR},
+      deputy_mobile = #{deputyMobile,jdbcType=VARCHAR},
+      deputy_id_card_scan = #{deputyIdCardScan,jdbcType=VARCHAR},
+      security_number_scan = #{securityNumberScan,jdbcType=VARCHAR},
+      id_card_scan = #{idCardScan,jdbcType=VARCHAR},
+      case_history_scan = #{caseHistoryScan,jdbcType=VARCHAR},
+      application_form_scan = #{applicationFormScan,jdbcType=VARCHAR},
+      check_state = #{checkState,jdbcType=VARCHAR},
+      check_reason = #{checkReason,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      created_org = #{createdOrg,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=VARCHAR},
+      si_area = #{siArea,jdbcType=VARCHAR}
+    where deputy_bindingid = #{deputyBindingid,jdbcType=VARCHAR}
+  </update>
+</mapper>

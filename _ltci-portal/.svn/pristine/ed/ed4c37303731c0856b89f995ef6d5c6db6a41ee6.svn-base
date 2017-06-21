@@ -1,0 +1,21 @@
+get:
+  summary: 根据区域ID查询区域（内部包含上级区域）
+  description: 返回区域信息。测试数据：区域ID[8a80a4e4408547ab01408547f0e304b3]
+  operationId: listArea
+  parameters:
+  - name: id
+    in: path
+    description: 区域ID
+    required: true
+    type: string
+  tags:
+  - areaManage
+  responses:
+    200:
+      description: 查询成功
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/Response"

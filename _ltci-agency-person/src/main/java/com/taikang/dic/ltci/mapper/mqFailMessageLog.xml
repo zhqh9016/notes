@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.IMqFailMessageLogDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.MqFailMessageLogDO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="retry_num" property="retryNum" jdbcType="INTEGER" />
+    <result column="transport_type" property="transportType" jdbcType="INTEGER" />
+    <result column="operation_type" property="operationType" jdbcType="INTEGER" />
+    <result column="retry_url" property="retryUrl" jdbcType="VARCHAR" />
+    <result column="http_action" property="httpAction" jdbcType="VARCHAR" />
+    <result column="error_message" property="errorMessage" jdbcType="VARCHAR" />
+    <result column="exchange_name" property="exchangeName" jdbcType="VARCHAR" />
+    <result column="query_name" property="queryName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.taikang.dic.ltci.model.MqFailMessageLogDO" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, retry_num, transport_type, operation_type, retry_url, http_action, error_message, 
+    exchange_name, query_name, create_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.taikang.dic.ltci.model.MqFailMessageLogDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ltci_mq_fail_message_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.MqFailMessageLogDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ltci_mq_fail_message_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ltci_mq_fail_message_log
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_mq_fail_message_log
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.MqFailMessageLogDOExample" >
+    delete from ltci_mq_fail_message_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.MqFailMessageLogDO" >
+    insert into ltci_mq_fail_message_log (id, retry_num, transport_type, 
+      operation_type, retry_url, http_action, 
+      error_message, exchange_name, query_name, 
+      create_time, content)
+    values (#{id,jdbcType=VARCHAR}, #{retryNum,jdbcType=INTEGER}, #{transportType,jdbcType=INTEGER}, 
+      #{operationType,jdbcType=INTEGER}, #{retryUrl,jdbcType=VARCHAR}, #{httpAction,jdbcType=VARCHAR}, 
+      #{errorMessage,jdbcType=VARCHAR}, #{exchangeName,jdbcType=VARCHAR}, #{queryName,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.MqFailMessageLogDO" >
+    insert into ltci_mq_fail_message_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="retryNum != null" >
+        retry_num,
+      </if>
+      <if test="transportType != null" >
+        transport_type,
+      </if>
+      <if test="operationType != null" >
+        operation_type,
+      </if>
+      <if test="retryUrl != null" >
+        retry_url,
+      </if>
+      <if test="httpAction != null" >
+        http_action,
+      </if>
+      <if test="errorMessage != null" >
+        error_message,
+      </if>
+      <if test="exchangeName != null" >
+        exchange_name,
+      </if>
+      <if test="queryName != null" >
+        query_name,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="retryNum != null" >
+        #{retryNum,jdbcType=INTEGER},
+      </if>
+      <if test="transportType != null" >
+        #{transportType,jdbcType=INTEGER},
+      </if>
+      <if test="operationType != null" >
+        #{operationType,jdbcType=INTEGER},
+      </if>
+      <if test="retryUrl != null" >
+        #{retryUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="httpAction != null" >
+        #{httpAction,jdbcType=VARCHAR},
+      </if>
+      <if test="errorMessage != null" >
+        #{errorMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="exchangeName != null" >
+        #{exchangeName,jdbcType=VARCHAR},
+      </if>
+      <if test="queryName != null" >
+        #{queryName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.MqFailMessageLogDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_mq_fail_message_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_mq_fail_message_log
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.retryNum != null" >
+        retry_num = #{record.retryNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.transportType != null" >
+        transport_type = #{record.transportType,jdbcType=INTEGER},
+      </if>
+      <if test="record.operationType != null" >
+        operation_type = #{record.operationType,jdbcType=INTEGER},
+      </if>
+      <if test="record.retryUrl != null" >
+        retry_url = #{record.retryUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.httpAction != null" >
+        http_action = #{record.httpAction,jdbcType=VARCHAR},
+      </if>
+      <if test="record.errorMessage != null" >
+        error_message = #{record.errorMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.exchangeName != null" >
+        exchange_name = #{record.exchangeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.queryName != null" >
+        query_name = #{record.queryName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update ltci_mq_fail_message_log
+    set id = #{record.id,jdbcType=VARCHAR},
+      retry_num = #{record.retryNum,jdbcType=INTEGER},
+      transport_type = #{record.transportType,jdbcType=INTEGER},
+      operation_type = #{record.operationType,jdbcType=INTEGER},
+      retry_url = #{record.retryUrl,jdbcType=VARCHAR},
+      http_action = #{record.httpAction,jdbcType=VARCHAR},
+      error_message = #{record.errorMessage,jdbcType=VARCHAR},
+      exchange_name = #{record.exchangeName,jdbcType=VARCHAR},
+      query_name = #{record.queryName,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_mq_fail_message_log
+    set id = #{record.id,jdbcType=VARCHAR},
+      retry_num = #{record.retryNum,jdbcType=INTEGER},
+      transport_type = #{record.transportType,jdbcType=INTEGER},
+      operation_type = #{record.operationType,jdbcType=INTEGER},
+      retry_url = #{record.retryUrl,jdbcType=VARCHAR},
+      http_action = #{record.httpAction,jdbcType=VARCHAR},
+      error_message = #{record.errorMessage,jdbcType=VARCHAR},
+      exchange_name = #{record.exchangeName,jdbcType=VARCHAR},
+      query_name = #{record.queryName,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.MqFailMessageLogDO" >
+    update ltci_mq_fail_message_log
+    <set >
+      <if test="retryNum != null" >
+        retry_num = #{retryNum,jdbcType=INTEGER},
+      </if>
+      <if test="transportType != null" >
+        transport_type = #{transportType,jdbcType=INTEGER},
+      </if>
+      <if test="operationType != null" >
+        operation_type = #{operationType,jdbcType=INTEGER},
+      </if>
+      <if test="retryUrl != null" >
+        retry_url = #{retryUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="httpAction != null" >
+        http_action = #{httpAction,jdbcType=VARCHAR},
+      </if>
+      <if test="errorMessage != null" >
+        error_message = #{errorMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="exchangeName != null" >
+        exchange_name = #{exchangeName,jdbcType=VARCHAR},
+      </if>
+      <if test="queryName != null" >
+        query_name = #{queryName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.taikang.dic.ltci.model.MqFailMessageLogDO" >
+    update ltci_mq_fail_message_log
+    set retry_num = #{retryNum,jdbcType=INTEGER},
+      transport_type = #{transportType,jdbcType=INTEGER},
+      operation_type = #{operationType,jdbcType=INTEGER},
+      retry_url = #{retryUrl,jdbcType=VARCHAR},
+      http_action = #{httpAction,jdbcType=VARCHAR},
+      error_message = #{errorMessage,jdbcType=VARCHAR},
+      exchange_name = #{exchangeName,jdbcType=VARCHAR},
+      query_name = #{queryName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.MqFailMessageLogDO" >
+    update ltci_mq_fail_message_log
+    set retry_num = #{retryNum,jdbcType=INTEGER},
+      transport_type = #{transportType,jdbcType=INTEGER},
+      operation_type = #{operationType,jdbcType=INTEGER},
+      retry_url = #{retryUrl,jdbcType=VARCHAR},
+      http_action = #{httpAction,jdbcType=VARCHAR},
+      error_message = #{errorMessage,jdbcType=VARCHAR},
+      exchange_name = #{exchangeName,jdbcType=VARCHAR},
+      query_name = #{queryName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

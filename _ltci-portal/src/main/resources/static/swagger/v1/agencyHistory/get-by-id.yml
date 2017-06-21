@@ -1,0 +1,21 @@
+get:
+  tags:
+  - agencyAccept
+  summary: 机构申请信息
+  description: 机构申请信息
+  operationId: getAgencyHistory
+  parameters:
+  - name: id
+    in: path
+    description: 机构历史信息流水号
+    required: true
+    type: string
+  responses:
+    200:
+      description: 查询成功
+      schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/Response"

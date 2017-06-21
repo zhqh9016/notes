@@ -1,0 +1,26 @@
+delete: 
+  tags:
+  - dictionaryManage
+  summary: 删除字典表
+  description: 删除字典表
+  operationId: deleteDictionary
+  parameters:
+  - name: id
+    in: path
+    description: id
+    required: true
+    type: string
+  - name: operatedBy
+    in: path
+    description: 删除操作人
+    required: false
+    type: string    
+  responses:
+    200: 
+      description: 删除成功
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/ResultDTO"
+    default: 
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/ResultDTO"

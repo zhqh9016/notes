@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.IReconsiderDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.ReconsiderDO" >
+    <id column="reconsiderid" property="reconsiderid" jdbcType="VARCHAR" />
+    <result column="serial_number" property="serialNumber" jdbcType="VARCHAR" />
+    <result column="execute_result_id" property="executeResultId" jdbcType="VARCHAR" />
+    <result column="patrol_task_id" property="patrolTaskId" jdbcType="VARCHAR" />
+    <result column="appeal_person" property="appealPerson" jdbcType="VARCHAR" />
+    <result column="appeal_phone" property="appealPhone" jdbcType="VARCHAR" />
+    <result column="appeal_time" property="appealTime" jdbcType="TIMESTAMP" />
+    <result column="appleal_content" property="applealContent" jdbcType="VARCHAR" />
+    <result column="reply_person" property="replyPerson" jdbcType="VARCHAR" />
+    <result column="reply_phone" property="replyPhone" jdbcType="VARCHAR" />
+    <result column="reply_opinion" property="replyOpinion" jdbcType="VARCHAR" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    reconsiderid, serial_number, execute_result_id, patrol_task_id, appeal_person, appeal_phone, 
+    appeal_time, appleal_content, reply_person, reply_phone, reply_opinion, is_valid, 
+    si_area, operated_by, operated_org, operated_time, created_by, created_org, create_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.ReconsiderDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ltci_reconsider
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ltci_reconsider
+    where reconsiderid = #{reconsiderid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_reconsider
+    where reconsiderid = #{reconsiderid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.ReconsiderDOExample" >
+    delete from ltci_reconsider
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.ReconsiderDO" >
+    insert into ltci_reconsider (reconsiderid, serial_number, execute_result_id, 
+      patrol_task_id, appeal_person, appeal_phone, 
+      appeal_time, appleal_content, reply_person, 
+      reply_phone, reply_opinion, is_valid, 
+      si_area, operated_by, operated_org, 
+      operated_time, created_by, created_org, 
+      create_time)
+    values (#{reconsiderid,jdbcType=VARCHAR}, #{serialNumber,jdbcType=VARCHAR}, #{executeResultId,jdbcType=VARCHAR}, 
+      #{patrolTaskId,jdbcType=VARCHAR}, #{appealPerson,jdbcType=VARCHAR}, #{appealPhone,jdbcType=VARCHAR}, 
+      #{appealTime,jdbcType=TIMESTAMP}, #{applealContent,jdbcType=VARCHAR}, #{replyPerson,jdbcType=VARCHAR}, 
+      #{replyPhone,jdbcType=VARCHAR}, #{replyOpinion,jdbcType=VARCHAR}, #{isValid,jdbcType=INTEGER}, 
+      #{siArea,jdbcType=VARCHAR}, #{operatedBy,jdbcType=VARCHAR}, #{operatedOrg,jdbcType=VARCHAR}, 
+      #{operatedTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, #{createdOrg,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.ReconsiderDO" >
+    insert into ltci_reconsider
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="reconsiderid != null" >
+        reconsiderid,
+      </if>
+      <if test="serialNumber != null" >
+        serial_number,
+      </if>
+      <if test="executeResultId != null" >
+        execute_result_id,
+      </if>
+      <if test="patrolTaskId != null" >
+        patrol_task_id,
+      </if>
+      <if test="appealPerson != null" >
+        appeal_person,
+      </if>
+      <if test="appealPhone != null" >
+        appeal_phone,
+      </if>
+      <if test="appealTime != null" >
+        appeal_time,
+      </if>
+      <if test="applealContent != null" >
+        appleal_content,
+      </if>
+      <if test="replyPerson != null" >
+        reply_person,
+      </if>
+      <if test="replyPhone != null" >
+        reply_phone,
+      </if>
+      <if test="replyOpinion != null" >
+        reply_opinion,
+      </if>
+      <if test="isValid != null" >
+        is_valid,
+      </if>
+      <if test="siArea != null" >
+        si_area,
+      </if>
+      <if test="operatedBy != null" >
+        operated_by,
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org,
+      </if>
+      <if test="operatedTime != null" >
+        operated_time,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="createdOrg != null" >
+        created_org,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="reconsiderid != null" >
+        #{reconsiderid,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNumber != null" >
+        #{serialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="executeResultId != null" >
+        #{executeResultId,jdbcType=VARCHAR},
+      </if>
+      <if test="patrolTaskId != null" >
+        #{patrolTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="appealPerson != null" >
+        #{appealPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="appealPhone != null" >
+        #{appealPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="appealTime != null" >
+        #{appealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applealContent != null" >
+        #{applealContent,jdbcType=VARCHAR},
+      </if>
+      <if test="replyPerson != null" >
+        #{replyPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="replyPhone != null" >
+        #{replyPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="replyOpinion != null" >
+        #{replyOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="siArea != null" >
+        #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedOrg != null" >
+        #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdOrg != null" >
+        #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.ReconsiderDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_reconsider
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_reconsider
+    <set >
+      <if test="record.reconsiderid != null" >
+        reconsiderid = #{record.reconsiderid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serialNumber != null" >
+        serial_number = #{record.serialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.executeResultId != null" >
+        execute_result_id = #{record.executeResultId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.patrolTaskId != null" >
+        patrol_task_id = #{record.patrolTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appealPerson != null" >
+        appeal_person = #{record.appealPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appealPhone != null" >
+        appeal_phone = #{record.appealPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appealTime != null" >
+        appeal_time = #{record.appealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.applealContent != null" >
+        appleal_content = #{record.applealContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.replyPerson != null" >
+        reply_person = #{record.replyPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.replyPhone != null" >
+        reply_phone = #{record.replyPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.replyOpinion != null" >
+        reply_opinion = #{record.replyOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isValid != null" >
+        is_valid = #{record.isValid,jdbcType=INTEGER},
+      </if>
+      <if test="record.siArea != null" >
+        si_area = #{record.siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedBy != null" >
+        operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedOrg != null" >
+        operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedTime != null" >
+        operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdBy != null" >
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdOrg != null" >
+        created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_reconsider
+    set reconsiderid = #{record.reconsiderid,jdbcType=VARCHAR},
+      serial_number = #{record.serialNumber,jdbcType=VARCHAR},
+      execute_result_id = #{record.executeResultId,jdbcType=VARCHAR},
+      patrol_task_id = #{record.patrolTaskId,jdbcType=VARCHAR},
+      appeal_person = #{record.appealPerson,jdbcType=VARCHAR},
+      appeal_phone = #{record.appealPhone,jdbcType=VARCHAR},
+      appeal_time = #{record.appealTime,jdbcType=TIMESTAMP},
+      appleal_content = #{record.applealContent,jdbcType=VARCHAR},
+      reply_person = #{record.replyPerson,jdbcType=VARCHAR},
+      reply_phone = #{record.replyPhone,jdbcType=VARCHAR},
+      reply_opinion = #{record.replyOpinion,jdbcType=VARCHAR},
+      is_valid = #{record.isValid,jdbcType=INTEGER},
+      si_area = #{record.siArea,jdbcType=VARCHAR},
+      operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.ReconsiderDO" >
+    update ltci_reconsider
+    <set >
+      <if test="serialNumber != null" >
+        serial_number = #{serialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="executeResultId != null" >
+        execute_result_id = #{executeResultId,jdbcType=VARCHAR},
+      </if>
+      <if test="patrolTaskId != null" >
+        patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="appealPerson != null" >
+        appeal_person = #{appealPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="appealPhone != null" >
+        appeal_phone = #{appealPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="appealTime != null" >
+        appeal_time = #{appealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applealContent != null" >
+        appleal_content = #{applealContent,jdbcType=VARCHAR},
+      </if>
+      <if test="replyPerson != null" >
+        reply_person = #{replyPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="replyPhone != null" >
+        reply_phone = #{replyPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="replyOpinion != null" >
+        reply_opinion = #{replyOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="siArea != null" >
+        si_area = #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        operated_by = #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdOrg != null" >
+        created_org = #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where reconsiderid = #{reconsiderid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.ReconsiderDO" >
+    update ltci_reconsider
+    set serial_number = #{serialNumber,jdbcType=VARCHAR},
+      execute_result_id = #{executeResultId,jdbcType=VARCHAR},
+      patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR},
+      appeal_person = #{appealPerson,jdbcType=VARCHAR},
+      appeal_phone = #{appealPhone,jdbcType=VARCHAR},
+      appeal_time = #{appealTime,jdbcType=TIMESTAMP},
+      appleal_content = #{applealContent,jdbcType=VARCHAR},
+      reply_person = #{replyPerson,jdbcType=VARCHAR},
+      reply_phone = #{replyPhone,jdbcType=VARCHAR},
+      reply_opinion = #{replyOpinion,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      si_area = #{siArea,jdbcType=VARCHAR},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_org = #{createdOrg,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where reconsiderid = #{reconsiderid,jdbcType=VARCHAR}
+  </update>
+</mapper>

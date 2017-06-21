@@ -1,0 +1,52 @@
+get:
+  tags:
+  - insuredInfo
+  summary: 参保人基本信息查询
+  description: 参保人基本信息查询
+  operationId: getInsuredInfo
+  parameters: 
+    - name: idCard
+      in: query
+      description: 用户身份证号
+      required: false
+      type: string
+    - name: insuredPersonName
+      in: query
+      description: 用户姓名
+      required: false
+      type: string      
+    - name: securityNumber
+      in: query
+      description: 用户社保卡号
+      required: false
+      type: string
+    - name: page
+      in: query
+      description: 当前页码
+      required: false
+      type: integer
+      format: int32
+    - name: pageSize
+      in: query
+      description: 每页显示条数
+      required: false
+      type: integer
+      format: int32               
+               
+  responses:
+      200:
+        description: 查询成功
+        schema:
+          $ref: "../../ltci-api-v1.yml/#/definitions/PageResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-api-v1.yml/#/definitions/PageResultDTO"
+
+
+
+
+
+
+
+

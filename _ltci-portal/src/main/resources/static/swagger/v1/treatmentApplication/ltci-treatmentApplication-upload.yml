@@ -1,0 +1,35 @@
+post:
+  tags:
+  - treatmentApplication
+  summary: 经办人员上传参保人待遇申请的附件信息
+  description: 经办人员上传参保人待遇申请的附件信息。
+  operationId: treatmentApplicationAttachement
+  parameters: 
+    - name: attachment
+      in: formData
+      required: true
+      type: file
+      description: 上传附件
+
+
+  responses:
+      200:
+        description: 附件上传成功
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+
+
+
+
+
+
+
+
+
+
+
+

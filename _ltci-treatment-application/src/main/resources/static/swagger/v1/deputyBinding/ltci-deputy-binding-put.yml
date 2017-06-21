@@ -1,0 +1,32 @@
+put:
+  tags:
+  - deputyBinding
+  summary: 用户进行代理人绑定审核操作
+  description: 返回操作成功或失败信息。测试数据：deputyBindingid[1]，checkState[03]。
+  operationId: updateDeputyBindingDTO
+  parameters:
+  - name: deputyBindingid
+    in: formData
+    description: 代理人绑定审核表id
+    required: true
+    type: string
+  - name: checkState
+    in: formData
+    description: 审核状态
+    required: true
+    type: string
+  - name: checkReason
+    in: formData
+    description: 审核不通过原因
+    type: string
+  responses:
+    200:
+      description: 操作成功
+      schema:
+        $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"
+
+

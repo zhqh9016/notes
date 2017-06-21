@@ -1,0 +1,33 @@
+delete:
+  tags:
+  - treatmentApplication
+  summary: 经办人员删除参保人待遇申请提交的错误附件信息
+  description: 经办人员删除参保人待遇申请提交的错误附件信息。
+  operationId: deleteTreatmentApplicationAttachement
+  parameters: 
+    - name: attachmentid
+      in: path
+      required: true
+      type: string
+      description: 附件id
+  responses:
+      200:
+        description: 附件删除成功
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+
+
+
+
+
+
+
+
+
+
+
+

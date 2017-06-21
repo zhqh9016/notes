@@ -1,0 +1,623 @@
+<html>
+
+<head>
+    <title>用户管理</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="renderer" content="webkit" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/common.css" type="text/css">
+    <link rel="stylesheet" href="../../css/tablefrom.css" type="text/css" />
+</head>
+
+<body>
+    <div id="app" style="height:100%;">
+        <table width="100%" id="userList" toolbar="#userListtb">
+        </table>
+        <div id="userListtb" style="padding:3px; height: auto">
+            <div name="searchColums" id="searchColums">
+                <form id="userListForm">
+                    <span class="inputLable">
+                        <span class="inputLableText">用户名：</span>
+                    <input type="text" id="search_userName" name="userName" class="inuptxt" />
+                    </span>
+                    <span class="inputLable">
+                        <span class="inputLableText">角色编码：</span>
+                    <input type="text" id="search_roleCode" name="roleCode" class="inuptxt" />
+                    </span>
+                    <!-- 
+                    <span style="display:-moz-inline-box;display:inline-block;">
+                        <span style="vertical-align:middle;display:-moz-inline-box;display:inline-block;width: 80px;text-align:right;text-overflow:ellipsis;-o-text-overflow:ellipsis; overflow: hidden;white-space:nowrap; " title="sex">部门：</span>
+                        <input type="text" id="search_departmentId" v-model="vue_Searchdepartmentid" class="easyui-combotree" style="width: 100px" />
+                    </span>
+                     -->
+                    <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-reload" onclick="doLoading(1,10)">查询</a>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-reload" onclick="resetSearch()">重置</a>
+                </form>
+            </div>
+            <div style="height:30px;" class="datagrid-toolbar">
+                <span style="float:left;">
+                    <a href="#" class="easyui-linkbutton" plain="true" icon="icon-add" onclick="doOpenAdd()">添加</a>
+                    <a href="#" class="easyui-linkbutton" plain="true" icon="icon-edit" onclick="doOpenEdit()">编辑</a>
+                    <a href="#" class="easyui-linkbutton" plain="true" icon="icon-remove" onclick="doDelete()">删除</a>
+                    <a href="#" class="easyui-linkbutton" plain="true" icon="icon-reload" onclick="doPassword()">重置密码</a>
+                    <a href="#" class="easyui-linkbutton" plain="true" icon="icon-edit" onclick="doOpenRoleSelect()">设置角色</a>
+                </span>
+            </div>
+        </div>
+        <div style="display:none;">
+            <div id="addWindow" class="easyui-window">
+                <form id="addForm">
+                    <table cellpadding="0" cellspacing="1" class="formtable">
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 用户名:</label>
+                            </td>
+                            <td class="value">
+                                <div id="validateUserNameExist">
+                                    <input type="text" id="userName" class="easyui-validatebox" name="userName" data-options="required:true,validType:['userNameRepeated','length[0,8]']" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 真实姓名: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" class="easyui-validatebox" id="trueName" name="trueName" data-options="required:true,validType:'minLength[2]'" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 所属部门: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" class="easyui-validatebox" id="add_departmentName" data-options="required:true" readonly="readonly" />
+                                <input id="add_departmentid" name="departmentid" type="hidden" value="">
+                                <a href="#" class="easyui-linkbutton" plain="true" icon="icon-search" id="departSearch" onClick="doOpenOrgSelect('add')">选择</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 手机号码: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" class="easyui-validatebox" name="mobile" id="mobile" data-options="required:true,validType:'mobile'" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 电话号码: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" class="easyui-validatebox" name="telephone" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 邮箱地址: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" class="easyui-validatebox" name="email" id="email" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 是否大屏幕访问: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="isAuthority" data-dictionary="isAuthority" name="isAuthority" class="easyui-combobox dictionary" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 性别: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="userSex" data-dictionary="userSex" name="sex" class="easyui-combobox dictionary" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="ui_buttons">
+                                    <a href="#" class="easyui-linkbutton" onclick="doAdd()">保存</a>
+                                    <a href="#" class="easyui-linkbutton" onclick="doClose('addWindow')">取消</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div id="editWindow">
+                <form id="editForm">
+                    <table cellpadding="0" cellspacing="1" class="formtable">
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 用户名: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" class="easyui-validatebox" id="edituserName" name="userName" disabled='disabled' />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 真实姓名: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" class="easyui-validatebox" id="edittrueName" name="trueName" data-options="required:true,validType:'minLength[2]'" />
+                                <span id="a" style="color:red;display:none;">真实姓名不能为空</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 所属部门: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" class="easyui-validatebox" id="edit_departmentName" style="width: 300px;" data-options="required:true" readonly="readonly" />
+                                <input id="edit_departmentid" name="departmentid" type="hidden" value="">
+                                <a href="#" class="easyui-linkbutton" plain="true" icon="icon-search" id="departSearch" onClick="doOpenOrgSelect('edit')">选择</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 手机号码: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" class="easyui-validatebox" id="editmobile" name="mobile" data-options="required:true,validType:'mobile'" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 电话号码: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" class="easyui-validatebox" id="edittelephone" name="telephone" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 邮箱地址: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" class="easyui-validatebox" id="editemail" name="email" data-options="validType:'email'" />
+                                <span id="c" style="color:red;display:none;">请输入正确的邮箱地址</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 性别: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="userSex" name="sex" data-dictionary="userSex" class="easyui-combobox dictionary" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="ui_buttons">
+                                    <input type="hidden" class="inputxt" id="editId" name="id" />
+                                    <a href="#" class="easyui-linkbutton" onclick="doUpdate()">更新</a>
+                                    <a href="#" class="easyui-linkbutton" onclick="doClose('editWindow')">取消</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div id="roleWindow">
+                <input type="hidden" class="inputxt" id="role_userId" name="id" />
+                <a href="#" class="easyui-linkbutton" style="margin-left:170" onclick="doRoleSave()">保存</a>
+                <a href="#" class="easyui-linkbutton" onclick="doClose('roleWindow')">取消</a>
+                <ul id="roleTree" class="easyui-tree"></ul>
+            </div>
+            <div id="orgWindow">
+                <a href="#" class="easyui-linkbutton" style="margin-left:200" onclick="doClose('orgWindow')">选择</a>
+                <a href="#" class="easyui-linkbutton" onclick="doClose('orgWindow')">取消</a>
+                <ul id="orgTree" class="easyui-tree"></ul>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/validate.js"></script>
+<script type="text/javascript" src="../../js/userMangerment/userMessage.js"></script>
+<script>
+var checkedValId = null;
+$(function() {
+    $("#Type").hide();
+    $("#Tip").hide();
+    $.extend($.fn.validatebox.defaults.rules, {
+        userNameRepeated: { // 验证用户名是否重复
+            validator: function(value) {
+                return !validateNameRepeated(value);
+            },
+            message: '该用户名已存在'
+        },
+        userNameControl: { // 验证用户名是否合法
+            validator: function(value) {
+                return /^[0-9a-zA-Z_]{0-8}$/i.test(value);
+            },
+            message: '用户名不合法（允许8位，且只能使用字母和数字）'
+        }
+    });
+});
+$('#addWindow').window({
+    title: '新增用户',
+    width: 600,
+    height: 440,
+    closed: true,
+    modal: true,
+    collapsible: false,
+    minimizable: false,
+    maximizable: false
+
+});
+$('#editWindow').window({
+    title: '编辑用户',
+    width: 600,
+    height: 400,
+    closed: true,
+    modal: true,
+    collapsible: false,
+    minimizable: false,
+    maximizable: false
+});
+
+$('#roleWindow').window({
+    title: '用户角色编辑',
+    width: 300,
+    height: 400,
+    closed: true,
+    modal: true,
+    collapsible: false,
+    minimizable: false,
+    maximizable: false
+});
+
+$('#orgWindow').window({
+    title: '选中部门',
+    width: 360,
+    height: 400,
+    closed: true,
+    modal: true,
+    collapsible: false,
+    minimizable: false,
+    maximizable: false
+});
+
+//验证用户名是否重复方法 ，返回true或者false
+function validateNameRepeated(name) {
+    var returnBol = false;
+    sendAjax(portalServiceUrl + "/api/v1/users/" + name, "get", "", function(data) {
+        if (data.status != "200") {
+            $.messager.alert('警告', data.message);
+            return false;
+        }
+        if (data.datas.length > 0) {
+            returnBol = true;
+        } else {
+            returnBol = false;
+        }
+    }, false);
+    return returnBol;
+}
+
+//用户管理页面查询(ok)
+function doLoading(currentPage, currentSize) {
+    var selectPage = TableObj.page;
+    var selectPagesize = TableObj.pageSize;
+    if (currentPage > 0 && currentSize > 0) {
+        selectPage = currentPage;
+        selectPagesize = currentSize;
+    }
+    var obj = {
+        userName: $("input[name=userName]").val(), //用户名
+        roleCode: $("input[name=roleCode]").val(),
+        page: selectPage,
+        pageSize: selectPagesize
+    };
+    sendAjax(portalServiceUrl + "/api/v1/users/list", "post", obj, function(data) {
+        gridLoadData('userList', data);
+    });
+}
+//删除用户  (ok)
+function doDelete() {
+    if (isCheck()) {
+        $.messager.confirm('确认', '您确认想要删除记录吗？', function(r) {
+            if (r) {
+                var checkedItems = $('#userList').datagrid('getChecked')[0];
+                sendAjax(portalServiceUrl + "/api/v1/users/" + checkedItems.id, "delete", "", function(data) {
+                    if (data.status != '200') {
+                        $.messager.alert('提示', "删除失败");
+                    } else {
+                        showMsg("用户删除成功！");
+                        doLoading(1, 10);
+                    }
+                });
+            }
+        });
+    }
+}
+//打开新增窗口(ok)
+function doOpenAdd() {
+    $("#addForm")[0].reset();
+    $('#addWindow').window('open');
+}
+//新增用户(ok)
+function doAdd() {
+    if ($("#addForm").form("validate")) {
+        sendAjax(portalServiceUrl + "/api/v1/users", "post", $("#addForm").serialize(), function(data) {
+            if (data.status != '200') {
+                $.messager.alert('提示', data.message);
+            } else {
+                showMsg("信息添加成功！");
+                $('#addWindow').window('close');
+                doLoading(1, 10);
+            }
+        });
+    }
+}
+//打开编辑窗口(ok)
+function doOpenEdit() {
+    if (isCheck()) {
+        var checkedItems = $('#userList').datagrid('getChecked')[0];
+        $("#editForm")[0].reset();
+        $('#editcreatedBy').val(checkedItems.editcreatedBy);
+        $('#editId').val(checkedItems.id);
+        $('#edituserName').val(checkedItems.userName);
+        $('#edittrueName').val(checkedItems.trueName);
+        $('#edit_departmentid').val(checkedItems.departmentid);
+        $('#editmobile').val(checkedItems.mobile);
+        $('#edittelephone').val(checkedItems.telephone);
+        $('#editemail').val(checkedItems.email);
+        $('input[name=sex]').val(checkedItems.sex); //$("input[name=siArea]").val(datas.siArea);
+        comboboxSelected(); //同步下拉框和value
+        $('#edit_departmentName').val(checkedItems.department.code + ' | ' + checkedItems.department.name);
+        $('#editWindow').window('open');
+    }
+}
+//更新        
+function doUpdate() {
+    if ($("#editForm").form("validate")) {
+        sendAjax(portalServiceUrl + "/api/v1/users", "put", $("#editForm").serialize(), function(data) {
+            if (data.status != '200') {
+                $.messager.alert('提示', data.message);
+            } else {
+                showMsg("信息编辑成功！");
+                $('#editWindow').window('close');
+                doLoading(1, 10);
+            }
+        });
+    }
+}
+
+//重置密码  (ok)    
+function doPassword() {
+    if (isCheck()) {
+        $.messager.confirm('确认', '您确认想要重置密码吗？', function(r) {
+            if (r) {
+                var checkedItems = $('#userList').datagrid('getChecked')[0];
+                obj = {
+                    id: checkedItems.id
+                };
+                sendAjax(portalServiceUrl + "/api/v1/users/password", "put", obj, function(data) {
+                    if (data.status != '200') {
+                        $.messager.alert('提示', data.message);
+                    } else {
+                        showMsg("重置密码成功！");
+                        doLoading(1, 10);
+                    }
+                });
+            }
+        });
+    }
+}
+
+function openDepartmentSelect() {
+    window.open('ltci_user_bm.html', '', 'width=800px,height=400px,left=200px,top=100px');
+}
+
+//设置角色      
+function doOpenRoleSelect() {
+    console.log("_______doOpenRoleSelect_____");
+    if (isCheck()) {
+        var checkedItems = $('#userList').datagrid('getChecked')[0];
+        $("#role_userId").val(checkedItems.id);
+        var arr = [];
+        var obje = {
+            page: 1,
+            pageSize: 100
+        };
+        sendAjax(portalServiceUrl + "/api/v1/roles/list/", "post", obje, function(data) {
+
+            if (data.status != "200") {
+                alert(data.message);
+                return false;
+            }
+            //查询用户所有角色
+            var obj = {
+                userId: checkedItems.id //用户ID                                              
+            };
+            //console.log(s)
+            sendAjax(portalServiceUrl + "/api/v1/rUserRole", "post", obj, function(tableData) {
+                if (tableData.status != "200") {
+                    alert(tableData.message);
+                    return false;
+                }
+                Data = tableData.datas;
+                for (var i = 0; i < data.datas.length; i++) {
+                    var con = false;
+                    for (var k = 0; k < Data.length; k++) {
+                        if (Data[k].roleId == data.datas[i].id) {
+                            con = true;
+                            break;
+                        }
+                    }
+                    var obj = {
+                        id: data.datas[i].id,
+                        text: data.datas[i].roleName,
+                        checked: con
+                    };
+                    arr[i] = obj;
+                    console.log(arr);
+                    $('#roleWindow').window('open');
+                    $('#roleTree').tree({
+                        checkbox: true,
+                        data: arr
+                    });
+                }
+            });
+        });
+
+    }
+}
+
+//保存角色          
+function doRoleSave() {
+    var checkedItems = $('#userList').datagrid('getChecked')[0];
+    var nodes = $('#roleTree').tree('getChecked');
+    console.log("__doRoleSave=" + nodes);
+    var roleIds = '';
+    for (var i = 0; i < nodes.length; i++) {
+        console.log(nodes[i].id);
+        roleIds += nodes[i].id + ",";
+    }
+    if (roleIds.length > 2) {
+        roleIds = roleIds.substring(0, roleIds.length - 1);
+    }
+    var obj = {
+        userId: checkedItems.id, //用户ID
+        roleId: roleIds, //角色ID[多个逗号分隔]                                                 
+    };
+    sendAjax(portalServiceUrl + "/api/v1/role/RUserRole", "put", obj, function(data) {
+        if (data.status != "200") {
+            $.messager.alert('警告', data.message);
+        } else {
+            showMsg("角色设置成功！");
+            doClose('roleWindow');
+            doLoading(1, 10);
+        }
+    });
+}
+
+function doOpenOrgSelect(type) {
+    if (type == 'add') {
+        $("#add_departmentid").val('');
+        checkedValId = $("#add_departmentid").val();
+    } else {
+        checkedValId = $("#edit_departmentid").val();
+    }
+    //$("#add_departmentid").val('');
+    //alert(checkedValId);
+    //查询所有机构
+    $('#orgTree').tree({
+        url: portalServiceUrl + "/api/v1/organization/list?parentid=0&page=1&pageSize=100",
+        method: 'post',
+        checkbox: true,
+        cascadeCheck: false, //是否叠层选中状态 默认true；这里不需要叠层选中
+        loadFilter: function(data) {
+            //console.log("orgTree="+JSON.stringify(data));
+            //查询用户所有机构
+            var arr = [];
+            for (var i = 0; i < data.datas.length; i++) {
+                var child = data.datas[i].children;
+                var children = [];
+                for (var k = 0; child !== null && child !== undefined && k < child.length; k++) {
+
+                    var tobj = {
+                        id: child[k].id,
+                        text: child[k].code + " | " + child[k].name,
+                        checked: (checkedValId !== null && checkedValId == child[k].id) ? true : false,
+                        state: 'open'
+                    };
+                    children[k] = tobj;
+                }
+                var obj = {
+                    id: data.datas[i].id,
+                    text: data.datas[i].code + " | " + data.datas[i].name,
+                    checked: (checkedValId !== null && checkedValId == data.datas[i].id) ? true : false,
+                    children: children,
+                    state: (children.length > 0) ? 'closed' : 'open'
+                };
+                arr[i] = obj;
+            }
+            return arr;
+        },
+        onBeforeCheck: function(node, checked) {
+            console.log("_onBeforeCheck=" + checked);
+            //可以在这里获取所有选中的止，回显到部门文本框中
+            var arr = $('#orgTree').tree('getChecked');
+            console.log("orgTree onBeforeCheck=" + JSON.stringify(arr));
+            if (arr.length < 1) return true;
+            if (arr[0].id == node.id) {
+                return true;
+            } else {
+                //arr[0].checked=false;
+                $('#orgTree').tree('uncheck', arr[0].target);
+                return true;
+            }
+            // if(arr.length>=1){
+            //  if(arr[0].id==node.id){
+            //      return true;
+            //  }
+            //  return false;
+            // }
+            // return true;
+        },
+        reset: function() {
+            $("#userListForm")[0].reset();
+        },
+        onCheck: function(node, checked) {
+            console.log("_onCheck=" + checked);
+            //可以在这里获取所有选中的止，回显到部门文本框中
+            var arr = $('#orgTree').tree('getChecked');
+            if (type == 'add') {
+                if (arr.length >= 1) {
+                    $("#add_departmentName").val(arr[0].text);
+                    $("#add_departmentid").val(arr[0].id);
+                } else {
+                    $("#add_departmentName").val();
+                    $("#add_departmentid").val();
+                }
+            } else if (type == 'edit') {
+                if (arr.length >= 1) {
+                    $("#edit_departmentName").val(arr[0].text);
+                    $("#edit_departmentid").val(arr[0].id);
+                } else {
+                    $("#edit_departmentName").val();
+                    $("#edit_departmentid").val();
+                }
+            }
+        }
+    });
+    $('#orgWindow').window('open');
+}
+
+//关闭窗口（ok）
+function doClose(id) {
+    $('#' + id).window('close');
+    doLoading(1, 10);
+}
+
+//重置
+function resetSearch() {
+    $('#userListForm input').val('');
+}
+
+function isCheck() {
+    var arr = $('#userList').datagrid('getChecked');
+    if (arr.length < 1) {
+        //showMsg('请选择一行数据再进行操作');
+        $.messager.alert('提示', '请选择一行数据再进行操作');
+        return false;
+    }
+    return true;
+}
+</script>
+
+</html>

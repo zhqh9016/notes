@@ -1,0 +1,76 @@
+post: 
+  tags:
+  - patrolTasks
+  summary: 公用列表分页查询
+  description: 根据不同页面不同任务的任务状态等查询条件进行分页查询
+  operationId: listPatrolTask
+  parameters: 
+    - name: patrolObjectName
+      in: formData
+      description: 被巡查对象
+      required: false
+      type: string
+    - name: patrolObjectType
+      in: formData
+      description: 类别(护理机构-0、评估机构-1、护理人员-2、评估人员-3)
+      required: true
+      type: string
+    - name: patrolObjectId
+      in: formData
+      description: 身份证/编号(对应patrol_object_id和id_card)
+      required: false
+      type: string
+    - name: patrolObjectPhone
+      in: formData
+      description: 联系电话
+      required: false
+      type: string
+    - name: operatedTime
+      in: formData
+      description: 经办时间
+      required: false
+      type: string
+    - name: taskState
+      in: formData
+      description: 任务状态(未分配-0、已分配-1、执行中-2、已执行-3、通过-4、不通过-5、申诉中-6、复议中-7)
+      required: true
+      type: string
+    - name: patrolStaffName
+      in: formData
+      description: 巡查员姓名
+      required: false
+      type: string
+    - name: taskLevel
+      in: formData
+      description: 任务级别（专项-0、普通-1）
+      required: true
+      type: string
+    - name: page
+      in: formData
+      description: 当前页码
+      required: false
+      type: integer
+      format: int32
+    - name: pageSize
+      in: formData
+      description: 每页显示条数
+      required: false
+      type: integer
+      format: int32
+  responses:
+      200:
+        description: 查询成功
+        schema:
+          $ref: "../../ltci-quality-control-api-v1.yml/#/definitions/PageResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-quality-control-api-v1.yml/#/definitions/ResultDTO"
+
+
+
+
+
+
+
+

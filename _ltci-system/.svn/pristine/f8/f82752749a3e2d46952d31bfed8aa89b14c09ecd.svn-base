@@ -1,0 +1,45 @@
+get:
+  summary: 根据机构ID精确查询组织机构
+  description: 返回机构信息。测试数据：机构ID[1]
+  operationId: listOrganization
+  parameters:
+  - name: id
+    in: path
+    description: 机构ID
+    required: true
+    type: string
+  tags:
+  - organizationManage
+  responses:
+    200:
+      description: 查询成功
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"
+delete: 
+  tags:
+  - organizationManage
+  summary: 组织管理
+  description: 删除组织
+  operationId: deleteOrganization
+  parameters:
+  - name: id
+    in: path
+    description: id
+    required: true
+    type: string
+  - name: operatedBy
+    in: query
+    description: 删除操作人
+    required: true
+    type: string    
+  responses:
+    200: 
+      description: 删除成功
+    default: 
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"        

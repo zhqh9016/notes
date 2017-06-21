@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.NursingTaskSpecialDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.NursingTaskSpecialDO" >
+    <id column="nursing_taskid" property="nursingTaskid" jdbcType="VARCHAR" />
+    <result column="nursing_task_code" property="nursingTaskCode" jdbcType="VARCHAR" />
+    <result column="evaluate_task_code" property="evaluateTaskCode" jdbcType="VARCHAR" />
+    <result column="intent_agency" property="intentAgency" jdbcType="VARCHAR" />
+    <result column="insured_person_code" property="insuredPersonCode" jdbcType="VARCHAR" />
+    <result column="final_agency_code" property="finalAgencyCode" jdbcType="VARCHAR" />
+    <result column="final_agency_name" property="finalAgencyName" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="apply_type" property="applyType" jdbcType="VARCHAR" />
+    <result column="is_relative_cared" property="isRelativeCared" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="VARCHAR" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+    <result column="insured_person_name" property="insuredPersonName" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="evaluate_name" property="evaluateName" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="VARCHAR" />
+    <result column="fraction" property="fraction" jdbcType="VARCHAR" />
+    <result column="evaluate_content" property="evaluateContent" jdbcType="VARCHAR" />
+    <result column="detail_json" property="detailJson" jdbcType="VARCHAR" />
+    <result column="accessory_address" property="accessoryAddress" jdbcType="VARCHAR" />
+    <result column="opinion" property="opinion" jdbcType="VARCHAR" />
+    <result column="is_reevaluate" property="isReevaluate" jdbcType="VARCHAR" />
+    <result column="bid_type" property="bidType" jdbcType="VARCHAR" />
+    <result column="reevalueate_result" property="reevalueateResult" jdbcType="VARCHAR" />
+    <result column="evaluate_agency_name" property="evaluateAgencyName" jdbcType="VARCHAR" />
+    <result column="application_code" property="applicationCode" jdbcType="VARCHAR" />
+    <result column="first_evaluate_code" property="firstEvaluateCode" jdbcType="VARCHAR" />
+  </resultMap>
+  
+
+  
+  <select id="getNursingTaskList" parameterType="map" resultMap="BaseResultMap">
+  	select 
+	lnt.nursing_task_code,
+	lnt.intent_agency,
+	lnt.final_agency_code,
+	lnt.final_agency_name,
+	let.insured_person_name,
+	let.id_card,
+	let.application_code,
+	let.evaluate_agency_name,
+	lfe.evaluate_name,
+	lfe.score,
+	lee.fraction,
+	lfe.detail_json,
+	lfe.first_evaluate_code,
+	lee.evaluate_content,
+	lee.opinion,
+	lee.accessory_address,
+	let.is_reevaluate,
+	let.reevalueate_result,
+	lnt.state,
+	lnt.operated_by,
+	lnt.apply_type,
+	lnt.is_relative_cared,
+	date_format(lnt.operated_time,'%Y-%m-%d %H:%i:%s') operated_time
+	from 
+	ltci_nursing_task lnt
+	join
+	ltci_evaluate_task let
+	on 
+	lnt.evaluate_task_code = let.evaluate_task_code
+	join 
+	ltci_first_evaluate lfe
+	on 
+	lnt.evaluate_task_code = lfe.evaluate_task_code
+	join 
+	ltci_expert_evaluate lee
+	on
+	lee.first_evaluate_code = lfe.first_evaluate_code
+    <where>
+       	let.task_state = '04'
+        <if test="insuredPersonName!=null and insuredPersonName!='' and insuredPersonName!='undefind' ">
+            and let.insured_person_name like concat('%',#{insuredPersonName},'%')
+        </if>
+        <if test="idCard!=null and idCard!='' and idCard!='undefind' ">
+            and let.id_card = #{idCard} 
+        </if>
+        <if test="evaluateAgencyName!=null and evaluateAgencyName!='' and evaluateAgencyName!='undefind' ">
+            and let.evaluate_agency_name like concat('%',#{evaluateAgencyName},'%')
+        </if>
+        <if test="operatedTimeStart!=null">
+            and lnt.operated_time &gt;= #{operatedTimeStart} 
+        </if>
+        <if test="operatedTimeEnd!=null">
+            and lnt.operated_time &lt;= #{operatedTimeEnd} 
+        </if>
+        <if test="State!=null and State!='' and State!='undefind' ">
+            and lnt.state in 
+            <foreach collection="State" item="listItem" open="(" close=")" separator="," >
+               #{listItem}
+            </foreach>
+        </if>
+        <if test="operatedOrg != null and operatedOrg !='' " >
+            and (lnt.created_org = #{operatedOrg,jdbcType=VARCHAR} or lnt.operated_org = #{operatedOrg,jdbcType=VARCHAR})
+        </if>   
+    </where>
+    <trim prefix="ORDER BY">
+        lnt.operated_time desc
+    </trim>
+    <if test="page>-1 and page>-1">
+    limit ${page},${pageSize}
+    </if>
+    </select>
+    
+  <select id="countNursingTaskList" parameterType="map" resultType="java.lang.Integer">
+  	select 
+	count(*)
+	from 
+	ltci_nursing_task lnt
+	join
+	ltci_evaluate_task let
+	on 
+	lnt.evaluate_task_code = let.evaluate_task_code
+	join 
+	ltci_first_evaluate lfe
+	on 
+	lnt.evaluate_task_code = lfe.evaluate_task_code
+	join 
+	ltci_expert_evaluate lee
+	on
+	lee.first_evaluate_code = lfe.first_evaluate_code
+    <where>
+    	let.task_state = '04'
+        <if test="insuredPersonName!=null and insuredPersonName!='' and insuredPersonName!='undefind' ">
+            and let.insured_person_name like concat('%',#{insuredPersonName},'%')
+        </if>
+        <if test="idCard!=null and idCard!='' and idCard!='undefind' ">
+            and let.id_card = #{idCard} 
+        </if>
+        <if test="evaluateAgencyName!=null and evaluateAgencyName!='' and evaluateAgencyName!='undefind' ">
+            and let.evaluate_agency_name like concat('%',#{evaluateAgencyName},'%')
+        </if>
+        <if test="operatedTimeStart!=null">
+            and lnt.operated_time &gt;= #{operatedTimeStart} 
+        </if>
+        <if test="operatedTimeEnd!=null">
+            and lnt.operated_time &lt;= #{operatedTimeEnd} 
+        </if>
+        <if test="State!=null and State!='' and State!='undefind' ">
+            and lnt.state in 
+            <foreach collection="State" item="listItem" open="(" close=")" separator="," >
+               #{listItem}
+            </foreach>
+        </if>
+        <if test="operatedOrg != null and operatedOrg !='' " >
+            and (lnt.created_org = #{operatedOrg,jdbcType=VARCHAR} or lnt.operated_org = #{operatedOrg,jdbcType=VARCHAR})
+        </if>    
+    </where>
+    </select>
+
+  <insert id="insertNursingTaskList" parameterType="java.util.List" >
+    insert into ltci_nursing_task (nursing_taskid, nursing_task_code, evaluate_task_code, 
+       insured_person_code, state, apply_type, 
+      is_relative_cared, remark, operated_by, 
+      operated_time, operated_org, created_by, 
+      created_time, created_org, is_valid, 
+      si_area)
+    values 
+    <foreach collection="list" item="listItem" separator=",">
+      (#{listItem.nursingTaskid,jdbcType=VARCHAR}, #{listItem.nursingTaskCode,jdbcType=VARCHAR}, #{listItem.evaluateTaskCode,jdbcType=VARCHAR}, 
+       #{listItem.insuredPersonCode,jdbcType=VARCHAR}, #{listItem.state,jdbcType=VARCHAR}, #{listItem.applyType,jdbcType=VARCHAR}, 
+      #{listItem.isRelativeCared,jdbcType=VARCHAR}, #{listItem.remark,jdbcType=VARCHAR}, #{listItem.operatedBy,jdbcType=VARCHAR}, 
+      #{listItem.operatedTime,jdbcType=TIMESTAMP}, #{listItem.operatedOrg,jdbcType=VARCHAR}, #{listItem.createdBy,jdbcType=VARCHAR}, 
+      #{listItem.createdTime,jdbcType=TIMESTAMP}, #{listItem.createdOrg,jdbcType=VARCHAR}, #{listItem.isValid,jdbcType=INTEGER}, 
+      #{listItem.siArea,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+  
+
+</mapper>

@@ -1,0 +1,35 @@
+get:
+  summary: 根据上级区域ID查询区域（内部包含上级区域）
+  description: 返回区域信息。测试数据：上级区域ID[0]
+  operationId: listArea
+  parameters:
+  - name: parentid
+    in: query
+    description: 上级区域ID
+    required: true
+    type: string
+  - name: page
+    in: query
+    description: 当前页码
+    required: true
+    type: integer
+    format: int32
+  - name: pageSize
+    in: query
+    description: 每页显示件数
+    required: true
+    type: integer
+    format: int32
+  tags:
+  - areaManage
+  responses:
+    200:
+      description: 查询成功
+      schema:
+        type: array
+        items:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/PageResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/Response"

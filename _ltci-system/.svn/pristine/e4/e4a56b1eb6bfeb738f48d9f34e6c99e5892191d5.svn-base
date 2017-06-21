@@ -1,0 +1,43 @@
+put: 
+  tags:
+  - rRoleResManage
+  summary: 修改角色关系列表
+  description: 修改角色关系列表
+  operationId: updateRRoleRes
+  parameters:
+  - name: roleId
+    in: path
+    description: 角色id
+    required: true
+    type: string
+  - name: resIds
+    in: formData
+    description: 资源id:多个逗号分隔
+    required: true
+    type: string
+  responses:
+    200:
+      description: 创建成功
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"
+get: 
+  tags:
+  - rRoleResManage
+  summary: 查询角色资源关系列表
+  description: 根据角色id查询所有资源关系列表
+  operationId: listRRoleRes
+  parameters:
+  - name: roleId
+    in: path
+    description: 角色id
+    required: true
+    type: string
+  responses:
+    200:
+      description: 查询成功
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"

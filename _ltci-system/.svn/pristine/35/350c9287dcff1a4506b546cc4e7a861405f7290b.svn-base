@@ -1,0 +1,33 @@
+post:
+  tags:
+  - resManage
+  summary: 按上级资源编号查询下级资源信息(顶级=0)
+  description: 返回下级资源信息列表
+  operationId: listRes
+  parameters:
+  - name: parentId
+    in: path
+    description: 上级资源编号
+    required: true
+    type: string
+  - name: page
+    in: formData
+    description: 当前页码
+    required: true
+    type: integer
+    format: int32
+  - name: pageSize
+    in: formData
+    description: 每页显示条数
+    required: true
+    type: integer
+    format: int32
+  responses:
+    200:
+      description: 查询成功
+      schema:
+          $ref: "../../ltci-system-api-v1.yml/#/definitions/PageResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"

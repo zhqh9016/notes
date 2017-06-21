@@ -1,0 +1,640 @@
+﻿<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link href="../../css/style.css?v=4.1.0" rel="stylesheet" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/common.css" type="text/css" />
+    <style>
+    /*fieldset {
+				border: 1px solid #d8d8d8;
+				width: 94%;
+				margin: 0 auto;
+				padding: 10px;
+			}*/
+    
+    legend {
+        font-size: 10px;
+        color: #8f0923;
+    }
+    
+    #Third_step .input_box_title {
+        margin-bottom: 16px;
+        margin-top: 12px;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app" style="height: 100%;width: 100%;border: none;">
+        <div class="panel-header" style="width: 100%;">
+            <div class="panel-title"> 待遇申请</div>
+            <!-- <div class="panel-tool"></div> -->
+        </div>
+        <div id="First_step_0">
+            <!-- 对First_step_0 添加了样式 -->
+            <form id="searchTreatmentApply">
+                <span class="inputLable"><span class="inputLableText">参保人姓名：</span>
+                <input id="searchInsuredPersonName" name="insuredPersonName" type="text" value="" class="easyui-validatebox" data-options="required:true,validType:'minLength[2]'" />
+                </span>
+                <span class="inputLable"><span class="inputLableText">参保人身份证号码：</span>
+                <input id="idCard" name="idCard" type="text" value="" class="easyui-validatebox" data-options="required:true,validType:'idCard'" />
+                </span>
+                <a type="button" id="search_1" class="easyui-linkbutton find_botton" onclick="doSearch()">查询</a>
+            </form>
+        </div>
+        <form id="treatmentApply">
+            <div id="First_step_1">
+                <!-- 
+					<div style="font-size:20px"><span>(1) 社保卡信息</span></div>
+					 -->
+                <fieldset class="input_box">
+                    <!-- 添加class  input_box -->
+                    <div class="input_box_title"><span>社保卡信息</span></div>
+                    <!-- 添加class  input_box_title -->
+                    <div>
+                        <span class="inputLable">
+							<span class="inputLableText">参保人姓名：</span>
+                        <input type="text" name="insuredPersonName" readonly="readonly" class="isDisabled" />
+                        </span>
+                        <span class="inputLable">
+							<span class="inputLableText">参保人性别：</span>
+                        <input type="text" id="sex" data-dictionary="sex" name="insuredPersonGender" disabled="true" class="easyui-combobox dictionary" />
+                        </span>
+                        <span class="inputLable">
+							<span class="inputLableText">民族：</span>
+                        <input type="text" id="nation" data-dictionary="nation" name="nation" disabled="true" class="easyui-combobox dictionary" />
+                        </span>
+                        <span class="inputLable">
+							<span class="inputLableText">参保人身份证号码：</span>
+                        <input type="text" name="idCard" readonly="readonly" class="isDisabled" />
+                        </span>
+                        <span class="inputLable">
+							<span class="inputLableText">参保人社保卡号码：</span>
+                        <input type="text" name="securityNumber" readonly="readonly" class="isDisabled" />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">参保人个人编号：</span>
+                        <input type="text" name="securityPersonalNumber" readonly="readonly" class="isDisabled" />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">出生日期：</span>
+                        <input readonly="true" type="text" id="birthday" name="birthday" />
+                        </span>
+                    </div>
+                </fieldset>
+                <fieldset class="input_box">
+                    <div class="input_box_title"><span>其他个人信息</span></div>
+                    <div class="elsePersonInfo activeDiv">
+                        <span class="inputLable"><span class="inputLableText">家庭住址：</span>
+                        <input type="text" id="address" name="address" class="easyui-validatebox isDisabled" data-options="required:true, validType:['unnormal','minLength[2]']" />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">联系方式：</span>
+                        <input type="text" id="mobile" name="mobile" class="easyui-validatebox isDisabled" data-options="required:true,validType:'mobile'" />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">邮箱地址：</span>
+                        <input type="text" name="email" class="easyui-validatebox isDisabled" data-options="validType:'email'" />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">政治面貌：</span>
+                        <input type="text" id="politicsid" data-dictionary="politicsid" name="politicsid" class="easyui-combobox dictionary" />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">婚姻状况：</span>
+                        <input type="text" id="married" data-dictionary="married" name="married" class="easyui-combobox dictionary" />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">文化程度：</span>
+                        <input type="text" id="educationid" data-dictionary="educationid" name="educationid" class="easyui-combobox dictionary" />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">所属职业：</span>
+                        <input type="text" id="occupationid" data-dictionary="occupationid" name="occupationid" class="easyui-combobox dictionary" />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">单位名称：</span>
+                        <input type="text" name="orgName" class="easyui-validatebox isDisabled" data-options="validType:['unnormal','minLength[2]']" />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">所属省份：</span>
+                        <input editable="false" id="province" name="provinceCode" type="text" class="easyui-combobox " />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">所属城市：</span>
+                        <input editable="false" id="city" name="cityCode" type="text" class="easyui-combobox " />
+                        </span>
+                        <span class="inputLable"><span class="inputLableText">所属区域：</span>
+                        <input editable="false" id="area" name="areaCode" type="text" class="easyui-combobox " />
+                        </span>
+                    </div>
+                </fieldset>
+                <span class="inputLable" style="margin-left: 85%; margin-top: 10px;">
+						<a type="button" id="go_next_1" class="easyui-linkbutton" onclick="nextStep(2)">下一步</a>
+						</span>
+            </div>
+            <div id="Second_step" class="input_box" style="display:none">
+                <div class="input_box_title"><span>代理人相关信息</span></div>
+                <div>
+                    <div><span class="inputLable"><span class="inputLableText">代理人姓名：</span>
+                        <input type="text" name="deputyName" class="easyui-validatebox isDisabled" data-options="required:true,validType:'minLength[2]'" />
+                        </span>
+                    </div>
+                    <div><span class="inputLable"><span class="inputLableText">代理人身份证号码：</span>
+                        <input type="text" name="deputyIdCard" class="easyui-validatebox isDisabled" data-options="required:true,validType:'idCard'" />
+                        </span>
+                    </div>
+                    <div><span class="inputLable"><span class="inputLableText">代理人联系方式：</span>
+                        <input type="text" name="deputyMobile" class="easyui-validatebox isDisabled" data-options="required:true,validType:'mobile'" />
+                        </span>
+                    </div>
+                    <span class="inputLable"><span class="inputLableText">代理人家庭住址：</span>
+                    <input type="text" name="deputyAddress" class="easyui-validatebox isDisabled" data-options="required:true,validType:'minLength[2]'" />
+                    </span>
+                </div>
+                <div>
+                    <div><span class="inputLable"><span class="inputLableText">申办类型：</span>
+                        <input type="text" id="bidType" data-dictionary="bidType" name="bidType" class="easyui-combobox dictionary" />
+                        </span>
+                    </div>
+                    <!-- 申办类型选择非全日制的时候显示是否亲属照顾，否则不显示-->
+                    <div style="display: block;" class="inputLable isRelativeCared"><span class="inputLableText">是否亲属照顾：</span>
+                        <input type="text" id="isRelativeCared" data-dictionary="isRelativeCared" name="isRelativeCared" class="easyui-combobox dictionary" /> </div>
+                    <div><span class="inputLable"><span class="inputLableText">是否紧急（任务期限）：</span>
+                        <input type="text" id="isTaskDeadline" data-dictionary="isTaskDeadline" name="isTaskDeadline" class="easyui-combobox dictionary" />
+                        </span>
+                    </div>
+                    <div>
+                        <span class="inputLable">
+								<span class="inputLableText">病种：</span>
+                        <input style="width: 370px;" type="text" id="disease" name="disease" class="easyui-combobox" placeholder="请输入并选择病种，支持模糊查询" />（请输入并选择病种，支持模糊查询）
+                        </span>
+                    </div>
+                    <div class="clear inputLable" style="margin-top: 6px;">
+                        <span class="inputLableText" style="float: left;">病情原因：</span>
+                        <textarea style="float: left;" id="diseaseCause" name="diseaseCause" cols="50" rows="6" placeholder="请输入100字以内的病情原因" class="easyui-validatebox textarea" data-options="validType:'length[0,100]'"></textarea>
+                    </div>
+                </div>
+                <span class="inputLable"><a type="button" id="go_last_2" class="easyui-linkbutton" onclick="nextStep(1)">上一步</a></span>
+                <span class="inputLable"><a type="button" id="go_next_2" class="easyui-linkbutton" onclick="nextStep(3)">下一步</a></span>
+            </div>
+            <div class="activeDiv">
+                <!--<span>代理人身份证号附件ID:</span>-->
+                <input type="hidden" name="deputyIdCardScan" />
+                <!--<span>社保卡号扫描件ID:</span>-->
+                <input type="hidden" name="securityNumberScan" />
+                <!--<span>身份证扫描件ID:</span>-->
+                <input type="hidden" name="idCardScan" />
+                <!--<span>病例附件ID:</span>-->
+                <input type="hidden" name="caseHistoryScan" />
+                <!--<span>长护待遇申请表ID:</span>-->
+                <input type="hidden" name="applicationFormScan" />
+                <!--<span>备注:</span>-->
+                <input type="hidden" name="remark" />
+            </div>
+            <input type="hidden" name="orgCode" />
+            <input type="hidden" name="siArea" />
+            <input type="hidden" name="version" />
+        </form>
+        <div id="Third_step" class="activeDiv input_box" style="display:none">
+            <!-- <a type="button" id="go_next_3" class="easyui-linkbutton" onclick="openEloamWindow()">11111</a></span> -->
+            <div class="input_box_title" style="font-size: 14px; margin-bottom: 20px;"><span>相关证明文件</span></div>
+            <div>
+                <div class="input_box_title"><span>社会保障卡扫描件</span></div>
+                <div class="clear">
+                    <div class="imageBox" id="securityNumberScan_images"></div>
+                    <div id="securityNumberScan_button" class="fileupload">
+                        <input type="file" id="securityNumberScan_1" class="isDisabled" name="attachment" onchange="doUploadFile(this,'securityNumberScan')">
+                        <a href="javascript:;">点击选择图片</a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="input_box_title"><span>身份证扫描件</span></div>
+                <div class="clear">
+                    <div class="imageBox" id="idCardScan_images"></div>
+                    <div id="idCardScan_button" class="fileupload">
+                        <input type="file" id="idCardScan_1" class="isDisabled" name="attachment" onchange="doUploadFile(this,'idCardScan')">
+                        <a href="javascript:;">点击选择图片</a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="input_box_title"><span>病例附件</span></div>
+                <div class="clear">
+                    <div class="imageBox" id="caseHistoryScan_images"></div>
+                    <div id="caseHistoryScan_button" class="fileupload">
+                        <input type="file" id="caseHistoryScan_1" class="isDisabled" name="attachment" onchange="doUploadFile(this,'caseHistoryScan')">
+                        <a href="javascript:;">点击选择图片</a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="input_box_title"><span>长护待遇申请表</span></div>
+                <div class="clear">
+                    <div class="imageBox" id="applicationFormScan_images"></div>
+                    <div id="applicationFormScan_button" class="fileupload">
+                        <input type="file" id="applicationFormScan_1" class="isDisabled" name="attachment" onchange="doUploadFile(this,'applicationFormScan')">
+                        <a href="javascript:;">点击选择图片</a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="input_box_title"><span>代理人身份证附件</span></div>
+                <div class="clear">
+                    <div class="imageBox" id="deputyIdCardScan_images"></div>
+                    <div id="deputyIdCardScan_button" class="fileupload">
+                        <input type="file" id="deputyIdCardScan_1" class="isDisabled" name="attachment" onchange="doUploadFile(this,'deputyIdCardScan')">
+                        <a href="javascript:;">点击选择图片</a>
+                    </div>
+                </div>
+            </div>
+            <span><a type="button" id="go_last_3" class="easyui-linkbutton" onclick="nextStep(2)">上一步</a></span>
+            <span><a type="button" id="go_next_3" class="easyui-linkbutton" onclick="doSave()">提交</a></span>
+        </div>
+        <div style="display:none">
+            <div id="eloamWindow">
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../../js/util/ajaxfileupload.js"></script>
+<script type="text/javascript" src="../../js/util/WdatePicker.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/validate.js"></script>
+<script type="text/javascript" src="../../js/treatmentApply/treatmentCommon.js"></script>
+<!-- <script type="text/javascript" src="../../js/treatmentApply/eloamPlugin.js"></script> -->
+<script>
+$(function() {
+    clearAreaInfo("#province", "#city", "#area"); //初始化省市区下拉框
+    getAreaData("#province", "#city", "#area"); //初始化省市区数据
+    $("#isTaskDeadline").combobox("select", "0");
+    //申办类别为非全日制时显示亲属照顾模块
+    $(".isRelativeCared").hide();
+    $("#bidType").combobox({
+        onSelect: function() {
+            if ($("input[name=bidType]").val() == 32) {
+                $(".isRelativeCared").show();
+            } else {
+                $(".isRelativeCared").hide();
+            }
+        }
+    });
+
+    //动态查询请求机构名称
+    function getDisease() {
+        $("#disease").combobox({
+            delay: 1000,
+            onChange: function(newValue, oldValue) {
+                if (!newValue) {
+                    return;
+                }
+                var url = systemServiceUrl + "/api/v1/disease/list";
+                var name = newValue;
+                var obj = {
+                    name: name,
+                    page: 1,
+                    pageSize: 10
+                };
+                console.log('newvalue:' + newValue)
+                sendAjax(url, "get", obj, function(successdata) {
+                    if (successdata.status == 200) {
+                        if (successdata.datas.length > 0) {
+                            var inputValue = $("input[name=disease]").val();
+                            var isValueOk = false;
+                            $.each(successdata.datas, function(index, value) {
+                                if (value.name == inputValue) {
+                                    isValueOk = true;
+                                }
+                            });
+                            if (isValueOk) {
+                                return;
+                            }
+                            $('#disease').combobox({
+                                data: successdata.datas,
+                                textField: 'name',
+                                valueField: 'name',
+                            });
+                            $('#disease').combobox("setText", newValue);
+                            //getDisease();
+                        }
+                    } else {
+                        //								$('#disease').combobox({
+                        //									onChange: function(newValue, oldValue) {}
+                        //								});
+                    }
+                });
+            }
+        });
+    }
+    getDisease();
+
+});
+var goSecondStep = false; //能否进行第二部
+function doSearch() {
+    if (!$("#searchInsuredPersonName").validatebox("isValid")) {
+        LayWin.alert("请输入参保人姓名！", {
+            title: '警告'
+        });
+        return;
+    }
+    if (!$("#idCard").validatebox("isValid")) {
+        // $.messager.alert('警告', "请输入正确格式的身份证！");
+        LayWin.alert("请输入正确格式的身份证！", {
+            title: '警告'
+        });
+        return;
+    }
+    goSecondStep = false;
+    $('#First_step_1 input').val('');
+    $('.activeDiv input').val('');
+    $(".imageBox").html("");
+    clearAreaInfo("#province", "#city", "#area"); //初始化省市区下拉框
+    getAreaData("#province", "#city", "#area");
+    loadDictionary();
+    $("#isTaskDeadline").combobox("select", "0");
+    var url = portalServiceUrl + "/api/v1/insuredPerson/" + $("input[name=idCard]").val() + "/and/" + $("input[name=insuredPersonName]").val();
+    sendAjax(url, "get", "", loadSuccess);
+    comboboxSelected(); //同步下拉框和value
+    //}
+}
+
+function loadSuccess(msg) {
+    console.log(msg);
+    if (msg.status === 404 || msg.status === 408 || msg.status === 500) {
+        // $.messager.alert('警告', msg.message);
+        LayWin.alert(msg.message, {
+            title: '警告'
+        });
+        goSecondStep = false;
+        return false;
+    }
+    // if(msg.datas.errorReason) {
+    // 	//$.messager.alert('警告', "错误原因：" + msg.datas.errorReason);
+    // 	LayWin.alert("错误原因：" + msg.datas.errorReason, { title: '警告' });
+    // 	goSecondStep = false;
+    // 	return;
+    // }
+
+    data = msg.datas;
+    $("input[name='version']").val(data.version); //并发控制	
+    goSecondStep = true;
+
+    activeInput(); //激活input输入
+    $("#go_next_3").linkbutton('enable');
+
+    $("input[name='birthday']").val(data.birthday);
+    $("input[name='idCard']").val(data.idCard);
+    $("input[name='insuredPersonName']").val(data.insuredPersonName);
+
+    $("input[name='insuredPersonGender']").val(data.insuredPersonGender);
+    $("input[name='nation']").val(data.nation);
+    $("input[name='securityNumber']").val(data.securityNumber);
+    $("input[name='securityPersonalNumber']").val(data.securityPersonalNumber);
+
+    $("input[name='address']").val(data.address);
+    $('#province').combobox('select', data.provinceCode);
+    $('#city').combobox('select', data.cityCode);
+    $('#area').combobox('select', data.areaCode);
+
+    $("input[name='educationid']").val(data.educationid);
+    $("input[name='email']").val(data.email);
+    $("input[name='insuredPersonCode']").val(data.insuredPersonCode);
+    $("input[name='insuredPersonid']").val(data.insuredPersonid);
+    $("input[name='married']").val(data.married);
+
+    $("input[name='orgCode']").val(data.orgCode);
+
+    $("input[name='mobile']").val(data.mobile);
+    $("input[name='occupationid']").val(data.occupationid);
+    $("input[name='orgName']").val(data.orgName);
+    $("input[name='politicsid']").val(data.politicsid);
+    $("input[name='siArea']").val(data.siArea);
+
+    comboboxSelected(); //同步下拉框和value
+}
+//最后的提交功能
+function doSave() {
+    //判断图片，除病例附件外都为必填
+    if (!$("input[name=securityNumberScan]").val()) {
+        // $.messager.alert("警告", "请上传社会保障卡扫描件");
+        LayWin.alert("请上传社会保障卡扫描件", {
+            title: '警告'
+        });
+        return;
+    }
+    if (!$("input[name=idCardScan]").val()) {
+        //$.messager.alert("警告", "请上传身份证扫描件");
+        LayWin.alert("请上传身份证扫描件", {
+            title: '警告'
+        });
+        return;
+    }
+    if (!$("input[name=applicationFormScan]").val()) {
+        //$.messager.alert("警告", "请上传长护待遇申请表");
+        LayWin.alert("请上传长护待遇申请表", {
+            title: '警告'
+        });
+        return;
+    }
+    if (!$("input[name=deputyIdCardScan]").val()) {
+        //$.messager.alert("警告", "请上传代理人身份证附件");
+        LayWin.alert("请上传代理人身份证附件", {
+            title: '警告'
+        });
+        return;
+    }
+    $.messager.confirm('确认', '确认提交吗？', function(r) {
+        if (r) {
+            saveFunction();
+        }
+    });
+
+}
+
+function loadEloam() {
+    var url = '../treatmentApply/eloamPlugin.html';
+    $('#eloam_iframe')[0].src = url;
+    $('#eloamDiv').window('open');
+}
+
+function saveFunction() {
+    sendAjax(portalServiceUrl + "/api/v1/treatmentApplication", "post", $("#treatmentApply").serialize(), function(data) {
+        if (data.status == 200) {
+            $("#go_next_3").linkbutton('disable');
+            $("#go_next_3").removeAttr("onclick");
+            disabledInput();
+            $(".removeImg").remove();
+            //$.messager.alert("提示", data.message);
+            $.messager.show({
+                title: '提示',
+                msg: data.message,
+                timeout: 8000
+            });
+        } else if (data.status == 500) {
+            //$.messager.alert("提示", "提交失败！500错误！");
+            LayWin.alert("提交失败！", {
+                title: '警告'
+            });
+            console.log(data);
+        } else {
+            // $.messager.alert("提示", data.message);
+            LayWin.alert(data.message, {
+                title: '警告'
+            });
+        }
+    });
+
+}
+
+function nextStep(n) {
+    var result;
+    if (n === 1) {
+        $("#First_step_0").show();
+        $("#First_step_1").show();
+        $("#Second_step").hide();
+        $("#Third_step").hide();
+    } else if (n === 2) {
+        if (!goSecondStep) {
+            $.messager.alert("警告", "所查数据存在错误，无法进行下一步！");
+            return;
+        }
+        if (!$("input[name=address]").val()) {
+            $.messager.alert("警告", "请输入家庭住址");
+            return;
+        }
+        if (!$("input[name=mobile]").val()) {
+            $.messager.alert("警告", "请输入联系方式");
+            return;
+        }
+
+        //				if(!$("input[name=politicsid]").val()) {
+        //					$.messager.alert("警告", "请选择政治面貌");
+        //					return;
+        //				}
+        //				if(!$("input[name=married]").val()) {
+        //					$.messager.alert("警告", "请选择婚姻状况");
+        //					return;
+        //				}
+        //				if(!$("input[name=educationid]").val()) {
+        //					$.messager.alert("警告", "请选择文化程度");
+        //					return;
+        //				}
+        //				if(!$("input[name=occupationid]").val()) {
+        //					$.messager.alert("警告", "请选择所属职业");
+        //					return;
+        //				}
+        //				if(!$("input[name=orgName]").val()) {
+        //					$.messager.alert("警告", "请输入单位名称");
+        //					return;
+        //				}
+        if (!$("input[name=areaCode]").val()) {
+            $.messager.alert("警告", "请选择省市区信息（具体到区）");
+            return;
+        }
+
+        result = $('#First_step_1').form('validate');
+        if (!result) {
+            return;
+        }
+
+        $("#First_step_0").hide();
+        $("#First_step_1").hide();
+        $("#Second_step").show();
+        $("#Third_step").hide();
+    } else if (n === 3) {
+        if (!$("input[name=deputyName]").val()) {
+            $.messager.alert("警告", "请输入代理人姓名！");
+            return;
+        }
+        if (!$("input[name=deputyIdCard]").val()) {
+            $.messager.alert("警告", "请输入代理人身份证号码！");
+            return;
+        }
+        if (!$("input[name=deputyMobile]").val()) {
+            $.messager.alert("警告", "请输入代理人联系方式！");
+            return;
+        }
+        if (!$("input[name=deputyAddress]").val()) {
+            $.messager.alert("警告", "请输入代理人家庭住址！");
+            return;
+        }
+        if (!$("input[name=bidType]").val()) {
+            $.messager.alert("警告", "请选择申办类型！");
+            return;
+        }
+        if (!$("input[name=disease]").val()) {
+            $.messager.alert("警告", "请选择病种！");
+            return;
+        }
+        if (!$("input[name=isTaskDeadline]").val()) {
+            $.messager.alert("警告", "请选择是否紧急！");
+            return;
+        }
+        //				if( $("textarea[name=diseaseCause]").val().length >= 100 ){
+        //					$.messager.alert("警告", "请输入100字以内的病情原因！");
+        //					return;
+        //				}
+        if (!$("#diseaseCause").validatebox("isValid")) {
+            LayWin.alert("请输入100字内的病情原因！", {
+                title: '警告'
+            });
+            return;
+        }
+        result = $('#Second_step').form('validate');
+        if (!result) {
+            return;
+        }
+        $("#First_step_0").hide();
+        $("#First_step_1").hide();
+        $("#Second_step").hide();
+        $("#Third_step").show();
+    }
+}
+//提交成功后失活input框
+function disabledInput() {
+    $('.activeDiv input').attr("disabled", "disabled");
+    $('area').attr("readonly", "true");
+    $('.activeDiv .easyui-combobox').combobox("disable");
+}
+//点查询后激活input框
+function activeInput() {
+    $('.activeDiv input').removeAttr("disabled");
+    $('area').removeAttr("readonly");
+    $('.activeDiv .easyui-combobox').combobox("enable");
+}
+
+function doUploadFile(node, name) {
+    //上传图片，获取本地url，成功返回上传id,多图片上传id拼接，放入form
+    fileUpLoad(node, name);
+    //替换按钮加载图片，增加删除图片事件
+    //增加删除事件
+}
+
+//事件委托删除图片
+$("#Third_step").on("click", ".removeImg", function() {
+    var inputID = $(this).attr("data-imgId");
+    var inputName = $(this).attr("data-inputName");
+    var inputValue = $("input[name=" + inputName + "]").val();
+    var ids = inputValue.split(",");
+    var newID = [];
+    $.each(ids, function(index, value) {
+        if (inputID != value) {
+            newID.push(value);
+        }
+    });
+    var returnValue = "";
+    $.each(newID, function(index, value) {
+        returnValue += value;
+        if (index < newID.length - 1) {
+            returnValue += ",";
+        }
+    });
+    $("input[name=" + inputName + "]").val(returnValue);
+    $("div[data-singleImg=" + inputID + "]").remove();
+
+    //发送请求，删除图片
+    var url = portalServiceUrl + "/api/v1/treatmentApplicationAttachement/" + inputID;
+    sendAjax(url, "delete", "", function(successdata) {
+        console.log(successdata.message, successdata.status);
+    });
+});
+</script>
+
+</html>

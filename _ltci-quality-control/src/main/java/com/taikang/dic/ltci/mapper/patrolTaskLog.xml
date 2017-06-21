@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.PatrolTaskLogDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.PatrolTaskLogDO" >
+    <id column="patrol_task_logid" property="patrolTaskLogid" jdbcType="VARCHAR" />
+    <result column="task_category" property="taskCategory" jdbcType="INTEGER" />
+    <result column="task_level" property="taskLevel" jdbcType="INTEGER" />
+    <result column="task_state" property="taskState" jdbcType="INTEGER" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="patrol_task_id" property="patrolTaskId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    patrol_task_logid, task_category, task_level, task_state, operated_by, operated_time, 
+    patrol_task_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.PatrolTaskLogDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ltci_patrol_task_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ltci_patrol_task_log
+    where patrol_task_logid = #{patrolTaskLogid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_patrol_task_log
+    where patrol_task_logid = #{patrolTaskLogid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.PatrolTaskLogDOExample" >
+    delete from ltci_patrol_task_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.PatrolTaskLogDO" >
+    insert into ltci_patrol_task_log (patrol_task_logid, task_category, task_level, 
+      task_state, operated_by, operated_time, 
+      patrol_task_id)
+    values (#{patrolTaskLogid,jdbcType=VARCHAR}, #{taskCategory,jdbcType=INTEGER}, #{taskLevel,jdbcType=INTEGER}, 
+      #{taskState,jdbcType=INTEGER}, #{operatedBy,jdbcType=VARCHAR}, #{operatedTime,jdbcType=TIMESTAMP}, 
+      #{patrolTaskId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.PatrolTaskLogDO" >
+    insert into ltci_patrol_task_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="patrolTaskLogid != null" >
+        patrol_task_logid,
+      </if>
+      <if test="taskCategory != null" >
+        task_category,
+      </if>
+      <if test="taskLevel != null" >
+        task_level,
+      </if>
+      <if test="taskState != null" >
+        task_state,
+      </if>
+      <if test="operatedBy != null" >
+        operated_by,
+      </if>
+      <if test="operatedTime != null" >
+        operated_time,
+      </if>
+      <if test="patrolTaskId != null" >
+        patrol_task_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="patrolTaskLogid != null" >
+        #{patrolTaskLogid,jdbcType=VARCHAR},
+      </if>
+      <if test="taskCategory != null" >
+        #{taskCategory,jdbcType=INTEGER},
+      </if>
+      <if test="taskLevel != null" >
+        #{taskLevel,jdbcType=INTEGER},
+      </if>
+      <if test="taskState != null" >
+        #{taskState,jdbcType=INTEGER},
+      </if>
+      <if test="operatedBy != null" >
+        #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="patrolTaskId != null" >
+        #{patrolTaskId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.PatrolTaskLogDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_patrol_task_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_patrol_task_log
+    <set >
+      <if test="record.patrolTaskLogid != null" >
+        patrol_task_logid = #{record.patrolTaskLogid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskCategory != null" >
+        task_category = #{record.taskCategory,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskLevel != null" >
+        task_level = #{record.taskLevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskState != null" >
+        task_state = #{record.taskState,jdbcType=INTEGER},
+      </if>
+      <if test="record.operatedBy != null" >
+        operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedTime != null" >
+        operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.patrolTaskId != null" >
+        patrol_task_id = #{record.patrolTaskId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_patrol_task_log
+    set patrol_task_logid = #{record.patrolTaskLogid,jdbcType=VARCHAR},
+      task_category = #{record.taskCategory,jdbcType=INTEGER},
+      task_level = #{record.taskLevel,jdbcType=INTEGER},
+      task_state = #{record.taskState,jdbcType=INTEGER},
+      operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      patrol_task_id = #{record.patrolTaskId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.PatrolTaskLogDO" >
+    update ltci_patrol_task_log
+    <set >
+      <if test="taskCategory != null" >
+        task_category = #{taskCategory,jdbcType=INTEGER},
+      </if>
+      <if test="taskLevel != null" >
+        task_level = #{taskLevel,jdbcType=INTEGER},
+      </if>
+      <if test="taskState != null" >
+        task_state = #{taskState,jdbcType=INTEGER},
+      </if>
+      <if test="operatedBy != null" >
+        operated_by = #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="patrolTaskId != null" >
+        patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where patrol_task_logid = #{patrolTaskLogid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.PatrolTaskLogDO" >
+    update ltci_patrol_task_log
+    set task_category = #{taskCategory,jdbcType=INTEGER},
+      task_level = #{taskLevel,jdbcType=INTEGER},
+      task_state = #{taskState,jdbcType=INTEGER},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR}
+    where patrol_task_logid = #{patrolTaskLogid,jdbcType=VARCHAR}
+  </update>
+</mapper>

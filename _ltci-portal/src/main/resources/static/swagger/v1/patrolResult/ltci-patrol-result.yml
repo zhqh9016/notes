@@ -1,0 +1,37 @@
+put:
+  summary: 巡查结果审核
+  description: 返回数值类型（大于0为成功）。
+  operationId: updateAuditState
+  parameters:
+  - name: patrolTaskId
+    in: formData
+    type: string
+    format: string
+    required: false
+    description: 巡查任务ID[批量操作ID用逗号分开]
+  - name: auditState
+    in: formData
+    type: integer
+    format: int64
+    required: false
+    description: 审核状态
+  - name: rejectionReason
+    in: formData
+    type: string
+    format: string
+    required: false
+    description: 审核不通过原因
+  tags:
+  - patrolResult
+  responses:
+    200:
+      description: 编辑成功
+      schema:
+        type: array
+        items:
+          $ref: "../../ltci-system-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"
+        

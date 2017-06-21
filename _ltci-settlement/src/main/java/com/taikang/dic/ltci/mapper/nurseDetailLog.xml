@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.INurseDetailLogDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.dao.INurseDetailLogDAO" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="org_code" property="orgCode" jdbcType="VARCHAR" />
+    <result column="org_name" property="orgName" jdbcType="VARCHAR" />
+    <result column="recordid" property="recordid" jdbcType="VARCHAR" />
+    <result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
+    <result column="detail_num" property="detailNum" jdbcType="INTEGER" />
+    <result column="exception_flag" property="exceptionFlag" jdbcType="INTEGER" />
+    <result column="business_serialid" property="businessSerialid" jdbcType="VARCHAR" />
+    <result column="sys_code" property="sysCode" jdbcType="VARCHAR" />
+    <result column="module_code" property="moduleCode" jdbcType="VARCHAR" />
+    <result column="node_ip" property="nodeIp" jdbcType="VARCHAR" />
+    <result column="message_code" property="messageCode" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.taikang.dic.ltci.model.NurseDetailLogDO" extends="BaseResultMap" >
+    <result column="message_content" property="messageContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, org_code, org_name, recordid, send_time, detail_num, exception_flag, business_serialid, 
+    sys_code, module_code, node_ip, message_code, created_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    message_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.taikang.dic.ltci.model.NurseDetailLogDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ltci_nurse_fee_detail_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.NurseDetailLogDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ltci_nurse_fee_detail_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ltci_nurse_fee_detail_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_nurse_fee_detail_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.NurseDetailLogDOExample" >
+    delete from ltci_nurse_fee_detail_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.NurseDetailLogDO" >
+    insert into ltci_nurse_fee_detail_log (ID, org_code, org_name, 
+      recordid, send_time, detail_num, 
+      exception_flag, business_serialid, sys_code, 
+      module_code, node_ip, message_code, 
+      created_time, message_content)
+    values (#{id,jdbcType=VARCHAR}, #{orgCode,jdbcType=VARCHAR}, #{orgName,jdbcType=VARCHAR}, 
+      #{recordid,jdbcType=VARCHAR}, #{sendTime,jdbcType=TIMESTAMP}, #{detailNum,jdbcType=INTEGER}, 
+      #{exceptionFlag,jdbcType=INTEGER}, #{businessSerialid,jdbcType=VARCHAR}, #{sysCode,jdbcType=VARCHAR}, 
+      #{moduleCode,jdbcType=VARCHAR}, #{nodeIp,jdbcType=VARCHAR}, #{messageCode,jdbcType=VARCHAR}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{messageContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.NurseDetailLogDO" >
+    insert into ltci_nurse_fee_detail_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="orgCode != null" >
+        org_code,
+      </if>
+      <if test="orgName != null" >
+        org_name,
+      </if>
+      <if test="recordid != null" >
+        recordid,
+      </if>
+      <if test="sendTime != null" >
+        send_time,
+      </if>
+      <if test="detailNum != null" >
+        detail_num,
+      </if>
+      <if test="exceptionFlag != null" >
+        exception_flag,
+      </if>
+      <if test="businessSerialid != null" >
+        business_serialid,
+      </if>
+      <if test="sysCode != null" >
+        sys_code,
+      </if>
+      <if test="moduleCode != null" >
+        module_code,
+      </if>
+      <if test="nodeIp != null" >
+        node_ip,
+      </if>
+      <if test="messageCode != null" >
+        message_code,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="messageContent != null" >
+        message_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null" >
+        #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null" >
+        #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="recordid != null" >
+        #{recordid,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="detailNum != null" >
+        #{detailNum,jdbcType=INTEGER},
+      </if>
+      <if test="exceptionFlag != null" >
+        #{exceptionFlag,jdbcType=INTEGER},
+      </if>
+      <if test="businessSerialid != null" >
+        #{businessSerialid,jdbcType=VARCHAR},
+      </if>
+      <if test="sysCode != null" >
+        #{sysCode,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleCode != null" >
+        #{moduleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeIp != null" >
+        #{nodeIp,jdbcType=VARCHAR},
+      </if>
+      <if test="messageCode != null" >
+        #{messageCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="messageContent != null" >
+        #{messageContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.NurseDetailLogDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_nurse_fee_detail_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_nurse_fee_detail_log
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgCode != null" >
+        org_code = #{record.orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgName != null" >
+        org_name = #{record.orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recordid != null" >
+        recordid = #{record.recordid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sendTime != null" >
+        send_time = #{record.sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.detailNum != null" >
+        detail_num = #{record.detailNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.exceptionFlag != null" >
+        exception_flag = #{record.exceptionFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.businessSerialid != null" >
+        business_serialid = #{record.businessSerialid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysCode != null" >
+        sys_code = #{record.sysCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.moduleCode != null" >
+        module_code = #{record.moduleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nodeIp != null" >
+        node_ip = #{record.nodeIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.messageCode != null" >
+        message_code = #{record.messageCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null" >
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.messageContent != null" >
+        message_content = #{record.messageContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update ltci_nurse_fee_detail_log
+    set ID = #{record.id,jdbcType=VARCHAR},
+      org_code = #{record.orgCode,jdbcType=VARCHAR},
+      org_name = #{record.orgName,jdbcType=VARCHAR},
+      recordid = #{record.recordid,jdbcType=VARCHAR},
+      send_time = #{record.sendTime,jdbcType=TIMESTAMP},
+      detail_num = #{record.detailNum,jdbcType=INTEGER},
+      exception_flag = #{record.exceptionFlag,jdbcType=INTEGER},
+      business_serialid = #{record.businessSerialid,jdbcType=VARCHAR},
+      sys_code = #{record.sysCode,jdbcType=VARCHAR},
+      module_code = #{record.moduleCode,jdbcType=VARCHAR},
+      node_ip = #{record.nodeIp,jdbcType=VARCHAR},
+      message_code = #{record.messageCode,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      message_content = #{record.messageContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_nurse_fee_detail_log
+    set ID = #{record.id,jdbcType=VARCHAR},
+      org_code = #{record.orgCode,jdbcType=VARCHAR},
+      org_name = #{record.orgName,jdbcType=VARCHAR},
+      recordid = #{record.recordid,jdbcType=VARCHAR},
+      send_time = #{record.sendTime,jdbcType=TIMESTAMP},
+      detail_num = #{record.detailNum,jdbcType=INTEGER},
+      exception_flag = #{record.exceptionFlag,jdbcType=INTEGER},
+      business_serialid = #{record.businessSerialid,jdbcType=VARCHAR},
+      sys_code = #{record.sysCode,jdbcType=VARCHAR},
+      module_code = #{record.moduleCode,jdbcType=VARCHAR},
+      node_ip = #{record.nodeIp,jdbcType=VARCHAR},
+      message_code = #{record.messageCode,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.NurseDetailLogDO" >
+    update ltci_nurse_fee_detail_log
+    <set >
+      <if test="orgCode != null" >
+        org_code = #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null" >
+        org_name = #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="recordid != null" >
+        recordid = #{recordid,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        send_time = #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="detailNum != null" >
+        detail_num = #{detailNum,jdbcType=INTEGER},
+      </if>
+      <if test="exceptionFlag != null" >
+        exception_flag = #{exceptionFlag,jdbcType=INTEGER},
+      </if>
+      <if test="businessSerialid != null" >
+        business_serialid = #{businessSerialid,jdbcType=VARCHAR},
+      </if>
+      <if test="sysCode != null" >
+        sys_code = #{sysCode,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleCode != null" >
+        module_code = #{moduleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeIp != null" >
+        node_ip = #{nodeIp,jdbcType=VARCHAR},
+      </if>
+      <if test="messageCode != null" >
+        message_code = #{messageCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="messageContent != null" >
+        message_content = #{messageContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.taikang.dic.ltci.model.NurseDetailLogDO" >
+    update ltci_nurse_fee_detail_log
+    set org_code = #{orgCode,jdbcType=VARCHAR},
+      org_name = #{orgName,jdbcType=VARCHAR},
+      recordid = #{recordid,jdbcType=VARCHAR},
+      send_time = #{sendTime,jdbcType=TIMESTAMP},
+      detail_num = #{detailNum,jdbcType=INTEGER},
+      exception_flag = #{exceptionFlag,jdbcType=INTEGER},
+      business_serialid = #{businessSerialid,jdbcType=VARCHAR},
+      sys_code = #{sysCode,jdbcType=VARCHAR},
+      module_code = #{moduleCode,jdbcType=VARCHAR},
+      node_ip = #{nodeIp,jdbcType=VARCHAR},
+      message_code = #{messageCode,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      message_content = #{messageContent,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.NurseDetailLogDO" >
+    update ltci_nurse_fee_detail_log
+    set org_code = #{orgCode,jdbcType=VARCHAR},
+      org_name = #{orgName,jdbcType=VARCHAR},
+      recordid = #{recordid,jdbcType=VARCHAR},
+      send_time = #{sendTime,jdbcType=TIMESTAMP},
+      detail_num = #{detailNum,jdbcType=INTEGER},
+      exception_flag = #{exceptionFlag,jdbcType=INTEGER},
+      business_serialid = #{businessSerialid,jdbcType=VARCHAR},
+      sys_code = #{sysCode,jdbcType=VARCHAR},
+      module_code = #{moduleCode,jdbcType=VARCHAR},
+      node_ip = #{nodeIp,jdbcType=VARCHAR},
+      message_code = #{messageCode,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

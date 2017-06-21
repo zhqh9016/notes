@@ -1,0 +1,40 @@
+delete:
+  tags:
+  - patrolExecute
+  summary: 任务执行附件结果删除
+  description: 任务执行附件结果删除。
+  operationId: deleteExecuteFile
+  parameters: 
+    - name: fileid
+      in: path
+      required: true
+      type: string
+      description: 任务执行结果资源ID 
+    - name: suffix
+      in: path
+      required: true
+      type: string
+      description: 文件后缀（例：jpg）
+
+
+  responses:
+      200:
+        description: 附件上传成功
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+
+
+
+
+
+
+
+
+
+
+
+

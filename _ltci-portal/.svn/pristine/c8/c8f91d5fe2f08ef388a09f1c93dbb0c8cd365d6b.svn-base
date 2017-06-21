@@ -1,0 +1,50 @@
+put: 
+  tags:
+  - expertEvaluateManage
+  summary: 专家评定列表页面--提交
+  description: 提交专家评估细节的接口
+  operationId: putExpertEvaluate
+  parameters: 
+    - name: expertEvaluateCode
+      in: formData
+      description: 专家评估表code
+      required: true
+      type: string
+    - name: accessoryAddress
+      in: formData
+      description: 专家评估附件地址
+      required: true
+      type: string      
+    - name: evaluateContent
+      in: formData
+      description: 专家评估细节大json串
+      required: true
+      type: string
+    - name: fraction
+      in: formData
+      description: 专家评估的分数
+      required: true
+      type: integer
+      format: int32  
+    - name: opinion
+      in: formData
+      description: 专家意见
+      required: true
+      type: string        
+  responses:
+      200:
+        description: 查询成功
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+
+
+
+
+
+
+
+

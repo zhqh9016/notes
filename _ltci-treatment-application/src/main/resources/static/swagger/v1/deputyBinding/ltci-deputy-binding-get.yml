@@ -1,0 +1,39 @@
+post: 
+  tags:
+  - deputyBinding 
+  summary: 代理人绑定状态查询接口
+  description: 测试数据(idCard:37241618763519,securityNumber:12,deputyIdCard:420801199205112719)
+  operationId: getDeputyBindingStatus
+  parameters: 
+    - name: idCard
+      in: formData
+      description: 用户身份证号码
+      required: true
+      type: string
+    - name: securityNumber
+      in: formData
+      description: 参保人社保卡号
+      required: true
+      type: string 
+    - name: deputyIdCard
+      in: formData
+      description: 代理人身份证号
+      required: true
+      type: string 
+  responses:
+      200:
+        description: 查询成功
+        schema:
+          $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"
+
+
+
+
+
+
+
+

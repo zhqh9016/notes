@@ -1,0 +1,635 @@
+<html>
+
+<head>
+    <title>定点机构确认</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="renderer" content="webkit" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/common.css" type="text/css">
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/detailStyle.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+
+<body>
+    <div id="app" style="height: 100%;">
+        <table width="100%" id="userList" toolbar="#userListtb">
+        </table>
+        <div id="userListtb">
+            <div name="searchColums" id="searchColums">
+                <input id="isShowSearchId" type="hidden" value="false" />
+                <input id="_sqlbuilder" name="sqlbuilder" type="hidden" />
+                <form id="userListForm">
+                    <span class="inputLable">
+                            <span class="inputLableText" title="name">申请机构名称：</span>
+                    <input type="text" class="inuptxt" name="agencyName" />
+                    </span>
+                    <span class="inputLable">
+                            <span class="inputLableText" title="name">定点机构类别：</span>
+                    <input type="text" id="agencyLevel" data-dictionary="agencyLevel" name="agencyLevel" class="easyui-combobox dictionary query-condition" />
+                    </span>
+                    <span class="inputLable">
+                            <span class="inputLableText" title="name">定点服务机构类型：</span>
+                    <input type="text" id="agencyServiceType" data-dictionary="agencyServiceType" name="agencyServiceType" class="easyui-combobox dictionary multiple" />
+                    </span>
+                    <span class="inputLable">
+                            <span class="inputLableText" title="name">机构类型：</span>
+                    <input type="text" id="agencyType" data-dictionary="agencyType" name="agencyType" class="easyui-combobox dictionary multiple" />
+                    </span>
+                    <span class="inputLable"><!---->
+                            <span class="inputLableText" title="name">确认状态：</span>
+                    <input type="text" id="agencyState" data-dictionary="agencyState" name="agencyState" data-value="2,4,5" class="easyui-combobox dictionary query-condition" />
+                    </span>
+                    <span class="inputLable">
+                            <span class="inputLableText" title="name">经办开始日期：</span>
+                    <input type="text" id="operatedBeginDate" name="operatedBeginDate" class="Wdate" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'operatedEndDate\')}'})" />
+                    </span>
+                    <span class="inputLable">
+                            <span class="inputLableText" title="name">经办结束日期：</span>
+                    <input type="text" id="operatedEndDate" name="operatedEndDate" class="Wdate" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'operatedBeginDate\')}'})" />
+                    </span>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-search" onclick="doSearch()">查询</a>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconcls="icon-reload" onclick="resetSearch()">重置</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--受理详情页面-->
+    <div style="display: block;">
+        <div id="showInfo">
+            <div class="mainTitle">机构基本信息</div>
+            <div class="mainWapper">
+                <table class="info_box">
+                    <!--<tr><th>Header</th></tr>-->
+                    <tr>
+                        <td class="info_name">申请机构名称：</td>
+                        <td class="info_value" id="agencyNames"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">行政区：</td>
+                        <td class="info_value" id="areaCode"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">地址：</td>
+                        <td class="info_value" id="agencyAddressDetail"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">所有制形式：</td>
+                        <td class="info_value" id="ownershipForm"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">床位数：</td>
+                        <td class="info_value" id="agencyBedNum"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">面积：</td>
+                        <td class="info_value" id="constructionArea"></td>
+                    </tr>
+                </table>
+                <div>
+                    <div class="imgTitle">执业许可证：</div>
+                    <div id="idCardScan_images" data-accessoryType="1" class="imgBox"></div>
+                </div>
+            </div>
+            <div class="mainTitle">法人及长护负责人信息</div>
+            <div class="mainWapper">
+                <table class="info_box">
+                    <!--<tr><th>Header</th></tr>-->
+                    <tr>
+                        <td class="info_name">法人代表：</td>
+                        <td class="info_value" id="legalRepresentative"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">联系电话：</td>
+                        <td class="info_value" id="legalPhoneNo"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">法人身份证号码：</td>
+                        <td class="info_value" id="legalIdCard"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">长护负责人：</td>
+                        <td class="info_value" id="agencyServiceContact"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">联系电话：</td>
+                        <td class="info_value" id="agencyContactPhone"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">邮箱：</td>
+                        <td class="info_value" id="agencyContactEmail"></td>
+                    </tr>
+                </table>
+                <div>
+                    <div class="imgTitle">法人证明文件：</div>
+                    <div id="testImg" class="imgBox" data-accessoryType="2"></div>
+                </div>
+            </div>
+            <div class="mainTitle">服务信息</div>
+            <div class="mainWapper">
+                <table class="info_box">
+                    <!--<tr><th>Header</th></tr>-->
+                    <tr>
+                        <td class="info_name" style="text-align: center;"></td>
+                        <td class="info_name" style="text-align: center;">总人数</td>
+                        <td class="info_name" style="text-align: center;">高级职称</td>
+                        <td class="info_name" style="text-align: center;">中级职称</td>
+                        <td class="info_name" style="text-align: center;">初级职称</td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">执业医师</td>
+                        <td class="info_value_short" id="totalNumberDoctor"></td>
+                        <td class="info_value_short" id="advancedDoctorNum"></td>
+                        <td class="info_value_short" id="intermediateDoctorNum"></td>
+                        <td class="info_value_short" id="primaryDoctorNum"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">执业护士</td>
+                        <td class="info_value_short" id="totalNumberNurse"></td>
+                        <td class="info_value_short" id="advancedNurseNum"></td>
+                        <td class="info_value_short" id="intermediateNurseNum"></td>
+                        <td class="info_value_short" id="primaryNurseNum"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">护理员</td>
+                        <td class="info_value_short" id="totalNumberCarer"></td>
+                        <td class="info_value_short" id="advancedCarerNum"></td>
+                        <td class="info_value_short" id="intermediateCarerNum"></td>
+                        <td class="info_value_short" id="primaryCarerNum"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">其他</td>
+                        <td class="info_value_short" id="totalNumberMisc"></td>
+                        <td class="info_value_short" id="advancedMiscNum"></td>
+                        <td class="info_value_short" id="intermediateMiscNum"></td>
+                        <td class="info_value_short" id="primaryMiscNum"></td>
+                    </tr>
+                    <tr>
+                        <td class="info_name">合计</td>
+                        <td class="info_value_short" id="totalNum"></td>
+                        <td class="info_value_short" id="totalNumAdvanced"></td>
+                        <td class="info_value_short" id="totalNumIntermediate"></td>
+                        <td class="info_value_short" id="totalNumPrimary"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="mainTitle">其他证明文件</div>
+            <div class="mainWapper">
+                <div>
+                    <div class="imgTitle">单位职工花名册：</div>
+                    <div id="testImg" class="imgBox" data-accessoryType="3"></div>
+                </div>
+                <div>
+                    <div class="imgTitle">房屋产权证书或租赁合同：</div>
+                    <div id="testImg" class="imgBox" data-accessoryType="4"></div>
+                </div>
+                <div>
+                    <div class="imgTitle">社保缴费凭证：</div>
+                    <div id="testImg" class="imgBox" data-accessoryType="5"></div>
+                </div>
+                <div>
+                    <div class="imgTitle">其他材料：</div>
+                    <div id="testImg" class="imgBox" data-accessoryType="6"></div>
+                </div>
+            </div>
+            <div id="dataShowDateInput" class="mainWapper" style="display: none;">
+                <span class="inputLable">
+                            <span class="imgTitle">机构编码：
+                            <span id="organizationcode"></span>
+                <!--<input type="text" id="acceptBeginDate" name="acceptBeginDates" disabled="true"/>-->
+                </span>
+                <br>
+                <span class="imgTitle">生效开始日期：
+                            <span id="acceptBeginDate"></span>
+                <!--<input type="text" id="acceptBeginDate" name="acceptBeginDates" disabled="true"/>-->
+                </span>
+                <br>
+                <span class="inputLable">
+                            <span class="imgTitle">生效结束日期：
+                                <span id="acceptEndDate"></span>
+                </span>
+                <!--<input type="text" id="acceptEndDate" name="acceptEndDates" disabled="true"/>-->
+                </span>
+            </div>
+            <div class="mainWapper" style="float: right;">
+                <div id="dataAdopt">
+                    <a href="javascript:;" class="easyui-linkbutton" style="display: ;" onclick="doAcceptData()">通过</a>
+                    <a href="javascript:;" class="easyui-linkbutton" style="display: ;" onclick="showRefuseAcceptInfo()">不通过</a>
+                </div>
+                <div id="dataShowDate" style="display: none;float: right;">
+                    <span class="inputLable">
+                            <span class="inputLableText" style="font-size: 14px; font-weight: bold;">机构编码：</span>
+                    <input type="text" id="agencyCodeInputs" name="agencyCodeInput" />
+                    </span>
+                    <br>
+                    <span class="inputLable">
+                            <span class="inputLableText" style="font-size: 14px; font-weight: bold;">生效开始日期：</span>
+                    <input type="text" id="doAcceptBeginDate" name="doAcceptBeginDates" class="Wdate" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'doAcceptEndDate\')}'})" />
+                    </span>
+                    <br>
+                    <span class="inputLable">
+                            <span class="inputLableText" style="font-size: 14px; font-weight: bold;">生效结束日期：</span>
+                    <input type="text" id="doAcceptEndDate" name="doAcceptEndDates" class="Wdate" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'doAcceptBeginDate\')}'})" />
+                    </span>
+                </div>
+                <div id="queding" style="display:none;">
+                    <a href="javascript:;" class="easyui-linkbutton" style="margin-top: 16px;margin-left:140 ;" onclick="doAccept()">确定通过</a>
+                    <a href="javascript:;" class="easyui-linkbutton" style="margin-top: 16px;float: right;" onclick="cancel1()">取消</a>
+                </div>
+                <br>
+                <div id="refuseAcceptInfo" style="display: none; margin-top: 16px;">
+                    <textarea style="resize:none" name="refuseAcceptReason" rows="6" cols="113" placeholder="请在此输入审核不通过原因"></textarea>
+                    <a href="javascript:;" class="easyui-linkbutton" style="margin-top: 16px;margin-left:660 ;" onclick="doRefuseAccept()">确认不通过</a>
+                    <a href="javascript:;" class="easyui-linkbutton" style="margin-top: 16px;float: right;" onclick="cancel()">取消</a>
+                </div>
+            </div>
+        </div>
+        <!--不通过理由显示-->
+        <div style="display:none;">
+            <div id="cause2" style="height:100%;padding:8;"></div>
+        </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/util/WdatePicker.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/validate.js"></script>
+<script type="text/javascript" src="../../js/organizationPersonnel/organizationConfirm.js"></script>
+<script>
+$('#showInfo').window({
+    title: '详情',
+    width: 900,
+    height: 450,
+    closed: true,
+    modal: true,
+    collapsible: false,
+    minimizable: false,
+    maximizable: false
+});
+
+$('#cause2').window({
+    title: '审核不通过原因',
+    width: 387,
+    height: 220,
+    closed: true,
+    modal: true,
+    collapsible: false,
+    minimizable: false,
+    maximizable: false
+});
+
+function doSearch() {
+    var agencyState = "2,4,5";
+    if ($("input[name=agencyState]").val()) {
+        agencyState = $("input[name=agencyState]").val();
+    }
+    var dsignatedAgencyType = arrayToStringBySymbol($("#agencyServiceType").combobox("getValues")); //定点服务机构类型(多选)
+    var agencyType = arrayToStringBySymbol($("#agencyType").combobox("getValues"));
+    TableObj.page = 1; //设置页码 必须
+    TableObj.pageSize = 10; //设置每页数据 必须
+    TableObj.query = { //查询条件
+        agencyName: $("input[name=agencyName]").val(), //机构名称
+        agencyLevel: $("input[name=agencyLevel]").val(), //定点机构类别
+        agencyServiceType: dsignatedAgencyType, //定点服务机构类型
+        agencyType: agencyType, //机构类型（多个逗号分隔）
+        agencyState: agencyState, //确认状态
+        operatedBeginDate: $("input[name=operatedBeginDate]").val(), //经办开始日期
+        operatedEndDate: $("input[name=operatedEndDate]").val(), //经办结束日期
+        page: TableObj.page,
+        pageSize: TableObj.pageSize,
+        actionType: 1
+    };
+    loadGridData(); //原来的 doLoading();
+}
+//查询
+/*function doLoading() {
+      var agencyState = "2,4,5"
+       if($("input[name=agencyState]").val()) {
+                 var agencyState = $("input[name=agencyState]").val();
+        }
+    var dsignatedAgencyType = arrayToStringBySymbol($("#agencyServiceType").combobox("getValues")); //定点服务机构类型(多选)
+    var agencyType = arrayToStringBySymbol($("#agencyType").combobox("getValues")); 
+var obj = {  
+            agencyName:   $("input[name=agencyName]").val(),//机构名称
+            agencyLevel:  $("input[name=agencyLevel]").val(),//定点机构类别
+            agencyServiceType:   dsignatedAgencyType,//定点服务机构类型
+            agencyType:         agencyType,//机构类型（多个逗号分隔）
+            agencyState:   agencyState, //$("input[name=agencyState]").val(),//确认状态
+            operatedBeginDate:  $("input[name=operatedBeginDate]").val(), //经办开始日期
+            operatedEndDate:    $("input[name=operatedEndDate]").val(), //经办结束日期
+            page:               TableObj.page,
+            pageSize:           TableObj.pageSize,
+            actionType:1
+}   
+sendAjax(portalServiceUrl + "/api/v1/agency/audit/list", "get", obj, function(data){    
+     gridLoadData('userList',data)  
+}); 
+}*/
+
+//清空重置详情页信息
+function resetInfo() {
+    $("#showInfo .info_value").html("");
+    $("#showInfo .imgBox").html("");
+    $("#showInfo .info_value_short").html("");
+    $("#refuseAcceptInfo").hide();
+    $("textarea[name=refuseAcceptReason]").val("");
+}
+//取消cancel
+function cancel() {
+    $('#refuseAcceptReason').val('');
+    $("#refuseAcceptInfo").hide();
+    $('#dataAdopt').show();
+
+}
+//取消cancel
+function cancel1() {
+    $("#refuseAcceptInfo").hide();
+    $("#dataAdopt").show();
+    $("#dataShowDate").hide();
+    $("#queding").hide();
+}
+
+//点击受理
+function accepteance(index) {
+    var num = 0,
+        serialNo = $('#userList').datagrid('getRows')[index];
+    var obj;
+    var url;
+    if (serialNo.agencyState == 5) {
+        $('#dataAdopt').hide();
+        $("#dataShowDate").hide();
+        $("#queding").hide();
+        $("#dataShowDateInput").hide();
+    } else if (serialNo.agencyState == 4) {
+        $('#organizationcode').html('');
+        $('#acceptBeginDate').html('');
+        $('#acceptEndDate').html('');
+        $('#organizationcode').html(serialNo.agencyCode.substr(6));
+        obj = {
+            serialNum: serialNo.serialNum
+        };
+        url = portalServiceUrl + "/api/v1/agency/key/time";
+        sendAjax(url, "post", obj, function(data) {
+            if (data.status != "200") {
+                $.messager.alert('警告', data.message);
+                return false;
+            }
+            var doAcceptDate = data.datas[0];
+            if (doAcceptDate === undefined) {
+                $('#acceptBeginDate').html("");
+                $('#acceptEndDate').html("");
+            } else {
+                $('#acceptBeginDate').html(doAcceptDate.keyBeginDate);
+                $('#acceptEndDate').html(doAcceptDate.keyEndDate);
+            }
+
+        });
+        $('#dataAdopt').hide();
+        $("#dataShowDateInput").show();
+        $("#queding").hide();
+        $("#dataShowDate").hide();
+    } else {
+        $('#dataAdopt').show();
+        $("#queding").hide();
+        $("#dataShowDate").hide();
+        $("#dataShowDateInput").hide();
+    }
+
+    obj = {
+        id: serialNo.serialNum
+    };
+    url = portalServiceUrl + "/api/v1/agencyHistory/" + serialNo.serialNum;
+    sendAjax(url, "get", obj, function(data) {
+        if (data.status == 200) {
+            resetInfo();
+            $('#showInfo').window('open');
+            var organizations = data.datas;
+            //机构基本信息
+            $("#agencyNames").html(organizations.agencyName); //申请机构名称
+            obj = {
+                id: organizations.areaCode
+            };
+            url = portalServiceUrl + "/api/v1/area/" + organizations.areaCode;
+            sendAjax(url, "get", obj, function(tableData) {
+                var areaCode = tableData.datas;
+                if (areaCode === undefined) {
+                    $("#areaCode").html('');
+                } else {
+                    $("#areaCode").html(areaCode.areaName); //行政区
+                }
+            });
+            $("#agencyAddressDetail").html(organizations.agencyAddressDetail); //地址
+            $("#ownershipForm").html(getTableDictionary('ownership', organizations.ownershipForm)); //所有制形式
+            $("#agencyBedNum").html(organizations.agencyBedNum + "个"); //床位数
+            $("#constructionArea").html(organizations.constructionArea + " m<sup>2</sup>"); //面积
+            //法人及长护负责人信息
+            $("#legalRepresentative").html(organizations.legalRepresentative); //法人代表
+            $("#legalPhoneNo").html(organizations.legalPhoneNo); //法人电话
+            $("#legalIdCard").html(organizations.legalIdCard); //法人身份证
+            $("#agencyServiceContact").html(organizations.agencyServiceContact); //长护负责人
+            $("#agencyContactPhone").html(organizations.agencyContactPhone); //联系电话
+            $("#agencyContactEmail").html(organizations.agencyContactEmail); //电子邮箱
+
+            //服务信息
+            $("#advancedDoctorNum").html(organizations.advancedDoctorNum); //执业医师高级职称
+            $("#intermediateDoctorNum").html(organizations.intermediateDoctorNum); //执业医师中级职称
+            $("#primaryDoctorNum").html(organizations.primaryDoctorNum); //执业医师初级职称
+            num = accAdd(organizations.advancedDoctorNum, organizations.intermediateDoctorNum);
+            num = accAdd(organizations.primaryDoctorNum, num);
+            $("#totalNumberDoctor").html(num);
+
+            //$("#totalNumberNurse").html(num);
+            $("#advancedNurseNum").html(organizations.advancedNurseNum); //执业护士高级职称
+            $("#intermediateNurseNum").html(organizations.intermediateNurseNum); //执业护士中级职称
+            $("#primaryNurseNum").html(organizations.primaryNurseNum); //执业护士初级职称
+            num = accAdd(organizations.advancedNurseNum, organizations.intermediateNurseNum);
+            num = accAdd(organizations.primaryNurseNum, num);
+            $("#totalNumberNurse").html(num);
+
+
+            //$("#totalNumberCarer").html(totalNumberCarer);
+            $("#advancedCarerNum").html(organizations.advancedCarerNum); //护理员高级职称
+            $("#intermediateCarerNum").html(organizations.intermediateCarerNum); //护理员中级职称
+            $("#primaryCarerNum").html(organizations.primaryCarerNum); //护理员初级职称
+            num = accAdd(organizations.advancedCarerNum, organizations.intermediateCarerNum);
+            num = accAdd(organizations.primaryCarerNum, num);
+            $("#totalNumberCarer").html(num);
+
+            //$("#totalNumberMisc").html(totalNumberMisc);
+            $("#advancedMiscNum").html(organizations.advancedMiscNum); //其他
+            $("#intermediateMiscNum").html(organizations.intermediateMiscNum); //其他
+            $("#primaryMiscNum").html(organizations.primaryMiscNum); //其他
+            num = accAdd(organizations.advancedMiscNum, organizations.intermediateMiscNum);
+            num = accAdd(organizations.primaryMiscNum, num);
+            $("#totalNumberMisc").html(num);
+
+            num = accAdd($("#totalNumberDoctor").html(), 0); //执业医师总人数
+            num = accAdd($("#totalNumberNurse").html(), num); //执业护士总人数
+            num = accAdd($("#totalNumberCarer").html(), num); //护理员总人数
+            num = accAdd($("#totalNumberMisc").html(), num); //其他总人数                    
+            $("#totalNum").html(num); //合计总人数
+
+            num = accAdd($("#advancedDoctorNum").html(), 0); //执业医师高级职称
+            num = accAdd($("#advancedNurseNum").html(), num); //执业护士高级职称
+            num = accAdd($("#advancedCarerNum").html(), num); //护理员高级职称
+            num = accAdd($("#advancedMiscNum").html(), num); //其他高级职称
+            $("#totalNumAdvanced").html(num); //合计高级职称
+
+            num = accAdd($("#intermediateDoctorNum").html(), 0); //执业医师中级职称
+            num = accAdd($("#intermediateNurseNum").html(), num); //执业护士中级职称
+            num = accAdd($("#intermediateCarerNum").html(), num); //护理员中级职称
+            num = accAdd($("#intermediateMiscNum").html(), num); //其他中级职称
+            $("#totalNumIntermediate").html(num); //合计中级职称
+
+            num = accAdd($("#primaryDoctorNum").html(), 0); //执业医师初级职称
+            num = accAdd($("#primaryNurseNum").html(), num); //执业护士初级职称
+            num = accAdd($("#primaryCarerNum").html(), num); //护理员初级职称
+            num = accAdd($("#primaryMiscNum").html(), num); //其他初级职称                    
+            $("#totalNumPrimary").html(num); //合计初级职称
+
+
+            //4.其他证明文件
+            //根据objType填入图片 
+            if (organizations.agencyFiles === "") {
+                return false;
+            } else {
+                $.each(organizations.agencyFiles, function(index, value) {
+                    var imgId = value.fileId;
+                    var jqObj = $("div.imgBox[data-accessoryType=" + value.accessoryType + "]");
+                    loadImg(imgId, jqObj); //传入图片id和要写入的jq对象，append图片html
+                });
+            }
+        }
+    });
+}
+
+//受理
+function doAcceptData() {
+    $('#dataShowDate input').val('');
+    $("#refuseAcceptInfo").hide();
+    $("#dataAdopt").hide();
+    $("#dataShow").show();
+    $("#dataShowDate").show();
+    $("#queding").show();
+}
+
+function doAccept() {
+    if ($("#doAcceptBeginDate").val() === "" || $("#doAcceptEndDate").val() === "") {
+        $.messager.alert('提示', '请输入生效开始日期和结束日期！');
+        return false;
+    }
+    $.messager.confirm('确认', '确认通过吗？', function(r) {
+        if (r) {
+            //var row=$('#userList').datagrid('getRows')[index]
+            var agencyState = 4;
+            var actionType = "1";
+            var keyBeginDate = $("#doAcceptBeginDate").val();
+            var keyEndDate = $("#doAcceptEndDate").val();
+            var agencyCodeInput = $("#agencyCodeInputs").val();
+            var serialNum = TableObj.rowData.serialNum;
+            var orgCode = TableObj.rowData.orgCode;
+            var agencyCode = TableObj.rowData.agencyCode;
+            var obj = {
+                agencyState: agencyState,
+                serialNum: serialNum,
+                orgCode: orgCode,
+                agencyCode: agencyCode,
+                actionType: actionType,
+                keyBeginDate: keyBeginDate,
+                keyEndDate: keyEndDate,
+                agencyCodeInput: agencyCodeInput
+            };
+
+            url = portalServiceUrl + "/api/v1/agencyHistory";
+            sendAjax(url, "put", obj, function(successdata) {
+                if (successdata.status != "200") {
+                    //console.log(successdata)
+                    $.messager.alert('提示', '通过失败！');
+                    return false;
+                }
+                /*if(successdata.status == "500"){
+                    $.messager.alert('警告', successdata.message);
+                }*/
+                showMsg("审核已成功通过！");
+                $('#showInfo').window('close');
+                loadGridData();
+            });
+        }
+    });
+}
+//点击暂不受理按钮，显示暂不受理原因输入框
+function showRefuseAcceptInfo() {
+    $("#refuseAcceptInfo").show();
+    $("#dataShowDate").hide();
+    $("#dataAdopt").hide();
+    $("#queding").hide();
+}
+//确认暂不受理
+function doRefuseAccept() {
+    var reason = $("textarea[name=refuseAcceptReason]").val();
+    var index = $("#index").val();
+    if (reason.length <= 0) {
+        showMsg('请输入审核不通过原因');
+        return false;
+    } else {
+        // var row=$('#userList').datagrid('getRows')[index]
+        var agencyState = 5;
+        var actionType = "1";
+        var serialNum = TableObj.rowData.serialNum;
+        var orgCode = TableObj.rowData.orgCode;
+        var agencyCode = TableObj.rowData.agencyCode;
+        var cause = reason;
+        var obj = {
+            agencyState: agencyState,
+            serialNum: serialNum,
+            orgCode: orgCode,
+            agencyCode: agencyCode,
+            actionType: actionType,
+            cause: cause
+        };
+        url = portalServiceUrl + "/api/v1/agencyHistory";
+        sendAjax(url, "put", obj, function(successdata) {
+            if (successdata.status != "200") {
+                console.log(successdata);
+                $.messager.alert('提示', successdata.message);
+                return false;
+            }
+            showMsg("审核不通过信息已记录！");
+            $('#showInfo').window('close');
+            loadGridData();
+        });
+    }
+}
+//重置清空
+function resetSearch() {
+    $('#userListForm input').val('');
+    loadDictionary();
+    $("#acceptState").combobox('setValue', '2'); //受理状态，默认查询未处理（值为1）的数据
+}
+//取消按钮
+function reasonClose(id) {
+    $('#showInfo1').window('close');
+    $('#cause textarea').val('');
+}
+//默认为不通过时显示点击不通过显示理由        
+function cause(index) {
+    var row = $('#userList').datagrid('getRows')[index];
+    $('#cause2').window('open');
+    $('#cause2').html(row.cause);
+}
+//公用警告
+function isCheck() {
+    var arr = $('#userList').datagrid('getChecked');
+    if (arr.length < 1) {
+        $.messager.alert('警告', '请选择一行数据再进行操作');
+        return false;
+    }
+    return true;
+}
+</script>
+
+</html>

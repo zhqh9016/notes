@@ -1,0 +1,60 @@
+<!DOCTYPE>
+<html>
+<head>
+<link rel="Shortcut Icon" href = "favicon.ico">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<script type="text/javascript" src="/jquery-3.2.0.min.js"></script>
+<script type="text/javascript">
+	function login1()
+	{
+		$.post("/api/v1/login", $("#loginForm").serialize(),function(data){
+			alert(data.success);
+			alert(data.message);
+		},"json");
+	}
+	function logout1(){
+		$.get("/api/v1/logout",function(data){
+			alert(data.success);
+			alert(data.message);
+		},"json");
+	}
+</script>
+<title>欢迎登陆</title>
+</head>
+
+<body>
+	<div class="second_body">
+		<div class="title-zh">泰康人寿 IKFA DEMO</div>
+		<div class="title-en">TaiKang Life Insurance FrontEnd Claim
+			System</div>
+		<div>
+			<form id="loginForm" method="post" action="/login">
+				<table border="0" style="width: 300px;">
+					<tr>
+						<td style="padding-bottom: 5px; width: 55px;">用户名：</td>
+						<td colspan="2"><input type="text" name="username"
+							value="zhqh" id="usernamepro" /></td>
+					</tr>
+					<tr>
+						<td class="lable"
+							style="letter-spacing: 0.5em; vertical-align: middle">密码：</td>
+						<td colspan="2"><input name="password" value="123"
+							id="passwordpro" type="password" /> <input type="hidden"
+							name="rememberMe" value="false" /></td>
+					</tr>
+					<tr>
+						<td colspan="3" style="text-align: center"><input
+							type="button" value="登录" id="login" onclick="login1();" /></td><!-- onclick="login1();" -->
+					</tr>
+					<tr>
+                        <td colspan="3" style="text-align: center"><input
+                            type="button" value="退出" id="login" onclick="logout1();" /></td><!-- onclick="login1();" -->
+                    </tr>
+				</table>
+			</form>
+		</div>
+	</div>
+</html>

@@ -1,0 +1,118 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/common.css" type="text/css" />
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div id="app" style="height: 100%;width: 100%;border: none;">
+        <table width="100%" id="userList" toolbar="#userListtb">
+        </table>
+        <div id="userListtb" style="padding:3px; height: auto">
+            <div name="searchColums" id="searchColums">
+                <input id="isShowSearchId" type="hidden" value="false" />
+                <input id="_sqlbuilder" name="sqlbuilder" type="hidden" />
+                <form id="userListForm">
+                    <span class="inputLable">
+							<span class="inputLableText">申请人：</span>
+                    <input type="text" name="insuredPersonName" class="inuptxt" />
+                    </span>
+                    <span class="inputLable">
+							<span class="inputLableText">身份证：</span>
+                    <input type="text" id="idCard" name="idCard" class="inuptxt easyui-validatebox" data-options="validType:'idCard'" />
+                    </span>
+                    <span class="inputLable">
+							<span class="inputLableText">评估机构：</span>
+                    <input type="text" name="evaluateOrg" class="inuptxt" />
+                    </span>
+                    <span class="inputLable">
+							<span class="inputLableText">经办时间：</span>
+                    <input name="operatedTime" type="text" class="WdatePicker" editable="false" />
+                    </span>
+                    <span class="inputLable"><span class="inputLableText">
+						<a href="#" class="easyui-linkbutton" iconcls="icon-search" onclick="doSearch()">查询</a>
+						<a href="#" class="easyui-linkbutton" iconcls="icon-search" onclick="resetSearch()">重置</a>
+						</span></span>
+                </form>
+            </div>
+            <!-- <div style="height:30px;" class="datagrid-toolbar">
+					<span style="float:left;">
+						<a href="#" class="easyui-linkbutton" plain="true" icon="icon-putout" onclick="ExportXls('导出','null','userList',null,null)">批量打印</a>
+					</span>
+				</div> -->
+        </div>
+    </div>
+    <div style="display:none;">
+        <div id="showTableInfo">
+            <iframe id="showTableInfo_iframe" src="" width="99%" height="99%"></iframe>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/util/WdatePicker.js"></script>
+<script type="text/javascript" src="../../js/validate.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/treatmentApply/treatmentCommon.js"></script>
+<script type="text/javascript" src="../../js/treatmentApply/receiveInitialResult.js"></script>
+<script>
+$('#showTableInfo').window({
+    title: '查看详情',
+    width: 800,
+    height: 450,
+    closed: true,
+    minimizable: false,
+    collapsible: false,
+    modal: true
+});
+
+function doLoading() {
+    var obj = {
+        insuredPersonName: $("input[name=insuredPersonName]").val(),
+        idCard: $("input[name=idCard]").val(),
+        evaluateOrg: $("input[name=evaluateOrg]").val(),
+        operatedTime: $("input[name=operatedTime]").val(),
+        page: TableObj.page,
+        pageSize: TableObj.pageSize
+    };
+    var url = portalServiceUrl + "/api/v1/firstEvaluate";
+    sendAjax(url, "post", obj, function(data) {
+        gridLoadData('userList', data);
+    });
+}
+
+function doSearch() {
+    if (!$("#idCard").validatebox("isValid")) {
+        $.messager.alert('警告', "请输入正确格式的身份证！");
+        return;
+    }
+    TableObj.page = 1;
+    TableObj.pageSize = 10;
+    doLoading();
+}
+
+function resetSearch() {
+    $('#userListForm input').val('');
+    loadDictionary();
+}
+
+function isCheck() {
+    var arr = $('#userList').datagrid('getChecked');
+    if (arr.length < 1) {
+        $.messager.alert('警告', '请选择一行数据再进行操作');
+        return false;
+    }
+    return true;
+}
+</script>
+
+</html>

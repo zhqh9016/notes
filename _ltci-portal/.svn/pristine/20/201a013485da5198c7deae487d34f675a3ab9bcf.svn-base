@@ -1,0 +1,58 @@
+post: 
+  tags:
+  - deputyBinding 
+  summary: 作为经办业务员能够对移动端提交的绑定申请进行查询的微服务 
+  description: 测试数据(insuredPersonName:张三,idCard:37241618763519,securityNumber:12,deputyName:曹鑫一,deputyIdCard:420801199205112719,checkState:待审核)
+  operationId: getDeputyBindingQuery
+  parameters: 
+    - name: insuredPersonName
+      in: formData
+      description: 参保人姓名
+      required: false
+      type: string
+    - name: idCard
+      in: formData
+      description: 用户身份证号码
+      required: false
+      type: string
+    - name: securityNumber
+      in: formData
+      description: 参保人社保卡号
+      required: false
+      type: string 
+    - name: deputyName
+      in: formData
+      description: 代理人姓名
+      required: false
+      type: string 
+    - name: deputyIdCard
+      in: formData
+      description: 代理人身份证号
+      required: false
+      type: string 
+    - name: checkState
+      in: formData
+      description: 查询状态
+      required: false
+      type: string
+    - name: page
+      in: formData
+      description: 当前页码
+      required: false
+      type: integer
+      format: int32
+    - name: pageSize
+      in: formData
+      description: 每页显示条数
+      required: false
+      type: integer
+      format: int32                             
+  responses:
+      200:
+        description: 查询成功
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/PageResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"

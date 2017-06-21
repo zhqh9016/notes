@@ -1,0 +1,72 @@
+get: 
+  tags:
+  - staffAccept
+  summary: 人员在线受理查询
+  description: 人员在线受理查询
+  operationId: getStaffApplyOrModifyList
+  parameters:
+  - name: actionType
+    in: query
+    description: 01申请/02变更
+    required: true
+  - name: staffName
+    in: query
+    description: 姓名（模糊查询）
+    required: false
+    type: string
+  - name: agencyName
+    in: query
+    description: 申请机构名称（模糊查询）
+    required: false
+    type: string
+  - name: acceptState
+    in: query
+    description: 受理状态
+    required: false
+    type: string
+  - name: dsignatedAgencyLevel
+    in: query
+    description: 定点机构类别
+    required: false
+    type: string
+  - name: dsignatedAgencyType
+    in: query
+    description: 定点服务机构类型
+    required: false
+    type: string
+  - name: agencyType
+    in: query
+    description: 机构类型
+    required: false
+    type: string
+  - name: applyBeginDate
+    in: query
+    description: 申请开始时间
+    required: false
+    type: string
+  - name: applyEndDate
+    in: query
+    description: 申请结束时间
+    required: false
+    type: string
+  - name: page
+    in: query
+    description: 当前页码
+    required: true
+    type: integer
+    format: int32
+  - name: pageSize
+    in: query
+    description: 每页显示件数
+    required: true
+    type: integer
+    format: int32
+  responses:
+    200:
+      description: 查询成功
+      schema:
+          $ref: "../../ltci-agency-person-api-v1.yml/#/definitions/PageResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-agency-person-api-v1.yml/#/definitions/Response"

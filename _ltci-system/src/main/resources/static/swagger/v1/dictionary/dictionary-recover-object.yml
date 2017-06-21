@@ -1,0 +1,26 @@
+put: 
+  tags:
+  - dictionaryManage
+  summary: 恢复字典表
+  description: 恢复字典表
+  operationId: recoverDictionary
+  parameters:
+  - name: id
+    in: path
+    description: id
+    required: true
+    type: string
+  - name: operatedBy
+    in: path
+    description: 操作人
+    required: false
+    type: string    
+  responses:
+    200: 
+      description: 恢复成功
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/ResultDTO"
+    default: 
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/ResultDTO"

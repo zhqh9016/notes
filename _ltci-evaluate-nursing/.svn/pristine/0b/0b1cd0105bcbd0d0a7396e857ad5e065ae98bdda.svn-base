@@ -1,0 +1,75 @@
+package com.taikang.dic.ltci.service;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.taikang.dic.ltci.api.model.ResultDTO;
+import com.taikang.dic.ltci.model.EvaluateTaskDO;
+import com.taikang.dic.ltci.model.EvaluateTaskDeliveryDO;
+import com.taikang.dic.ltci.model.EvaluateTaskSpecialDO;
+
+public interface EvaluateTaskService extends GenericService<EvaluateTaskDO, String> {
+
+  public ResultDTO sendEvaluateTaskBatch(
+      String evaluateTaskCodes, String operatedBy, String operatedOrg);
+
+  public int updateEvaluateTask(EvaluateTaskDO evaluateTaskDO);
+
+  int createEvaluateTask(EvaluateTaskDO evaluateTaskDO);
+
+  //分页查询评估任务列表
+  List<EvaluateTaskSpecialDO> queryEvaluateTaskList(
+      String insuredPersonName,
+      String mobile,
+      String operatedTime,
+      String taskState,
+      String todoListCode,
+      int page,
+      int pageSize);
+
+  Integer countEvaluateTaskDOList(
+      String insuredPersonName, String mobile, String operatedTime, String taskState);
+
+  //根据评估任务code获取详情
+  EvaluateTaskSpecialDO getEvaluateTaskSpecialDOByCode(
+      @Param("evaluateTaskCode") String evaluateTaskCode);
+
+  //移动端调用接口查询任务状态
+  EvaluateTaskDeliveryDO getEvaluateTaskSpecialStateByCode(
+      @Param("evaluateTaskCode") String evaluateTaskCode);
+
+  List<String> checkEvaluateTaskUrgent(
+      int urgentConfig, String urgentDateTime, int notUrgentConfig, String notUrgentDateTime);
+
+  //评定结果送达页面列表查询
+  Map<String, Object> getExpertTaskList(
+      String insuredPersonName,
+      String idCard,
+      String evaluateOrg,
+      String operatedTime,
+      String taskState,
+      int page,
+      int pageSize);
+
+  //批量修改评估任务状态
+  int batchUpdateEvaluateTaskStatusByEvaluateTaskCodes(
+      String taskState,
+      String operatedBy,
+      String operatedOrg,
+      Date operatedTime,
+      String evaluateTaskCodes);
+
+  public ResultDTO reviewEvaluateTask(
+      String evaluateTaskCode, String reevalueateResult, String operatedBy, String operatedOrg);
+
+  //移动端根据idcard查询评估信息
+  public Map<String, Object> getEvaluateTaskByIdCard(String idCard);
+
+  //前段通过id查询图片信息
+  public String getMongoDBMessage(String id);
+
+  public List<EvaluateTaskSpecialDO> getToDoListEvaluateTaskList();
+}

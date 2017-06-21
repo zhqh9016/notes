@@ -1,0 +1,16 @@
+package com.taikang.dic.ltci.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.taikang.dic.ltci.model.DaySetPerDO;
+
+@Mapper
+public interface CustomNurseDetailDAO {
+
+  public List<DaySetPerDO> countDaySetPer(Map<String, String> parameters);
+
+  public List<String> getUnSynForSocialPers(Map<String, String> parameters);
+}

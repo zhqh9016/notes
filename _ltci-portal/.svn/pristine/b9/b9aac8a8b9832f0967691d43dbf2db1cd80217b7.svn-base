@@ -1,0 +1,63 @@
+get:
+  tags:
+  - agencyAccept
+  summary: 机构在线受理查询
+  description: 机构在线受理查询
+  operationId: getAgencyApplyList
+  parameters:
+  - name: agencyName
+    in: query
+    description: 机构名称
+    required: false
+    type: string
+  - name: dsignatedAgencyLevel
+    in: query
+    description: 定点机构类别
+    required: false
+    type: string
+  - name: dsignatedAgencyType
+    in: query
+    description: 定点服务机构类型
+    required: false
+    type: string
+  - name: agencyType
+    in: query
+    description: 机构类型
+    required: false
+    type: string
+  - name: acceptState
+    in: query
+    description: 受理状态
+    required: false
+    type: string
+  - name: applyBeginDate
+    in: query
+    description: 申请开始时间
+    required: false
+    type: string
+  - name: applyEndDate
+    in: query
+    description: 申请结束时间
+    required: false
+    type: string
+  - name: page
+    in: query
+    description: 当前页码
+    required: true
+    type: integer
+    format: int32
+  - name: pageSize
+    in: query
+    description: 每页显示件数
+    required: true
+    type: integer
+    format: int32
+  responses:
+    200:
+      description: 查询成功
+      schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/PageResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/Response"

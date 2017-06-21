@@ -1,0 +1,75 @@
+#访问路径前缀
+restBasePath: /api/v1
+
+#服务启动端口号
+server.port: 8082
+
+#系统编码
+systemCode: LCPM
+
+#MQ编码
+systemCharset: UTF-8
+
+#mybatis的xml映射文件路径
+mybatis.mapperLocations: classpath*:com/taikang/dic/ltci/mapper/*.xml
+
+#需要注册别名的POJO类所在包
+mybatis.typeAliasesPackage: com.taikang.dic.ltci.model
+
+#数据库连接配置默认连接是开发环境
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.130.206.191:3306/ltci_system
+    username: tklcpm
+    password: tklcpm
+
+spring.datasource.tomcat:
+    max-active: 50
+    max-wait: 30000
+    test-on-borrow:  true
+    max-idle: 10
+    min-idle: 5
+    test-on-connect: true
+    test-on-return: true
+    test-while-idle: true
+    validation-query: SELECT 1 FROM DUAL
+    validation-query-timeout: -1
+
+#测试环境  
+---
+spring.profiles: test
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.130.206.186:3306/ltci_system
+    username: tklcpm
+    password: tklcpm
+
+#开发环境  
+---
+spring.profiles: dev
+
+#mysql 开发环境
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.130.206.191:3306/ltci_system
+    username: tklcpm
+    password: tklcpm
+    
+#生产环境  
+---
+spring.profiles: pro
+
+#mysql 生产环境
+spring.datasource:
+    initialize: false
+    url: jdbc:mysql://10.128.128.94:3306/ltci_system
+    username: tklcpm
+    password: tklcpm@2ol7
+    
+#rabbitmq 生产环境
+spring.rabbitmq:
+  host: 172.16.70.96,172.16.70.97
+  port: 5672
+  username: longtermcare
+  password: rA20gq
+  virtualHost: longtermcare

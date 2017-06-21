@@ -1,0 +1,27 @@
+get: 
+  tags:
+  - evaluateTask
+  summary: 调用第三方接口，查询评估机构信息
+  description: 调用第三方接口，查询评估机构信息
+  operationId: getEvaluateDepartments
+  parameters:
+  - name: areaNum
+    in: path
+    description: 机构所在行政区域，由于第三方暂未提供该接口，所以暂时写死，例:000，001，002
+    required: true
+    type: string
+  - name: organizationType
+    in: path
+    description: 机构类型，00代表护理机构，10代表评估机构
+    required: true
+    type: string
+  responses:
+    201: 
+      description: 评估任务发送成功
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+ 

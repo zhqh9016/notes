@@ -1,0 +1,56 @@
+post: 
+  tags:
+  - firstEvaluate
+  summary: 初评结果接收列表页面--查询接口
+  description: 返回初评结果信息
+  operationId: getFirstEvaluate
+  parameters: 
+    - name: insuredPersonName
+      in: formData
+      description: 申请人
+      required: false
+      type: string
+    - name: idCard
+      in: formData
+      description: 身份证号码
+      required: false
+      type: string
+    - name: evaluateOrg
+      in: formData
+      description: 评估机构名称
+      required: false
+      type: string
+    - name: operatedTime
+      in: formData
+      description: 经办时间
+      required: false
+      type: string
+    - name: page
+      in: formData
+      description: 当前页码
+      required: false
+      type: integer
+      format: int32
+    - name: pageSize
+      in: formData
+      description: 每页显示条数
+      required: false
+      type: integer
+      format: int32              
+  responses:
+      200:
+        description: 查询成功
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/PageResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+
+
+
+
+
+
+
+

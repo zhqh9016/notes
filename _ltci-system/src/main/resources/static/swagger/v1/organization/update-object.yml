@@ -1,0 +1,69 @@
+put: 
+    tags:
+    - organizationManage
+    summary: 组织管理
+    description: 修改组织
+    operationId: updateOrganization
+    parameters:
+    - name: orgid
+      in: path
+      description: id
+      required: true
+      type: string
+    - name: parentid
+      in: formData
+      description: 父级id
+      required: false
+      type: string
+    - name: name 
+      in: formData
+      description: 组织名称
+      required: false
+      type: string
+    - name: description
+      in: formData
+      description: 组织描述
+      required: false
+      type: string
+    - name: sequence
+      in: formData
+      description: 组织显示顺序
+      required: false
+      type: string
+    - name: operatedBy
+      in: formData
+      description: 更新操作人
+      required: true
+      type: string
+    - name: provinceid
+      in: formData
+      description: 省ID
+      required: false
+      type: string
+    - name: cityid
+      in: formData
+      description: 市ID
+      required: false 
+      type: string
+    - name: countyid
+      in: formData
+      description: 县ID
+      required: false
+      type: string
+    - name: street
+      in: formData
+      description: 街道信息
+      required: false
+      type: string
+    - name: phone
+      in: formData
+      description: 联系电话
+      required: false
+      type: string
+    responses: 
+      200:  
+        description: 修改成功
+      default: 
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"

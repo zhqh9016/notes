@@ -1,0 +1,156 @@
+post:
+  tags:
+  - userManage
+  summary: 新增用户信息
+  description: 返回数值类型（大于0为成功）。
+  operationId: createUser
+  parameters:
+  - name: createdBy
+    in: formData
+    description: 创建人
+    required: true
+    type: string
+  - name: createdOrg
+    in: formData
+    description: 创建机构
+    required: false
+    type: string
+  - name: operatedBy
+    in: formData
+    description: 经办人
+    required: false
+    type: string
+  - name: operatedOrg
+    in: formData
+    description: 经办机构
+    required: false
+    type: string
+  - name: siArea
+    in: formData
+    description: 统筹区
+    required: false
+    type: string
+  - name: departmentid
+    in: formData
+    description: 所属部门
+    required: false
+    type: string
+  - name: mobile
+    in: formData
+    description: 手机号
+    required: false
+    type: string
+  - name: telephone
+    in: formData
+    description: 电话号码
+    required: false
+    type: string
+  - name: email
+    in: formData
+    description: 邮箱地址
+    required: false
+    type: string
+  - name: userName
+    in: formData
+    description: 用户名
+    required: true
+    type: string
+  - name: trueName
+    in: formData
+    description: 真实姓名
+    required: false
+    type: string
+  - name: sex
+    in: formData
+    description: 性别
+    required: false
+    type: string
+  - name: isAuthority
+    in: formData
+    description: 是否对大屏监控有访问权限
+    required: false
+    type: integer
+    format: int32
+    
+  responses:
+    200:
+      description: 创建成功
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"
+        
+put:
+  tags:
+  - userManage
+  summary: 修改用户信息
+  description: 返回数值类型（大于0为成功）。测试数据：用户编号[79bd2154deb7483a81bd8e7da55b9afa]。
+  operationId: updateUser
+  parameters:
+  - name: id
+    in: formData
+    description: 用户编号
+    required: true
+    type: string
+  - name: departmentid
+    in: formData
+    description: 所属部门
+    required: false
+    type: string
+  - name: mobile
+    in: formData
+    description: 手机号
+    required: false
+    type: string
+  - name: telephone
+    in: formData
+    description: 电话号码
+    required: false
+    type: string
+  - name: email
+    in: formData
+    description: 邮箱地址
+    required: false
+    type: string
+  - name: trueName
+    in: formData
+    description: 真实姓名
+    required: false
+    type: string
+  - name: createdBy
+    in: formData
+    description: 创建人
+    required: false
+    type: string
+  - name: createdOrg
+    in: formData
+    description: 创建机构
+    required: false
+    type: string
+  - name: operatedBy
+    in: formData
+    description: 经办人
+    required: false
+    type: string
+  - name: operatedOrg
+    in: formData
+    description: 经办机构
+    required: false
+    type: string
+  - name: siArea
+    in: formData
+    description: 统筹区
+    required: false
+    type: string
+  - name: sex
+    in: formData
+    description: 性别
+    required: false
+    type: string
+  responses:
+    200:
+      description: 更新成功
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.CheckInSpecialDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.CheckInSpecialDO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="in_record_uuid" property="inRecordUuid" jdbcType="VARCHAR" />
+    <result column="org_code" property="orgCode" jdbcType="VARCHAR" />
+    <result column="org_name" property="orgName" jdbcType="VARCHAR" />
+    <result column="invoice_num" property="invoicenum" jdbcType="VARCHAR" />
+    <result column="soc_sec_num" property="socSecNum" jdbcType="VARCHAR" />
+    <result column="be_care_person_card" property="beCarePersonCard" jdbcType="VARCHAR" />
+    <result column="card_type" property="cardType" jdbcType="INTEGER" />
+    <result column="be_care_person_name" property="beCarePersonName" jdbcType="VARCHAR" />
+    <result column="agre_in_date" property="agreInDate" jdbcType="VARCHAR" />
+    <result column="agre_out_date" property="agreOutDate" jdbcType="VARCHAR" />
+    <result column="real_in_date" property="realInDate" jdbcType="VARCHAR" />
+    <result column="real_out_date" property="realOutDate" jdbcType="VARCHAR" />
+    <result column="exit_reason" property="exitReason" jdbcType="VARCHAR" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="VARCHAR" />
+    <result column="in_hosp_state" property="inHospState" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getCheckIn" parameterType="map" resultMap="BaseResultMap">
+ 	select 
+ 			id,	
+ 			in_record_uuid,
+			org_code,
+			org_name,
+			invoice_num,
+			soc_sec_num,
+			be_care_person_card,
+			card_type,
+			be_care_person_name,
+			date_format(agre_in_date,'%Y-%m-%d %H:%i:%s') agre_in_date,
+			date_format(agre_out_date,'%Y-%m-%d %H:%i:%s') agre_out_date,
+			date_format(real_in_date,'%Y-%m-%d %H:%i:%s') real_in_date,
+			date_format(real_out_date,'%Y-%m-%d') real_out_date,
+			exit_reason,
+			operated_by,
+			date_format(operated_time,'%Y-%m-%d %H:%i:%s') operated_time,
+			in_hosp_state
+	from ltci_check_in
+	where is_valid=1
+	<if test="beCarePersonName != null and beCarePersonName !='' ">
+   		  	and be_care_person_name like concat('%',#{beCarePersonName},'%')
+    </if>
+    <if test="beCarePersonCard != null and beCarePersonCard !='' ">
+   		  	and be_care_person_card = #{beCarePersonCard,jdbcType=VARCHAR}
+    </if>
+    <if test="inHospState != null and inHospState !='' ">
+   		  	and in_hosp_state = #{inHospState}
+    </if>
+    <if test="orgName != null and orgName !='' ">
+   		  	and org_name like concat('%',#{orgName},'%')
+    </if>
+    <if test="operatedTime != null and operatedTime !='' ">
+   		and operated_time &gt; concat(#{operatedTime}, ' 00:00:00')
+   		and operated_time &lt; concat(#{operatedTime}, ' 23:59:59')
+    </if>
+    <if test="operatedOrg != null and operatedOrg !='' " >
+        and org_code = #{operatedOrg,jdbcType=VARCHAR} 
+    </if>
+	order by created_time desc
+	limit ${page}, ${pageSize} 
+  </select>
+  
+  <select id="countCheckIn" parameterType="map" resultType="java.lang.Integer">
+    select 
+ 			count(id)	
+	from ltci_check_in
+	where is_valid=1
+	<if test="beCarePersonName != null and beCarePersonName !='' ">
+   		  	and be_care_person_name like concat('%',#{beCarePersonName},'%')
+    </if>
+    <if test="beCarePersonCard != null and beCarePersonCard !='' ">
+   		  	and be_care_person_card = #{beCarePersonCard,jdbcType=VARCHAR}
+    </if>
+    <if test="orgName != null and orgName !='' ">
+   		  	and org_name like concat('%',#{orgName},'%')
+    </if>
+    <if test="operatedTime != null and operatedTime !='' ">
+   		and operated_time &gt; concat(#{operatedTime}, ' 00:00:00')
+   		and operated_time &lt; concat(#{operatedTime}, ' 23:59:59')
+    </if>
+    <if test="operatedOrg != null and operatedOrg !='' " >
+        and org_code = #{operatedOrg,jdbcType=VARCHAR} 
+    </if>
+  </select>
+</mapper>

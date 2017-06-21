@@ -1,0 +1,33 @@
+put:
+  tags:
+  - evaluateTask
+  summary: 评估任务送达处理
+  description: 根据待遇申请编号批量修改待评估任务送达状态
+  operationId: evaluateTaskStautsCase
+  parameters:
+   - name: taskState
+     in: path
+     description: 状态
+     required: true
+     type: string
+   - name: operatedBy
+     in: path
+     description: 经办人
+     required: true
+     type: string
+   - name: evaluateTaskCodes
+     in: path
+     description: 评估任务code
+     required: false
+     type: string
+  responses:
+    200:
+      description: 查询成功
+      schema:
+        type: array
+        items:
+          $ref: "../../ltci-evaluate-nursing-api-v1.yml/#/definitions/RestResponseDTO"
+    default:
+      description: 其它错误
+      schema:
+        $ref: "../../ltci-evaluate-nursing-api-v1.yml/#/definitions/RestResponseDTO"

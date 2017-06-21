@@ -1,0 +1,230 @@
+﻿<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../css/detailStyle.css" />
+    <style type="text/css">
+
+    </style>
+</head>
+
+<body onload="doSearch()">
+    <div id="app" style="height: 100%;width: 100%;border: none;">
+        <div class="mainTitle">1、基本信息</div>
+        <div class="mainWapper">
+            <table class="info_box">
+                <!--<tr><th>Header</th></tr>-->
+                <tr>
+                    <td class="info_name">姓名：</td>
+                    <td class="info_value"><span id="insuredPersonName"></span></td>
+                </tr>
+                <tr>
+                    <td class="info_name">性别：</td>
+                    <td class="info_value"><span id="insuredPersonGender"></span></td>
+                </tr>
+                <tr>
+                    <td class="info_name">身份证：</td>
+                    <td class="info_value"><span id="idCard"></span></td>
+                </tr>
+                <tr>
+                    <td class="info_name">社保卡：</td>
+                    <td class="info_value"><span id="securityNumber"></span></td>
+                </tr>
+                <tr>
+                    <td class="info_name">年龄：</td>
+                    <td class="info_value"><span id="age"></span></td>
+                </tr>
+                <tr>
+                    <td class="info_name">联系电话：</td>
+                    <td class="info_value"><span id="mobile"></span></td>
+                </tr>
+                <tr>
+                    <td class="info_name">现住址：</td>
+                    <td class="info_value"><span id="address"></span></td>
+                </tr>
+            </table>
+            <!--<div class="info_box">
+					<span class="info_name">姓名：</span>
+					<span class="info_value" id="insuredPersonName">{{vue_insuredPersonName}}</span>
+				</div>
+				<div class="info_box">
+					<span class="info_name">性别：</span>
+					<span class="info_value" id="insuredPersonGender">{{vue_insuredPersonGender | getSex}}</span>
+				</div>
+				<div class="info_box">
+					<span class="info_name">身份证：</span>
+					<span class="info_value" id="idCard">{{vue_idCard}}</span>
+				</div>
+				<div class="info_box">
+					<span class="info_name">社保卡：</span>
+					<span class="info_value" id="securityNumber">{{vue_securityNumber}}</span>
+				</div>
+				<div class="info_box">
+					<span class="info_name">年龄：</span>
+					<span class="info_value" id="age">{{vue_age}}</span>
+				</div>
+				<div class="info_box">
+					<span class="info_name">联系电话：</span>
+					<span class="info_value" id="mobile">{{vue_mobile}}</span>
+				</div>
+				<div class="info_box">
+					<span class="info_name">现住址：</span>
+					<span class="info_value" id="address">{{vue_address}}</span>
+				</div>-->
+        </div>
+        <div class="mainTitle">2、附件信息</div>
+        <div class="mainWapper">
+            <div>
+                <div class="imgTitle">身份证扫描件</div>
+                <div id="idCardScan_images" class="imgBox"></div>
+            </div>
+            <div>
+                <div class="imgTitle">社会保障卡扫描件</div>
+                <div id="securityNumberScan_images" class="imgBox"></div>
+            </div>
+            <div>
+                <div class="imgTitle">代理人身份证扫描件</div>
+                <div id="deputyIdCardScan_images" class="imgBox"></div>
+            </div>
+            <div>
+                <div class="imgTitle">病历描件</div>
+                <div id="caseHistoryScan_images" class="imgBox"></div>
+            </div>
+            <div>
+                <div class="imgTitle">申请表扫描件</div>
+                <div id="applicationFormScan_images" class="imgBox"></div>
+            </div>
+        </div>
+        <div style="margin-left: 200px">
+            <a href="#" class="easyui-linkbutton doAcceptYes" style="display: none;" plain="true" icon="icon-add" onclick="doAccept(true)">受理</a> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <a href="#" class="easyui-linkbutton doAcceptNo" style="display: none;" plain="true" icon="icon-add" onclick="doAccept(false)">暂停受理</a>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<!--	<script type="text/javascript" src="../../js/vu e.mi n.js"></script>-->
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script>
+var fa = window.parent; //father
+var applicationCode = getUrlParam("applicationCode");
+var applicationStatus = "";
+var securityPersonalNumber = "";
+var version = "";
+
+function doAccept(b) { //受理01，不受理02
+    if (b) {
+        applicationStatus = "01"; //审核通过
+        fa.$.messager.confirm('提示', '确认受理吗？', function(r) {
+            if (r) {
+                doAcceptFunc("", b);
+            }
+        });
+
+    } else {
+        applicationStatus = "02"; //审核不通过
+        fa.windowObj.prompt('请输入暂不受理原因', function(r) {
+            if (r.length > 0) {
+                reason = r;
+                doAcceptFunc(reason, b);
+                return true;
+            } else {
+                fa.$.messager.alert('警告', '请输入暂不受理原因。');
+                return false;
+            }
+        });
+    }
+}
+
+function doAcceptFunc(reason, b) { //reason 不通过原因  -- b 是否通过
+    var obj = {
+        applicationCode: applicationCode,
+        securityNumber: $("#securityNumber").html(),
+        securityPersonalNumber: securityPersonalNumber, //??????????????????????????????
+        deputyIdCard: deputyIdCard, //??????????????????????????????????????????????????
+        applicationStatus: applicationStatus,
+        applicationReason: reason,
+        version: version
+    };
+    sendAjax(portalServiceUrl + "/api/v1/treatmentApplicationCase", "post", obj, function(returndata) {
+        if (returndata.status == 201) {
+            if (b) {
+                fa.$.messager.show({
+                    title: '提示',
+                    msg: '受理成功',
+                    timeout: 8000
+                });
+                fa.$('#showInfo').window('close');
+                fa.doSearch();
+
+            } else {
+                fa.$.messager.show({
+                    title: '提示',
+                    msg: '已设置暂不受理',
+                    timeout: 8000
+                });
+                fa.$('#showInfo').window('close');
+                fa.doSearch();
+
+            }
+        } else {
+            fa.$.messager.alert('警告', returndata.message);
+            fa.$('#showInfo').window('close');
+            fa.doSearch();
+        }
+    });
+
+}
+
+function doSearch() {
+    sendAjax(portalServiceUrl + "/api/v1/treatmentApplication/" + applicationCode, "get", "", function(response) {
+        if (response.status == 404 || response.status == 500) {
+            $.messager.alert('警告', response.message);
+            return true;
+        }
+        var data = response.datas;
+        version = data.version;
+        applicationStatus = data.applicationStatus;
+        securityPersonalNumber = data.securityPersonalNumber;
+        deputyIdCard = data.deputyIdCard;
+        $("#insuredPersonName").html(data.insuredPersonName);
+        $("#insuredPersonGender").html(getTableDictionary("sex", data.insuredPersonGender));
+        $("#idCard").html(data.idCard);
+        $("#securityNumber").html(data.securityNumber);
+        $("#address").html(data.address);
+        $("#age").html(data.age);
+        $("#mobile").html(data.mobile);
+
+        if (data.applicationStatus == "00") {
+            $(".doAcceptYes").show();
+            $(".doAcceptNo").show();
+        } else if (data.applicationStatus == 02) {
+            $(".doAcceptYes").show();
+        }
+
+        doLoadImage(data.idCardScan, "idCardScan_images");
+        doLoadImage(data.securityNumberScan, "securityNumberScan_images");
+        doLoadImage(data.applicationFormScan, "applicationFormScan_images");
+        doLoadImage(data.deputyIdCardScan, "deputyIdCardScan_images");
+        doLoadImage(data.caseHistoryScan, "caseHistoryScan_images");
+    });
+
+}
+// function loadImages(id, sData) {
+// 	var o = JSON.parse(sData);
+// 	for(var k in o) {
+// 		temp = o[k];
+// 		for(var i in temp) {
+// 			sData = temp[i];
+// 		}
+// 		$('#' + id).append("<img width=\"100\" height=\"100\" src=\"data:image/gif;base64," + sData + "\">");
+// 	}
+// }
+</script>
+
+</html>

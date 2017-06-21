@@ -1,0 +1,11 @@
+type: object
+description: 出错时返回提示
+properties:
+  traceId:
+    type: string
+    description: 跟踪号
+    example: 9c0accee225d7074
+  message:
+    type: string
+    description: 提示消息
+    example: 系统错误

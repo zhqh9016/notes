@@ -1,0 +1,34 @@
+get: 
+  tags:
+  - checkInManage
+  summary: 给待遇申请微服务调用
+  description: 查询入院状态的接口
+  operationId: getInHospState
+  parameters: 
+    - name: insuredPersonName
+      in: path
+      description: 参保人姓名
+      required: true
+      type: string
+    - name: idCard
+      in: path
+      description: 用户身份证号码
+      required: true
+      type: string
+  responses:
+      200:
+        description: 查询成功
+        schema:
+          $ref: "../../ltci-evaluate-nursing-api-v1.yml/#/definitions/RestResponseDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-evaluate-nursing-api-v1.yml/#/definitions/RestResponseDTO"
+
+
+
+
+
+
+
+

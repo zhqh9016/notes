@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.EvaluateTaskDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.EvaluateTaskDO" >
+    <id column="evaluate_taskid" property="evaluateTaskid" jdbcType="VARCHAR" />
+    <result column="evaluate_task_code" property="evaluateTaskCode" jdbcType="VARCHAR" />
+    <result column="application_code" property="applicationCode" jdbcType="VARCHAR" />
+    <result column="insured_person_code" property="insuredPersonCode" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="insured_person_name" property="insuredPersonName" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="task_state" property="taskState" jdbcType="VARCHAR" />
+    <result column="task_deadline" property="taskDeadline" jdbcType="VARCHAR" />
+    <result column="evaluate_agency_code" property="evaluateAgencyCode" jdbcType="VARCHAR" />
+    <result column="evaluate_agency_name" property="evaluateAgencyName" jdbcType="VARCHAR" />
+    <result column="evaluate_code" property="evaluateCode" jdbcType="VARCHAR" />
+    <result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
+    <result column="print_state" property="printState" jdbcType="VARCHAR" />
+    <result column="is_reevaluate" property="isReevaluate" jdbcType="VARCHAR" />
+    <result column="reevalueate_result" property="reevalueateResult" jdbcType="VARCHAR" />
+    <result column="reevaluate_parent_code" property="reevaluateParentCode" jdbcType="VARCHAR" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    evaluate_taskid, evaluate_task_code, application_code, insured_person_code, mobile, 
+    insured_person_name, id_card, task_state, task_deadline, evaluate_agency_code, evaluate_agency_name, 
+    evaluate_code, send_time, print_state, is_reevaluate, reevalueate_result, reevaluate_parent_code, 
+    operated_by, operated_time, operated_org, created_by, created_time, created_org, 
+    is_valid, si_area, remark
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.EvaluateTaskDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ltci_evaluate_task
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ltci_evaluate_task
+    where evaluate_taskid = #{evaluateTaskid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_evaluate_task
+    where evaluate_taskid = #{evaluateTaskid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.EvaluateTaskDOExample" >
+    delete from ltci_evaluate_task
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.EvaluateTaskDO" >
+    insert into ltci_evaluate_task (evaluate_taskid, evaluate_task_code, 
+      application_code, insured_person_code, mobile, 
+      insured_person_name, id_card, task_state, 
+      task_deadline, evaluate_agency_code, evaluate_agency_name, 
+      evaluate_code, send_time, print_state, 
+      is_reevaluate, reevalueate_result, reevaluate_parent_code, 
+      operated_by, operated_time, operated_org, 
+      created_by, created_time, created_org, 
+      is_valid, si_area, remark
+      )
+    values (#{evaluateTaskid,jdbcType=VARCHAR}, #{evaluateTaskCode,jdbcType=VARCHAR}, 
+      #{applicationCode,jdbcType=VARCHAR}, #{insuredPersonCode,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{insuredPersonName,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{taskState,jdbcType=VARCHAR}, 
+      #{taskDeadline,jdbcType=VARCHAR}, #{evaluateAgencyCode,jdbcType=VARCHAR}, #{evaluateAgencyName,jdbcType=VARCHAR}, 
+      #{evaluateCode,jdbcType=VARCHAR}, #{sendTime,jdbcType=TIMESTAMP}, #{printState,jdbcType=VARCHAR}, 
+      #{isReevaluate,jdbcType=VARCHAR}, #{reevalueateResult,jdbcType=VARCHAR}, #{reevaluateParentCode,jdbcType=VARCHAR}, 
+      #{operatedBy,jdbcType=VARCHAR}, #{operatedTime,jdbcType=TIMESTAMP}, #{operatedOrg,jdbcType=VARCHAR}, 
+      #{createdBy,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{createdOrg,jdbcType=VARCHAR}, 
+      #{isValid,jdbcType=INTEGER}, #{siArea,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.EvaluateTaskDO" >
+    insert into ltci_evaluate_task
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="evaluateTaskid != null" >
+        evaluate_taskid,
+      </if>
+      <if test="evaluateTaskCode != null" >
+        evaluate_task_code,
+      </if>
+      <if test="applicationCode != null" >
+        application_code,
+      </if>
+      <if test="insuredPersonCode != null" >
+        insured_person_code,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="insuredPersonName != null" >
+        insured_person_name,
+      </if>
+      <if test="idCard != null" >
+        id_card,
+      </if>
+      <if test="taskState != null" >
+        task_state,
+      </if>
+      <if test="taskDeadline != null" >
+        task_deadline,
+      </if>
+      <if test="evaluateAgencyCode != null" >
+        evaluate_agency_code,
+      </if>
+      <if test="evaluateAgencyName != null" >
+        evaluate_agency_name,
+      </if>
+      <if test="evaluateCode != null" >
+        evaluate_code,
+      </if>
+      <if test="sendTime != null" >
+        send_time,
+      </if>
+      <if test="printState != null" >
+        print_state,
+      </if>
+      <if test="isReevaluate != null" >
+        is_reevaluate,
+      </if>
+      <if test="reevalueateResult != null" >
+        reevalueate_result,
+      </if>
+      <if test="reevaluateParentCode != null" >
+        reevaluate_parent_code,
+      </if>
+      <if test="operatedBy != null" >
+        operated_by,
+      </if>
+      <if test="operatedTime != null" >
+        operated_time,
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="createdOrg != null" >
+        created_org,
+      </if>
+      <if test="isValid != null" >
+        is_valid,
+      </if>
+      <if test="siArea != null" >
+        si_area,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="evaluateTaskid != null" >
+        #{evaluateTaskid,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateTaskCode != null" >
+        #{evaluateTaskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationCode != null" >
+        #{applicationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredPersonCode != null" >
+        #{insuredPersonCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredPersonName != null" >
+        #{insuredPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="taskState != null" >
+        #{taskState,jdbcType=VARCHAR},
+      </if>
+      <if test="taskDeadline != null" >
+        #{taskDeadline,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateAgencyCode != null" >
+        #{evaluateAgencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateAgencyName != null" >
+        #{evaluateAgencyName,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateCode != null" >
+        #{evaluateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="printState != null" >
+        #{printState,jdbcType=VARCHAR},
+      </if>
+      <if test="isReevaluate != null" >
+        #{isReevaluate,jdbcType=VARCHAR},
+      </if>
+      <if test="reevalueateResult != null" >
+        #{reevalueateResult,jdbcType=VARCHAR},
+      </if>
+      <if test="reevaluateParentCode != null" >
+        #{reevaluateParentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatedOrg != null" >
+        #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdOrg != null" >
+        #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="siArea != null" >
+        #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.EvaluateTaskDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_evaluate_task
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_evaluate_task
+    <set >
+      <if test="record.evaluateTaskid != null" >
+        evaluate_taskid = #{record.evaluateTaskid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evaluateTaskCode != null" >
+        evaluate_task_code = #{record.evaluateTaskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applicationCode != null" >
+        application_code = #{record.applicationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insuredPersonCode != null" >
+        insured_person_code = #{record.insuredPersonCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null" >
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insuredPersonName != null" >
+        insured_person_name = #{record.insuredPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idCard != null" >
+        id_card = #{record.idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskState != null" >
+        task_state = #{record.taskState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskDeadline != null" >
+        task_deadline = #{record.taskDeadline,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evaluateAgencyCode != null" >
+        evaluate_agency_code = #{record.evaluateAgencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evaluateAgencyName != null" >
+        evaluate_agency_name = #{record.evaluateAgencyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evaluateCode != null" >
+        evaluate_code = #{record.evaluateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sendTime != null" >
+        send_time = #{record.sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.printState != null" >
+        print_state = #{record.printState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isReevaluate != null" >
+        is_reevaluate = #{record.isReevaluate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reevalueateResult != null" >
+        reevalueate_result = #{record.reevalueateResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reevaluateParentCode != null" >
+        reevaluate_parent_code = #{record.reevaluateParentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedBy != null" >
+        operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedTime != null" >
+        operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.operatedOrg != null" >
+        operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null" >
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdOrg != null" >
+        created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isValid != null" >
+        is_valid = #{record.isValid,jdbcType=INTEGER},
+      </if>
+      <if test="record.siArea != null" >
+        si_area = #{record.siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_evaluate_task
+    set evaluate_taskid = #{record.evaluateTaskid,jdbcType=VARCHAR},
+      evaluate_task_code = #{record.evaluateTaskCode,jdbcType=VARCHAR},
+      application_code = #{record.applicationCode,jdbcType=VARCHAR},
+      insured_person_code = #{record.insuredPersonCode,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      insured_person_name = #{record.insuredPersonName,jdbcType=VARCHAR},
+      id_card = #{record.idCard,jdbcType=VARCHAR},
+      task_state = #{record.taskState,jdbcType=VARCHAR},
+      task_deadline = #{record.taskDeadline,jdbcType=VARCHAR},
+      evaluate_agency_code = #{record.evaluateAgencyCode,jdbcType=VARCHAR},
+      evaluate_agency_name = #{record.evaluateAgencyName,jdbcType=VARCHAR},
+      evaluate_code = #{record.evaluateCode,jdbcType=VARCHAR},
+      send_time = #{record.sendTime,jdbcType=TIMESTAMP},
+      print_state = #{record.printState,jdbcType=VARCHAR},
+      is_reevaluate = #{record.isReevaluate,jdbcType=VARCHAR},
+      reevalueate_result = #{record.reevalueateResult,jdbcType=VARCHAR},
+      reevaluate_parent_code = #{record.reevaluateParentCode,jdbcType=VARCHAR},
+      operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      is_valid = #{record.isValid,jdbcType=INTEGER},
+      si_area = #{record.siArea,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.EvaluateTaskDO" >
+    update ltci_evaluate_task
+    <set >
+      <if test="evaluateTaskCode != null" >
+        evaluate_task_code = #{evaluateTaskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationCode != null" >
+        application_code = #{applicationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredPersonCode != null" >
+        insured_person_code = #{insuredPersonCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredPersonName != null" >
+        insured_person_name = #{insuredPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="taskState != null" >
+        task_state = #{taskState,jdbcType=VARCHAR},
+      </if>
+      <if test="taskDeadline != null" >
+        task_deadline = #{taskDeadline,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateAgencyCode != null" >
+        evaluate_agency_code = #{evaluateAgencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateAgencyName != null" >
+        evaluate_agency_name = #{evaluateAgencyName,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateCode != null" >
+        evaluate_code = #{evaluateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        send_time = #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="printState != null" >
+        print_state = #{printState,jdbcType=VARCHAR},
+      </if>
+      <if test="isReevaluate != null" >
+        is_reevaluate = #{isReevaluate,jdbcType=VARCHAR},
+      </if>
+      <if test="reevalueateResult != null" >
+        reevalueate_result = #{reevalueateResult,jdbcType=VARCHAR},
+      </if>
+      <if test="reevaluateParentCode != null" >
+        reevaluate_parent_code = #{reevaluateParentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        operated_by = #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdOrg != null" >
+        created_org = #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="siArea != null" >
+        si_area = #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where evaluate_taskid = #{evaluateTaskid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.EvaluateTaskDO" >
+    update ltci_evaluate_task
+    set evaluate_task_code = #{evaluateTaskCode,jdbcType=VARCHAR},
+      application_code = #{applicationCode,jdbcType=VARCHAR},
+      insured_person_code = #{insuredPersonCode,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      insured_person_name = #{insuredPersonName,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      task_state = #{taskState,jdbcType=VARCHAR},
+      task_deadline = #{taskDeadline,jdbcType=VARCHAR},
+      evaluate_agency_code = #{evaluateAgencyCode,jdbcType=VARCHAR},
+      evaluate_agency_name = #{evaluateAgencyName,jdbcType=VARCHAR},
+      evaluate_code = #{evaluateCode,jdbcType=VARCHAR},
+      send_time = #{sendTime,jdbcType=TIMESTAMP},
+      print_state = #{printState,jdbcType=VARCHAR},
+      is_reevaluate = #{isReevaluate,jdbcType=VARCHAR},
+      reevalueate_result = #{reevalueateResult,jdbcType=VARCHAR},
+      reevaluate_parent_code = #{reevaluateParentCode,jdbcType=VARCHAR},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      created_org = #{createdOrg,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      si_area = #{siArea,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where evaluate_taskid = #{evaluateTaskid,jdbcType=VARCHAR}
+  </update>
+</mapper>

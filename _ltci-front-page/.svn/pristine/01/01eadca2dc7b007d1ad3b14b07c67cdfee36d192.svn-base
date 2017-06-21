@@ -1,0 +1,82 @@
+.mainTitle {
+	line-height: 20px;
+	font-size: 16px;
+	color: #3771a7;
+	padding: 3px 10px;
+	border-bottom: 2px solid #d5d9db;
+}
+
+.mainWapper {
+	padding: 10px 30px;
+	margin-top: 20px;
+}
+
+.mainWapper textarea {
+	padding: 10px;
+	display: block;
+	overflow: hidden;
+	font-size: 14px;
+}
+
+.info_box {
+	line-height: 26px;
+	border-collapse: collapse;
+}
+
+.info_name {
+	font-size: 14px;
+	color: #5a636b;
+	min-width: 120px;
+	text-align: right;
+	background: #e9eef2;
+	border: 1px solid #d5d9db;
+	padding-right: 10px;
+	font-weight: bold;
+}
+
+.info_name_short {
+	font-size: 14px;
+	color: #5a636b;
+	min-width: 30px;
+	text-align: center;
+	background: #e9eef2;
+	border: 1px solid #d5d9db;
+	padding-right: 10px;
+	font-weight: bold;
+}
+
+.info_value_short {
+	text-align: center;
+	font-size: 13px;
+	padding: 0 15px;
+	min-width: 120px;
+	color: #888;
+	border: 1px solid #d5d9db;
+	word-wrap: break-word;
+	word-break: break-all;
+}
+
+.info_value {
+	font-size: 13px;
+	padding: 0 15px;
+	min-width: 260px;
+	color: #888;
+	border: 1px solid #d5d9db;
+	word-wrap: break-word;
+	word-break: break-all;
+}
+
+.imgTitle {
+	margin-top: 10px;
+	line-height: 24px;
+	font-size: 14px;
+	padding-left: 10px;
+	font-weight: bold;
+}
+
+.imgBox img {
+	/*为图片设置了最大宽度*/
+	max-width: 350px;
+	height: auto;
+	padding: 10px;
+}

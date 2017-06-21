@@ -1,0 +1,21 @@
+get:
+  tags:
+  - staffAccept
+  summary: 具体某一个人员前后字段变化
+  description: 具体某一个人员前后字段变化
+  operationId: staffDetial
+  parameters:
+  - name: serialNo
+    in: path
+    description: 人员变更流水号
+    required: true
+    type: string
+  responses:
+    200:
+      description: 查询成功
+      schema:
+          $ref: "../../ltci-agency-person-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-agency-person-api-v1.yml/#/definitions/ResultDTO"

@@ -1,0 +1,79 @@
+post:
+  tags:
+  - patrolExecute
+  summary: 录入执行结果
+  description: 录入执行结果。
+  operationId: createPatrolTaskExecute
+  parameters: 
+    - name: patrolTaskId
+      in: formData
+      required: true
+      type: string
+      description: 巡查任务ID
+    - name: partolTime
+      in: formData
+      required: true
+      type: string
+      description: 巡查时间
+    - name: resultDesc
+      in: formData
+      required: true
+      type: string
+      description: 结果描述
+    - name: executeFile[0].fileId
+      in: formData
+      type: string
+      description: 资源ID
+      example: 00
+    - name: executeFile[0].fileType
+      in: formData
+      type: string
+      description: 资源类型
+      example: mp3
+    - name: executeFile[0].fileName
+      in: formData
+      type: string
+      description: 资源名称
+      example: 18090909090
+    - name: executeFile[1].fileId
+      in: formData
+      type: string
+      description: 资源ID
+      example: 00
+    - name: executeFile[1].fileType
+      in: formData
+      type: string
+      description: 资源类型
+      example: mp3
+    - name: executeFile[1].fileName
+      in: formData
+      type: string
+      description: 资源名称
+      example: 18090909090
+    - name: violationItem
+      in: formData
+      type: string
+      description: 违规项
+
+
+  responses:
+      200:
+        description: 附件上传成功
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+
+
+
+
+
+
+
+
+
+
+
+

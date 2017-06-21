@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.OrgSettlementDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.OrgSettlementDO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="org_set_code" property="orgSetCode" jdbcType="VARCHAR" />
+    <result column="set_date" property="setDate" jdbcType="TIMESTAMP" />
+    <result column="org_code" property="orgCode" jdbcType="VARCHAR" />
+    <result column="org_name" property="orgName" jdbcType="VARCHAR" />
+    <result column="fee_starttime" property="feeStarttime" jdbcType="TIMESTAMP" />
+    <result column="fee_endtime" property="feeEndtime" jdbcType="TIMESTAMP" />
+    <result column="nurse_total_amount" property="nurseTotalAmount" jdbcType="DECIMAL" />
+    <result column="si_pay" property="siPay" jdbcType="DECIMAL" />
+    <result column="pay_self" property="paySelf" jdbcType="DECIMAL" />
+    <result column="expense_self" property="expenseSelf" jdbcType="DECIMAL" />
+    <result column="account_pay" property="accountPay" jdbcType="DECIMAL" />
+    <result column="bank_card_pay" property="bankCardPay" jdbcType="DECIMAL" />
+    <result column="acount_payable" property="acountPayable" jdbcType="DECIMAL" />
+    <result column="warranty" property="warranty" jdbcType="DECIMAL" />
+    <result column="real_pay" property="realPay" jdbcType="DECIMAL" />
+    <result column="unr_fee" property="unrFee" jdbcType="DECIMAL" />
+    <result column="over_cost" property="overCost" jdbcType="DECIMAL" />
+    <result column="audit_state" property="auditState" jdbcType="INTEGER" />
+    <result column="check_flag" property="checkFlag" jdbcType="INTEGER" />
+    <result column="reject_reason" property="rejectReason" jdbcType="VARCHAR" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, org_set_code, set_date, org_code, org_name, fee_starttime, fee_endtime, nurse_total_amount, 
+    si_pay, pay_self, expense_self, account_pay, bank_card_pay, acount_payable, warranty, 
+    real_pay, unr_fee, over_cost, audit_state, check_flag, reject_reason, is_valid, operated_by, 
+    operated_time, operated_org, created_by, created_time, created_org, si_area
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.OrgSettlementDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ltci_mon_set_org
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ltci_mon_set_org
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_mon_set_org
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.OrgSettlementDOExample" >
+    delete from ltci_mon_set_org
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.OrgSettlementDO" >
+    insert into ltci_mon_set_org (id, org_set_code, set_date, 
+      org_code, org_name, fee_starttime, 
+      fee_endtime, nurse_total_amount, si_pay, 
+      pay_self, expense_self, account_pay, 
+      bank_card_pay, acount_payable, warranty, 
+      real_pay, unr_fee, over_cost, 
+      audit_state, check_flag, reject_reason, 
+      is_valid, operated_by, operated_time, 
+      operated_org, created_by, created_time, 
+      created_org, si_area)
+    values (#{id,jdbcType=VARCHAR}, #{orgSetCode,jdbcType=VARCHAR}, #{setDate,jdbcType=TIMESTAMP}, 
+      #{orgCode,jdbcType=VARCHAR}, #{orgName,jdbcType=VARCHAR}, #{feeStarttime,jdbcType=TIMESTAMP}, 
+      #{feeEndtime,jdbcType=TIMESTAMP}, #{nurseTotalAmount,jdbcType=DECIMAL}, #{siPay,jdbcType=DECIMAL}, 
+      #{paySelf,jdbcType=DECIMAL}, #{expenseSelf,jdbcType=DECIMAL}, #{accountPay,jdbcType=DECIMAL}, 
+      #{bankCardPay,jdbcType=DECIMAL}, #{acountPayable,jdbcType=DECIMAL}, #{warranty,jdbcType=DECIMAL}, 
+      #{realPay,jdbcType=DECIMAL}, #{unrFee,jdbcType=DECIMAL}, #{overCost,jdbcType=DECIMAL}, 
+      #{auditState,jdbcType=INTEGER}, #{checkFlag,jdbcType=INTEGER}, #{rejectReason,jdbcType=VARCHAR}, 
+      #{isValid,jdbcType=INTEGER}, #{operatedBy,jdbcType=VARCHAR}, #{operatedTime,jdbcType=TIMESTAMP}, 
+      #{operatedOrg,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{createdOrg,jdbcType=VARCHAR}, #{siArea,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.OrgSettlementDO" >
+    insert into ltci_mon_set_org
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orgSetCode != null" >
+        org_set_code,
+      </if>
+      <if test="setDate != null" >
+        set_date,
+      </if>
+      <if test="orgCode != null" >
+        org_code,
+      </if>
+      <if test="orgName != null" >
+        org_name,
+      </if>
+      <if test="feeStarttime != null" >
+        fee_starttime,
+      </if>
+      <if test="feeEndtime != null" >
+        fee_endtime,
+      </if>
+      <if test="nurseTotalAmount != null" >
+        nurse_total_amount,
+      </if>
+      <if test="siPay != null" >
+        si_pay,
+      </if>
+      <if test="paySelf != null" >
+        pay_self,
+      </if>
+      <if test="expenseSelf != null" >
+        expense_self,
+      </if>
+      <if test="accountPay != null" >
+        account_pay,
+      </if>
+      <if test="bankCardPay != null" >
+        bank_card_pay,
+      </if>
+      <if test="acountPayable != null" >
+        acount_payable,
+      </if>
+      <if test="warranty != null" >
+        warranty,
+      </if>
+      <if test="realPay != null" >
+        real_pay,
+      </if>
+      <if test="unrFee != null" >
+        unr_fee,
+      </if>
+      <if test="overCost != null" >
+        over_cost,
+      </if>
+      <if test="auditState != null" >
+        audit_state,
+      </if>
+      <if test="checkFlag != null" >
+        check_flag,
+      </if>
+      <if test="rejectReason != null" >
+        reject_reason,
+      </if>
+      <if test="isValid != null" >
+        is_valid,
+      </if>
+      <if test="operatedBy != null" >
+        operated_by,
+      </if>
+      <if test="operatedTime != null" >
+        operated_time,
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="createdOrg != null" >
+        created_org,
+      </if>
+      <if test="siArea != null" >
+        si_area,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orgSetCode != null" >
+        #{orgSetCode,jdbcType=VARCHAR},
+      </if>
+      <if test="setDate != null" >
+        #{setDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orgCode != null" >
+        #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null" >
+        #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="feeStarttime != null" >
+        #{feeStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="feeEndtime != null" >
+        #{feeEndtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nurseTotalAmount != null" >
+        #{nurseTotalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="siPay != null" >
+        #{siPay,jdbcType=DECIMAL},
+      </if>
+      <if test="paySelf != null" >
+        #{paySelf,jdbcType=DECIMAL},
+      </if>
+      <if test="expenseSelf != null" >
+        #{expenseSelf,jdbcType=DECIMAL},
+      </if>
+      <if test="accountPay != null" >
+        #{accountPay,jdbcType=DECIMAL},
+      </if>
+      <if test="bankCardPay != null" >
+        #{bankCardPay,jdbcType=DECIMAL},
+      </if>
+      <if test="acountPayable != null" >
+        #{acountPayable,jdbcType=DECIMAL},
+      </if>
+      <if test="warranty != null" >
+        #{warranty,jdbcType=DECIMAL},
+      </if>
+      <if test="realPay != null" >
+        #{realPay,jdbcType=DECIMAL},
+      </if>
+      <if test="unrFee != null" >
+        #{unrFee,jdbcType=DECIMAL},
+      </if>
+      <if test="overCost != null" >
+        #{overCost,jdbcType=DECIMAL},
+      </if>
+      <if test="auditState != null" >
+        #{auditState,jdbcType=INTEGER},
+      </if>
+      <if test="checkFlag != null" >
+        #{checkFlag,jdbcType=INTEGER},
+      </if>
+      <if test="rejectReason != null" >
+        #{rejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="operatedBy != null" >
+        #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatedOrg != null" >
+        #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdOrg != null" >
+        #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="siArea != null" >
+        #{siArea,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.OrgSettlementDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_mon_set_org
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_mon_set_org
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgSetCode != null" >
+        org_set_code = #{record.orgSetCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.setDate != null" >
+        set_date = #{record.setDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.orgCode != null" >
+        org_code = #{record.orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgName != null" >
+        org_name = #{record.orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.feeStarttime != null" >
+        fee_starttime = #{record.feeStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.feeEndtime != null" >
+        fee_endtime = #{record.feeEndtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.nurseTotalAmount != null" >
+        nurse_total_amount = #{record.nurseTotalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.siPay != null" >
+        si_pay = #{record.siPay,jdbcType=DECIMAL},
+      </if>
+      <if test="record.paySelf != null" >
+        pay_self = #{record.paySelf,jdbcType=DECIMAL},
+      </if>
+      <if test="record.expenseSelf != null" >
+        expense_self = #{record.expenseSelf,jdbcType=DECIMAL},
+      </if>
+      <if test="record.accountPay != null" >
+        account_pay = #{record.accountPay,jdbcType=DECIMAL},
+      </if>
+      <if test="record.bankCardPay != null" >
+        bank_card_pay = #{record.bankCardPay,jdbcType=DECIMAL},
+      </if>
+      <if test="record.acountPayable != null" >
+        acount_payable = #{record.acountPayable,jdbcType=DECIMAL},
+      </if>
+      <if test="record.warranty != null" >
+        warranty = #{record.warranty,jdbcType=DECIMAL},
+      </if>
+      <if test="record.realPay != null" >
+        real_pay = #{record.realPay,jdbcType=DECIMAL},
+      </if>
+      <if test="record.unrFee != null" >
+        unr_fee = #{record.unrFee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.overCost != null" >
+        over_cost = #{record.overCost,jdbcType=DECIMAL},
+      </if>
+      <if test="record.auditState != null" >
+        audit_state = #{record.auditState,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkFlag != null" >
+        check_flag = #{record.checkFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.rejectReason != null" >
+        reject_reason = #{record.rejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isValid != null" >
+        is_valid = #{record.isValid,jdbcType=INTEGER},
+      </if>
+      <if test="record.operatedBy != null" >
+        operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedTime != null" >
+        operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.operatedOrg != null" >
+        operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null" >
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdOrg != null" >
+        created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.siArea != null" >
+        si_area = #{record.siArea,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_mon_set_org
+    set id = #{record.id,jdbcType=VARCHAR},
+      org_set_code = #{record.orgSetCode,jdbcType=VARCHAR},
+      set_date = #{record.setDate,jdbcType=TIMESTAMP},
+      org_code = #{record.orgCode,jdbcType=VARCHAR},
+      org_name = #{record.orgName,jdbcType=VARCHAR},
+      fee_starttime = #{record.feeStarttime,jdbcType=TIMESTAMP},
+      fee_endtime = #{record.feeEndtime,jdbcType=TIMESTAMP},
+      nurse_total_amount = #{record.nurseTotalAmount,jdbcType=DECIMAL},
+      si_pay = #{record.siPay,jdbcType=DECIMAL},
+      pay_self = #{record.paySelf,jdbcType=DECIMAL},
+      expense_self = #{record.expenseSelf,jdbcType=DECIMAL},
+      account_pay = #{record.accountPay,jdbcType=DECIMAL},
+      bank_card_pay = #{record.bankCardPay,jdbcType=DECIMAL},
+      acount_payable = #{record.acountPayable,jdbcType=DECIMAL},
+      warranty = #{record.warranty,jdbcType=DECIMAL},
+      real_pay = #{record.realPay,jdbcType=DECIMAL},
+      unr_fee = #{record.unrFee,jdbcType=DECIMAL},
+      over_cost = #{record.overCost,jdbcType=DECIMAL},
+      audit_state = #{record.auditState,jdbcType=INTEGER},
+      check_flag = #{record.checkFlag,jdbcType=INTEGER},
+      reject_reason = #{record.rejectReason,jdbcType=VARCHAR},
+      is_valid = #{record.isValid,jdbcType=INTEGER},
+      operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      si_area = #{record.siArea,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.OrgSettlementDO" >
+    update ltci_mon_set_org
+    <set >
+      <if test="orgSetCode != null" >
+        org_set_code = #{orgSetCode,jdbcType=VARCHAR},
+      </if>
+      <if test="setDate != null" >
+        set_date = #{setDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orgCode != null" >
+        org_code = #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null" >
+        org_name = #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="feeStarttime != null" >
+        fee_starttime = #{feeStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="feeEndtime != null" >
+        fee_endtime = #{feeEndtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nurseTotalAmount != null" >
+        nurse_total_amount = #{nurseTotalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="siPay != null" >
+        si_pay = #{siPay,jdbcType=DECIMAL},
+      </if>
+      <if test="paySelf != null" >
+        pay_self = #{paySelf,jdbcType=DECIMAL},
+      </if>
+      <if test="expenseSelf != null" >
+        expense_self = #{expenseSelf,jdbcType=DECIMAL},
+      </if>
+      <if test="accountPay != null" >
+        account_pay = #{accountPay,jdbcType=DECIMAL},
+      </if>
+      <if test="bankCardPay != null" >
+        bank_card_pay = #{bankCardPay,jdbcType=DECIMAL},
+      </if>
+      <if test="acountPayable != null" >
+        acount_payable = #{acountPayable,jdbcType=DECIMAL},
+      </if>
+      <if test="warranty != null" >
+        warranty = #{warranty,jdbcType=DECIMAL},
+      </if>
+      <if test="realPay != null" >
+        real_pay = #{realPay,jdbcType=DECIMAL},
+      </if>
+      <if test="unrFee != null" >
+        unr_fee = #{unrFee,jdbcType=DECIMAL},
+      </if>
+      <if test="overCost != null" >
+        over_cost = #{overCost,jdbcType=DECIMAL},
+      </if>
+      <if test="auditState != null" >
+        audit_state = #{auditState,jdbcType=INTEGER},
+      </if>
+      <if test="checkFlag != null" >
+        check_flag = #{checkFlag,jdbcType=INTEGER},
+      </if>
+      <if test="rejectReason != null" >
+        reject_reason = #{rejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="operatedBy != null" >
+        operated_by = #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdOrg != null" >
+        created_org = #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="siArea != null" >
+        si_area = #{siArea,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.OrgSettlementDO" >
+    update ltci_mon_set_org
+    set org_set_code = #{orgSetCode,jdbcType=VARCHAR},
+      set_date = #{setDate,jdbcType=TIMESTAMP},
+      org_code = #{orgCode,jdbcType=VARCHAR},
+      org_name = #{orgName,jdbcType=VARCHAR},
+      fee_starttime = #{feeStarttime,jdbcType=TIMESTAMP},
+      fee_endtime = #{feeEndtime,jdbcType=TIMESTAMP},
+      nurse_total_amount = #{nurseTotalAmount,jdbcType=DECIMAL},
+      si_pay = #{siPay,jdbcType=DECIMAL},
+      pay_self = #{paySelf,jdbcType=DECIMAL},
+      expense_self = #{expenseSelf,jdbcType=DECIMAL},
+      account_pay = #{accountPay,jdbcType=DECIMAL},
+      bank_card_pay = #{bankCardPay,jdbcType=DECIMAL},
+      acount_payable = #{acountPayable,jdbcType=DECIMAL},
+      warranty = #{warranty,jdbcType=DECIMAL},
+      real_pay = #{realPay,jdbcType=DECIMAL},
+      unr_fee = #{unrFee,jdbcType=DECIMAL},
+      over_cost = #{overCost,jdbcType=DECIMAL},
+      audit_state = #{auditState,jdbcType=INTEGER},
+      check_flag = #{checkFlag,jdbcType=INTEGER},
+      reject_reason = #{rejectReason,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      created_org = #{createdOrg,jdbcType=VARCHAR},
+      si_area = #{siArea,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

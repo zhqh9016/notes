@@ -1,0 +1,46 @@
+put: 
+  tags:
+  - dictionaryManage
+  summary: 修改字典表
+  description: 修改字典表
+  operationId: updateDictionary
+  parameters:
+  - name: id
+    in: formData
+    description: id
+    required: true
+    type: string  
+  - name: type
+    in: formData
+    description: 类型值 
+    required: true
+    type: string
+  - name: typeName
+    in: formData
+    description: 类型名称
+    required: true
+    type: string
+  - name: value 
+    in: formData
+    description: 属性值
+    required: true
+    type: string
+  - name: valueName
+    in: formData
+    description: 属性名称
+    required: true
+    type: string
+  - name: operatedBy
+    in: formData
+    description: 更新操作人
+    required: false
+    type: string      
+  responses: 
+    200:  
+      description: 修改成功
+      schema: 
+      $ref: "../../ltci-system-api-v1.yml/#/definitions/ResultDTO"
+    default: 
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/ResultDTO"

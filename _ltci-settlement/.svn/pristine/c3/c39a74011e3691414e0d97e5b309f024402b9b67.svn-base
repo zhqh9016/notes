@@ -1,0 +1,77 @@
+package com.taikang.dic.ltci.service;
+
+import java.util.List;
+
+import com.taikang.dic.ltci.api.model.OrgSettlementDTO;
+import com.taikang.dic.ltci.api.model.PageResultDTO;
+import com.taikang.dic.ltci.api.model.ResultDTO;
+import com.taikang.dic.ltci.model.OrgSettlementDO;
+
+/**
+ * 机构月结业务
+ *
+ * @author itw_muwg
+ */
+public interface IOrgSettlementService extends GenericService<OrgSettlementDO, String> {
+
+  public PageResultDTO countOrgData(OrgSettlementDTO dto, Integer page, Integer pageSize);
+
+  public int saveOrgData(OrgSettlementDTO dto);
+  /**
+   * 机构月结根据机构名、机构编码、时间、审核状态、分页信息查询 支持根据多个审核状态查询
+   *
+   * @param orgName TODO
+   * @param orgCode TODO
+   * @param checkFlags
+   * @param startDate
+   * @param endDate
+   * @param page
+   * @param pageSize
+   * @return
+   */
+  public PageResultDTO listMonSetOrg(
+      String orgName,
+      String orgCode,
+      List<Integer> checkFlags,
+      String startDate,
+      String endDate,
+      Integer page,
+      Integer pageSize);
+
+  /**
+   * 根据ID查询机构月结信息
+   *
+   * @param id
+   * @return
+   */
+  public OrgSettlementDTO selectById(String id);
+  /**
+   * 根据ID更新机构月结、个人日结、护理明细记录审核状态信息，并添加审核日志
+   *
+   * @param orgSet
+   * @return
+   */
+  public ResultDTO updateAuditState(OrgSettlementDTO orgSet);
+
+  public ResultDTO settleForOrg(OrgSettlementDTO orgSet);
+  /**
+   * 护理机构支付金额查询
+   *
+   * @param clientCode
+   * @param siArea
+   * @param agencyCode
+   * @return
+   */
+  public ResultDTO getSiPayCost(String clientCode, String siArea, String agencyCode);
+  /**
+   * 护理机构支付结果接收
+   *
+   * @param costId
+   * @param clientCode
+   * @param siArea
+   * @param agencyCode
+   * @return
+   */
+  public ResultDTO updateOrgPaySuccess(
+      String costId, String clientCode, String siArea, String agencyCode);
+}

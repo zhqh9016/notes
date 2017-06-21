@@ -1,0 +1,21 @@
+get: 
+  tags:
+  - rRoleResManage
+  summary: 查询用户菜单列表
+  description: 根据用户id查询用户所拥有菜单权限
+  operationId: listMenu
+  parameters:
+  - name: userId
+    in: path
+    description: 用户id
+    required: true
+    type: string
+  responses:
+    200:
+      description: 查询成功
+      schema:
+          $ref: "../../ltci-system-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"

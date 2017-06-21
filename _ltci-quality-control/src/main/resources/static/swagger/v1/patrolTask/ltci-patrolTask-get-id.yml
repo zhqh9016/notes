@@ -1,0 +1,29 @@
+get: 
+  tags:
+  - patrolTasks
+  summary: 移动端实时查询任务详情接口
+  description: 移动端实时查询任务详情接口
+  operationId: patrolTaskAllotDetails
+  parameters: 
+    - name: patrolTaskId
+      in: path
+      description: 任务id
+      required: true
+      type: string
+  responses:
+      201:
+        description: 查询成功
+        schema:
+          $ref: "../../ltci-quality-control-api-v1.yml/#/definitions/ResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-quality-control-api-v1.yml/#/definitions/ResultDTO"
+
+
+
+
+
+
+
+

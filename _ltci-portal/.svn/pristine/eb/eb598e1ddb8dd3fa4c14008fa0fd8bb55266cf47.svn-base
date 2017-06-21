@@ -1,0 +1,16 @@
+get:
+  tags:
+  - todoList
+  summary: 显示待办提醒
+  description: 返回提醒信息
+  operationId: listTodo
+  responses:
+    200:
+      description: 查询成功
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+

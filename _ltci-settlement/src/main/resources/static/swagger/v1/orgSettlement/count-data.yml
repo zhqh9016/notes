@@ -1,0 +1,54 @@
+post:
+  tags:
+  - orgSettlement
+  summary: 查询统计机构某时间段内总费用信息
+  description: 返回机构月结算信息列表。
+  operationId: listOrgSettlement
+  parameters:
+  - name: orgName
+    in: formData
+    description: 机构名称（模糊查询）
+    required: false
+    type: string
+  - name: orgCode
+    in: formData
+    description: 机构编号
+    required: false
+    type: string
+  - name: auditState
+    in: formData
+    format: int32
+    description: 审核状态（只有'1':待处理'或'4':复核不通过）
+    required: false
+    type: integer
+  - name: feeStarttime
+    in: formData
+    description: 费用开始日期
+    required: false
+    type: string
+  - name: feeEndtime
+    in: formData
+    description: 费用终止日期
+    required: false
+    type: string
+  - name: page
+    in: formData
+    description: 当前页码
+    required: true
+    type: integer
+    format: int32
+  - name: pageSize
+    in: formData
+    description: 每页显示件数
+    required: true
+    type: integer
+    format: int32
+  responses:
+    200:
+      description: 查询成功
+      schema:
+          $ref: "../../ltci-settlement-api-v1.yml/#/definitions/PageResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-settlement-api-v1.yml/#/definitions/Response"

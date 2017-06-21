@@ -1,0 +1,93 @@
+put:
+  tags:
+  - agencyAccept
+  summary: 机构申请受理处理
+  description: 机构申请受理处理
+  operationId: updateAgencyState
+  parameters:
+  - name: serialNum
+    in: formData
+    description: 机构历史信息流水号
+    required: true
+    type: string
+  - name: orgCode
+    in: formData
+    description: 机构编号（专业）
+    required: true
+    type: string
+  - name: agencyCode
+    in: formData
+    description: 机构编号（经办）
+    required: true
+    type: string
+  - name: actionType
+    in: formData
+    description: 操作类型（新增、变更；变更时只传有变化的项目值）
+    required: true
+    type: string
+  - name: agencyState
+    in: formData
+    description: 机构状态
+    required: true
+    type: integer
+    format: int32
+  - name: cause
+    in: formData
+    description: 不受理或不通过原因
+    required: false
+    type: string
+  - name: keyBeginDate
+    in: formData
+    description: 密钥开始日期（申请审核时必填）
+    required: false
+    type: string
+  - name: keyEndDate
+    in: formData
+    description: 密钥终止日期（申请审核时必填）
+    required: false
+    type: string
+  - name: advancedDoctorNum
+    in: formData
+    description: 高级执业医师数
+    required: false
+    type: integer
+    format: int32
+  - name: intermediateDoctorNum
+    in: formData
+    required: false
+    type: integer
+    format: int32
+    description: 中级执业医师数
+  - name: primaryDoctorNum 
+    in: formData
+    required: false
+    type: integer
+    format: int32
+    description: 初级执业医师数
+  - name: advancedNurseNum 
+    in: formData
+    required: false 
+    type: integer
+    format: int32
+    description: 高级执业护士数
+  - name: intermediateNurseNum 
+    in: formData
+    required: false  
+    type: integer
+    format: int32
+    description: 中级执业护士数
+  - name: primaryNurseNum 
+    in: formData
+    required: false  
+    type: integer
+    format: int32
+    description: 初级执业护士数
+  responses:
+    200:
+      description: 查询成功
+      schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/Response"

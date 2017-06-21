@@ -1,0 +1,339 @@
+<html>
+
+<head>
+    <title>字典管理</title>
+    <meta charset="utf-8" />
+    <!-- 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="renderer" content="webkit" /> -->
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/common.css" type="text/css">
+    <link rel="stylesheet" href="../../css/tablefrom.css" type="text/css" />
+</head>
+
+<body>
+    <div id="app" style="height:100%;">
+        <table width="100%" id="userList" toolbar="#userListtb"></table>
+        <div id="userListtb" style="padding:3px; height: auto">
+            <div name="searchColums" id="searchColums">
+                <form id="dicListForm">
+                    <span class="inputLable">
+						<span class="inputLableText" title="name">类型名称：</span>
+                    <input type="text" class="inuptxt" id="searchTypeName" name="job" />
+                    </span>
+                    <span class="inputLable">
+						<span class="inputLableText" title="name">类型值：</span>
+                    <input type="text" class="inuptxt" id="searchTypeVal" name="typeVal" />
+                    </span>
+                    <span class="inputLable">
+						<span class="inputLableText" title="name">属性名称：</span>
+                    <input type="text" class="inuptxt" id="searchValueName" name="realName" />
+                    </span>
+                    <a href="#" class="easyui-linkbutton" onclick="doSearch()">查询</a>
+                    <a href="#" class="easyui-linkbutton" onclick="resetInput()">重置</a>
+                </form>
+            </div>
+            <div style="height:30px;" class="datagrid-toolbar">
+                <span style="float:left;">
+					<a href="#" class="easyui-linkbutton" plain="true" icon="icon-add" onclick="doOpenAdd()">添加</a>
+					<a href="#" class="easyui-linkbutton" plain="true" icon="icon-edit" onclick="doOpenEdit()">编辑</a>
+					<a href="#" class="easyui-linkbutton" plain="true" icon="icon-cancel" onclick="doDelete()">删除</a>
+				</span>
+            </div>
+        </div>
+        <div style="display:none">
+            <div id="addWindow">
+                <form id="addForm">
+                    <table cellpadding="0" cellspacing="1" class="formtable">
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 类型名称: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="typeName" class="easyui-validatebox" name="typeName" data-options="required:true,validType:'chinese'" />
+                                <span id="Type" style="color:red">类型名称不能为空</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 类型值: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="type" class="easyui-validatebox" name="type" data-options="required:true,validType:'minLength[2]'" />
+                                <span id="Type1" style="color:red">类型值不能为空</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 属性名称: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="valueName" class="easyui-validatebox" name="valueName" data-options="required:true" />
+                                <span id="Type2" style="color:red">属性名称不能为空</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 属性值: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="value" class="easyui-validatebox" name="value" data-options="required:true,validType:'intOrFloat'" />
+                                <span id="Type3" style="color:red">属性值不能为空</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="ui_buttons">
+                                    <a href="#" class="easyui-linkbutton" onclick="doAdd()">保存</a>
+                                    <a href="#" class="easyui-linkbutton" onclick="doClose('addWindow')">取消</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div id="editWindow">
+                <form id="editForm">
+                    <table cellpadding="0" cellspacing="1" class="formtable">
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 类型名称: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="editTypeName" class="easyui-validatebox" name="typeName" data-options="required:true,validType:'chinese'" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 类型值: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="editType" disabled : true class="easyui-validatebox" name="type" data-options="required:true,validType:'minLength[2]'" readonly unselectable="on" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 属性名称: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="editValueName" class="easyui-validatebox" name="valueName" data-options="required:true" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" class="lable">
+                                <label class="Validform_label"> 属性值: </label>
+                            </td>
+                            <td class="value">
+                                <input type="text" id="editValue" class="easyui-validatebox" disabled : true name="value" data-options="required:true,validType:'intOrFloat'" readonly unselectable="on" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="ui_buttons">
+                                    <input type="hidden" class="inputxt" id="editId" name="id" />
+                                    <a href="#" class="easyui-linkbutton" onclick="doUpdate()">更新</a>
+                                    <a href="#" class="easyui-linkbutton" onclick="doClose('editWindow')">取消</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<!--<script type="text/javascript" src="../../js/vu e.m in.js"></script>-->
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/validate.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../../js/userMangerment/dictionary.js"></script>
+<script>
+$('#addWindow').window({
+    title: '新增数据字典',
+    width: 600,
+    height: 400,
+    closed: true,
+    modal: true,
+    collapsible: false,
+    minimizable: false,
+    maximizable: false
+});
+$('#editWindow').window({
+    title: '编辑数据字典',
+    width: 600,
+    height: 400,
+    closed: true,
+    modal: false,
+    collapsible: false,
+    minimizable: false,
+    maximizable: false
+});
+// var ap p = new Vu e({
+// 	el:'#app',
+var app = {
+    vue_message: '1123',
+    vue_rowIndex: 0,
+    vue_pageNum: 1,
+    vue_pageSize: 10,
+    vue_allDataNum: 0,
+    vue_allPageNum: 0,
+    vue_id: '',
+    vue_typeName: '',
+    vue_type: '',
+    vue_valueName: '',
+    vue_value: '',
+    vue_operatedBy: '测试员1',
+    vue_createdBy: '',
+    vue_createdOrg: '',
+    typeNameNull: false,
+    typeNull: false,
+    valueNameNull: false,
+    valueNull: false
+};
+// });
+function doDelete() {
+    if (isCheck()) {
+        $.messager.confirm('确认', '您确认想要删除记录吗？', function(r) {
+            if (r) {
+                app.vue_id = TableObj.rowData.id;
+                var url = systemServiceUrl + "/api/v1/dictionary/" + app.vue_id + "/user/" + app.vue_operatedBy;
+                sendAjax(url, "delete", "", function(tableData) {
+                    if (tableData.status != "200") {
+                        $.messager.alert('提示', tableData.message);
+                    } else {
+                        //这里写返回信息更新成功，并加提示更新成功				
+                        showMsg("信息删除成功！");
+                        loadGridData();
+                    }
+                });
+            }
+        });
+    }
+}
+
+function doAdd() {
+    if ($("#addForm").form("validate")) {
+        var url = systemServiceUrl + "/api/v1/new/dictionary";
+        sendAjax(url, "post", $("#addForm").serialize(), function(tableData) {
+            if (tableData.status != "200") {
+                $.messager.alert('提示', tableData.message);
+            } else {
+                $('#addWindow').window('close');
+                doLocalDictionary();
+                showMsg("信息添加成功！");
+                loadGridData();
+            }
+        });
+    }
+}
+
+function doUpdate() {
+    if ($("#editForm").form("validate")) {
+        var s = "id=" + $('#editId').val() + "&typeName=" + $('#editTypeName').val();
+        s += "&type=" + $('#editType').val() + "&value=" + $('#editValue').val();
+        s += "&valueName=" + $('#editValueName').val() + "&operatedBy=" + $('#editOperatedBy').val();
+        var url = systemServiceUrl + "/api/v1/diffrence/dictionary";
+        sendAjax(url, "put", s, function(tableData) {
+            if (tableData.status != "200") {
+                $.messager.alert('提示', tableData.message);
+            } else {
+                //这里写返回信息更新成功，并加提示更新成功				
+                $('#editWindow').window('close');
+                doLocalDictionary();
+                showMsg("信息编辑成功！");
+                loadGridData();
+            }
+        });
+    }
+}
+
+function doOpenAdd() {
+    $('#addForm input').val('');
+    $('#addWindow').window('open');
+}
+
+function doOpenEdit() {
+    if (isCheck()) {
+        app.vue_id = TableObj.rowData.id;
+        app.vue_type = TableObj.rowData.type;
+        app.vue_typeName = TableObj.rowData.typeName;
+        app.vue_value = TableObj.rowData.value;
+        app.vue_valueName = TableObj.rowData.valueName;
+        $('#editOperatedBy').val(app.vue_operatedBy);
+        $('#editId').val(app.vue_id);
+        $('#editTypeName').val(app.vue_typeName);
+        $('#editType').val(app.vue_type);
+        $('#editValue').val(app.vue_value);
+        $('#editValueName').val(app.vue_valueName);
+        $('#editWindow').window('open');
+    }
+}
+
+function resetInput() {
+    // alert()
+    $("#searchTypeName").val('');
+    $("#searchValueName").val('');
+    $("#searchTypeVal").val("");
+    $("#userList").datagrid("clearSelections");
+}
+
+function doClose(id) {
+    $('#' + id).window('close');
+    $('#addForm input').val('');
+}
+
+function isCheck() {
+    var arr = $('#userList').datagrid('getChecked');
+    if (arr.length < 1) {
+        // showMsg('请选择一行数据再进行操作')
+        $.messager.alert('警告', '请选择一行数据再进行操作');
+        return false;
+    }
+    return true;
+}
+
+$(function() {
+    $("#Type1").hide();
+    $("#Type2").hide();
+    $("#Type3").hide();
+    $("#Type").hide();
+    $("#Type4").hide();
+    $("#Type5").hide();
+});
+/*function doLoading(){
+	var obj={
+		queryFlag:"all",
+		page: TableObj.page,
+		pageSize: TableObj.pageSize,
+		typeName:$("#searchTypeName").val(),
+		valueName:$("#searchValueName").val(),
+		type:$("#searchTypeVal").val()
+	};
+	var url = systemServiceUrl+"/api/v1/dictionary";
+	sendAjax(url, "post", obj, function(data) {
+		gridLoadData('userList', data);
+	}, funct ion(er ror) {
+		$.messager.alert('警告', '网络异常，列表加载失败！');
+	});
+
+}*/
+function doSearch() {
+    TableObj.page = 1;
+    TableObj.pageSize = 10;
+    TableObj.query = { //查询条件
+        queryFlag: "all",
+        typeName: $("#searchTypeName").val(),
+        valueName: $("#searchValueName").val(),
+        type: $("#searchTypeVal").val(),
+        page: TableObj.page,
+        pageSize: TableObj.pageSize
+    };
+    loadGridData();
+}
+</script>
+
+</html>

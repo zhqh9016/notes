@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.NursingTaskDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.NursingTaskDO" >
+    <id column="nursing_taskid" property="nursingTaskid" jdbcType="VARCHAR" />
+    <result column="nursing_task_code" property="nursingTaskCode" jdbcType="VARCHAR" />
+    <result column="evaluate_task_code" property="evaluateTaskCode" jdbcType="VARCHAR" />
+    <result column="intent_agency" property="intentAgency" jdbcType="VARCHAR" />
+    <result column="insured_person_code" property="insuredPersonCode" jdbcType="VARCHAR" />
+    <result column="final_agency_code" property="finalAgencyCode" jdbcType="VARCHAR" />
+    <result column="final_agency_name" property="finalAgencyName" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="apply_type" property="applyType" jdbcType="VARCHAR" />
+    <result column="is_relative_cared" property="isRelativeCared" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    nursing_taskid, nursing_task_code, evaluate_task_code, intent_agency, insured_person_code, 
+    final_agency_code, final_agency_name, state, apply_type, is_relative_cared, remark, 
+    operated_by, operated_time, operated_org, created_by, created_time, created_org, 
+    is_valid, si_area
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.NursingTaskDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ltci_nursing_task
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ltci_nursing_task
+    where nursing_taskid = #{nursingTaskid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_nursing_task
+    where nursing_taskid = #{nursingTaskid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.NursingTaskDOExample" >
+    delete from ltci_nursing_task
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.NursingTaskDO" >
+    insert into ltci_nursing_task (nursing_taskid, nursing_task_code, evaluate_task_code, 
+      intent_agency, insured_person_code, final_agency_code, 
+      final_agency_name, state, apply_type, 
+      is_relative_cared, remark, operated_by, 
+      operated_time, operated_org, created_by, 
+      created_time, created_org, is_valid, 
+      si_area)
+    values (#{nursingTaskid,jdbcType=VARCHAR}, #{nursingTaskCode,jdbcType=VARCHAR}, #{evaluateTaskCode,jdbcType=VARCHAR}, 
+      #{intentAgency,jdbcType=VARCHAR}, #{insuredPersonCode,jdbcType=VARCHAR}, #{finalAgencyCode,jdbcType=VARCHAR}, 
+      #{finalAgencyName,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{applyType,jdbcType=VARCHAR}, 
+      #{isRelativeCared,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{operatedBy,jdbcType=VARCHAR}, 
+      #{operatedTime,jdbcType=TIMESTAMP}, #{operatedOrg,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{createdOrg,jdbcType=VARCHAR}, #{isValid,jdbcType=INTEGER}, 
+      #{siArea,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.NursingTaskDO" >
+    insert into ltci_nursing_task
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="nursingTaskid != null" >
+        nursing_taskid,
+      </if>
+      <if test="nursingTaskCode != null" >
+        nursing_task_code,
+      </if>
+      <if test="evaluateTaskCode != null" >
+        evaluate_task_code,
+      </if>
+      <if test="intentAgency != null" >
+        intent_agency,
+      </if>
+      <if test="insuredPersonCode != null" >
+        insured_person_code,
+      </if>
+      <if test="finalAgencyCode != null" >
+        final_agency_code,
+      </if>
+      <if test="finalAgencyName != null" >
+        final_agency_name,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="applyType != null" >
+        apply_type,
+      </if>
+      <if test="isRelativeCared != null" >
+        is_relative_cared,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="operatedBy != null" >
+        operated_by,
+      </if>
+      <if test="operatedTime != null" >
+        operated_time,
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="createdOrg != null" >
+        created_org,
+      </if>
+      <if test="isValid != null" >
+        is_valid,
+      </if>
+      <if test="siArea != null" >
+        si_area,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="nursingTaskid != null" >
+        #{nursingTaskid,jdbcType=VARCHAR},
+      </if>
+      <if test="nursingTaskCode != null" >
+        #{nursingTaskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateTaskCode != null" >
+        #{evaluateTaskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="intentAgency != null" >
+        #{intentAgency,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredPersonCode != null" >
+        #{insuredPersonCode,jdbcType=VARCHAR},
+      </if>
+      <if test="finalAgencyCode != null" >
+        #{finalAgencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="finalAgencyName != null" >
+        #{finalAgencyName,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="applyType != null" >
+        #{applyType,jdbcType=VARCHAR},
+      </if>
+      <if test="isRelativeCared != null" >
+        #{isRelativeCared,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatedOrg != null" >
+        #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdOrg != null" >
+        #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="siArea != null" >
+        #{siArea,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.NursingTaskDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_nursing_task
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_nursing_task
+    <set >
+      <if test="record.nursingTaskid != null" >
+        nursing_taskid = #{record.nursingTaskid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nursingTaskCode != null" >
+        nursing_task_code = #{record.nursingTaskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evaluateTaskCode != null" >
+        evaluate_task_code = #{record.evaluateTaskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.intentAgency != null" >
+        intent_agency = #{record.intentAgency,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insuredPersonCode != null" >
+        insured_person_code = #{record.insuredPersonCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.finalAgencyCode != null" >
+        final_agency_code = #{record.finalAgencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.finalAgencyName != null" >
+        final_agency_name = #{record.finalAgencyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applyType != null" >
+        apply_type = #{record.applyType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isRelativeCared != null" >
+        is_relative_cared = #{record.isRelativeCared,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedBy != null" >
+        operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedTime != null" >
+        operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.operatedOrg != null" >
+        operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null" >
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdOrg != null" >
+        created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isValid != null" >
+        is_valid = #{record.isValid,jdbcType=INTEGER},
+      </if>
+      <if test="record.siArea != null" >
+        si_area = #{record.siArea,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_nursing_task
+    set nursing_taskid = #{record.nursingTaskid,jdbcType=VARCHAR},
+      nursing_task_code = #{record.nursingTaskCode,jdbcType=VARCHAR},
+      evaluate_task_code = #{record.evaluateTaskCode,jdbcType=VARCHAR},
+      intent_agency = #{record.intentAgency,jdbcType=VARCHAR},
+      insured_person_code = #{record.insuredPersonCode,jdbcType=VARCHAR},
+      final_agency_code = #{record.finalAgencyCode,jdbcType=VARCHAR},
+      final_agency_name = #{record.finalAgencyName,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=VARCHAR},
+      apply_type = #{record.applyType,jdbcType=VARCHAR},
+      is_relative_cared = #{record.isRelativeCared,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      is_valid = #{record.isValid,jdbcType=INTEGER},
+      si_area = #{record.siArea,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.NursingTaskDO" >
+    update ltci_nursing_task
+    <set >
+      <if test="nursingTaskCode != null" >
+        nursing_task_code = #{nursingTaskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateTaskCode != null" >
+        evaluate_task_code = #{evaluateTaskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="intentAgency != null" >
+        intent_agency = #{intentAgency,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredPersonCode != null" >
+        insured_person_code = #{insuredPersonCode,jdbcType=VARCHAR},
+      </if>
+      <if test="finalAgencyCode != null" >
+        final_agency_code = #{finalAgencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="finalAgencyName != null" >
+        final_agency_name = #{finalAgencyName,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="applyType != null" >
+        apply_type = #{applyType,jdbcType=VARCHAR},
+      </if>
+      <if test="isRelativeCared != null" >
+        is_relative_cared = #{isRelativeCared,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        operated_by = #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdOrg != null" >
+        created_org = #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="siArea != null" >
+        si_area = #{siArea,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where nursing_taskid = #{nursingTaskid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.NursingTaskDO" >
+    update ltci_nursing_task
+    set nursing_task_code = #{nursingTaskCode,jdbcType=VARCHAR},
+      evaluate_task_code = #{evaluateTaskCode,jdbcType=VARCHAR},
+      intent_agency = #{intentAgency,jdbcType=VARCHAR},
+      insured_person_code = #{insuredPersonCode,jdbcType=VARCHAR},
+      final_agency_code = #{finalAgencyCode,jdbcType=VARCHAR},
+      final_agency_name = #{finalAgencyName,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      apply_type = #{applyType,jdbcType=VARCHAR},
+      is_relative_cared = #{isRelativeCared,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      created_org = #{createdOrg,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      si_area = #{siArea,jdbcType=VARCHAR}
+    where nursing_taskid = #{nursingTaskid,jdbcType=VARCHAR}
+  </update>
+</mapper>

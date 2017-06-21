@@ -1,0 +1,47 @@
+post:
+  tags:
+  - userManage
+  summary: 按用户名和部门编号查询用户信息
+  description: 返回用户信息列表。测试数据：用户编号[1]。
+  operationId: listUser
+  parameters:
+  - name: userName
+    in: formData
+    description: 用户名
+    required: false
+    type: string
+    
+  - name: departmentid
+    in: formData
+    description: 部门编号
+    required: false
+    type: string
+    
+  - name: roleCode
+    in: formData
+    description: 角色编码
+    required: false
+    type: string 
+       
+  - name: page
+    in: formData
+    description: 当前页码
+    required: true
+    type: integer
+    format: int32
+    
+  - name: pageSize
+    in: formData
+    description: 每页显示件数
+    required: true
+    type: integer
+    format: int32
+  responses:
+    200:
+      description: 查询成功
+      schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/PageResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/Response"

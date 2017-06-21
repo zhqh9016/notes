@@ -1,0 +1,676 @@
+---
+swagger: "2.0"
+
+info:
+  version: v1
+  title: 费用结算管理微服务
+  description: 费用结算管理相关微服务
+
+basePath: /api/v1
+schemes:
+- http
+produces:
+- application/json
+consumes:
+- application/json
+
+tags:
+- name: personalNurseDetailManage
+  description: 个人费用明细管理
+- name: daySetPer
+  description: 个人日结算管理
+- name: orgSet
+  description: 机构月结管理
+- name: orgSettlement
+  description: 机构月结算管理
+- name: serviceItemManage
+  description: 护理目录管理
+  
+paths:
+  /personal/nurse/detail/list:
+    $ref: v1/personalNurseDetail/personal-nurse-detail-select.yml
+    
+  /monSetPer/list:
+    $ref: v1/daySetPer/get-list.yml
+  /monSetPer:
+    $ref: v1/daySetPer/put-daySetPer.yml
+  /orgSets/list:
+    $ref: v1/orgSettlement/post-list.yml
+    
+  /orgSettlement/countData:
+    $ref: v1/orgSettlement/count-data.yml
+  /orgSettlement/save:
+    $ref: v1/orgSettlement/post.yml
+    
+  /serviceItem/list:
+    $ref: v1/serviceItem/item-object.yml
+    
+  /addItem:
+    $ref: v1/serviceItem/item-save-object.yml
+    
+  /item/{id}:
+    $ref: v1/serviceItem/item-delete.yml
+    
+  /update/item:
+    $ref: v1/serviceItem/item-update.yml
+   
+  /items/{id}:
+    $ref: v1/serviceItem/item-id.yml
+    
+definitions:
+  ResultDTO: 
+    type: object 
+    description: 结果基本信息
+    properties: 
+        status: 
+          type: integer
+          format: int32
+          description: 状态码
+          example: 200
+        datas: 
+          type: object 
+          description: 结果信息
+          example: xxx
+        message: 
+          type: string 
+          description: 结果状态描述
+          
+  PageResultDTO:
+    type: object
+    description: 分页信息
+    properties:
+        status: 
+          type: integer
+          format: int32
+          description: 状态码
+          example: 200
+        message: 
+          type: string 
+          description: 结果状态描述
+        page:
+          type: integer
+          format: int32
+          description: 当前页码
+          example: 1
+        pageSize:
+          type: integer
+          format: int32
+          description: 每页显示件数
+          example: 1
+        totalDataNum:
+          type: integer
+          format: int32
+          description: 总件数
+          example: 10
+        totalPageNum:
+          type: integer
+          format: int32
+          description: 总页数
+          example: 10
+        datas:
+          type: object
+          description: 结果信息
+          example: xxx
+          
+  OrgSettlementDTO:
+    type: object
+    description: 机构月结信息
+    properties:
+        id:
+          type: string 
+          description: id
+          example: "1"
+        orgSetCode:
+          type: string 
+          description: 月结算记录唯一编号
+          example: "100009999"
+        setDate:
+          type: string 
+          description: 结算日期
+          
+        orgCode:
+          type: string 
+          description: 护理机构编码
+        orgName:
+          type: string 
+          description: 护理机构名称
+        feeStarttime:
+          type: string 
+          description: 费用开始时间
+          
+        feeEndtime:
+          type: string 
+          description: 费用结束时间
+          
+        nurseTotalAmount:
+          type: number
+          format: double
+          description: 护理费用合计
+        siPay:
+          type: number
+          format: double
+          description: 统筹支出
+        paySelf:
+          type: number
+          format: double
+          description: 个人自付
+        expenseSelf:
+          type: number
+          format: double
+          description: 个人自费
+        accountPay:
+          type: number
+          format: double
+          description: 账户支付
+        bankCardPay:
+          type: number
+          format: double
+          description: 银行卡支付
+        acountPayable:
+          type: number
+          format: double
+          description: 应结金额
+        warranty:
+          type: number
+          format: double
+          description: 质保金
+        realPay:
+          type: number
+          format: double
+          description: 实际结算金额
+        unrFee:
+          type: number
+          format: double
+          description: 不合理费用
+        overCost:
+          type: number
+          format: double
+          description: 超限价扣款
+        auditState:
+          type: integer
+          format: int32
+          description: 审核状态
+        checkFlag:
+          type: integer
+          format: int32
+          description: 对账标志
+        rejectReason:
+          type: string 
+          description: 驳回原因
+        isValid:
+          type: integer
+          format: int32
+          description: 是否有效(1:有效 0:无效)
+          example: 0
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "姓名"
+        createdOrg:
+          type: string 
+          description: 创建机构编码
+          example: "org001"
+        createdOrgName:
+          type: string 
+          description: 创建机构名称
+          example: "荆州市社保机构"
+        operatedBy:
+          type: string 
+          description: 修改人
+          example: "姓名"
+        operatedOrg:
+          type: string 
+          description: 修改机构
+          example: "荆州市社保机构"
+        createdTime:
+          type: string 
+          description: 创建时间
+          example: "2017-03-13 11:00"
+          
+        operatedTime:
+          type: string 
+          description: 修改时间
+          example: "2017-03-13 11:00"
+          
+          
+  PersonalNurseDetailDTO:
+    type: object
+    description: 个人费用护理明细信息
+    properties:
+        feeSetCode:
+          type: string 
+          description: 护理明细记录唯一编号
+          example: "123456789"
+        tradeNum:
+          type: string 
+          description: 交易流水号（社保叫处方号）
+          example: "123456789"
+        beCarePersonCard:
+          type: string 
+          description: 护理对象证件号码
+          example: 23062119930830285X
+        careOrgServiceCode:
+          type: string 
+          description: 护理机构服务项目编码
+          example: "10340000d"
+        careOrgServiceName:
+          type: string 
+          description: 护理机构服务项目名称
+          example: "XXX"
+        medicareCode:
+          type: string 
+          description: 医保服务项目编码
+          example: "123456789"
+        medicareName:
+          type: string 
+          description: 医保服务项目名称
+          example: "XXX"   
+        chargeType:
+          type: string 
+          description: 收费类别
+          example: "XXX"
+        feeDate:
+          type: string 
+          description: 费用发生日期
+          example: "2017-03-13 11:00"
+          
+        count:
+          type: number
+          format: double
+          description: 数量
+          example: "10"
+        price:
+          type: number
+          format: decimal
+          description: 单价
+          example: "10.00"
+        amount:
+          type: number
+          format: decimal
+          description: 金额
+          example: "10.00"
+        nurseCode:
+          type: string 
+          description: 护理人员编码
+          example: "856942"
+        nurseName:
+          type: string 
+          description: 护理人员名称
+          example: "张丽"
+          
+  DaySetPerDTO:
+    type: object
+    description: 个人费用日结算信息
+    properties:
+        id:
+          type: string 
+          description: 主键
+          example: "123456789"
+        feeSetCode:
+          type: string 
+          description: 费用记录唯一编号
+          example: "123456789"
+        orgSetCode:
+          type: string 
+          description: 机构月结算记录唯一编号
+          example: "10340000d"
+        inRecorduuid:
+          type: string 
+          description: 入住记录唯一编号 (长护登记流水号)
+          example: "XXX"
+        invoiceNum:
+          type: string 
+          description: 单据号
+          example: "123456789"
+        socSecNum:
+          type: string 
+          description: 社会保障号码
+          example: "XXX"   
+        beCarePersonCard:
+          type: string 
+          description: 护理对象证件号码
+          example: 001
+        cardType:
+          type: integer
+          format: int32
+          description: 证件类型：0身份证
+        beCarePersonName:
+          type: string 
+          description: 护理对象姓名
+        beCarePersonSex:
+          type: integer
+          format: int32
+          description: 楼号
+          example: 101
+        feeDate:
+          type: string 
+          description: 费用日期
+          example: "2017-04-14"
+          
+        nurseTime:
+          type: string 
+          description: 护理日期
+          example: "2017-04-14"
+          
+        nurseStyle:
+          type: integer
+          format: int32
+          description: 护理服务方式
+          example: 1001
+        orgCode:
+          type: string 
+          description: 定点护理机构编号
+          example: "XXXXX"
+        orgName:
+          type: string 
+          description: 定点护理机构名称
+          example: "XXXXX"
+        nurseTotalAmount:
+          type: number
+          format: double
+          description: 总费用
+        siPay:
+          type: number
+          format: double
+          description: 统筹支出
+        paySelf:
+          type: number
+          format: double
+          description: 个人自付
+        expenseSelf:
+          type: number
+          format: double
+          description: 个人自费
+        accountPay:
+          type: number
+          format: double
+          description: 账户支付
+        bankCardPay:
+          type: number
+          format: double
+          description: 银行卡支付
+        unrFee:
+          type: number
+          format: double
+          description: 不合理费用
+        chargeLevel:
+          type: string 
+          description: 收费项目等级
+        overCost:
+          type: number
+          format: double
+          description: 超限额
+        pubPayStatus:
+          type: integer
+          format: int32
+          description: 对公支付标志
+        perPayStatus:
+          type: integer
+          format: int32
+          description: 个人支付标志
+        isValid:
+          type: integer
+          format: int32
+          description: 有效标志
+        operatedBy:
+          type: string 
+          description: 经办人
+        operatedTime:
+          type: string 
+          description: 经办时间
+          
+        createdBy:
+          type: string 
+          description: 创建经办人
+        createdTime:
+          type: string 
+          description: 创建经办时间
+          
+        createdOrg:
+          type: string 
+          description: 创建经办机构
+        operatedOrg:
+          type: string 
+          description: 经办机构
+        siArea:
+          type: string 
+          description: 统筹区
+  
+  ServiceItemDTO:
+    type: object
+    description: 护理目录
+    properties:
+        id:
+          type: string 
+          description: id
+          example: "1"
+        serviceCode:
+          type: string 
+          description: 服务项目编码
+          example: "123456789"
+        serviceName:
+          type: string 
+          description: 服务项目名称
+          example: "陪护"
+        serviceType:
+          type: string 
+          description: 服务项目类别
+          example: "10"
+        chargeType:
+          type: string 
+          description: 费用类别
+          example: "XXX"
+        payType:
+          type: integer
+          format: int32
+          description: 费用方式
+          example: "XXX"
+        chargeLevel:
+          type: string 
+          description: 收费项目等级
+          example: "甲等"
+        frequency:
+          type: string 
+          description: 服务频次
+          example: "5次"   
+        taskTime:
+          type: string 
+          description: 服务项目持续时间
+          example: "20分钟"
+        description:
+          type: string 
+          description: 服务项目描述
+          example: "洗澡"
+        startTime:
+          type: string 
+          description: 生效开始时间
+          example: "2017-03-13 11:00"
+          
+        endTime:
+          type: string 
+          description: 生效结束时间
+          example: "2017-03-31 11:00"
+          
+        price:
+          type: number
+          format: decimal
+          description: 单价
+          example: "10.00"
+        limitPrice:
+          type: number
+          format: decimal
+          description: 最高限价
+          example: "100.00"
+        siArea:
+          type: string 
+          description: 统筹区
+          example: "856942"
+        isValid:
+          type: integer
+          format: int32
+          description: 有效标示
+          example: "0"
+        operatedBy:
+          type: string 
+          description: 经办人
+          example: "张丽"
+        operatedTime:
+          type: string 
+          description: 经办时间
+          example: "2017-03-31 11:00"
+          
+        operatedOrg:
+          type: string 
+          description: 经办机构
+          example: "856942"
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "856942"
+        createdOrg:
+          type: string 
+          description: 创建机构
+          example: "856942"
+          
+  MonSetPerDTO:
+    type: object
+    description: 个人费用月结算信息
+    properties:
+        id:
+          type: string 
+          description: 主键
+          example: "123456789"
+        perSetCode:
+          type: string 
+          description: 费用记录唯一编号
+          example: "123456789"
+        monSetCode:
+          type: string 
+          description: 机构月结编码
+          example: "10340000d"
+        inRecorduuid:
+          type: string 
+          description: 入住记录唯一编号 (长护登记流水号)
+          example: "XXX"
+        receiptNum:
+          type: string 
+          description: 单据号
+          example: "123456789"
+        setDate:
+          type: string 
+          description: 费用日期
+          example: "2017-04-14"
+          
+        reimbType:
+          type: string 
+          description: 报销类别:定点医疗机构全部传“0”
+          example: "XXX"   
+        isAccountUse:
+          type: string 
+          description: 账户使用标志:0-帐户不支付1-账户支付
+          example: 001
+        orgCode:
+          type: string 
+          description: 定点护理机构编号
+          example: "XXXXX"
+        orgName:
+          type: string 
+          description: 定点护理机构名称
+          example: "XXXXX"
+        socSecNum:
+          type: string 
+          description: 社会保障号码
+          example: "XXXXX"
+        cardType:
+          type: integer
+          format: int32
+          description: 证件类型：0身份证
+        beCarePersonCardNum:
+          type: string 
+          description: 护理对象证件号码
+          example: "XXXXX"
+        nurseObjName:
+          type: string 
+          description: 护理对象姓名
+        nurseObjSex:
+          type: integer
+          format: int32
+          description: 护理对象性别
+          example: 1
+        nurseStarttime:
+          type: string 
+          description: 护理开始日期
+          example: "2017-04-14"
+          
+        nurseEndtime:
+          type: string 
+          description: 护理结束日期
+          example: "2017-04-14"
+          
+        nurseTotalAmount:
+          type: number
+          format: double
+          description: 总费用
+        siPay:
+          type: number
+          format: double
+          description: 统筹支出
+        paySelf:
+          type: number
+          format: double
+          description: 个人自付
+        expenseSelf:
+          type: number
+          format: double
+          description: 个人自费
+        accountPay:
+          type: number
+          format: double
+          description: 账户支付
+        bankCardPay:
+          type: number
+          format: double
+          description: 银行卡支付
+        unrFee:
+          type: number
+          format: double
+          description: 不合理费用
+        overLimitFee:
+          type: number
+          format: double
+          description: 超限额
+        auditState:
+          type: integer
+          format: int32
+          description: 审核状态
+        isValid:
+          type: integer
+          format: int32
+          description: 有效标志
+        operatedBy:
+          type: string 
+          description: 经办人
+        operatedTime:
+          type: string 
+          description: 经办时间
+          
+        createdBy:
+          type: string 
+          description: 创建经办人
+        createdTime:
+          type: string 
+          description: 创建经办时间
+          
+        createdOrg:
+          type: string 
+          description: 创建经办机构
+        operatedOrg:
+          type: string 
+          description: 经办机构
+        siArea:
+          type: string 
+          description: 统筹区
+        version:
+          type: integer
+          format: int64
+          description: 1

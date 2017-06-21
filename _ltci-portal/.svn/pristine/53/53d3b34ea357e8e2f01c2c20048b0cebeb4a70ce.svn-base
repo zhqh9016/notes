@@ -1,0 +1,3359 @@
+---
+swagger: "2.0"
+
+info:
+  version: v1
+  title: portal service
+  description: 前端直接交互接口
+
+basePath: /api/v1
+schemes:
+- http
+produces:
+- application/json
+consumes:
+- application/json
+
+tags:
+- name: insuredPerson
+  description: 参保人表操作
+- name: deputyBingding
+  description: 代理人绑定相关操作
+- name: treatmentApplication
+  description: 待遇申请处理
+- name: todoList
+  description: 代办任务表操作
+- name: userManage
+  description: 用户管理
+- name: roleManage
+  description: 角色管理
+- name: resManage
+  description: 资源(菜单)管理
+- name: organizationManage
+  description: 机构部门管理
+- name: areaManage
+  description: 区域管理
+- name: rRoleResManage
+  description: 角色资源关系管理
+- name: evaluateTask
+  description: 评估任务相关接口
+- name: firstEvaluate
+  description: 初评结果相关接口
+- name: expertEvaluateManage
+  description: 专家评定相关接口
+- name: nursingTask
+  description: 护理任务相关接口
+- name: personalNurseDetailManage
+  description: 个人费用明细管理
+- name: daySetPer
+  description: 个人日结算管理
+- name: orgSettlement
+  description: 机构月结算管理
+- name: checkInManage
+  description: 协议管理列表相关接口    
+- name: serviceItemManage
+  description: 护理目录管理
+- name: patrolTask 
+  description: 专项任务相关接口
+- name: patrolResult 
+  description: 巡查任务审核接口
+- name: reconsider
+  description: 申述复议相关接口
+- name: patrolExecute 
+  description: 任务执行
+- name: agencyAccept
+  description: 机构在线受理
+- name: agencyUpdate
+  description: 机构审核变更
+- name: staffAccept
+  description: 人员在线受理
+- name: retryManage
+  description: mq消息接收失败重试
+
+paths:
+  /insuredPerson/{idCard}/and/{insuredPersonName}:
+    $ref: v1/insuredPerson/ltci-insuredPerson-get.yml
+ 
+  /treatmentApplicationCase:
+    $ref: v1/treatmentApplication/ltci-treatmentApplication-put.yml
+
+  /treatmentApplication/{applicationCode}:
+    $ref: v1/treatmentApplication/ltci-treatmentApplication-get.yml
+
+  /treatmentApplication:
+    $ref: v1/treatmentApplication/ltci-treatmentApplication-update.yml
+
+  /treatmentApplicationAttachement:
+    $ref: v1/treatmentApplication/ltci-treatmentApplication-upload.yml
+
+  /treatmentApplicationImgBase64:
+    $ref: v1/treatmentApplication/ltci-treatmentApplication-upload-base64.yml
+    
+  /treatmentApplicationAttachement/{attachmentid}:
+    $ref: v1/treatmentApplication/ltci-treatmentApplication-delete.yml
+
+  /mobileTreatmentApplications:
+    $ref: v1/treatmentApplication/ltci-treatmentApplication-list.yml
+
+  /deputy/bindings:
+    $ref: v1/deputyBinding/ltci-deputy-binding-query.yml
+    
+  /todoList:
+    $ref: v1/todoList/ltci-todoList.yml
+    
+  /retry:
+    $ref: v1/retry/post.yml
+
+  /users/list:
+    $ref: v1/user/get-list.yml
+  /users/{userName}:
+    $ref: v1/user/get-by-username.yml
+  /users:
+    $ref: v1/user/post-put.yml
+  /users/password:
+    $ref: v1/user/put-reset-password.yml
+  /user/{id}:
+    $ref: v1/user/get-by-id.yml
+  /users/{id}:
+    $ref: v1/user/delete.yml
+  /users/person/password:
+    $ref: v1/user/put-amend-password.yml
+  /session/users:
+    $ref: v1/user/get-by-session.yml
+  /users/auditor:
+    $ref: v1/user/get-auditor-list.yml
+    
+  /roles/list:
+    $ref: v1/role/role-object.yml
+    
+  /role:
+    $ref: v1/role/role-save-object.yml
+    
+  /role/RUserRole:
+    $ref: v1/role/role-user-object.yml
+    
+  /role/{id}:
+    $ref: v1/role/role-delete-object.yml
+  /rUserRole:
+    $ref: v1/role/role-user-select-object.yml
+  /role/roleName:
+    $ref: v1/role/role-name-select.yml
+
+  /ress:
+    $ref: v1/res/res-save-object.yml
+  /ress/{id}:
+    $ref: v1/res/res-put-object.yml
+  /ress/{parentId}:
+    $ref: v1/res/res-select-object.yml
+  /rRoleRes/{roleId}:
+    $ref: v1/res/get-put.yml
+    
+  /deputy/bindings/{deputyBindingCode}:
+    $ref: v1/deputyBinding/ltci-deputy-binding-get.yml
+  /deputy/bindings/deputyBindingid/checkState:
+    $ref: v1/deputyBinding/ltci-deputy-binding-put.yml
+   
+  /organization:
+    $ref: v1/organization/post.yml 
+  /organization/list:
+    $ref: v1/organization/get.yml
+  /organization/{id}:
+    $ref: v1/organization/get-delete-by-id.yml
+  /organization/getByName:
+    $ref: v1/organization/get-by-name.yml
+  /organization/getByCode:
+    $ref: v1/organization/get-by-code.yml  
+  /organization/{orgid}:
+    $ref: v1/organization/update-object.yml
+  
+  /area/{id}:
+    $ref: v1/area/get-by-id.yml
+  /area/getByParentid:
+    $ref: v1/area/get-by-parentid.yml
+
+  /menu/list/{userId}:
+    $ref: v1/res/get-by-userid.yml
+  /menu/list:
+    $ref: v1/res/get-by-menu.yml
+  /menu/list/portal:
+    $ref: v1/res/get-by-userid-portal.yml
+    
+  /evaluateTasks:
+    $ref: v1/evaluateTask/ltci-evaluateTask-list.yml
+    
+  /evaluateTask:
+    $ref: v1/evaluateTask/ltci-evaluateTask-save.yml
+
+  /toDoListEvaluateTaskList:
+    $ref: v1/evaluateTask/ltci-todoListEvaluateTask-get.yml
+    
+  /evaluateTask/mongoDBMessage:
+    $ref: v1/evaluateTask/evaluateTask-post-mongoDB.yml
+    
+  /evaluateTaskStauts/{taskState}/{operatedBy}/{evaluateTaskCodes}:
+    $ref: v1/evaluateTask/evaluateTask-put.yml
+
+  /reviewEvaluateTask:
+    $ref: v1/evaluateTask/ltci-reviewEvaluateTask-put.yml
+    
+  /evaluateDepartments/areaNum/{areaNum}/organizationType/{organizationType}:
+    $ref: v1/evaluateTask/ltci-evaluateDepartments-query.yml
+
+  /firstEvaluate: 
+    $ref: v1/firstEvaluate/ltci-firstEvaluate-query.yml
+  /firstEvaluate/{firstEvaluateCode}: 
+    $ref: v1/firstEvaluate/ltci-firstEvaluate-get.yml
+    
+  /expertEvaluate: 
+    $ref: v1/expertEvaluate/ltci-expertEvaluate-query.yml    
+  /expertEvaluat/{expertEvaluateCode}: 
+    $ref: v1/expertEvaluate/ltci-expertEvaluate-get.yml  
+  /expertEvaluat/detial: 
+    $ref: v1/expertEvaluate/ltci-expertEvaluate-put.yml     
+    
+    
+  /personal/nurse/detail/list:
+    $ref: v1/personalNurseDetail/personal-nurse-detail-select.yml  
+    
+  /evaluateTask/sendMessage:
+    $ref: v1/evaluateTask/evaluateTask-post.yml
+
+  /nursingTaskIntentAgency:
+    $ref: v1/nursingTask/ltci-nursingTask-intentAgency-put.yml
+
+  /nursingTaskFinalAgency:
+    $ref: v1/nursingTask/ltci-nursingTask-finalAgency-put.yml
+
+    
+  /monSetPer/list:
+    $ref: v1/daySetPer/get-list.yml
+  /monSetPer:
+    $ref: v1/daySetPer/put-daySetPer.yml
+  
+  /nursingTasks:
+    $ref: v1/nursingTask/ltci-nursingTask-post.yml  
+  
+  /orgSettlement/countData:
+    $ref: v1/orgSettlement/count-data.yml
+  /orgSettlement/save:
+    $ref: v1/orgSettlement/post.yml
+  /orgSettlement/check/list:
+    $ref: v1/orgSettlement/post-list-check.yml
+  /orgSettlement/pay/list:
+    $ref: v1/orgSettlement/post-list-pay.yml
+  /orgSettlement/check/{id}:
+    $ref: v1/orgSettlement/put-check.yml
+  /orgSettlement/pay/{id}:
+    $ref: v1/orgSettlement/put-pay.yml
+  /orgSettlement/settle/{id}:
+    $ref: v1/orgSettlement/put-settle.yml
+  /orgSettlement/{id}:
+    $ref: v1/orgSettlement/get.yml
+
+
+  /checkIn: 
+    $ref: v1/checkIn/ltci-checkIn-query.yml  
+  /serviceItem/list: 
+    $ref: v1/serviceItem/item-object.yml 
+  /serviceItem:
+    $ref: v1/serviceItem/item-save-object.yml    
+  /item/{id}:
+    $ref: v1/serviceItem/item-delete.yml   
+  /service/item:
+    $ref: v1/serviceItem/item-update.yml  
+  /items/{id}:
+    $ref: v1/serviceItem/item-id.yml    
+  /checkInOut: 
+    $ref: v1/checkIn/ltci-checkIn-put.yml    
+  /service/item/name:
+    $ref: v1/serviceItem/item-name-select.yml
+    
+  /staff/agency:
+    $ref: v1/patrol/ltci-patrol-query.yml
+  /patrol:
+    $ref: v1/patrol/ltci-patrol-add.yml    
+    
+  /patrolTasks:
+    $ref: v1/patrolTask/ltci-patrolTask-post.yml
+    
+  /patrolTasks/allot:
+    $ref: v1/patrolTask/ltci-patrolTask-put.yml
+    
+  /patrol/result/state:
+    $ref: v1/patrolResult/ltci-patrol-result.yml
+    
+  /evaluatePatrolTask:
+    $ref: v1/patrolTask/ltci-patrolTask-list.yml
+# 申述复议相关
+  /reconsiders/{patrolTaskId}:
+    $ref: v1/reconsider/get-by-patrolTaskId.yml
+  /reconsiders:
+    $ref: v1/reconsider/post.yml  
+  /reconsiderFile:
+    $ref: v1/reconsider/get-file.yml
+  /evaluateTaskProfessionAdd:
+    $ref: v1/patrolTask/ltci-patrolTask-add.yml
+  /nursingPatrolTask:
+    $ref: v1/patrolTask/ltci-nursingPatrolTask-list.yml
+  /nursingTaskProfessionAdd:
+    $ref: v1/patrolTask/ltci-nursingPatrolTask-add.yml
+    
+  /patrolTasks/{patrolTaskId}:
+   $ref: v1/patrolTask/ltci-patrolTask-get.yml
+
+  /taskExecute/result/file:
+    $ref: v1/executeFile/patrol-task-execute-file-upload.yml
+  /taskExecute/result/{fileid}/{suffix}:
+    $ref: v1/executeFile/delete-patrol-task-execute-file.yml
+  /taskExecute/resources:
+    $ref: v1/executeFile/post-patrol-task-execute-result.yml
+  /taskExecute/resources/{patrolTaskId}:
+    $ref: v1/executeFile/get-patrol-task-execute-file.yml
+  /taskExecute/mongoDBMessage:
+    $ref: v1/executeFile/get-execute-file-download.yml
+
+  /agencyHistory/list:
+    $ref: v1/agencyHistory/get-list.yml
+  /agencyHistory/{id}:
+    $ref: v1/agencyHistory/get-by-id.yml
+  /agencyHistory:
+    $ref: v1/agencyHistory/put-agency.yml
+    
+  /staffDetial/{serialNo}:
+    $ref: v1/staffHistory/staff-operate-query.yml
+    
+    
+  /staffHistory/list:
+    $ref: v1/staffHistory/get-list.yml
+    
+  /staffHistory/{staffId}:
+    $ref: v1/staffHistory/get-id.yml
+    
+  /staffHistory/{staffCode}:
+    $ref: v1/staffHistory/get-staffCode.yml
+    
+  /staffHistoryStateCase:
+    $ref: v1/staffHistory/put-stateById.yml
+    
+  /agency/key/time:
+    $ref: v1/agencyAudit/agency-key-time.yml
+  /agency/audit/list:
+    $ref: v1/agencyAudit/agency-audit-list.yml
+  /agency/update:
+    $ref: v1/agencyAudit/agency-update.yml  
+  /agency/list:
+    $ref: v1/agencyAudit/agency-list.yml
+definitions:
+  ResultDTO: 
+    type: object 
+    description: 结果基本信息
+    properties: 
+        status: 
+          type: integer
+          format: int32
+          description: 状态码
+          example: 200
+        datas: 
+          type: object 
+          description: 结果信息
+          example: xxx
+        message: 
+          type: string 
+          description: 结果状态描述
+        number:
+          type: integer
+          format: int32
+          description: 数量
+          example: 200  
+          
+  PageResultDTO: 
+    type: object
+    description: 分页信息
+    properties: 
+        status: 
+          type: integer
+          format: int32
+          description: 状态码
+          example: 200
+        datas: 
+          type: object 
+          description: 结果信息
+          example: xxx
+        message: 
+          type: string 
+          description: 结果状态描述
+        page: 
+          type: integer
+          format: int32
+          description: 当前页码
+          example: 1
+        pageSize: 
+          type: integer
+          format: int32
+          description: 每页显示件数
+          example: 1
+        totalDataNum: 
+          type: integer
+          format: int32
+          description: 总件数
+          example: 10
+        totalPageNum: 
+          type: integer
+          format: int32
+          description: 总页数
+          example: 10
+  
+  RestResponseDTO: 
+    type: object 
+    description: 结果基本信息
+    properties: 
+        businessSerialid: 
+          type: string 
+          description: 流水号
+          example: xxxx-xxxx-xxxx-xxxx
+        data: 
+          type: object 
+          description: 参数信息
+          example: xxx
+        timestamp: 
+          type: string 
+          description: 时间戳
+  AttachmentDTO:
+    type: object
+    description: 附件基本信息
+    properties:
+        fileName:
+          type: string 
+          description: 文件名
+          example: "xxx"
+        suffix:
+          type: string 
+          description: 文件后缀
+          example: "xxx"
+        content:
+          type: string 
+          description: 文件base64
+          example: "xxx"
+        fileType:
+          type: string 
+          description: 文件类型
+          example: "0,1,2"
+
+  TreatmentApplicationAttachementDTO:
+    type: object
+    description: 用于前端显示文件ID和URL的DTO
+    properties:
+        attachmentid:
+          type: string 
+          description: 附件ID
+          example: "123"
+        attachmentDetail:
+          type: string 
+          description: 附件详细内容Base64编码格式
+          example: "/api/v1/treatmentApplicationAttachement"  
+
+  ApplicationDTO:
+    type: object
+    description: 申请表基本信息
+    properties:
+        applicationid:
+          type: string 
+          description: 申请表uuid类型主键
+          example: "asdasd"
+        applicationCode:
+          type: string 
+          description: 申请表编号ID
+          example: "123123"
+        insuredPersonCode:
+          type: string 
+          description: 参保人编号ID
+          example: "123123"
+        mobile:
+          type: string 
+          description: 联系方式
+          example: "12312345432"
+        address:
+          type: string 
+          description: 家庭住址
+          example: "北京昌平"
+        deputyName:
+          type: string 
+          description: 代理人姓名
+          example: "张三"
+        deputyIdType:
+          type: string 
+          description: 代理人证件类型
+          example: "身份证"
+        deputyIdCard:
+          type: string 
+          description: 代理人身份证号
+          example: "123123123123123"
+        deputyMobile:
+          type: string 
+          description: 代理人联系方式
+          example: "13161417639"
+        deputyAddress:
+          type: string 
+          description: 代理人家庭住址
+          example: "北京市昌平区"
+        deputyIdCardScan:
+          type: string 
+          description: 代理人身份证号附件ID
+          example: "123;123"
+        bidType:
+          type: string 
+          description: 申办类型
+          example: "非全日居家护理"
+        disease:
+          type: string 
+          description: 病种
+          example: "123"
+        isTaskDeadline:
+          type: string 
+          description: 是否紧急（任务期限）
+          example: "7"
+        isRelativeCared:
+          type: string 
+          description: 是否亲属照顾
+          example: "1"
+        diseaseCause:
+          type: string 
+          description: 病情原因
+          example: "高血压"
+        securityNumberScan:
+          type: string 
+          description: 社保卡号扫描件ID
+          example: "123;123"
+        idCardScan:
+          type: string 
+          description: 身份证扫描件ID
+          example: "123;123"
+        caseHistoryScan:
+          type: string 
+          description: 病例附件ID
+          example: "123;123"
+        applicationFormScan:
+          type: string 
+          description: 长护待遇申请表ID
+          example: "123;123"
+        sources:
+          type: string 
+          description: 来源
+          example: "移动端"
+        applicationStatus:
+          type: string 
+          description: 申请状态
+          example: "未受理"
+        operatedBy:
+          type: string 
+          description: 经办人
+          example: "张三"
+        operatedTime:
+          type: string 
+          description: 经办时间
+          example: "2012-12-12 12:00:00"
+        operatedOrg:
+          type: string 
+          description: 经办机构
+          example: "泰康人寿"
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "张三"
+        createdTime:
+          type: string 
+          description: 创建时间
+          example: "2012-12-12 12:00:00"
+        createdOrg:
+          type: string 
+          description: 创建机构
+          example: "泰康人寿"
+        isValid:
+          type: string 
+          description: 是否有效
+          example: "0"
+        siArea:
+          type: string 
+          description: 统筹区
+          example: "北京市"
+        remark:
+          type: string 
+          description: 备注
+          example: "备注信息"
+        orgCode:
+          type: string 
+          description: 机构编码
+          example: "400801"
+
+
+  TreatmentApplicationDTO: 
+    type: object
+    description: 参保人提交审核所需的大DTO
+    properties: 
+        insuredPersonid:
+          type: string 
+          description: 参保人表uuid类型主键
+          example: "asdasd"
+        idCard:
+          type: string 
+          description: 参保人身份证号
+          example: "37241618763519"
+        insuredPersonName:
+          type: string 
+          description: 参保人姓名
+          example: "张三"
+        insuredPersonGender:
+          type: string 
+          description: 参保人性别
+          example: "男"
+        nation:
+          type: string 
+          description: 民族
+          example: "汉族"
+        birthday:
+          type: string 
+          description: 出生日期
+          example: "2012-12-12"
+        securityNumber:
+          type: string 
+          description: 参保人社保卡号
+          example: "37241618763519"
+        securityPersonalNumber:
+          type: string 
+          description: 参保人个人编号
+          example: "123"
+        personnelIdentityCode:
+          type: string 
+          description: 人员身份编码
+          example: "123"
+        personnelIdentityName:
+          type: string 
+          description: 人员身份名称
+          example: "司机"
+        mobile:
+          type: string 
+          description: 联系方式
+          example: "123"
+        address:
+          type: string 
+          description: 家庭住址
+          example: "北京昌平"
+        email:
+          type: string 
+          description: 邮箱地址
+          example: "123@hotmail.com"
+        orgCode:
+          type: string 
+          description: 机构编码
+          example: "400801"
+        orgName:
+          type: string 
+          description: 单位名称
+          example: "泰康人寿"
+        married:
+          type: string 
+          description: 婚姻状况
+          example: "123"
+        educationid:
+          type: string 
+          description: 文化程度
+          example: "123"
+        politicsid:
+          type: string 
+          description: 政治面貌
+          example: "123"
+        occupationid:
+          type: string 
+          description: 所属职业
+          example: "123"
+        provinceCode:
+          type: string 
+          description: 所属省份
+          example: "123"
+        cityCode:
+          type: string 
+          description: 所属城市
+          example: "123"
+        areaCode:
+          type: string 
+          description: 所属区域
+          example: "123"
+        deputyName:
+          type: string 
+          description: 代理人姓名
+          example: "李四"
+        deputyIdType:
+          type: string 
+          description: 代理人证件类型
+          example: "123"
+        deputyIdCard:
+          type: string 
+          description: 代理人身份证号
+          example: "37241618763519"
+        deputyMobile:
+          type: string 
+          description: 代理人联系方式
+          example: "123"
+        deputyAddress:
+          type: string 
+          description: 代理人家庭住址
+          example: "北京昌平"
+        deputyIdCardScan:
+          type: string 
+          description: 代理人身份证号附件ID
+          example: "123;123"
+        bidType:
+          type: string 
+          description: 申办类型
+          example: "123"
+        disease:
+          type: string 
+          description: 病种
+          example: "123"
+        isTaskDeadline:
+          type: string 
+          description: 是否紧急（任务期限）
+          example: "1"
+        isRelativeCared:
+          type: string 
+          description: 是否亲属照顾
+          example: "1"
+        diseaseCause:
+          type: string 
+          description: 病情原因
+          example: "高血压"
+        securityNumberScan:
+          type: string 
+          description: 社保卡号扫描件ID
+          example: "123;123"
+        idCardScan:
+          type: string 
+          description: 身份证扫描件ID
+          example: "123;123"
+        caseHistoryScan:
+          type: string 
+          description: 病例附件ID
+          example: "123;123"
+        applicationFormScan:
+          type: string 
+          description: 长护待遇申请表ID
+          example: "123;123"
+        sources:
+          type: string 
+          description: 来源
+          example: "123"
+        applicationStatus:
+          type: string 
+          description: 申请状态
+          example: "123"
+        applicationReason:
+          type: string 
+          description: 审核原因
+          example: "附件有错"
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "王五"
+        createdOrg:
+          type: string 
+          description: 创建机构
+          example: "泰康人寿"
+        isValid:
+          type: string 
+          description: 是否有效
+          example: "1"
+        siArea:
+          type: string 
+          description: 统筹区
+          example: "123"
+        remark:
+          type: string 
+          description: 备注
+          example: "123"
+
+
+  InsuredPersonDTO: 
+    type: object
+    description: 参保人基本信息
+    properties:
+        insuredPersonid:
+          type: string 
+          description: 参保人表uuid类型主键
+          example: "asdasd"
+        insuredPersonCode:
+          type: string 
+          description: 参保人编号ID
+          example: "123123"
+        insuredPersonName:
+          type: string 
+          description: 参保人姓名
+          example: "张三"
+        insuredPersonGender:
+          type: string 
+          description: 参保人性别
+          example: "男"
+        nation:
+          type: string 
+          description: 民族
+          example: "汉"
+        age:
+          type: string 
+          description: 年龄
+          example: "16"
+        birthday:
+          type: string 
+          description: 出生日期
+          example: "2010-12-12"
+        securityNumber:
+          type: string 
+          description: 参保人社保卡号
+          example: "123123123123"
+        securityPersonalNumber:
+          type: string 
+          description: 参保人个人编号
+          example: "123"
+        idCard:
+          type: string 
+          description: 参保人身份证号
+          example: "123123123123123123"
+        personnelIdentityCode:
+          type: string 
+          description: 人员身份编码
+          example: "123"
+        personnelIdentityName:
+          type: string 
+          description: 人员身份名称
+          example: "员工"
+        mobile:
+          type: string 
+          description: 联系方式
+          example: "12312345432"
+        address:
+          type: string 
+          description: 家庭住址
+          example: "北京昌平"
+        email:
+          type: string 
+          description: 邮箱地址
+          example: "123@hotmail.com"
+        orgName:
+          type: string 
+          description: 单位名称
+          example: "泰康人寿"
+        married:
+          type: string 
+          description: 婚姻状况
+          example: "未婚"
+        educationid:
+          type: string 
+          description: 文化程度
+          example: "123"
+        politicsid:
+          type: string 
+          description: 政治面貌
+          example: "123"
+        occupationid:
+          type: string 
+          description: 所属职业
+          example: "123"
+        provinceCode:
+          type: string 
+          description: 所属省份
+          example: "北京市"
+        cityCode:
+          type: string 
+          description: 所属城市
+          example: "北京市"
+        areaCode:
+          type: string 
+          description: 所属区域
+          example: "昌平区"
+        treatment:
+          type: string 
+          description: 是否享受待遇资格(0:否；1：是)
+          example: "否"
+        errorReasonCode:
+          type: string 
+          description: 错误原因代码
+          example: "404"
+        errorReason:
+          type: string 
+          description: 错误原因描述
+          example: "查无此人"
+        siArea:
+          type: string 
+          description: 统筹区
+          example: "荆门市"
+        orgCode:
+          type: string 
+          description: 机构编码
+          example: "420801"
+
+  DeputyBindingCheckDTO: 
+    type: object
+    description: 代理人绑定受理信息
+    properties:
+        deputyBindingid:  
+          type: string 
+          description: id
+          example: "dsadsad15s4d5s4a5d1sa21d2as"
+        idCard:
+          type: string 
+          description: 参保人身份证号码
+          example: "420801199205112719"        
+        insuredPersonName: 
+          type: string 
+          description: 参保人名字
+          example: "张三"    
+        securityNumber:
+          type: string 
+          description: 参保人身社保卡号码
+          example: "123"      
+        deputyName: 
+          type: string 
+          description: 代理人名字
+          example: "张三"            
+        deputyIdCard: 
+          type: string 
+          description: 代理人身份证号码
+          example: "420801199205112719"            
+        checkState:  
+          type: string 
+          description: 审核状态 --字典
+          example: "未受理" 
+        deputyBindingCode:  
+          type: string 
+          description: 代理人绑定码
+          example: "未受理"       
+   
+  ApplicationLogDTO:
+    type: object
+    description: 待遇申请日志表基本信息
+    properties:
+        applicationLogid:
+          type: string 
+          description: 申请日志表uuid类型主键
+          example: "asdasd"
+        applicationCode:
+          type: string 
+          description: 申请表编号ID
+          example: "123123"
+        securityNumber:
+          type: string 
+          description: 社保卡号
+          example: "123123"
+        securityPersonalNumber:
+          type: string 
+          description: 社保个人编号
+          example: "123123"
+        deputyIdCard:
+          type: string 
+          description: 代理人身份证号
+          example: "123123"
+        applicationStatus:
+          type: string 
+          description: 申请状态
+          example: "未受理"
+        applicationReason:
+          type: string 
+          description: 审核原因
+          example: "附件有错"
+        operatedBy:
+          type: string 
+          description: 经办人
+          example: "张三"
+        operatedOrg:
+          type: string 
+          description: 经办机构
+          example: "泰康人寿"
+        version:
+          type: integer
+          format: int64
+          description: 版本号
+          example: 1
+                    
+  TreatApplyDTO:
+    type: object
+    description: 移动端待遇申请列表信息
+    properties:
+        applicationid:
+          type: string 
+          description: 待遇申请表uuid类型主键
+          example: "asdasd"
+        applicationCode:
+          type: string 
+          description: 待遇申请表编号
+          example: "123123"
+        insuredPersonCode:
+          type: string 
+          description: 参保人编号
+          example: "123123"
+        insuredPersonName:
+          type: string 
+          description: 参保人姓名
+          example: "张三"
+        insuredPersonGender:
+          type: string 
+          description: 参保人性别
+          example: "男"
+        nation:
+          type: string 
+          description: 民族
+          example: "汉"
+        securityNumber:
+          type: string 
+          description: 参保人社保卡号
+          example: "123123123123"
+        idCard:
+          type: string 
+          description: 参保人身份证号
+          example: "123123123123123123"
+        age:
+          type: int
+          description: 年龄
+          example: 80
+        bidType:
+          type: string 
+          description: 申办类型
+          example: "非全日居家护理"
+        isTaskDeadline:
+          type: string 
+          description: 是否紧急（任务期限）
+          example: "00"
+        disease:
+          type: string 
+          description: 病种
+          example: "123"
+        mobile:
+          type: string 
+          description: 联系方式
+          example: "12312345432"
+        address:
+          type: string 
+          description: 家庭住址
+          example: "北京昌平"
+        deputyAddress:
+          type: string 
+          description: 代理人家庭住址
+          example: "北京市昌平区"
+        deputyMobile:
+          type: string 
+          description: 代理人联系方式
+          example: "13161417639"
+        applicationStatus:
+          type: string 
+          description: 申请状态
+          example: "未受理"
+        operatedBy:
+          type: string 
+          description: 经办人
+          example: "张三"
+        operatedTime:
+          type: string 
+          description: 经办时间
+          example: "2012-12-12 12:00:00"
+        securityNumberScan:
+          type: string 
+          description: 社保卡号扫描件{[uuid,uuid],[uuid:dddd,uuid:cccc]}
+          example: "123;123"
+        idCardScan:
+          type: string 
+          description: 身份证扫描件{[uuid,uuid],[uuid:dddd,uuid:cccc]}
+          example: "123;123"
+        caseHistoryScan:
+          type: string 
+          description: 病例附件{[uuid,uuid],[uuid:dddd,uuid:cccc]}
+          example: "123;123"
+        applicationFormScan:
+          type: string 
+          description: 长护待遇申请表{[uuid,uuid],[uuid:dddd,uuid:cccc]}
+          example: "123;123"
+        siArea:
+          type: string 
+          description: 统筹区
+          example: "北京市"            
+        version:
+          type: integer
+          format: int64
+          description: 版本号
+          example: 1  
+  TodoListDTO:
+    type: object
+    description: 代办任务表基本信息
+    properties:
+        todoListid:
+          type: string 
+          description: 待办任务表ID
+          example: "asdasd"
+        todoListCode:
+          type: string 
+          description: 待办任务表编号
+          example: "123123"
+        title:
+          type: string 
+          description: 标题
+          example: "标题"
+        url:
+          type: string 
+          description: url
+          example: "http://localhost..."
+        type:
+          type: string 
+          description: 类型（待办、提醒）
+          example: "0"
+        receiveCharactar:
+          type: string 
+          description: 接收角色
+          example: "0"
+        administrativeRegion:
+          type: string 
+          description: 行政区域
+          example: "123123"
+        jumpWay:
+          type: string 
+          description: 跳转方式
+          example: "target"
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "张三"
+        createdTime:
+          type: string 
+          description: 创建时间
+          example: "2012-12-12 12:00:00"
+        createdOrg:
+          type: string 
+          description: 创建机构
+          example: "泰康人寿"
+        isValid:
+          type: integer
+          format: int32
+          description: 是否有效标志
+          example: "1"
+        businessCode:
+          type: string 
+          description: 业务code
+          example: "122"
+        businessType:
+          type: string 
+          description: 业务类型
+          example: "01"
+        ip:
+          type: string 
+          description: 前台ip
+          example: "http:"
+        port:
+          type: string 
+          description: 前台端口号
+          example: "8080"
+        uri:
+          type: string 
+          description: 前台页面uri
+          example: "a/b/"
+  
+
+  ResDTO:
+    type: object
+    description: 资源信息
+    properties:
+        id:
+          type: string 
+          description: id
+          example: "1"
+        parentId:
+          type: string 
+          description: 父级id 顶级=0
+        resName:
+          type: string 
+          description: 资源名称
+        description:
+          type: string 
+          description: 资源描述
+        url:
+          type: string 
+          description: 资源链接
+        sequence:
+          type: integer
+          format: int32
+          description: 资源显示顺序
+        isMenu:
+          type: integer
+          format: int32
+          description: 是否是菜单(1-是 0-否)
+        isValid:
+          type: integer
+          format: int32
+          description: 是否删除状态(1:删除 0:未删除)
+          example: 0
+        createBy:
+          type: string 
+          description: 创建人
+          example: "姓名"
+        updateBy:
+          type: string 
+          description: 修改人
+          example: "姓名"
+        roleRess:
+          type: array
+          items:
+            $ref: "#/definitions/RRoleResDTO"
+
+  Response:
+    type: object
+    description: 出错时返回提示
+    properties:
+      code:
+        type: string 
+        description: 错误状态码
+        example: 500
+      message:
+        type: string 
+        description: 提示消息
+        example: 系统错误
+
+  UserDTO:
+    type: object
+    description: 用户基本信息
+    properties:
+        id:
+          type: string 
+          description: id
+          example: "1"
+        createTime:
+          type: string 
+          description: 创建时间
+          example: "2017-03-13 11:00"
+        operatedTime:
+          type: string 
+          description: 经办时间
+          example: "2017-03-13 11:00"
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "李悦华"
+        createdOrg:
+          type: string 
+          description: 创建机构
+          example: "1"
+        operatedBy:
+          type: string 
+          description: 经办人
+          example: "李悦华"
+        operatedOrg:
+          type: string 
+          description: 经办机构
+          example: "1"
+        siArea:
+          type: string 
+          description: 统筹区
+          example: "1"
+        isValid:
+          type: integer
+          format: int32
+          description: 是否删除状态(0:删除 1:未删除)
+          example: 0
+        departmentid:
+          type: string 
+          description: 所属部门ID
+          example: "1"
+        department:
+          $ref: "#/definitions/OrganizationDTO"
+          description: 所属组织
+        menu:
+          type: array
+          items:
+            type: object
+            $ref: "#/definitions/MenuDTO"
+          description: 可访问菜单
+        role:
+          type: array
+          items:
+            type: object
+            $ref: "#/definitions/RoleDTO"
+        mobile:
+          type: string 
+          description: 手机号码
+          example: "15001158594"
+        telephone:
+          type: string 
+          description: 电话号码
+          example: "010-12345678"
+        email:
+          type: string 
+          description: 邮箱地址
+          example: "790768299@qq.com"
+        password:
+          type: string 
+          description: 密码（密码+随机盐）MD5
+          example: "1234567789"
+        salt:
+          type: string 
+          description: 随机盐
+          example: "123456"
+        userName:
+          type: string 
+          description: 用户名
+          example: "yuehua"
+        trueName:
+          type: string 
+          description: 真实姓名
+          example: "李悦华"
+        sex:
+          type: integer
+          format: int32
+          description: 性别(1为男、0为女、-1为保密)
+          example: 0
+        sequence:
+          type: integer
+          format: int32
+          description: 排序号
+          example: 1
+        isAuthority:
+          type: integer
+          format: int32
+          description: 是否对大屏监控有访问权限
+          example: 1
+          
+  RUserRoleDTO:
+    type: object
+    description: 角色用户关系
+    properties:
+        userId:
+          type: string 
+          description: 用户id
+          example: "79bd2154deb7483a81bd8e7da55b9afa"
+        roleId:
+          type: string 
+          description: 角色id
+          example: "79bd2154deb7483a81bd8e7da55b9afa"
+          
+  RoleDTO:
+    type: object
+    description: 角色信息
+    properties:
+        id:
+          type: string 
+          description: id
+          example: "1"
+        createTime:
+          type: string 
+          description: 创建时间
+          format: date
+          example: "2017-03-13 11:00"
+        updateTime:
+          type: string 
+          description: 修改时间
+          format: date
+          example: "2017-03-13 11:00"
+        createBy:
+          type: string 
+          description: 创建人
+          example: "姓名"
+        updateBy:
+          type: string 
+          description: 修改人
+          example: "姓名"
+        isValid:
+          type: integer
+          format: int32
+          description: 是否删除状态(1:删除 0:未删除)
+          example: 0   
+        roleDescribe:
+          type: string 
+          description: 角色描述
+        roleCode:
+          type: string 
+          description: 角色编码
+        roleName:
+          type: string 
+          description: 角色名称
+        sequence:
+          type: integer
+          format: int32
+          description: 排序号
+          
+  DeputyBindingDTO: 
+    type: object
+    description: 代理人绑定审核信息
+    properties:
+        deputyBindingid:
+          type: string 
+          description: 主键ID
+          example: "123"        
+        deputyBindingCode:
+          type: string 
+          description: 绑定审核表编号ID
+          example: "123"  
+        insuredPersonName:
+          type: string 
+          description: 参保人姓名
+          example: "许瑶"          
+        serialNumber:
+          type: string 
+          description: 申请流水号(移动端生成的)
+          example: "123"        
+        insuredPersonCode:
+          type: string 
+          description: 参保人ID
+          example: "123"        
+        idCard:
+          type: string 
+          description: 参保人身份证号码
+          example: "420801199205112719"        
+        securityNumber:
+          type: string 
+          description: 参保人身社保卡号码
+          example: "123"      
+        deputyName: 
+          type: string 
+          description: 代理人名字
+          example: "张三"            
+        deputyIdCard: 
+          type: string 
+          description: 代理人身份证号码
+          example: "420801199205112719"            
+        deputyMobile: 
+          type: string 
+          description: 代理人联系方式
+          example: "18090909090"            
+        deputyIdCardScan: 
+          type: string 
+          description: 代理人身份证扫描件id(json串存储多个地址ID)
+          example: "123"            
+        securityNumberScan: 
+          type: string 
+          description: 社保卡扫描件附件id(json串存储多个地址ID)
+          example: "123"            
+        idCardScan: 
+          type: string 
+          description: 身份证扫描件附件id(json串存储多个地址ID)
+          example: "123"            
+        caseHistoryScan: 
+          type: string 
+          description: 病例扫描件附件id(json串存储多个地址ID)
+          example: "123"            
+        applicationFormScan: 
+          type: string 
+          description: 长护待遇申请表附件id(json串存储多个地址ID)
+          example: "123"            
+        checkState:  
+          type: string 
+          description: 审核状态
+          example: "未受理"      
+        checkReason:  
+          type: string 
+          description: 审核原因
+          example: "原因"      
+        remark:  
+          type: string 
+          description: 备注
+          example: "原因"      
+        operatedBy:  
+          type: string 
+          description: 经办人
+          example: "张三"      
+        operatedTime:  
+          type: string 
+          format: date
+          description: 经办时间
+          example: "2012-12-12 12:00:00"
+        operatedOrg:  
+          type: string 
+          description: 经办机构
+          example: "政府"      
+        createdBy:  
+          type: string 
+          description: 创建人
+          example: "张三"     
+        createdTime:  
+          type: string 
+          format: date
+          description: 创建时间
+          example: "2012-12-12 12:00:00" 
+        createdOrg:  
+          type: string 
+          description: 创建机构
+          example: "政府"      
+        isValid:  
+          type: string 
+          description: 是否有效标志
+          example: "0"      
+        siArea:  
+          type: string 
+          description: 统筹区
+          example: "荆门"
+        title:  
+          type: string 
+          description: 标题
+          example: "标题"
+        url:  
+          type: string 
+          description: URL
+          example: "地址"
+
+  OrganizationDTO:
+    type: object
+    description: 组织信息
+    properties:
+        id:
+          type: string 
+          description: id
+          example: "1"
+        parentid:
+          type: string 
+          description: 父级id 顶级=0
+        code:
+          type: string 
+          description: 组织编码
+        name:
+          type: string 
+          description: 组织名称
+        description:
+          type: string 
+          description: 组织描述
+        sequence:
+          type: integer
+          format: int32
+          description: 资源显示顺序
+        isOrg:
+          type: integer
+          format: int32
+          description: 机构和部门标识(1:机构 2:组织)
+        isValid:
+          type: integer
+          format: int32
+          description: 是否删除状态(1:删除 0:未删除)
+          example: 0
+        provinceid:
+          type: string 
+          description: 省ID
+        provinceName:
+          type: string 
+          description: 省名称
+        cityid:
+          type: string 
+          description: 市ID
+        cityName:
+          type: string 
+          description: 市名称
+        countyid:
+          type: string 
+          description: 区县ID
+        countyName:
+          type: string 
+          description: 区县名称
+        street:
+          type: string 
+          description: 街道信息
+        phone:
+          type: string 
+          description: 联系电话
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "姓名"
+        operatedBy:
+          type: string 
+          description: 修改人
+          example: "姓名"
+        createdTime:
+          type: string 
+          description: 创建时间
+          example: "2017-03-13 11:00"
+        operatedTime:
+          type: string 
+          description: 修改时间
+          example: "2017-03-13 11:00"
+
+  AreaDTO:
+    type: object
+    description: 区域信息
+    properties:
+        id:
+          type: string 
+          description: id
+          example: "1"
+        parent:
+          type: object
+          description: 上级区域信息
+          example: "areaDTO"
+        parentid:
+          type: string 
+          description: 上级区域id 顶级=0
+        level:
+          type: integer
+          format: int32
+          description: 级别
+        areaName:
+          type: string 
+          description: 区域名称
+        common:
+          type: integer
+          format: int32
+          description: 是否常用区域(1:是 0:否)
+        sequence:
+          type: integer
+          format: int32
+          description: 排序
+        isValid:
+          type: integer
+          format: int32
+          description: 是否有效(1:有效 0:无效)
+          example: 0
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "姓名"
+        operatedBy:
+          type: string 
+          description: 修改人
+          example: "姓名"
+        createdTime:
+          type: string 
+          description: 创建时间
+          example: "2017-03-13 11:00"
+        operatedTime:
+          type: string 
+          description: 修改时间
+          example: "2017-03-13 11:00"
+
+  RRoleResDTO:
+    type: object
+    description: 角色资源关系信息
+    properties:
+        roleId:
+          type: string 
+          description: 角色id
+          example: "1"
+        resId:
+          type: string 
+          description: 资源id
+          example: "1"
+
+  MenuDTO:
+    type: object
+    description: 资源信息
+    properties:
+        id:
+          type: string 
+          description: id
+          example: "1"
+        parentId:
+          type: string 
+          description: 父级id 顶级=0
+        isMenu:
+          type: integer
+          description: 是否是菜单
+        resName:
+          type: string 
+          description: 资源名称
+        description:
+          type: string 
+          description: 资源描述
+        url:
+          type: string 
+          description: 资源链接
+        sequence:
+          type: integer
+          format: int32
+          description: 资源显示顺序
+        childMenu:
+          type: object
+          description: 子菜单列表
+          
+  EvaluateTaskDTO: 
+    type: object
+    description: 评估任务基础信息
+    properties:
+        evaluateTaskid:
+          type: string 
+          description: 主键ID
+          example: "123"        
+        evaluateTaskCode:
+          type: string 
+          description: 评估任务code
+          example: "222222"   
+        applicationCode:
+          type: string 
+          description: 待遇申请code
+          example: "12222223"   
+        insuredPersonCode:
+          type: string 
+          description: 参保人code
+          example: "12222223"   
+        insuredPersonName:
+          type: string 
+          description: 参保人姓名
+          example: "张三"   
+        idCard:
+          type: string 
+          description: 参保人身份证号
+          example: "23423423423423424X"    
+        mobile:
+          type: string 
+          description: 参保人手机号
+          example: "13100000000"    
+        taskState:
+          type: string 
+          description: 评估任务状态
+          example: "01"  
+        taskDeadline:
+          type: string 
+          description: 任务限期
+          example: "01"
+        taskDeadlineDay:
+          type: string 
+          description: 任务限期
+          example: "01"  
+        evaluateAgencyCode:
+          type: string 
+          description: 评估机构id
+          example: "12weww4345555"  
+        evaluateAgencyName:
+          type: string 
+          description: 评估机构名称
+          example: "长江医院"  
+        evaluateCode:
+          type: string 
+          description: 评估机构量表code
+          example: "00"  
+        sendTime:
+          type: string 
+          description: 任务发送时间
+          example: "2017-04-10 11:22:22"  
+        printState:
+          type: string 
+          description: 打印状态
+          example: "00"  
+        isReevaluate:
+          type: string 
+          description: 是否重评
+          example: "00"  
+        reevalueateResult:
+          type: string 
+          description: 是否重评结果
+          example: "通过"   
+        reevaluateParentCode:
+          type: string 
+          description: 父节点
+          example: "0"  
+        operatedBy:
+          type: string 
+          description: 经办人
+          example: "张三"  
+        operatedTime:
+          type: string 
+          #format: date
+          description: 经办时间
+          example: "2017-04-10 11:22:22"  
+        operatedOrg:
+          type: string 
+          description: 经办机构
+          example: "悠悠"  
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "李四"  
+        createdTime:
+          type: string 
+          description: 创建时间
+          example: "2017-04-10 11:22:22"  
+        createdOrg:
+          type: string 
+          description: 创建机构
+          example: "悠悠"  
+        isValid:
+          type: string 
+          description: 是否有效
+          example: "1"
+        siArea:
+          type: string 
+          description: 统筹区
+          example: "12"       
+        remark:
+          type: string 
+          description: 备注
+          example: "dfgdsfsdfsdf"  
+        todoListCode:
+          type: string 
+          description: 待办任务ID
+          example: "2134123sdfsdf34"  
+          
+  FirstEvaluateDTO: 
+    type: object
+    description: 初评结果信息
+    properties:
+        firstEvaluateid:
+          type: string 
+          description: 主键ID
+          example: "123"        
+        firstEvaluateCode:
+          type: string 
+          description: 初评结果code
+          example: "222222"   
+        evaluateTaskCode:
+          type: string 
+          description: 评估机构任务code
+          example: "12222223"   
+        score:
+          type: string 
+          description: 评分
+          example: "12222223"   
+        detailJson:
+          type: string 
+          description: 评估详情
+          example: "{aa:58,bb:66}"   
+        suggestion:
+          type: string 
+          description: 初评意见
+          example: "评估意见"  
+        evaluateName:
+          type: string 
+          description: 评估员姓名
+          example: "张三"  
+        evaluatorOrg:
+          type: string 
+          description: 评估机构
+          example: "评估机构"  
+        evaluateDate:
+          type: string 
+          description: 评估日期
+          example: "2017-01-11"  
+        remark:
+          type: string 
+          description: 备注
+          example: "备注"  
+        operatedBy:
+          type: string 
+          description: 经办人
+          example: "张三"  
+        operatedTime:
+          type: string 
+          description: 经办时间
+          example: "2017-01-11"  
+        operatedOrg:
+          type: string 
+          description: 经办机构
+          example: "悠悠"  
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "李四"  
+        createdTime:
+          type: string 
+          description: 创建时间
+          example: "2017-04-10 11:22:22"  
+        createdOrg:
+          type: string 
+          description: 创建机构
+          example: "悠悠"  
+        isValid:
+          type: string 
+          description: 是否有效
+          example: "1"
+        siArea:
+          type: string 
+          description: 统筹区
+          example: "12"       
+        insuredPersonName:
+          type: string 
+          description: 申请人姓名
+          example: "李四"       
+        idCard:
+          type: string 
+          description: 身份证号
+          example: "222403"       
+        address:
+          type: string 
+          description: 现住址
+          example: "北京市"      
+          
+  PersonalNurseDetailDTO:
+    type: object
+    description: 个人费用护理明细信息
+    properties:
+        feeSetCode:
+          type: string 
+          description: 护理明细记录唯一编号
+          example: "123456789"
+        tradeNum:
+          type: string 
+          description: 交易流水号（社保叫处方号）
+          example: "123456789"
+        beCarePersonCard:
+          type: string 
+          description: 护理对象证件号码
+          example: 23062119930830285X
+        careOrgServiceCode:
+          type: string 
+          description: 护理机构服务项目编码
+          example: "10340000d"
+        careOrgServiceName:
+          type: string 
+          description: 护理机构服务项目名称
+          example: "XXX"
+        medicareCode:
+          type: string 
+          description: 医保服务项目编码
+          example: "123456789"
+        medicareName:
+          type: string 
+          description: 医保服务项目名称
+          example: "XXX"   
+        chargeType:
+          type: string 
+          description: 收费类别
+          example: "XXX"
+        feeDate:
+          type: string 
+          description: 费用发生日期
+          example: "2017-03-13 11:00"
+        count:
+          type: number
+          format: double
+          description: 数量
+          example: "10"
+        price:
+          type: number
+          format: decimal
+          description: 单价
+          example: "10.00"
+        amount:
+          type: number
+          format: decimal
+          description: 金额
+          example: "10.00"
+        nurseCode:
+          type: string 
+          description: 护理人员编码
+          example: "856942"
+        nurseName:
+          type: string 
+          description: 护理人员名称
+          example: "张丽"
+
+  NursingTaskDTO: 
+    type: object
+    description: 护理任务基础信息
+    properties:
+        nursingTaskid:
+          type: string 
+          description: 主键ID
+          example: "123"        
+        nursingTaskCode:
+          type: string 
+          description: 护理任务code
+          example: "222222"   
+        evaluateTaskCode:
+          type: string 
+          description: 评估任务code
+          example: "12222223"   
+        intentAgency:
+          type: string 
+          description: 意向选择结构
+          example: "key:value"   
+        insuredPersonCode:
+          type: string 
+          description: 参保人code
+          example: "232323323232"   
+        finalAgencyCode:
+          type: string 
+          description: 最终选择的护理结构code
+          example: "13100000000"    
+        finalAgencyName:
+          type: string 
+          description: 最终选择的护理结构名称
+          example: "01"  
+        state:
+          type: string 
+          description: 状态
+          example: "00"  
+        applyType:
+          type: string 
+          description: 申办类型
+          example: "12weww4345555"  
+        isRelativeCared:
+          type: string 
+          description: 是否亲属照护
+          example: "长江医院"  
+        remark:
+          type: string 
+          description: 备注
+          example: "dfgdsfsdfsdf"      
+        operatedBy:
+          type: string 
+          description: 经办人
+          example: "张三"  
+        operatedTime:
+          type: string 
+          description: 经办时间
+          example: "2017-04-10 11:22:22"  
+        operatedOrg:
+          type: string 
+          description: 经办机构
+          example: "悠悠"  
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "李四"  
+        createdTime:
+          type: string 
+          description: 创建时间
+          example: "2017-04-10 11:22:22"  
+        createdOrg:
+          type: string 
+          description: 创建机构
+          example: "悠悠"  
+        isValid:
+          type: string 
+          description: 是否有效
+          example: "1"
+        siArea:
+          type: string 
+          description: 统筹区
+          example: "12"       
+          
+  DaySetPerDTO:
+    type: object
+    description: 个人费用日结算信息
+    properties:
+        id:
+          type: string 
+          description: 主键
+          example: "123456789"
+        feeSetCode:
+          type: string 
+          description: 费用记录唯一编号
+          example: "123456789"
+        orgSetCode:
+          type: string 
+          description: 机构月结算记录唯一编号
+          example: "10340000d"
+        inRecorduuid:
+          type: string 
+          description: 入住记录唯一编号 (长护登记流水号)
+          example: "XXX"
+        invoiceNum:
+          type: string 
+          description: 单据号
+          example: "123456789"
+        socSecNum:
+          type: string 
+          description: 社会保障号码
+          example: "XXX"   
+        beCarePersonCard:
+          type: string 
+          description: 护理对象证件号码
+          example: 001
+        cardType:
+          type: integer
+          format: int32
+          description: 证件类型：0身份证
+        beCarePersonName:
+          type: string 
+          description: 护理对象姓名
+        beCarePersonSex:
+          type: integer
+          format: int32
+          description: 楼号
+          example: 101
+        feeDate:
+          type: string 
+          description: 费用日期
+          example: "2017-04-14"
+        nurseTime:
+          type: string 
+          description: 护理日期
+          example: "2017-04-14"
+        nurseStyle:
+          type: integer
+          format: int32
+          description: 护理服务方式
+          example: 1001
+        orgCode:
+          type: string 
+          description: 定点护理机构编号
+          example: "XXXXX"
+        orgName:
+          type: string 
+          description: 定点护理机构名称
+          example: "XXXXX"
+        nurseTotalAmount:
+          type: number
+          format: double
+          description: 总费用
+        siPay:
+          type: number
+          format: double
+          description: 统筹支出
+        paySelf:
+          type: number
+          format: double
+          description: 个人自付
+        expenseSelf:
+          type: number
+          format: double
+          description: 个人自费
+        accountPay:
+          type: number
+          format: double
+          description: 账户支付
+        bankCardPay:
+          type: number
+          format: double
+          description: 银行卡支付
+        unrFee:
+          type: number
+          format: double
+          description: 不合理费用
+        chargeLevel:
+          type: string 
+          description: 收费项目等级
+        overCost:
+          type: number
+          format: double
+          description: 超限额
+        pubPayStatus:
+          type: integer
+          format: int32
+          description: 对公支付标志
+        perPayStatus:
+          type: integer
+          format: int32
+          description: 个人支付标志
+        isValid:
+          type: integer
+          format: int32
+          description: 有效标志
+        operatedBy:
+          type: string 
+          description: 经办人
+        operatedTime:
+          type: string 
+          description: 经办时间
+        createdBy:
+          type: string 
+          description: 创建经办人
+        createdTime:
+          type: string 
+          description: 创建经办时间
+        createdOrg:
+          type: string 
+          description: 创建经办机构
+        operatedOrg:
+          type: string 
+          description: 经办机构
+        siArea:
+          type: string 
+          description: 统筹区
+      
+  OrgSettlementDTO:
+    type: object
+    description: 机构月结信息
+    properties:
+        id:
+          type: string 
+          description: id
+          example: "1"
+        orgSetCode:
+          type: string 
+          description: 月结算记录唯一编号
+          example: "100009999"
+        setDate:
+          type: string 
+          description: 结算日期
+        orgCode:
+          type: string 
+          description: 护理机构编码
+        orgName:
+          type: string 
+          description: 护理机构名称
+        feeStarttime:
+          type: string 
+          description: 费用开始时间
+        feeEndtime:
+          type: string 
+          description: 费用结束时间
+        nurseTotalAmount:
+          type: number
+          format: double
+          description: 护理费用合计
+        siPay:
+          type: number
+          format: double
+          description: 统筹支出
+        paySelf:
+          type: number
+          format: double
+          description: 个人自付
+        expenseSelf:
+          type: number
+          format: double
+          description: 个人自费
+        accountPay:
+          type: number
+          format: double
+          description: 账户支付
+        bankCardPay:
+          type: number
+          format: double
+          description: 银行卡支付
+        acountPayable:
+          type: number
+          format: double
+          description: 应结金额
+        warranty:
+          type: number
+          format: double
+          description: 质保金
+        realPay:
+          type: number
+          format: double
+          description: 实际结算金额
+        unrFee:
+          type: number
+          format: double
+          description: 不合理费用
+        overCost:
+          type: number
+          format: double
+          description: 超限价扣款
+        auditState:
+          type: integer
+          format: int32
+          description: 审核状态
+        checkFlag:
+          type: integer
+          format: int32
+          description: 对账标志
+        rejectReason:
+          type: string 
+          description: 驳回原因
+        isValid:
+          type: integer
+          format: int32
+          description: 是否有效(1:有效 0:无效)
+          example: 0
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "姓名"
+        createdOrg:
+          type: string 
+          description: 创建机构编码
+          example: "org001"
+        createdOrgName:
+          type: string 
+          description: 创建机构名称
+          example: "荆州市社保机构"
+        operatedBy:
+          type: string 
+          description: 修改人
+          example: "姓名"
+        operatedOrg:
+          type: string 
+          description: 修改机构
+          example: "荆州市社保机构"
+        createdTime:
+          type: string 
+          description: 创建时间
+          example: "2017-03-13 11:00"
+        operatedTime:
+          type: string 
+          description: 修改时间
+          example: "2017-03-13 11:00"
+
+  ServiceItemDTO:
+    type: object
+    description: 护理目录
+    properties:
+        id:
+          type: string 
+          description: id
+          example: "1"
+        serviceCode:
+          type: string 
+          description: 服务项目编码
+          example: "123456789"
+        serviceName:
+          type: string 
+          description: 服务项目名称
+          example: "陪护"
+        serviceType:
+          type: string 
+          description: 服务项目类别
+          example: "10"
+        chargeType:
+          type: string 
+          description: 费用类别
+          example: "XXX"
+        payType:
+          type: integer
+          format: int32
+          description: 费用方式
+          example: "XXX"
+        chargeLevel:
+          type: string 
+          description: 收费项目等级
+          example: "甲等"
+        frequency:
+          type: string 
+          description: 服务频次
+          example: "5次"   
+        taskTime:
+          type: string 
+          description: 服务项目持续时间
+          example: "20分钟"
+        description:
+          type: string 
+          description: 服务项目描述
+          example: "洗澡"
+        startTime:
+          type: string 
+          description: 生效开始时间
+          example: "2017-03-13 11:00"
+        endTime:
+          type: string 
+          description: 生效结束时间
+          example: "2017-03-31 11:00"
+        price:
+          type: number
+          format: decimal
+          description: 单价
+          example: "10.00"
+        limitPrice:
+          type: number
+          format: decimal
+          description: 最高限价
+          example: "100.00"
+        siArea:
+          type: string 
+          description: 统筹区
+          example: "856942"
+        isValid:
+          type: string 
+          description: 有效标示
+          example: "0"
+        operatedBy:
+          type: string 
+          description: 经办人
+          example: "张丽"
+        operatedTime:
+          type: string 
+          description: 经办时间
+          example: "2017-03-31 11:00"
+        operatedOrg:
+          type: string 
+          description: 经办机构
+          example: "856942"
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "856942"
+        createdOrg:
+          type: string 
+          description: 创建机构
+          example: "856942"
+  CheckInDTO: 
+    type: object
+    description: 协议表基础信息（主要提供给协议退出）
+    properties:
+        exitFrom:
+          type: string 
+          description: 退出来源
+          example: "123"        
+        exitReason:
+          type: string 
+          description: 退出原因（编号）
+          example: "222222"   
+        exitReasonDetial:
+          type: string 
+          description: 其他原因
+          example: "12222223"   
+        inHospState:
+          type: string 
+          description: 在医状态
+          example: ""   
+        realOutDate:
+          type: string 
+          description: 退出时间即实际出院时间
+          example: "2017-04-19"   
+        operatedBy:
+          type: string 
+          description: 经办人
+          example: "13100000000"    
+        checkInCode:
+          type: string 
+          description: 协议编号
+          example: "01"      
+          
+  EvaluateTaskProfessionDTO: 
+    type: object
+    description: 来源于专业服务的评估任务
+    properties:
+        taskCode:
+          type: string 
+          description: 任务ID
+          example: "123"        
+        isCritical:
+          type: integer
+          description: 是否紧急1-是 0-否
+          example: "0"        
+        estimateMan:
+          type: string 
+          description: 评估人姓名
+          example: "222222"   
+        estimateManCode:
+          type: string 
+          description: 评估人编号
+          example: "12222223"   
+        estimateManPhone: 
+          type: string 
+          description: 评估人电话
+          example: "12222223"   
+        estimateOrg:
+          type: string 
+          description: 评估机构编码
+          example: ""   
+        agencyName:
+          type: string 
+          description: 评估机构名称
+          example: ""   
+        agencyPhone:
+          type: string 
+          description: 评估机构联系电话
+          example: ""   
+        provinceCode:
+          type: string 
+          description: 省code
+          example: ""   
+        cityCode:
+          type: string 
+          description: 市code
+          example: ""   
+        areaCode:
+          type: string 
+          description: 县区code
+          example: ""     
+        agencyAddressDetail:
+          type: string 
+          description: 机构详情地址
+          example: ""
+        preevaluateDate:
+          type: string 
+          description: 预定评估时间
+          example: "2017-04-19"   
+        recognizeeMan:
+          type: string 
+          description: 参保人
+          example: "13100000000"    
+        recognizeeManCode:
+          type: string 
+          description: 参保人编号
+          example: "01" 
+        recognizeeManIdType:
+          type: integer
+          description: 参保人证件类型
+          example: "01" 
+        recognizeeManIdNo:
+          type: string 
+          description: 参保人证件号码
+          example: "01" 
+        recognizeeManPhone:
+          type: string 
+          description: 参保人联系方式
+          example: "01"     
+        recognizeeManAddr:
+          type: string 
+          description: 参保人地址
+          example: "01"    
+        longitude:
+          type: string 
+          description: 经度（暂不考虑）
+          example: "01"    
+        latitude:
+          type: string 
+          description: 纬度（暂不考虑）
+          example: "01"     
+        remark:
+          type: string 
+          description: 备注
+          example: "01"    
+        createdBy: 
+          type: string 
+          description: 创建人
+          example: "sdfsdf"    
+        createdOrg:
+          type: string 
+          description: 创建人机构
+          example: "sdfsdfs"   
+
+  NursingTaskProfessionDTO: 
+    type: object
+    description: 来源于专业服务的护理任务
+    properties:
+        taskCode:
+          type: string 
+          description: 任务ID
+          example: "123"        
+        isPrivilege:
+          type: integer
+          description: 是否特权通过
+          example: "0"        
+        isKinshipCare:
+          type: integer
+          description: 是否亲属照护
+          example: "0"        
+        nursingManName: 
+          type: string 
+          description: 护理人姓名
+          example: "222222"   
+        nursingManCode:
+          type: string 
+          description: 护理人编号
+          example: "12222223"   
+        nursingManPhone:
+          type: string 
+          description: 护理人电话
+          example: "12222223"   
+        nursingOrgCode:
+          type: string 
+          description: 护理机构编码
+          example: ""   
+        agencyName:
+          type: string 
+          description: 护理机构名称
+          example: ""   
+        agencyPhone:
+          type: string 
+          description: 护理机构联系电话
+          example: ""   
+        provinceCode:
+          type: string 
+          description: 省code
+          example: ""   
+        cityCode:
+          type: string 
+          description: 市code
+          example: ""   
+        areaCode:
+          type: string 
+          description: 县区code
+          example: ""     
+        agencyAddressDetail:
+          type: string 
+          description: 机构详情地址
+          example: ""
+        preevaluateDate:
+          type: string 
+          description: 预定评估时间
+          example: "2017-04-19"   
+        recognizeeMan:
+          type: string 
+          description: 参保人
+          example: "13100000000"    
+        recognizeeManCode:
+          type: string 
+          description: 参保人编号
+          example: "01" 
+        recognizeeManIdType:
+          type: integer
+          description: 参保人证件类型
+          example: "01" 
+        recognizeeManIdNo:
+          type: string 
+          description: 参保人证件号码
+          example: "01" 
+        recognizeeManPhone:
+          type: string 
+          description: 参保人联系方式
+          example: "01"     
+        recognizeeManAddr:
+          type: string 
+          description: 参保人地址
+          example: "01"    
+        longitude:
+          type: string 
+          description: 经度（暂不考虑）
+          example: "01"    
+        latitude:
+          type: string 
+          description: 纬度（暂不考虑）
+          example: "01"     
+        remark:
+          type: string 
+          description: 备注
+          example: "01"    
+        serviceType: 
+          type: string 
+          description: 服务类型
+          example: "sdfsdf"    
+        serviceItems:
+          type: string 
+          description: 服务目录项
+          example: "sdfsdfs"   
+        createdBy:
+          type: string 
+          description: 创建人
+          example: "sdfsdf"    
+        createdOrg:
+          type: string 
+          description: 创建人机构
+          example: "sdfsdfs"   
+          
+  PatrolTaskDTO: 
+    type: object
+    description: 页面查询信息
+    properties:
+        patrolObjectName: 
+          type: string 
+          description: 被巡查对象
+          example: 张三
+        patrolObjectType: 
+          type: string 
+          description: 类别(护理机构-00、评估机构-01、护理人员-02、评估人员-03)
+          example: 00
+        patrolObjectId:
+          type: string 
+          description: 身份证/编号(对应patrol_object_id和id_card)
+          example: 222403
+        patrolObjectPhone:
+          type: string 
+          description: 联系电话
+          example: 18090909090
+        operatedTime:
+          type: string 
+          description: 经办时间
+          example: 2017-04-28
+        taskState:
+          type: string 
+          description: 任务状态(未分配-00、已分配-01、执行中-02、已执行-03、通过-04、不通过-05、申诉中-06、复议中-07)
+          example: 00
+        patrolStaffName:
+          type: string 
+          description: 巡查员姓名
+          example: 李四
+        taskLevel:
+          type: string 
+          description: 任务级别（专项-00、普通-01）
+          example: 李四 
+          
+  RExecuteFileDTO:
+    type: object
+    description: 执行结果资源中间数据信息
+    properties:
+        executeResultId: 
+          type: string 
+          description: 巡查结果ID
+          example: 00
+        fileId: 
+          type: string 
+          description: 资源ID
+          example: 00
+        fileType:
+          type: string 
+          description: 资源类型
+          example: mp3
+        fileName:
+          type: string 
+          description: 资源名称
+          example: 18090909090
+        fileContent:
+          type: string 
+          description: 资源文件
+          example: 18090909090
+  ReconsiderFileDTO:
+    type: object
+    description: 申述复议附件信息
+    properties:
+      id:
+        type: string 
+        description: 附件id
+      reconsiderid:
+        type: string 
+        description: 复议id
+      fileId:
+        type: string 
+        descritption: 文件id
+      fileType:
+        type: string 
+        description: 文件类型
+      fileName:
+        type: string 
+        description: 文件名
+      lcpsFileId:
+        type: string 
+        description: 专业系统中的附件id          
+  ReconsiderDTO:
+    type: object
+    description: 申述复议信息
+    properties:
+        files:
+          type: array
+          items:
+            type: object
+            $ref: "#/definitions/ReconsiderFileDTO"
+          description: 附件
+        reconsiderid: 
+          type: string 
+          description: 复议唯一标识
+        serialNumber:
+          type: string 
+          description: 复议流水号,专业提供
+        executeResultId:
+          type: string 
+          description: 执行结果id
+        patrolTaskId:
+          type: string 
+          description: 巡查任务id
+        appealPerson:
+          type: string 
+          description: 申述人
+        appealPhone:
+          type: string 
+          description: 申述人电话
+        appealTime:
+          type: string 
+          description: 申述时间
+        applealContent:
+          type: string 
+          description: 申述内容
+        replyPerson:
+          type: string 
+          description: 回复人
+        replyPhone:
+          type: string 
+          description: 回复人电话
+        replyOpinion:
+          type: string 
+          description: 回复意见
+        isValid:
+          type: string 
+          description: 是否有效
+        siArea:
+          type: string 
+          description: 统筹区
+        operatedBy:
+          type: string 
+          description: 经办人
+        operatedOrg:
+          type: string 
+          description: 经办机构
+        operatedTime:
+          type: string 
+          description: 经办时间
+        createdBy:
+          type: string 
+          description: 创建人
+        createdOrg:
+          type: string 
+          description: 创建机构
+        createTime:
+          type: string 
+          description: 创建时间
+          
+  ExecuteResultDTO:
+    type: object
+    description: 执行结果信息
+    properties:
+        executeResultId: 
+          type: string 
+          description: 巡查结果ID
+          example: 00
+        patrolTaskId: 
+          type: string 
+          description: 巡查任务ID
+          example: 00
+        partolTime:
+          type: string 
+          description: 巡查日期
+          example: "2017-05-04"
+        receiveResultTime:
+          type: string 
+          description: 结果接收时间
+          example: "2017-05-04"
+        resultType:
+          type: integer
+          format: int32
+          description: 结果类型
+          example: 1
+        resultDesc:
+          type: string 
+          description: 结果描述
+          example: "xxxxxx"
+        auditState:
+          type: integer
+          format: int32
+          description: 审核状态
+          example: 2
+        rejectionReason:
+          type: string 
+          description: 审核不通过原因
+          example: "xxxxxx"
+        auditor:
+          type: string 
+          description: 审核人员
+          example: "某某"
+        auditorPhone:
+          type: string 
+          description: 审核人员联系方式
+          example: "136xxxxxxxx"
+        resultInformState:
+          type: integer
+          format: int32
+          description: 审核结果通知状态（未通知、已通知）
+          example: 3
+        executeFile:
+          type: array
+          items:
+            type: object
+            $ref: "#/definitions/RExecuteFileDTO"
+          description: 执行结果中间资源信息
+          example: xxx
+        operatedBy:
+          type: string 
+          description: 经办人
+        operatedOrg:
+          type: string 
+          description: 经办机构
+        operatedTime:
+          type: string 
+          description: 经办时间
+        createdBy:
+          type: string 
+          description: 创建人
+        createdOrg:
+          type: string 
+          description: 创建机构
+        createdTime:
+          type: string 
+          description: 创建时间
+        violationItem:
+          type: string 
+          description: 违规项
+          
+  AgencyHistoryDTO: 
+    type: object 
+    description: 机构历史信息
+    properties: 
+        serialNum: 
+          type: string 
+          description: 流水号
+          example: 1234567
+        actionType: 
+          type: string  
+          description: 操作类型（新增、变更；变更时只传有变化的项目值）
+          example: xxx
+        agencyCode: 
+          type: string 
+          description: 机构信息码（经办）
+        orgCode: 
+          type: string 
+          description: 机构编号
+        agencyName: 
+          type: string 
+          description: 机构名称
+        provinceCode: 
+          type: string 
+          description: 所在省份编码
+        cityCode: 
+          type: string 
+          description: 所在城市编码
+        areaCode: 
+          type: string 
+          description: 所在区县编码
+        agencyAddressDetail: 
+          type: string 
+          description: 机构详细地址
+        agencyType: 
+          type: string 
+          description: 机构类型(护理/评估)
+        agencyLevel: 
+          type: integer
+          format: int32
+          description: 机构类别(一级以上医疗机构等)
+        agencyState: 
+          type: integer
+          format: int32
+          description: 机构审核状态
+        agencyServiceType: 
+          type: string 
+          description: 定点服务机构类型(居家护理/养老机构护理)
+        validState: 
+          type: integer
+          format: int32
+          description: 有效状态
+        ownershipForm: 
+          type: integer
+          format: int32
+          description: 所有制形式
+        practiceLicense: 
+          type: string 
+          description: 执业许可证号
+        agencyRegistrationNum: 
+          type: string 
+          description: 机构登记证号
+        legalRepresentative: 
+          type: string 
+          description: 法人代表
+        legalPapersType: 
+          type: string 
+          description: 法人证件类型
+        legalIdCard: 
+          type: string 
+          description: 法人证件号码
+        legalPhoneNo: 
+          type: string 
+          description: 法人电话
+        agencyServiceContact: 
+          type: string 
+          description: 长期护理服务业务负责人
+        agencyContactPhone: 
+          type: string 
+          description: 长期护理服务业务负责人联系电话
+        agencyContactEmail: 
+          type: string 
+          description: 长期护理服务业务负责人电子邮箱
+        serviceContent: 
+          type: string 
+          description: 服务内容
+        agencyBedNum: 
+          type: integer
+          format: int32
+          description: 机构床位数
+        homeServiceNum: 
+          type: integer
+          format: int32
+          description: 居家服务人数
+        constructionArea: 
+          type: number
+          format: double
+          description: 建筑面积
+        remark: 
+          type: string 
+          description: 备注说明
+        agencyCoordinates: 
+          type: string 
+          description: 机构经纬度
+        agencyApplicat: 
+          type: string 
+          description: 申请人
+        agencyApplyDate: 
+          type: string 
+          description: 申请日期
+        advancedDoctorNum: 
+          type: integer
+          format: int32
+          description: 高级执业医师数
+        intermediateDoctorNum: 
+          type: integer
+          format: int32
+          description: 中级执业医师数
+        primaryDoctorNum: 
+          type: integer
+          format: int32
+          description: 初级执业医师数
+        advancedNurseNum: 
+          type: integer
+          format: int32
+          description: 高级执业护士数
+        intermediateNurseNum: 
+          type: integer
+          format: int32
+          description: 中级执业护士数
+        primaryNurseNum: 
+          type: integer
+          format: int32
+          description: 初级执业护士数
+        advancedCarerNum: 
+          type: integer
+          format: int32
+          description: 高级执业护理员数
+        intermediateCarerNum: 
+          type: integer
+          format: int32
+          description: 中级执业护理员数
+        primaryCarerNum: 
+          type: integer
+          format: int32
+          description: 初级执业护理员数
+        advancedMiscNum: 
+          type: integer
+          format: int32
+          description: 高级其他人员数
+        intermediateMiscNum: 
+          type: integer
+          format: int32
+          description: 中级其他人员数
+        primaryMiscNum: 
+          type: integer
+          format: int32
+          description: 初级其他人员数
+        cause: 
+          type: string 
+          description: 不受理或不通过原因
+        operatedBy: 
+          type: string 
+          description: 经办人
+        operatedOrg: 
+          type: string 
+          description: 经办机构
+        operatedTime: 
+          type: string 
+          description: 经办时间
+        createdBy: 
+          type: string 
+          description: 创建人
+        createdOrg: 
+          type: string 
+          description: 创建机构
+        createdTime: 
+          type: string 
+          description: 创建时间
+        agencyFiles:
+          type: array
+          items:
+            type: object
+            $ref: "#/definitions/FileDTO"
+          description: 机构附件
+        keyBeginDate: 
+          type: string 
+          description: 密钥开始日期
+        keyEndDate: 
+          type: string 
+          description: 密钥终止日期
+        agencyCodeInput:
+          type: string 
+          description: 审核输入机构编码
+          
+  StaffHistoryDTO: 
+    type: object 
+    description: 人员历史信息
+    properties: 
+        serialNo: 
+          type: string 
+          description: 流水号
+          example: 1234567
+        actionType: 
+          type: string  
+          description: 操作类型（新增、变更；变更时只传有变化的项目值）
+          example: xxx
+        agencyCode: 
+          type: string 
+          description: 机构编码（经办）(隶属机构名称)
+        agencyName: 
+          type: string 
+          description: 机构名称(隶属机构名称)
+        staffCode: 
+          type: string 
+          description: 人员编号
+        empCode: 
+          type: string 
+          description: 专业人员编号
+        staffName: 
+          type: string 
+          description: 人员姓名
+        staffPhone: 
+          type: string 
+          description: 人员手机号
+        credentialType: 
+          type: integer
+          format: int32
+          description: 证件类型
+        credentialNumber: 
+          type: string 
+          description: 身份证号
+        credentialValidityDate: 
+          type: string 
+          description: 证件有效期
+        staffGender: 
+          type: integer
+          format: int32
+          description: 性别
+        highestEducation: 
+          type: string 
+          description: 最高学历
+        acquireDegree: 
+          type: string 
+          description: 获得学位
+        diplomaDate: 
+          type: string 
+          description: 发证日期
+        degreeDate: 
+          type: string 
+          description: 发证日期
+        jobScope: 
+          type: string 
+          description: 申请从业范围(1.评估人员/2.护理人员/3.医疗护士/4.管理人员/5.其他)
+        qualificationCertificationNumber: 
+          type: string 
+          description: 资格证书编号
+        qualificationLevel: 
+          type: integer
+          format: int32
+          description: 资格级别(1.初级职称,2.中级职称,3.高级职称)
+        qualificationCertificationDate: 
+          type: string 
+          description: 资格证书发证日期 
+        practiceNumbe: 
+          type: string 
+          description: 执业证书编号
+        practiceLevel: 
+          type: integer
+          format: int32
+          description: 执业级别
+        practiceCertificationDate: 
+          type: string 
+          description: 执业证书发证日期
+        uniqueNumber: 
+          type: string 
+          description: 监管唯一认证id
+        remark: 
+          type: string 
+          description: 备注说明
+        auditState: 
+          type: integer
+          format: int32
+          description: 人员审核状态
+        cause: 
+          type: string 
+          description: 不受理或不通过原因
+        staffLevel: 
+          type: string 
+          description: 职称(1.高级,2.中级,3.初级)
+        category: 
+          type: string 
+          description: 类别(1.执业医师,2.执业护士,3.护理员,4其他)             
+        operatedBy: 
+          type: string 
+          description: 经办人
+        operatedOrg: 
+          type: string 
+          description: 经办机构
+        operatedTime: 
+          type: string 
+          description: 经办时间
+        createdBy: 
+          type: string 
+          description: 创建人
+        createdOrg: 
+          type: string 
+          description: 创建机构
+        createdTime: 
+          type: string 
+          description: 创建时间
+        staffFiles:
+          type: array
+          items:
+            type: object
+            $ref: "#/definitions/FileDTO"
+          description: 人员附件
+  FileDTO: 
+    type: object 
+    description: 附件信息
+    properties: 
+        objType: 
+          type: integer
+          format: int32
+          description: 机构、人员类型
+        code: 
+          type: string  
+          description: 机构、人员编号
+        accessoryType: 
+          type: string 
+          description: 机构、人员类型
+        fileId: 
+          type: string 
+          description: 资源表id
+        fileName: 
+          type: string 
+          description: 文件名
+        fileType: 
+          type: string 
+          description: 文件格式
+        credentialName: 
+          type: string 
+          description: 证件名称
+        credentialLevel: 
+          type: string 
+          description: 证件等级
+        credentialDate: 
+          type: string 
+          description: 发证日期
+        credentialCode: 
+          type: string 
+          description: 证件编号   
+        historyId:
+          type: string 
+          description: 历史记录ID
+          example: 18090909090
+          
+  UserPushResultDTO:
+    type: object 
+    description: 附件信息
+    properties: 
+        code: 
+          type: string 
+          description: 返回信息编码(1000:成功 ，1002及其他失败)
+        data: 
+          type: string  
+          description: 对象内容
+        msg: 
+          type: string 
+          description: 消息内容
+          
+  UserPushDTO:
+    type: object 
+    description: 附件信息
+    properties: 
+        username: 
+          type: string 
+          description: 用户名
+        pwd: 
+          type: string  
+          description: 密码
+        cityid: 
+          type: string 
+          description: 城市编码
+        type: 
+          type: string 
+          description: 操作类型
+          
+  MonSetPerDTO:
+    type: object
+    description: 个人费用月结算信息
+    properties:
+        id:
+          type: string 
+          description: 主键
+          example: "123456789"
+        perSetCode:
+          type: string 
+          description: 费用记录唯一编号
+          example: "123456789"
+        monSetCode:
+          type: string 
+          description: 机构月结编码
+          example: "10340000d"
+        inRecorduuid:
+          type: string 
+          description: 入住记录唯一编号 (长护登记流水号)
+          example: "XXX"
+        receiptNum:
+          type: string 
+          description: 单据号
+          example: "123456789"
+        setDate:
+          type: string 
+          description: 费用日期
+          example: "2017-04-14"
+        reimbType:
+          type: string 
+          description: 报销类别:定点医疗机构全部传“0”
+          example: "XXX"   
+        isAccountUse:
+          type: string 
+          description: 账户使用标志:0-帐户不支付1-账户支付
+          example: 001
+        orgCode:
+          type: string 
+          description: 定点护理机构编号
+          example: "XXXXX"
+        orgName:
+          type: string 
+          description: 定点护理机构名称
+          example: "XXXXX"
+        socSecNum:
+          type: string 
+          description: 社会保障号码
+          example: "XXXXX"
+        cardType:
+          type: integer
+          format: int32
+          description: 证件类型：0身份证
+        beCarePersonCardNum:
+          type: string 
+          description: 护理对象证件号码
+          example: "XXXXX"
+        nurseObjName:
+          type: string 
+          description: 护理对象姓名
+        nurseObjSex:
+          type: integer
+          format: int32
+          description: 护理对象性别
+          example: 1
+        nurseStarttime:
+          type: string 
+          description: 护理开始日期
+          example: "2017-04-14"
+        nurseEndtime:
+          type: string 
+          description: 护理结束日期
+          example: "2017-04-14"
+        nurseTotalAmount:
+          type: number
+          format: double
+          description: 总费用
+        siPay:
+          type: number
+          format: double
+          description: 统筹支出
+        paySelf:
+          type: number
+          format: double
+          description: 个人自付
+        expenseSelf:
+          type: number
+          format: double
+          description: 个人自费
+        accountPay:
+          type: number
+          format: double
+          description: 账户支付
+        bankCardPay:
+          type: number
+          format: double
+          description: 银行卡支付
+        unrFee:
+          type: number
+          format: double
+          description: 不合理费用
+        overLimitFee:
+          type: number
+          format: double
+          description: 超限额
+        auditState:
+          type: integer
+          format: int32
+          description: 审核状态
+        isValid:
+          type: integer
+          format: int32
+          description: 有效标志
+        operatedBy:
+          type: string 
+          description: 经办人
+        operatedTime:
+          type: string 
+          description: 经办时间
+        createdBy:
+          type: string 
+          description: 创建经办人
+        createdTime:
+          type: string 
+          description: 创建经办时间
+        createdOrg:
+          type: string 
+          description: 创建经办机构
+        operatedOrg:
+          type: string 
+          description: 经办机构
+        siArea:
+          type: string 
+          description: 统筹区
+        version:
+          type: integer
+          format: int64
+          description: 1
+  

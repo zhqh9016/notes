@@ -1,0 +1,72 @@
+---
+swagger: "2.0"
+
+info:
+  version: v1
+  title: 媒体文件微服务
+  description: 媒体文件微服务
+
+basePath: /api/v1
+schemes:
+- http
+produces:
+- application/json
+consumes:
+- application/json
+
+tags:
+- name: mediaFile
+  description: 媒体文件接口
+paths:
+
+  /attachment:
+    $ref: v1/attachment/attachment-save.yml
+  /attachment/{id}/{fileType}:
+    $ref: v1/attachment/attachment-getAndDelete.yml
+  /attachment/originalPicture/{id}:
+    $ref: v1/attachment/attachment-get.yml
+
+definitions:
+  AttachmentDTO:
+    type: object
+    description: 附件基本信息
+    properties:
+        fileName:
+          type: string
+          description: 文件名
+          example: "xxx"
+        suffix:
+          type: string
+          description: 文件后缀
+          example: "xxx"
+        content:
+          type: string
+          description: 文件base64
+          example: "xxx"
+        fileType:
+          type: string
+          description: 文件类型
+          example: "0,1,2"
+
+
+  ResultDTO: 
+    type: object 
+    description: 结果基本信息
+    properties: 
+        status: 
+          type: integer
+          format: int32
+          description: 状态码
+          example: 200
+        datas: 
+          type: object 
+          description: 结果信息
+          example: xxx
+        message: 
+          type: string
+          description: 结果状态描述
+        number:
+          type: integer
+          format: int32
+          description: 数量
+          example: 200  

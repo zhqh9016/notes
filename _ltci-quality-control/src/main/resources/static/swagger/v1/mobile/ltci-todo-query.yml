@@ -1,0 +1,34 @@
+get: 
+  tags:
+  - mobileTask
+  summary: 待办巡查任务列表查询接口(移动端->经办)
+  description: 待办巡查任务列表查询接口
+  operationId: getTodoPatrolTask
+  parameters: 
+    - name: patrolStaffId
+      in: query
+      description: 巡查员id
+      required: true
+      type: string
+    - name: taskStatus
+      in: query
+      description: 任务状态 （0未分配、1已分配、2执行中、3已执行、4通过、5不通过、6申诉中、7复议中）
+      required: false
+      type: string
+  responses:
+      200:
+        description: 查询成功
+        schema:
+          $ref: "../../ltci-quality-control-api-v1.yml/#/definitions/ResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-quality-control-api-v1.yml/#/definitions/ResultDTO"
+
+
+
+
+
+
+
+

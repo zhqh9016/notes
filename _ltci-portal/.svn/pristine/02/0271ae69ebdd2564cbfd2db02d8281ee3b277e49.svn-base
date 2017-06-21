@@ -1,0 +1,34 @@
+post: 
+  tags:
+  - patrolTask
+  summary: 人员/机构--查询接口
+  description: 采用弹出框形式针对名字模糊匹配，带出机构/人员信息
+  operationId: getAgencyStaff
+  parameters: 
+    - name: name
+      in: formData
+      description: 名字
+      required: false
+      type: string
+    - name: type
+      in: formData
+      description: 人员/机构（0是人员查询，1是机构查询）
+      required: true
+      type: string
+  responses:
+      200:
+        description: 查询成功
+        schema:
+          $ref: "../../ltci-quality-control-api-v1.yml/#/definitions/ResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-quality-control-api-v1.yml/#/definitions/ResultDTO"
+
+
+
+
+
+
+
+

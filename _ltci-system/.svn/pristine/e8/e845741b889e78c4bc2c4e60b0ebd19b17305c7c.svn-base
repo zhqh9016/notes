@@ -1,0 +1,13 @@
+get: 
+  tags:
+  - rRoleResManage
+  summary: 查询角色资源关系列表
+  description: 获取所有有效的菜单信息,并查出对应的角色菜单关联关系
+  operationId: listResWithRoles
+  responses:
+    200:
+      description: 查询成功
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/ResultDTO"

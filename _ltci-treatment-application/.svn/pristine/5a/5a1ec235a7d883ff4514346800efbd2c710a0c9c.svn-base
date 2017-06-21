@@ -1,0 +1,83 @@
+get:
+  tags:
+  - todoList
+  summary: 显示待办提醒
+  description: 返回提醒信息
+  operationId: listTodo
+  responses:
+    200:
+      description: 查询成功
+      schema:
+        $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"
+
+post:
+  tags:
+  - todoList
+  summary: 新增待办提醒接口
+  description: 添加代办信息
+  operationId: createTodoList
+  parameters:
+  - name: title
+    in: formData
+    description: 标题
+    required: true
+    type: string
+  - name: type
+    in: formData
+    description: 类型（待办、提醒）
+    required: true
+    type: string
+  - name: receiveCharactar
+    in: formData
+    description: 接收角色
+    required: true
+    type: string
+  - name: administrativeRegion
+    in: formData
+    description: 行政区域
+    required: true
+    type: string
+  - name: jumpWay
+    in: formData
+    description: 跳转方式
+    required: true
+    type: string
+  - name: businessCode
+    in: formData
+    description: 业务code
+    required: true
+    type: string
+  - name: businessType
+    in: formData
+    description: 业务类型
+    required: true
+    type: string
+  - name: ip
+    in: formData
+    description: 前台ip
+    required: true
+    type: string
+  - name: port
+    in: formData
+    description: 前台端口号
+    required: true
+    type: string
+  - name: uri
+    in: formData
+    description: 前台页面uri
+    required: true
+    type: string
+  responses:
+    200:
+      description: 编辑成功
+      schema:
+        $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"
+        

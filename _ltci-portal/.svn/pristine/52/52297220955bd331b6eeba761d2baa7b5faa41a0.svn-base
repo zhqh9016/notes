@@ -1,0 +1,48 @@
+post:
+  tags:
+  - treatmentApplication
+  summary: 待遇申请申请状态处理
+  description: 根据待遇申请编号修改待遇申请受理状态[已受理、暂不受理、审核通过、审核不通过]
+  operationId: treatmentApplicationCase
+  parameters:
+   - name: applicationCode
+     in: formData
+     description: 待遇申请编号
+     required: true
+     type: string
+   - name: securityNumber
+     in: formData
+     description: 参保人社保卡号
+     required: true
+     type: string
+   - name: securityPersonalNumber
+     in: formData
+     description: 参保人社保个人编号
+     required: true
+     type: string
+   - name: deputyIdCard
+     in: formData
+     description: 代理人证件号
+     required: true
+     type: string
+   - name: applicationStatus
+     in: formData
+     description: 待遇申请状态
+     required: true
+     type: string
+   - name: applicationReason
+     in: formData
+     description: 原因
+     required: false
+     type: string
+  responses:
+    200:
+      description: 待遇申请状态修改成功
+      schema:
+        type: object
+        items:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ApplicationLogDTO"
+    default:
+      description: 其它错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"

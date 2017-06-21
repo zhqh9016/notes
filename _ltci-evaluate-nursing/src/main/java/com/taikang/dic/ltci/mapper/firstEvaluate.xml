@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.FirstEvaluateDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.FirstEvaluateDO" >
+    <id column="first_evaluateid" property="firstEvaluateid" jdbcType="VARCHAR" />
+    <result column="first_evaluate_code" property="firstEvaluateCode" jdbcType="VARCHAR" />
+    <result column="evaluate_task_code" property="evaluateTaskCode" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="DECIMAL" />
+    <result column="print_state" property="printState" jdbcType="VARCHAR" />
+    <result column="suggestion" property="suggestion" jdbcType="VARCHAR" />
+    <result column="evaluatorid" property="evaluatorid" jdbcType="VARCHAR" />
+    <result column="evaluate_name" property="evaluateName" jdbcType="VARCHAR" />
+    <result column="evaluator_org" property="evaluatorOrg" jdbcType="VARCHAR" />
+    <result column="evaluate_date" property="evaluateDate" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.taikang.dic.ltci.model.FirstEvaluateDO" extends="BaseResultMap" >
+    <result column="detail_json" property="detailJson" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    first_evaluateid, first_evaluate_code, evaluate_task_code, score, print_state, suggestion, 
+    evaluatorid, evaluate_name, evaluator_org, evaluate_date, remark, operated_by, operated_time, 
+    operated_org, created_by, created_time, created_org, is_valid, si_area
+  </sql>
+  <sql id="Blob_Column_List" >
+    detail_json
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.taikang.dic.ltci.model.FirstEvaluateDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ltci_first_evaluate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.FirstEvaluateDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ltci_first_evaluate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ltci_first_evaluate
+    where first_evaluateid = #{firstEvaluateid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_first_evaluate
+    where first_evaluateid = #{firstEvaluateid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.FirstEvaluateDOExample" >
+    delete from ltci_first_evaluate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.FirstEvaluateDO" >
+    insert into ltci_first_evaluate (first_evaluateid, first_evaluate_code, 
+      evaluate_task_code, score, print_state, 
+      suggestion, evaluatorid, evaluate_name, 
+      evaluator_org, evaluate_date, remark, 
+      operated_by, operated_time, operated_org, 
+      created_by, created_time, created_org, 
+      is_valid, si_area, detail_json
+      )
+    values (#{firstEvaluateid,jdbcType=VARCHAR}, #{firstEvaluateCode,jdbcType=VARCHAR}, 
+      #{evaluateTaskCode,jdbcType=VARCHAR}, #{score,jdbcType=DECIMAL}, #{printState,jdbcType=VARCHAR}, 
+      #{suggestion,jdbcType=VARCHAR}, #{evaluatorid,jdbcType=VARCHAR}, #{evaluateName,jdbcType=VARCHAR}, 
+      #{evaluatorOrg,jdbcType=VARCHAR}, #{evaluateDate,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, 
+      #{operatedBy,jdbcType=VARCHAR}, #{operatedTime,jdbcType=TIMESTAMP}, #{operatedOrg,jdbcType=VARCHAR}, 
+      #{createdBy,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{createdOrg,jdbcType=VARCHAR}, 
+      #{isValid,jdbcType=INTEGER}, #{siArea,jdbcType=VARCHAR}, #{detailJson,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.FirstEvaluateDO" >
+    insert into ltci_first_evaluate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="firstEvaluateid != null" >
+        first_evaluateid,
+      </if>
+      <if test="firstEvaluateCode != null" >
+        first_evaluate_code,
+      </if>
+      <if test="evaluateTaskCode != null" >
+        evaluate_task_code,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="printState != null" >
+        print_state,
+      </if>
+      <if test="suggestion != null" >
+        suggestion,
+      </if>
+      <if test="evaluatorid != null" >
+        evaluatorid,
+      </if>
+      <if test="evaluateName != null" >
+        evaluate_name,
+      </if>
+      <if test="evaluatorOrg != null" >
+        evaluator_org,
+      </if>
+      <if test="evaluateDate != null" >
+        evaluate_date,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="operatedBy != null" >
+        operated_by,
+      </if>
+      <if test="operatedTime != null" >
+        operated_time,
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="createdOrg != null" >
+        created_org,
+      </if>
+      <if test="isValid != null" >
+        is_valid,
+      </if>
+      <if test="siArea != null" >
+        si_area,
+      </if>
+      <if test="detailJson != null" >
+        detail_json,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="firstEvaluateid != null" >
+        #{firstEvaluateid,jdbcType=VARCHAR},
+      </if>
+      <if test="firstEvaluateCode != null" >
+        #{firstEvaluateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateTaskCode != null" >
+        #{evaluateTaskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=DECIMAL},
+      </if>
+      <if test="printState != null" >
+        #{printState,jdbcType=VARCHAR},
+      </if>
+      <if test="suggestion != null" >
+        #{suggestion,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluatorid != null" >
+        #{evaluatorid,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateName != null" >
+        #{evaluateName,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluatorOrg != null" >
+        #{evaluatorOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateDate != null" >
+        #{evaluateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatedOrg != null" >
+        #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdOrg != null" >
+        #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="siArea != null" >
+        #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="detailJson != null" >
+        #{detailJson,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.FirstEvaluateDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_first_evaluate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_first_evaluate
+    <set >
+      <if test="record.firstEvaluateid != null" >
+        first_evaluateid = #{record.firstEvaluateid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.firstEvaluateCode != null" >
+        first_evaluate_code = #{record.firstEvaluateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evaluateTaskCode != null" >
+        evaluate_task_code = #{record.evaluateTaskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.score != null" >
+        score = #{record.score,jdbcType=DECIMAL},
+      </if>
+      <if test="record.printState != null" >
+        print_state = #{record.printState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.suggestion != null" >
+        suggestion = #{record.suggestion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evaluatorid != null" >
+        evaluatorid = #{record.evaluatorid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evaluateName != null" >
+        evaluate_name = #{record.evaluateName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evaluatorOrg != null" >
+        evaluator_org = #{record.evaluatorOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evaluateDate != null" >
+        evaluate_date = #{record.evaluateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedBy != null" >
+        operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedTime != null" >
+        operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.operatedOrg != null" >
+        operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null" >
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdOrg != null" >
+        created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isValid != null" >
+        is_valid = #{record.isValid,jdbcType=INTEGER},
+      </if>
+      <if test="record.siArea != null" >
+        si_area = #{record.siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.detailJson != null" >
+        detail_json = #{record.detailJson,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update ltci_first_evaluate
+    set first_evaluateid = #{record.firstEvaluateid,jdbcType=VARCHAR},
+      first_evaluate_code = #{record.firstEvaluateCode,jdbcType=VARCHAR},
+      evaluate_task_code = #{record.evaluateTaskCode,jdbcType=VARCHAR},
+      score = #{record.score,jdbcType=DECIMAL},
+      print_state = #{record.printState,jdbcType=VARCHAR},
+      suggestion = #{record.suggestion,jdbcType=VARCHAR},
+      evaluatorid = #{record.evaluatorid,jdbcType=VARCHAR},
+      evaluate_name = #{record.evaluateName,jdbcType=VARCHAR},
+      evaluator_org = #{record.evaluatorOrg,jdbcType=VARCHAR},
+      evaluate_date = #{record.evaluateDate,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      is_valid = #{record.isValid,jdbcType=INTEGER},
+      si_area = #{record.siArea,jdbcType=VARCHAR},
+      detail_json = #{record.detailJson,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_first_evaluate
+    set first_evaluateid = #{record.firstEvaluateid,jdbcType=VARCHAR},
+      first_evaluate_code = #{record.firstEvaluateCode,jdbcType=VARCHAR},
+      evaluate_task_code = #{record.evaluateTaskCode,jdbcType=VARCHAR},
+      score = #{record.score,jdbcType=DECIMAL},
+      print_state = #{record.printState,jdbcType=VARCHAR},
+      suggestion = #{record.suggestion,jdbcType=VARCHAR},
+      evaluatorid = #{record.evaluatorid,jdbcType=VARCHAR},
+      evaluate_name = #{record.evaluateName,jdbcType=VARCHAR},
+      evaluator_org = #{record.evaluatorOrg,jdbcType=VARCHAR},
+      evaluate_date = #{record.evaluateDate,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      is_valid = #{record.isValid,jdbcType=INTEGER},
+      si_area = #{record.siArea,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.FirstEvaluateDO" >
+    update ltci_first_evaluate
+    <set >
+      <if test="firstEvaluateCode != null" >
+        first_evaluate_code = #{firstEvaluateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateTaskCode != null" >
+        evaluate_task_code = #{evaluateTaskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=DECIMAL},
+      </if>
+      <if test="printState != null" >
+        print_state = #{printState,jdbcType=VARCHAR},
+      </if>
+      <if test="suggestion != null" >
+        suggestion = #{suggestion,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluatorid != null" >
+        evaluatorid = #{evaluatorid,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateName != null" >
+        evaluate_name = #{evaluateName,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluatorOrg != null" >
+        evaluator_org = #{evaluatorOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateDate != null" >
+        evaluate_date = #{evaluateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        operated_by = #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdOrg != null" >
+        created_org = #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="siArea != null" >
+        si_area = #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="detailJson != null" >
+        detail_json = #{detailJson,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where first_evaluateid = #{firstEvaluateid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.taikang.dic.ltci.model.FirstEvaluateDO" >
+    update ltci_first_evaluate
+    set first_evaluate_code = #{firstEvaluateCode,jdbcType=VARCHAR},
+      evaluate_task_code = #{evaluateTaskCode,jdbcType=VARCHAR},
+      score = #{score,jdbcType=DECIMAL},
+      print_state = #{printState,jdbcType=VARCHAR},
+      suggestion = #{suggestion,jdbcType=VARCHAR},
+      evaluatorid = #{evaluatorid,jdbcType=VARCHAR},
+      evaluate_name = #{evaluateName,jdbcType=VARCHAR},
+      evaluator_org = #{evaluatorOrg,jdbcType=VARCHAR},
+      evaluate_date = #{evaluateDate,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      created_org = #{createdOrg,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      si_area = #{siArea,jdbcType=VARCHAR},
+      detail_json = #{detailJson,jdbcType=LONGVARCHAR}
+    where first_evaluateid = #{firstEvaluateid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.FirstEvaluateDO" >
+    update ltci_first_evaluate
+    set first_evaluate_code = #{firstEvaluateCode,jdbcType=VARCHAR},
+      evaluate_task_code = #{evaluateTaskCode,jdbcType=VARCHAR},
+      score = #{score,jdbcType=DECIMAL},
+      print_state = #{printState,jdbcType=VARCHAR},
+      suggestion = #{suggestion,jdbcType=VARCHAR},
+      evaluatorid = #{evaluatorid,jdbcType=VARCHAR},
+      evaluate_name = #{evaluateName,jdbcType=VARCHAR},
+      evaluator_org = #{evaluatorOrg,jdbcType=VARCHAR},
+      evaluate_date = #{evaluateDate,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      created_org = #{createdOrg,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      si_area = #{siArea,jdbcType=VARCHAR}
+    where first_evaluateid = #{firstEvaluateid,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

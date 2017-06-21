@@ -1,0 +1,17 @@
+get:
+  tags:
+  - evaluateTask
+  summary: 查询评估任务发送，但是超期之后还没有接收到评估结果的数据
+  description: 查询评估任务发送，但是超期之后还没有接收到评估结果的数据
+  operationId: getToDoListEvaluateTaskList
+  responses:
+    200:
+      description: 查询成功
+      schema:
+        type: array
+        items:
+          $ref: "../../ltci-portal-api-v1.yml/definitions/ResultDTO"
+    default:
+      description: 其它错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml#/definitions/ResultDTO"

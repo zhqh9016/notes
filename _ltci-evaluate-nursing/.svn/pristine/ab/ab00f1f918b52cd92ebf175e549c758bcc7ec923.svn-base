@@ -1,0 +1,34 @@
+put: 
+  tags:
+  - mqManage
+  summary: 协议管理列表页面--查询接口
+  description: 经办人能够查看已入住的和已退出的参保人列表
+  operationId: repeatMQMessage
+  parameters: 
+    - name: sendStatTime
+      in: path
+      description: 发送开始时间
+      required: true
+      type: string
+    - name: sendEndTime
+      in: path
+      description: 发送结束时间
+      required: true
+      type: string                  
+  responses:
+      200:
+        description: 查询成功
+        schema:
+          $ref: "../../ltci-evaluate-nursing-api-v1.yml/#/definitions/RestResponseDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-evaluate-nursing-api-v1.yml/#/definitions/RestResponseDTO"
+
+
+
+
+
+
+
+

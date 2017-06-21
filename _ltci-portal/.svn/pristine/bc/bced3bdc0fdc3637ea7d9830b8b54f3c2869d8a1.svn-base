@@ -1,0 +1,52 @@
+post: 
+  tags:
+  - nursingTask
+  summary: 护理结构页面列表查询
+  description: 根据查询条件查询具体信息
+  operationId: listNursingTask
+  parameters:
+  - name: insuredPersonName
+    in: formData
+    description: 申请人姓名
+    required: false
+    type: string
+  - name: idCard 
+    in: formData
+    description: 身份证
+    required: false
+    type: string
+  - name: evaluateAgencyName
+    in: formData
+    description: 评估机构
+    required: false
+    type: string
+  - name: operatedTime
+    in: formData
+    description: 经办时间
+    required: false
+    type: string
+  - name: state
+    in: formData
+    description: 确认状态
+    required: false
+    type: Integer
+  - name: page
+    in: formData
+    description: 页
+    required: false
+    type: string
+  - name: pageSize
+    in: formData
+    description: 长度
+    required: false
+    type: Integer
+  responses:
+    201: 
+      description: 查询成功
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/PageResultDTO"
+    default:
+      description: 护理任务选择意向机构失败
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+ 

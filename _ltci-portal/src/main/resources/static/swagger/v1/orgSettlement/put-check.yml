@@ -1,0 +1,42 @@
+put:
+  tags:
+  - orgSettlement
+  summary: 费用复核操作
+  description: 费用复核操作。
+  operationId: auditForCheck
+  parameters:
+  
+  - name: id
+    in: path
+    description: 机构月结记录id
+    required: true
+    type: string
+    
+  - name: auditState
+    in: formData
+    description: 审核状态,3,通过,4,不同过
+    required: true
+    type: integer
+    format: int32
+    
+  - name: rejectReason
+    in: formData
+    description: 复核不通过原因
+    required: false
+    type: string
+    
+  - name: createdOrg
+    in: formData
+    description: 经办机构编码
+    required: true
+    type: string 
+    
+  responses:
+    200:
+      description: 查询成功
+      schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/PageResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/Response"

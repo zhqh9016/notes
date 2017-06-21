@@ -1,0 +1,61 @@
+post: 
+  tags:
+  - checkInManage
+  summary: 协议管理列表页面--查询接口
+  description: 经办人能够查看已入住的和已退出的参保人列表
+  operationId: getCheckIn
+  parameters: 
+    - name: beCarePersonName
+      in: formData
+      description: 参保人姓名
+      required: false
+      type: string
+    - name: beCarePersonCard
+      in: formData
+      description: 用户身份证号码
+      required: false
+      type: string
+    - name: orgName
+      in: formData
+      description: 护理机构名称
+      required: false
+      type: string
+    - name: inHospState
+      in: formData
+      description: 在院状态
+      required: false
+      type: string  
+    - name: operatedTime
+      in: formData
+      description: 经办时间
+      required: false
+      type: string
+    - name: page
+      in: formData
+      description: 当前页码
+      required: false
+      type: integer
+      format: int32
+    - name: pageSize
+      in: formData
+      description: 每页显示条数
+      required: false
+      type: integer
+      format: int32              
+  responses:
+      200:
+        description: 查询成功
+        schema:
+          $ref: "../../ltci-evaluate-nursing-api-v1.yml/#/definitions/RestResponseDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-evaluate-nursing-api-v1.yml/#/definitions/RestResponseDTO"
+
+
+
+
+
+
+
+

@@ -1,0 +1,47 @@
+put: 
+  tags:
+  - nursingTask
+  summary: 修改护理任务的意向选择机构
+  description: 修改护理任务的意向选择机构
+  operationId: updateNursingTaskIntentAgency
+  parameters:
+  - name: nursingTaskCodes
+    in: formData
+    description: 护理任务编号，可以是多个，但是需要用逗号分隔，例：9472b12f484a434083c3fbb4369c05a0
+    required: true
+    type: string
+  - name: intentAgencyCode 
+    in: formData
+    description: 意向选择机构信息
+    required: true
+    type: string
+  - name: applyType 
+    in: formData
+    description: 申办类型
+    required: true
+    type: string
+  - name: isRelativeCared 
+    in: formData
+    description: 是否亲属照顾
+    required: true
+    type: string
+  - name: operatedBy
+    in: formData
+    description: 经办人
+    required: true
+    type: string
+  - name: operatedOrg
+    in: formData
+    description: 经办机构
+    required: true
+    type: string
+  responses:
+    201: 
+      description: 护理任务选择意向机构成功
+      schema:
+        $ref: "../../ltci-evaluate-nursing-api-v1.yml/#/definitions/RestResponseDTO"
+    default:
+      description: 护理任务选择意向机构失败
+      schema:
+        $ref: "../../ltci-evaluate-nursing-api-v1.yml/#/definitions/RestResponseDTO"
+ 

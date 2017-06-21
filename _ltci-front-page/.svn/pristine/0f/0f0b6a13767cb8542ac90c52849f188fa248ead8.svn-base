@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>用户信息</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="renderer" content="webkit" />
+		<link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+		<link rel="stylesheet" href="../../css/main.css" type="text/css" />
+		<link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+		<link rel="stylesheet" href="../../css/tablefrom.css" type="text/css" />
+	</head>
+
+	<body>
+		<div>
+			<form id="editForm">
+				<table cellpadding="0" cellspacing="1" class="formtable">
+					<tr>
+						<td align="right" class="lable"><label class="Validform_label">用户名:</label></td>
+						<td class="value"><span id="userName" class="Validform_label"></span></td>
+					</tr>
+					<tr>
+						<td align="right" class="lable"><label class="Validform_label">真实姓名: </label></td>
+						<td class="value"><span id="trueName" class="Validform_label"></span>
+						</td>
+					</tr>
+					<tr>
+						<td align="right" class="lable"><label class="Validform_label">手机号码: </label></td>
+						<td class="value"><span id="mobile" class="Validform_label"></span>
+						</td>
+					</tr>
+					<tr>
+						<td align="right" class="lable"><label class="Validform_label">电话号码: </label></td>
+						<td class="value"><span id="telephone" class="Validform_label"></span>
+						</td>
+					</tr>
+					<tr>
+						<td align="right" class="lable"><label class="Validform_label">邮箱地址: </label></td>
+						<td class="value"><span id="email" class="Validform_label"></span>
+						</td>
+					</tr>
+					<tr>
+						<td align="right" class="lable"><label class="Validform_label">性别: </label></td>
+						<td class="value"><span id="sex" class="Validform_label"></span>
+						</td>
+					</tr>
+					<tr>
+						<td align="right" class="lable"><label class="Validform_label">部门名称: </label></td>
+						<td class="value"><span id="operatedOrg" class="Validform_label"></span>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+
+	</body>
+	<script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+	<script type="text/javascript" src="../../js/util/layer/layer.min.js"></script>
+	<script type="text/javascript" src="../../js/common.js"></script>
+	<script type="text/javascript" src="../../js/commonReady.js"></script>
+	<script type="text/javascript">
+		$(function() {
+//			trans Object.send(portalServiceUrl + "/api/v1/users/session", "get", "");
+//			var Data = JSON.parse(trans Object._response);
+//			if(Data.status != 200) {
+//				console.log("__error=" + Data.message);
+//			}
+//			$("#userName").html(Data.datas.userName);
+//			$("#trueName").html(Data.datas.trueName);
+//			$("#mobile").html(Data.datas.mobile);
+//			$("#telephone").html(Data.datas.telephone);
+//			$("#email").html(Data.datas.email);
+//			if(Data.datas.sex == "0") {
+//				$("#sex").html("男");
+//			}
+//			if(Data.datas.sex == "1") {
+//				$("#sex").html("女");
+//			}
+//			$("#operatedOrg").html(Data.datas.operatedOrg);
+
+			var url = portalServiceUrl + "/api/v1/session/users";
+			sendAjax(url, "get", "", function(Data) {
+				if(Data.status != 200) {
+					console.log("__error=" + Data.message);
+				}
+				$("#userName").html(Data.datas.userName);
+				$("#trueName").html(Data.datas.trueName);
+				$("#mobile").html(Data.datas.mobile);
+				$("#telephone").html(Data.datas.telephone);
+				$("#email").html(Data.datas.email);
+				if(Data.datas.sex == "0") {
+					$("#sex").html("男");
+				}
+				if(Data.datas.sex == "1") {
+					$("#sex").html("女");
+				}
+				$("#operatedOrg").html(Data.datas.operatedOrg);
+			});
+
+			function closeParentLayer() {
+				//parent.window.location.reload();
+				var index = parent.layer.getFrameIndex(window.name); //获取当前窗口索引
+				parent.layer.close(index);
+			}
+
+		});
+	</script>
+
+</html>

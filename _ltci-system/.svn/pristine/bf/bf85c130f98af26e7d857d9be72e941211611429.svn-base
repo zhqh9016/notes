@@ -1,0 +1,41 @@
+post:
+  summary: 根据角色名称或角色编码查询角色
+  description: 返回角色信息列表。测试数据：[角色名称或角色编码]。
+  operationId: listRole
+  parameters:
+  - name: roleName
+    in: formData
+    description: 角色名称
+    required: false
+    type: string    
+  - name: roleCode
+    in: formData
+    description: 角色编码
+    required: false
+    type: string
+  - name: page
+    in: formData
+    description: 当前页码
+    required: true
+    type: integer
+    format: int32
+  - name: pageSize
+    in: formData
+    description: 每页显示件数
+    required: true
+    type: integer
+    format: int32    
+  tags:
+  - roleManage
+  responses:
+    200:
+      description: 查询成功
+      schema:
+        type: array
+        items:
+          $ref: "../../ltci-system-api-v1.yml/#/definitions/PageResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"
+    

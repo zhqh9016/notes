@@ -1,0 +1,53 @@
+get:
+  tags:
+  - patrolExecute
+  summary: 巡查结果附件下载
+  description: 巡查结果附件下载
+  operationId: getMongoDBMessage
+  parameters: 
+    - name: executeResultId
+      in: query
+      required: true
+      type: string
+      description: 任务执行结果ID
+    - name: fileId
+      in: query
+      required: true
+      type: string
+      description: 资源ID
+      example: 00
+    - name: fileType
+      in: query
+      required: true
+      type: string
+      description: 资源类型
+      example: mp3
+    - name: fileName
+      in: query
+      required: true
+      type: string
+      description: 资源名称
+      example: 18090909090
+
+
+  responses:
+      200:
+        description: 附件上传成功
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+
+
+
+
+
+
+
+
+
+
+
+

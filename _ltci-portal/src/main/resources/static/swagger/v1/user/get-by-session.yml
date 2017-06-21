@@ -1,0 +1,16 @@
+get:
+  tags:
+  - userManage
+  summary: 从session中获取用户信息（用户信息中包含部门信息、角色信息、菜单信息等）
+  description: 返回用户信息对象。
+  operationId: getUserBySession
+  parameters:
+  responses:
+    200:
+      description: 查询成功
+      schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/Response"

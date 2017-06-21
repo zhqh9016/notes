@@ -1,0 +1,98 @@
+put:
+  tags:
+  - serviceItemManage
+  summary: 修改目录信息
+  description: 返回数值类型（大于0为成功）。
+  operationId: updateItem
+  parameters:
+  - name: id
+    in: formData
+    type: string
+    format: string
+    required: true
+    description: id
+  - name: serviceCode
+    in: formData
+    type: string
+    format: string
+    required: false
+    description: 服务项目编码
+  - name: serviceName
+    in: formData
+    type: string
+    format: string
+    required: false
+    description: 服务项目名称
+  - name: serviceType
+    in: formData
+    type: integer
+    format: int64
+    required: false
+    description: 服务项目类别
+  - name: chargeType
+    in: formData
+    type: string
+    format: string
+    required: false
+    description: 费用类别
+  - name: chargeLevel
+    in: formData
+    type: string
+    format: string
+    required: false
+    description: 收费项目等级
+  - name: frequency
+    in: formData
+    type: string
+    format: string
+    required: false
+    description: 服务频次
+  - name: taskTime
+    in: formData
+    type: string
+    format: string
+    required: false
+    description: 服务项目持续时间
+  - name: description
+    in: formData
+    type: string
+    format: string
+    required: false
+    description: 服务项目描述
+  - name: startTime
+    in: formData
+    type: string
+    format: string
+    required: false
+    description: 生效开始时间
+  - name: endTime
+    in: formData
+    type: string
+    format: string
+    required: false
+    description: 生效结束时间
+  - name: price
+    in: formData
+    type: integer
+    format: int64
+    required: false
+    description: 单价
+  - name: limitPrice
+    in: formData
+    type: integer
+    format: int64
+    required: false
+    description: 最高限价
+  - name: siArea
+    in: formData
+    type: string
+    format: string
+    required: false
+    description: 统筹区
+  responses:
+    200:
+      description: 更新成功
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"

@@ -1,0 +1,183 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/common.css" type="text/css" />
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div id="app" style="height: 100%;width: 100%;border: none;">
+        <table width="100%" id="userList" toolbar="#userListtb">
+        </table>
+    </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../../js/util/WdatePicker.js"></script>
+<script type="text/javascript" src="../../js/validate.js"></script>
+<script type="text/javascript" src="../../js/treatmentApply/treatmentCommon.js"></script>
+<script>
+$(function() {
+    doSearch(); //加载列表数据
+});
+var fa = window.parent; //father
+function doSearch() {
+    TableObj.page = 1;
+    TableObj.pageSize = 10;
+    doLoading();
+}
+
+function doLoading() { //加载列表数据
+    //	var url = portalServiceUrl + "/api/v1/evaluateTasks";
+    var url = portalServiceUrl + "/api/v1/toDoListEvaluateTaskList";
+    sendAjax(url, "get", '', function(data) {
+        gridLoadData('userList', data);
+        fa.doSearch();
+    });
+}
+
+var tableColumns = [{
+        field: 'evaluateTaskid',
+        title: 'evaluateTaskid',
+        hidden: true
+    }, {
+        field: 'insuredPersonName',
+        title: '申请人'
+    }, {
+        field: 'mobile',
+        title: '联系电话'
+    }, {
+        field: 'address',
+        title: '现住址'
+    }, {
+        field: 'operatedOrg',
+        title: '经办机构'
+    }, {
+        field: 'operatedBy',
+        title: '经办人'
+    }, {
+        field: 'operatedTime',
+        title: '经办时间'
+    }, {
+        field: 'taskState',
+        title: '任务状态',
+        formatter: function(value) {
+            return getTableDictionary(this.field, value);
+        }
+    }, {
+        field: 'taskDeadlineDay',
+        title: '任务期限',
+        formatter: function(value) {
+            if (value == "2天(紧急)") {
+                return '<span style="color:red">2天(紧急)</span>';
+            } else {
+                return value;
+            }
+        }
+    }, {
+        field: 'evaluateAgencyName',
+        title: '评估机构'
+    }, {
+        field: 'reevalueateResult',
+        title: 'reevalueateResult',
+        hidden: true
+    }, {
+        field: 'insuredPersonCode',
+        title: '申请人编码',
+        hidden: true
+    }, {
+        field: 'reevaluateParentCode',
+        title: 'reevaluateParentCode',
+        hidden: true
+    }, {
+        field: 'sendTime',
+        title: '发送时间',
+        hidden: true
+    }, {
+        field: 'evaluateAgencyCode',
+        title: 'evaluateAgencyCode',
+        hidden: true
+    },
+
+    {
+        field: 'evaluateTaskCode',
+        title: 'evaluateTaskCode',
+        hidden: true
+    }, {
+        field: 'createdBy',
+        title: '创建人',
+        hidden: true
+    },
+
+    {
+        field: 'isReevaluate',
+        title: 'isReevaluate',
+        hidden: true
+    }, {
+        field: 'applicationCode',
+        title: 'applicationCode',
+        hidden: true
+
+    }
+    //,
+    // {
+    // 	field: 'act',
+    // 	title: '操作',
+    // 	formatter: function(value, rowData, index) {
+    // 		if(rowData.taskState == "00") {
+    // 			var html = '<a href="javascript:;" class="easyui-linkbutton" name="" onclick="chooseOneOrganization(' + index + ')">选择机构</a>';
+    // 			return html;
+    // 		} else {
+    // 			return "";
+    // 		}
+
+    // 	}
+    // }
+
+];
+var dg = $('#userList');
+var tableData = [];
+$(function() {
+    $('#userList').datagrid({
+        idField: 'evaluateTaskid',
+        title: '超时评估任务列表',
+        data: tableData,
+        fit: true,
+        loadMsg: '',
+        pageSize: 10,
+        pagination: false,
+        pageList: [10, 20, 30],
+        rownumbers: true,
+        singleSelect: false,
+        fitColumns: true,
+        striped: true,
+        showFooter: true,
+        columns: [tableColumns],
+        onLoadSuccess: function(data) {
+            dg.datagrid("clearSelections");
+            $(".easyui-linkbutton").linkbutton();
+        },
+        onClickRow: function(rowIndex, rowData) {
+            TableObj.rowIndex = rowIndex;
+            TableObj.rowData = rowData;
+        },
+        onCheck: function(rowIndex, rowData) {
+            TableObj.rowIndex = rowIndex;
+            TableObj.rowData = rowData;
+        }
+    });
+
+    getGridPager("userList", doLoading);
+});
+</script>
+
+</html>

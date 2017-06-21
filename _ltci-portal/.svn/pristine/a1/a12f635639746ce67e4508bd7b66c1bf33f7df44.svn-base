@@ -1,0 +1,19 @@
+put:
+  tags:
+  - userManage
+  summary: 重置密码
+  description: 返回数值类型。测试数据：用户编号[79bd2154deb7483a81bd8e7da55b9afa]。
+  operationId: resetPassword
+  parameters:
+  - name: id
+    in: formData
+    description: 用户编号
+    required: true
+    type: string
+  responses:
+    200:
+      description: 重置成功
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/Response"

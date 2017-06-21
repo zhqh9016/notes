@@ -1,0 +1,284 @@
+﻿<html>
+
+<head>
+    <title>新建专项巡查</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link href="../../css/style.css?v=4.1.0" rel="stylesheet" />
+    <link rel="stylesheet" href="../../css/common.css" type="text/css" />
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="panel-header" style="width: 100%;">
+            <div class="panel-title">新建专项巡查任务</div>
+            <!-- <div class="panel-tool"></div> -->
+        </div>
+        <fieldset class="input_box">
+            <form id='specialTask'>
+                <div>
+                    <span class="inputLable">
+						<span class="inputLableText">选择被巡查对象：	</span>
+                    <span><input name="patrolObjectType" type="radio" value="0" />护理机构</span>
+                    <span><input name="patrolObjectType" type="radio" value="2" />护理人员</span>
+                    <span><input name="patrolObjectType" type="radio" value="1" />评估机构</span>
+                    <span><input name="patrolObjectType" type="radio" value="3" />评估人员</span>
+                    </span>
+                </div>
+                <!-- 			<div id="">
+				<span class="inputLable">
+					<span class="inputLableText">
+						<a href="javascript:;" class="easyui-linkbutton" onclick="doSearch()">查询巡查对象</a>
+					</span>
+				</span>
+			</div> -->
+                <div>
+                    <table style="border:none; font-size: 12px;">
+                        <tr>
+                            <td>
+                                <span class="inputLable"><span class="inputLableText">被巡查对象名称：</span>
+                                <input type="text" class="input" id="patrolObjectName" name="patrolObjectName" />
+                                </span>
+                                <span class="inputLableText">
+						<a href="javascript:;" id="search-button" class="easyui-linkbutton" onclick="doSearch()">查询</a>
+					</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="inputLable"><span class="inputLableText">联系电话：</span>
+                                <input type="text" class="input" name="patrolObjectPhone" readonly="readonly" />
+                                </span>
+                            </td>
+                        </tr>
+                        <tr id="tr-idCard" style="display: none;">
+                            <td>
+                                <!--人员-->
+                                <span class="inputLable"><span class="inputLableText">身份证号码：</span>
+                                <input type="text" class="input" name="idCard" readonly="readonly" />
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="inputLable"><span class="inputLableText">巡查地址：</span>
+                                <input type="text" class="input" name="patrolObjectAddr" readonly="readonly" />
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="inputLable" class="clear">
+						<span class="inputLableText" style="display: block;float: left;">备注事项：</span>
+                                <textarea class="textarea" style="display: block;float: left;" cols="80" rows="8" id="patrolRemark" name="patrolRemark"></textarea>
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="hidden" name="patrolObjectId" />
+                </div>
+                <!-- <div id=""> -->
+                <div style="margin-left: 250">
+                    <span class="inputLable">
+						<span class="inputLableText">
+							<a href="javascript:;" id="new-button" class="easyui-linkbutton" onclick="doNew()">新建</a>
+						</span>
+                    <span class="inputLableText">
+							<a href="javascript:;" id="save-button" class="easyui-linkbutton" onclick="doSave()">保存</a>
+						</span>
+                    </span>
+                </div>
+                <!-- </div> -->
+            </form>
+        </fieldset>
+        <div style="display: none;">
+            <div id="searchDiv">
+                <table width="100%" id="search-table" name="search-table"></table>
+                <!-- 					<span class="inputLable">
+						<span class="inputLableText">被巡查对象名称：</span>
+						<input type="text" id="patrolObjectName" name="patrolObjectName" class="easyui-combobox" />
+					</span> -->
+            </div>
+        </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../../js/vu e.m in.js"></script>
+<script type="text/javascript" src="../../js/util/ajaxfileupload.js"></script>
+<script type="text/javascript" src="../../js/util/WdatePicker.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/validate.js"></script>
+<!-- 	<script type="text/javascript" src="../../js/nursingQC/specialQuery.js"></script> -->
+
+</html>
+<script type="text/javascript">
+var dg = $('#search-table');
+var tableData = [];
+//被巡查对象类型（0护理机构、1评估机构、2护理人员、3评估人员）
+$('#searchDiv').window({
+    title: '查询列表',
+    width: 650,
+    minimizable: false,
+    collapsible: false,
+    height: 400,
+    modal: true,
+    closed: true,
+    onClose: function() {
+        dg.datagrid('loadData', []);
+    }
+});
+var searchName = $("#patrolObjectName").val();
+var searchType = 0; //0是人员查询，1是机构查询
+$(function() {
+    $("#search-button").linkbutton('disable');
+    $("input[name=patrolObjectId]").val('');
+    $("#save-button").linkbutton('disable');
+    $("input[name=patrolObjectType]").click(function() { //0.1.机构2.3.人员
+        //doNew();
+        if (this.value > 1) { //人员
+            searchType = 0;
+            $("#tr-idCard").show();
+        } else { //机构
+            searchType = 1;
+            $("#tr-idCard").hide();
+        }
+        $("#specialTask")[0].reset();
+        this.checked = true;
+        disabledText(false);
+        $("#save-button").linkbutton('disable');
+        $("#search-button").linkbutton('enable');
+        //$("#save").linkbutton('enable');
+    });
+    $("#patrolObjectName").keydown(function(e) { //键盘事件
+        if (e.keyCode == 13) { //回车事件
+            doSearch();
+        }
+    });
+    disabledText(true);
+});
+
+function disabledText(bReadonly) {
+    if (bReadonly) {
+        $('#patrolObjectName').attr("readonly", "readonly");
+        $('#patrolRemark').attr("readonly", "true");
+    } else {
+        $('#patrolObjectName').removeAttr("readonly");
+        $('#patrolRemark').removeAttr("readonly");
+    }
+}
+
+function doSearch() {
+    loadSrarchGrid();
+    isHiddenColumn();
+    $('#searchDiv').window('open');
+}
+
+function setSearchValue(row) {
+    //$("#patrolObjectName").attr("disabled", "disabled");
+    $('#patrolObjectName').attr("readonly", "readonly");
+    $("input[name=patrolObjectId]").val(row.patrolObjectId);
+    $("input[name=patrolObjectName]").val(row.patrolObjectName);
+    $("input[name=patrolObjectPhone]").val(row.patrolObjectPhone);
+    if (row.idCard) $("input[name=idCard]").val(row.idCard);
+    $("input[name=patrolObjectAddr]").val(row.patrolObjectAddr);
+    $("#save-button").linkbutton('enable');
+    $("#search-button").linkbutton('disable');
+}
+
+function doSave() {
+    // id=$("input[name=patrolObjectId]").val();
+    // if(id.length===0){
+    // 	$.messager.alert('警告', '请查询后再进行保存');	
+    // 	return false;
+    // }
+    var url = portalServiceUrl + "/api/v1/patrol";
+    sendAjax(url, "post", $("#specialTask").serialize(), function(data) {
+        if (data.status == 200) {
+            // $.messager.alert('警告', data.message);
+            $.messager.show({
+                title: '提示',
+                msg: data.message,
+                timeout: 2500
+            });
+            $("#save-button").linkbutton('disable');
+            disabledText(true);
+        } else {
+            $.messager.alert('警告', '新建失败');
+        }
+    });
+}
+
+function isHiddenColumn() {
+    if (searchType === 0) {
+        dg.datagrid("showColumn", "idCard");
+        dg.datagrid("fitColumns");
+    } else if (searchType === 1) {
+        dg.datagrid("hideColumn", "idCard");
+        dg.datagrid("fitColumns");
+    }
+}
+
+function doNew() {
+    disabledText(true);
+    $("#search-button").linkbutton('disable');
+    $("#specialTask")[0].reset();
+}
+
+var tableColumns = [{
+    field: 'patrolObjectId',
+    title: 'patrolObjectId',
+    align: 'center',
+    checkbox: true
+}, {
+    field: 'patrolObjectName',
+    // width:12,
+    align: 'center',
+    title: '被巡查对象名称'
+}, {
+    field: 'patrolObjectPhone',
+    // width:10,
+    align: 'center',
+    title: '联系电话'
+}, {
+    field: 'idCard',
+    align: 'center',
+    title: '身份证号码'
+}, {
+    field: 'patrolObjectAddr',
+    align: 'center',
+    title: '巡查地址'
+}];
+
+function loadSrarchGrid() {
+    TableObj.query = {
+        name: $("#patrolObjectName").val(),
+        type: searchType
+    };
+    loadGridData(); //加载表格数据
+}
+initGridSet({
+    id: 'search-table', //表格id
+    idField: 'evaluateTaskid', //	表格主键
+    columns: tableColumns, //	表格列
+    pagination: false,
+    url: portalServiceUrl + "/api/v1/staff/agency", //	配置表格默认查询参数
+    type: 'post', //	表格默认查询参数
+    query: { //	表格默认查询参数
+        name: searchName,
+        type: searchType
+    },
+    onCheck: function(rowIndex, rowData) { //增加表格选择事件
+        setSearchValue(rowData);
+        $('#searchDiv').window('close');
+    }
+}); //初始化表格配置，多表格可重复调用，穿入不同的obj即可
+TableObj = getGridObjById('search-table'); //TableObj切换当前表格为激活状态
+initDataGrid(); //初始化表格
+</script>

@@ -1,0 +1,876 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.CheckInDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.CheckInDO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="in_record_uuid" property="inRecordUuid" jdbcType="VARCHAR" />
+    <result column="org_code" property="orgCode" jdbcType="VARCHAR" />
+    <result column="org_name" property="orgName" jdbcType="VARCHAR" />
+    <result column="medical_type" property="medicalType" jdbcType="VARCHAR" />
+    <result column="is_relative_cared" property="isRelativeCared" jdbcType="INTEGER" />
+    <result column="invoice_num" property="invoiceNum" jdbcType="VARCHAR" />
+    <result column="security_card_type" property="securityCardType" jdbcType="VARCHAR" />
+    <result column="soc_sec_num" property="socSecNum" jdbcType="VARCHAR" />
+    <result column="be_care_person_card" property="beCarePersonCard" jdbcType="VARCHAR" />
+    <result column="card_type" property="cardType" jdbcType="INTEGER" />
+    <result column="s_card_no" property="sCardNo" jdbcType="VARCHAR" />
+    <result column="psam_card_no" property="psamCardNo" jdbcType="VARCHAR" />
+    <result column="be_care_person_name" property="beCarePersonName" jdbcType="VARCHAR" />
+    <result column="be_care_person_sex" property="beCarePersonSex" jdbcType="INTEGER" />
+    <result column="agre_in_date" property="agreInDate" jdbcType="TIMESTAMP" />
+    <result column="agre_out_date" property="agreOutDate" jdbcType="TIMESTAMP" />
+    <result column="real_in_date" property="realInDate" jdbcType="TIMESTAMP" />
+    <result column="real_out_date" property="realOutDate" jdbcType="TIMESTAMP" />
+    <result column="disease_code" property="diseaseCode" jdbcType="VARCHAR" />
+    <result column="diseaseName" property="diseasename" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="bed_num" property="bedNum" jdbcType="VARCHAR" />
+    <result column="all_own_expense_flag" property="allOwnExpenseFlag" jdbcType="VARCHAR" />
+    <result column="nurse_state" property="nurseState" jdbcType="VARCHAR" />
+    <result column="exit_reason" property="exitReason" jdbcType="VARCHAR" />
+    <result column="exit_reason_detial" property="exitReasonDetial" jdbcType="VARCHAR" />
+    <result column="exit_from" property="exitFrom" jdbcType="VARCHAR" />
+    <result column="direction" property="direction" jdbcType="VARCHAR" />
+    <result column="in_hosp_state" property="inHospState" jdbcType="INTEGER" />
+    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.taikang.dic.ltci.model.CheckInDO" extends="BaseResultMap" >
+    <result column="medical_record" property="medicalRecord" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, in_record_uuid, org_code, org_name, medical_type, is_relative_cared, invoice_num, 
+    security_card_type, soc_sec_num, be_care_person_card, card_type, s_card_no, psam_card_no, 
+    be_care_person_name, be_care_person_sex, agre_in_date, agre_out_date, real_in_date, 
+    real_out_date, disease_code, diseaseName, department, bed_num, all_own_expense_flag, 
+    nurse_state, exit_reason, exit_reason_detial, exit_from, direction, in_hosp_state, 
+    year, is_valid, operated_by, operated_time, operated_org, created_by, created_time, 
+    created_org, si_area
+  </sql>
+  <sql id="Blob_Column_List" >
+    medical_record
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.taikang.dic.ltci.model.CheckInDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ltci_check_in
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.CheckInDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ltci_check_in
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ltci_check_in
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_check_in
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.CheckInDOExample" >
+    delete from ltci_check_in
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.CheckInDO" >
+    insert into ltci_check_in (id, in_record_uuid, org_code, 
+      org_name, medical_type, is_relative_cared, 
+      invoice_num, security_card_type, soc_sec_num, 
+      be_care_person_card, card_type, s_card_no, 
+      psam_card_no, be_care_person_name, be_care_person_sex, 
+      agre_in_date, agre_out_date, real_in_date, 
+      real_out_date, disease_code, diseaseName, 
+      department, bed_num, all_own_expense_flag, 
+      nurse_state, exit_reason, exit_reason_detial, 
+      exit_from, direction, in_hosp_state, 
+      year, is_valid, operated_by, 
+      operated_time, operated_org, created_by, 
+      created_time, created_org, si_area, 
+      medical_record)
+    values (#{id,jdbcType=VARCHAR}, #{inRecordUuid,jdbcType=VARCHAR}, #{orgCode,jdbcType=VARCHAR}, 
+      #{orgName,jdbcType=VARCHAR}, #{medicalType,jdbcType=VARCHAR}, #{isRelativeCared,jdbcType=INTEGER}, 
+      #{invoiceNum,jdbcType=VARCHAR}, #{securityCardType,jdbcType=VARCHAR}, #{socSecNum,jdbcType=VARCHAR}, 
+      #{beCarePersonCard,jdbcType=VARCHAR}, #{cardType,jdbcType=INTEGER}, #{sCardNo,jdbcType=VARCHAR}, 
+      #{psamCardNo,jdbcType=VARCHAR}, #{beCarePersonName,jdbcType=VARCHAR}, #{beCarePersonSex,jdbcType=INTEGER}, 
+      #{agreInDate,jdbcType=TIMESTAMP}, #{agreOutDate,jdbcType=TIMESTAMP}, #{realInDate,jdbcType=TIMESTAMP}, 
+      #{realOutDate,jdbcType=TIMESTAMP}, #{diseaseCode,jdbcType=VARCHAR}, #{diseasename,jdbcType=VARCHAR}, 
+      #{department,jdbcType=VARCHAR}, #{bedNum,jdbcType=VARCHAR}, #{allOwnExpenseFlag,jdbcType=VARCHAR}, 
+      #{nurseState,jdbcType=VARCHAR}, #{exitReason,jdbcType=VARCHAR}, #{exitReasonDetial,jdbcType=VARCHAR}, 
+      #{exitFrom,jdbcType=VARCHAR}, #{direction,jdbcType=VARCHAR}, #{inHospState,jdbcType=INTEGER}, 
+      #{year,jdbcType=VARCHAR}, #{isValid,jdbcType=INTEGER}, #{operatedBy,jdbcType=VARCHAR}, 
+      #{operatedTime,jdbcType=TIMESTAMP}, #{operatedOrg,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{createdOrg,jdbcType=VARCHAR}, #{siArea,jdbcType=VARCHAR}, 
+      #{medicalRecord,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.CheckInDO" >
+    insert into ltci_check_in
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="inRecordUuid != null" >
+        in_record_uuid,
+      </if>
+      <if test="orgCode != null" >
+        org_code,
+      </if>
+      <if test="orgName != null" >
+        org_name,
+      </if>
+      <if test="medicalType != null" >
+        medical_type,
+      </if>
+      <if test="isRelativeCared != null" >
+        is_relative_cared,
+      </if>
+      <if test="invoiceNum != null" >
+        invoice_num,
+      </if>
+      <if test="securityCardType != null" >
+        security_card_type,
+      </if>
+      <if test="socSecNum != null" >
+        soc_sec_num,
+      </if>
+      <if test="beCarePersonCard != null" >
+        be_care_person_card,
+      </if>
+      <if test="cardType != null" >
+        card_type,
+      </if>
+      <if test="sCardNo != null" >
+        s_card_no,
+      </if>
+      <if test="psamCardNo != null" >
+        psam_card_no,
+      </if>
+      <if test="beCarePersonName != null" >
+        be_care_person_name,
+      </if>
+      <if test="beCarePersonSex != null" >
+        be_care_person_sex,
+      </if>
+      <if test="agreInDate != null" >
+        agre_in_date,
+      </if>
+      <if test="agreOutDate != null" >
+        agre_out_date,
+      </if>
+      <if test="realInDate != null" >
+        real_in_date,
+      </if>
+      <if test="realOutDate != null" >
+        real_out_date,
+      </if>
+      <if test="diseaseCode != null" >
+        disease_code,
+      </if>
+      <if test="diseasename != null" >
+        diseaseName,
+      </if>
+      <if test="department != null" >
+        department,
+      </if>
+      <if test="bedNum != null" >
+        bed_num,
+      </if>
+      <if test="allOwnExpenseFlag != null" >
+        all_own_expense_flag,
+      </if>
+      <if test="nurseState != null" >
+        nurse_state,
+      </if>
+      <if test="exitReason != null" >
+        exit_reason,
+      </if>
+      <if test="exitReasonDetial != null" >
+        exit_reason_detial,
+      </if>
+      <if test="exitFrom != null" >
+        exit_from,
+      </if>
+      <if test="direction != null" >
+        direction,
+      </if>
+      <if test="inHospState != null" >
+        in_hosp_state,
+      </if>
+      <if test="year != null" >
+        year,
+      </if>
+      <if test="isValid != null" >
+        is_valid,
+      </if>
+      <if test="operatedBy != null" >
+        operated_by,
+      </if>
+      <if test="operatedTime != null" >
+        operated_time,
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="createdOrg != null" >
+        created_org,
+      </if>
+      <if test="siArea != null" >
+        si_area,
+      </if>
+      <if test="medicalRecord != null" >
+        medical_record,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="inRecordUuid != null" >
+        #{inRecordUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null" >
+        #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null" >
+        #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="medicalType != null" >
+        #{medicalType,jdbcType=VARCHAR},
+      </if>
+      <if test="isRelativeCared != null" >
+        #{isRelativeCared,jdbcType=INTEGER},
+      </if>
+      <if test="invoiceNum != null" >
+        #{invoiceNum,jdbcType=VARCHAR},
+      </if>
+      <if test="securityCardType != null" >
+        #{securityCardType,jdbcType=VARCHAR},
+      </if>
+      <if test="socSecNum != null" >
+        #{socSecNum,jdbcType=VARCHAR},
+      </if>
+      <if test="beCarePersonCard != null" >
+        #{beCarePersonCard,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null" >
+        #{cardType,jdbcType=INTEGER},
+      </if>
+      <if test="sCardNo != null" >
+        #{sCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="psamCardNo != null" >
+        #{psamCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="beCarePersonName != null" >
+        #{beCarePersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="beCarePersonSex != null" >
+        #{beCarePersonSex,jdbcType=INTEGER},
+      </if>
+      <if test="agreInDate != null" >
+        #{agreInDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="agreOutDate != null" >
+        #{agreOutDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realInDate != null" >
+        #{realInDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realOutDate != null" >
+        #{realOutDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="diseaseCode != null" >
+        #{diseaseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="diseasename != null" >
+        #{diseasename,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="bedNum != null" >
+        #{bedNum,jdbcType=VARCHAR},
+      </if>
+      <if test="allOwnExpenseFlag != null" >
+        #{allOwnExpenseFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="nurseState != null" >
+        #{nurseState,jdbcType=VARCHAR},
+      </if>
+      <if test="exitReason != null" >
+        #{exitReason,jdbcType=VARCHAR},
+      </if>
+      <if test="exitReasonDetial != null" >
+        #{exitReasonDetial,jdbcType=VARCHAR},
+      </if>
+      <if test="exitFrom != null" >
+        #{exitFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="direction != null" >
+        #{direction,jdbcType=VARCHAR},
+      </if>
+      <if test="inHospState != null" >
+        #{inHospState,jdbcType=INTEGER},
+      </if>
+      <if test="year != null" >
+        #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="operatedBy != null" >
+        #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatedOrg != null" >
+        #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdOrg != null" >
+        #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="siArea != null" >
+        #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="medicalRecord != null" >
+        #{medicalRecord,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.CheckInDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_check_in
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_check_in
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inRecordUuid != null" >
+        in_record_uuid = #{record.inRecordUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgCode != null" >
+        org_code = #{record.orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgName != null" >
+        org_name = #{record.orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.medicalType != null" >
+        medical_type = #{record.medicalType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isRelativeCared != null" >
+        is_relative_cared = #{record.isRelativeCared,jdbcType=INTEGER},
+      </if>
+      <if test="record.invoiceNum != null" >
+        invoice_num = #{record.invoiceNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.securityCardType != null" >
+        security_card_type = #{record.securityCardType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.socSecNum != null" >
+        soc_sec_num = #{record.socSecNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beCarePersonCard != null" >
+        be_care_person_card = #{record.beCarePersonCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardType != null" >
+        card_type = #{record.cardType,jdbcType=INTEGER},
+      </if>
+      <if test="record.sCardNo != null" >
+        s_card_no = #{record.sCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.psamCardNo != null" >
+        psam_card_no = #{record.psamCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beCarePersonName != null" >
+        be_care_person_name = #{record.beCarePersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beCarePersonSex != null" >
+        be_care_person_sex = #{record.beCarePersonSex,jdbcType=INTEGER},
+      </if>
+      <if test="record.agreInDate != null" >
+        agre_in_date = #{record.agreInDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.agreOutDate != null" >
+        agre_out_date = #{record.agreOutDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.realInDate != null" >
+        real_in_date = #{record.realInDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.realOutDate != null" >
+        real_out_date = #{record.realOutDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.diseaseCode != null" >
+        disease_code = #{record.diseaseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.diseasename != null" >
+        diseaseName = #{record.diseasename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.department != null" >
+        department = #{record.department,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bedNum != null" >
+        bed_num = #{record.bedNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.allOwnExpenseFlag != null" >
+        all_own_expense_flag = #{record.allOwnExpenseFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nurseState != null" >
+        nurse_state = #{record.nurseState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.exitReason != null" >
+        exit_reason = #{record.exitReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.exitReasonDetial != null" >
+        exit_reason_detial = #{record.exitReasonDetial,jdbcType=VARCHAR},
+      </if>
+      <if test="record.exitFrom != null" >
+        exit_from = #{record.exitFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="record.direction != null" >
+        direction = #{record.direction,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inHospState != null" >
+        in_hosp_state = #{record.inHospState,jdbcType=INTEGER},
+      </if>
+      <if test="record.year != null" >
+        year = #{record.year,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isValid != null" >
+        is_valid = #{record.isValid,jdbcType=INTEGER},
+      </if>
+      <if test="record.operatedBy != null" >
+        operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedTime != null" >
+        operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.operatedOrg != null" >
+        operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null" >
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdOrg != null" >
+        created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.siArea != null" >
+        si_area = #{record.siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.medicalRecord != null" >
+        medical_record = #{record.medicalRecord,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update ltci_check_in
+    set id = #{record.id,jdbcType=VARCHAR},
+      in_record_uuid = #{record.inRecordUuid,jdbcType=VARCHAR},
+      org_code = #{record.orgCode,jdbcType=VARCHAR},
+      org_name = #{record.orgName,jdbcType=VARCHAR},
+      medical_type = #{record.medicalType,jdbcType=VARCHAR},
+      is_relative_cared = #{record.isRelativeCared,jdbcType=INTEGER},
+      invoice_num = #{record.invoiceNum,jdbcType=VARCHAR},
+      security_card_type = #{record.securityCardType,jdbcType=VARCHAR},
+      soc_sec_num = #{record.socSecNum,jdbcType=VARCHAR},
+      be_care_person_card = #{record.beCarePersonCard,jdbcType=VARCHAR},
+      card_type = #{record.cardType,jdbcType=INTEGER},
+      s_card_no = #{record.sCardNo,jdbcType=VARCHAR},
+      psam_card_no = #{record.psamCardNo,jdbcType=VARCHAR},
+      be_care_person_name = #{record.beCarePersonName,jdbcType=VARCHAR},
+      be_care_person_sex = #{record.beCarePersonSex,jdbcType=INTEGER},
+      agre_in_date = #{record.agreInDate,jdbcType=TIMESTAMP},
+      agre_out_date = #{record.agreOutDate,jdbcType=TIMESTAMP},
+      real_in_date = #{record.realInDate,jdbcType=TIMESTAMP},
+      real_out_date = #{record.realOutDate,jdbcType=TIMESTAMP},
+      disease_code = #{record.diseaseCode,jdbcType=VARCHAR},
+      diseaseName = #{record.diseasename,jdbcType=VARCHAR},
+      department = #{record.department,jdbcType=VARCHAR},
+      bed_num = #{record.bedNum,jdbcType=VARCHAR},
+      all_own_expense_flag = #{record.allOwnExpenseFlag,jdbcType=VARCHAR},
+      nurse_state = #{record.nurseState,jdbcType=VARCHAR},
+      exit_reason = #{record.exitReason,jdbcType=VARCHAR},
+      exit_reason_detial = #{record.exitReasonDetial,jdbcType=VARCHAR},
+      exit_from = #{record.exitFrom,jdbcType=VARCHAR},
+      direction = #{record.direction,jdbcType=VARCHAR},
+      in_hosp_state = #{record.inHospState,jdbcType=INTEGER},
+      year = #{record.year,jdbcType=VARCHAR},
+      is_valid = #{record.isValid,jdbcType=INTEGER},
+      operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      si_area = #{record.siArea,jdbcType=VARCHAR},
+      medical_record = #{record.medicalRecord,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_check_in
+    set id = #{record.id,jdbcType=VARCHAR},
+      in_record_uuid = #{record.inRecordUuid,jdbcType=VARCHAR},
+      org_code = #{record.orgCode,jdbcType=VARCHAR},
+      org_name = #{record.orgName,jdbcType=VARCHAR},
+      medical_type = #{record.medicalType,jdbcType=VARCHAR},
+      is_relative_cared = #{record.isRelativeCared,jdbcType=INTEGER},
+      invoice_num = #{record.invoiceNum,jdbcType=VARCHAR},
+      security_card_type = #{record.securityCardType,jdbcType=VARCHAR},
+      soc_sec_num = #{record.socSecNum,jdbcType=VARCHAR},
+      be_care_person_card = #{record.beCarePersonCard,jdbcType=VARCHAR},
+      card_type = #{record.cardType,jdbcType=INTEGER},
+      s_card_no = #{record.sCardNo,jdbcType=VARCHAR},
+      psam_card_no = #{record.psamCardNo,jdbcType=VARCHAR},
+      be_care_person_name = #{record.beCarePersonName,jdbcType=VARCHAR},
+      be_care_person_sex = #{record.beCarePersonSex,jdbcType=INTEGER},
+      agre_in_date = #{record.agreInDate,jdbcType=TIMESTAMP},
+      agre_out_date = #{record.agreOutDate,jdbcType=TIMESTAMP},
+      real_in_date = #{record.realInDate,jdbcType=TIMESTAMP},
+      real_out_date = #{record.realOutDate,jdbcType=TIMESTAMP},
+      disease_code = #{record.diseaseCode,jdbcType=VARCHAR},
+      diseaseName = #{record.diseasename,jdbcType=VARCHAR},
+      department = #{record.department,jdbcType=VARCHAR},
+      bed_num = #{record.bedNum,jdbcType=VARCHAR},
+      all_own_expense_flag = #{record.allOwnExpenseFlag,jdbcType=VARCHAR},
+      nurse_state = #{record.nurseState,jdbcType=VARCHAR},
+      exit_reason = #{record.exitReason,jdbcType=VARCHAR},
+      exit_reason_detial = #{record.exitReasonDetial,jdbcType=VARCHAR},
+      exit_from = #{record.exitFrom,jdbcType=VARCHAR},
+      direction = #{record.direction,jdbcType=VARCHAR},
+      in_hosp_state = #{record.inHospState,jdbcType=INTEGER},
+      year = #{record.year,jdbcType=VARCHAR},
+      is_valid = #{record.isValid,jdbcType=INTEGER},
+      operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      si_area = #{record.siArea,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.CheckInDO" >
+    update ltci_check_in
+    <set >
+      <if test="inRecordUuid != null" >
+        in_record_uuid = #{inRecordUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null" >
+        org_code = #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null" >
+        org_name = #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="medicalType != null" >
+        medical_type = #{medicalType,jdbcType=VARCHAR},
+      </if>
+      <if test="isRelativeCared != null" >
+        is_relative_cared = #{isRelativeCared,jdbcType=INTEGER},
+      </if>
+      <if test="invoiceNum != null" >
+        invoice_num = #{invoiceNum,jdbcType=VARCHAR},
+      </if>
+      <if test="securityCardType != null" >
+        security_card_type = #{securityCardType,jdbcType=VARCHAR},
+      </if>
+      <if test="socSecNum != null" >
+        soc_sec_num = #{socSecNum,jdbcType=VARCHAR},
+      </if>
+      <if test="beCarePersonCard != null" >
+        be_care_person_card = #{beCarePersonCard,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null" >
+        card_type = #{cardType,jdbcType=INTEGER},
+      </if>
+      <if test="sCardNo != null" >
+        s_card_no = #{sCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="psamCardNo != null" >
+        psam_card_no = #{psamCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="beCarePersonName != null" >
+        be_care_person_name = #{beCarePersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="beCarePersonSex != null" >
+        be_care_person_sex = #{beCarePersonSex,jdbcType=INTEGER},
+      </if>
+      <if test="agreInDate != null" >
+        agre_in_date = #{agreInDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="agreOutDate != null" >
+        agre_out_date = #{agreOutDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realInDate != null" >
+        real_in_date = #{realInDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realOutDate != null" >
+        real_out_date = #{realOutDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="diseaseCode != null" >
+        disease_code = #{diseaseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="diseasename != null" >
+        diseaseName = #{diseasename,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="bedNum != null" >
+        bed_num = #{bedNum,jdbcType=VARCHAR},
+      </if>
+      <if test="allOwnExpenseFlag != null" >
+        all_own_expense_flag = #{allOwnExpenseFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="nurseState != null" >
+        nurse_state = #{nurseState,jdbcType=VARCHAR},
+      </if>
+      <if test="exitReason != null" >
+        exit_reason = #{exitReason,jdbcType=VARCHAR},
+      </if>
+      <if test="exitReasonDetial != null" >
+        exit_reason_detial = #{exitReasonDetial,jdbcType=VARCHAR},
+      </if>
+      <if test="exitFrom != null" >
+        exit_from = #{exitFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="direction != null" >
+        direction = #{direction,jdbcType=VARCHAR},
+      </if>
+      <if test="inHospState != null" >
+        in_hosp_state = #{inHospState,jdbcType=INTEGER},
+      </if>
+      <if test="year != null" >
+        year = #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="operatedBy != null" >
+        operated_by = #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdOrg != null" >
+        created_org = #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="siArea != null" >
+        si_area = #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="medicalRecord != null" >
+        medical_record = #{medicalRecord,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.taikang.dic.ltci.model.CheckInDO" >
+    update ltci_check_in
+    set in_record_uuid = #{inRecordUuid,jdbcType=VARCHAR},
+      org_code = #{orgCode,jdbcType=VARCHAR},
+      org_name = #{orgName,jdbcType=VARCHAR},
+      medical_type = #{medicalType,jdbcType=VARCHAR},
+      is_relative_cared = #{isRelativeCared,jdbcType=INTEGER},
+      invoice_num = #{invoiceNum,jdbcType=VARCHAR},
+      security_card_type = #{securityCardType,jdbcType=VARCHAR},
+      soc_sec_num = #{socSecNum,jdbcType=VARCHAR},
+      be_care_person_card = #{beCarePersonCard,jdbcType=VARCHAR},
+      card_type = #{cardType,jdbcType=INTEGER},
+      s_card_no = #{sCardNo,jdbcType=VARCHAR},
+      psam_card_no = #{psamCardNo,jdbcType=VARCHAR},
+      be_care_person_name = #{beCarePersonName,jdbcType=VARCHAR},
+      be_care_person_sex = #{beCarePersonSex,jdbcType=INTEGER},
+      agre_in_date = #{agreInDate,jdbcType=TIMESTAMP},
+      agre_out_date = #{agreOutDate,jdbcType=TIMESTAMP},
+      real_in_date = #{realInDate,jdbcType=TIMESTAMP},
+      real_out_date = #{realOutDate,jdbcType=TIMESTAMP},
+      disease_code = #{diseaseCode,jdbcType=VARCHAR},
+      diseaseName = #{diseasename,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      bed_num = #{bedNum,jdbcType=VARCHAR},
+      all_own_expense_flag = #{allOwnExpenseFlag,jdbcType=VARCHAR},
+      nurse_state = #{nurseState,jdbcType=VARCHAR},
+      exit_reason = #{exitReason,jdbcType=VARCHAR},
+      exit_reason_detial = #{exitReasonDetial,jdbcType=VARCHAR},
+      exit_from = #{exitFrom,jdbcType=VARCHAR},
+      direction = #{direction,jdbcType=VARCHAR},
+      in_hosp_state = #{inHospState,jdbcType=INTEGER},
+      year = #{year,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      created_org = #{createdOrg,jdbcType=VARCHAR},
+      si_area = #{siArea,jdbcType=VARCHAR},
+      medical_record = #{medicalRecord,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.CheckInDO" >
+    update ltci_check_in
+    set in_record_uuid = #{inRecordUuid,jdbcType=VARCHAR},
+      org_code = #{orgCode,jdbcType=VARCHAR},
+      org_name = #{orgName,jdbcType=VARCHAR},
+      medical_type = #{medicalType,jdbcType=VARCHAR},
+      is_relative_cared = #{isRelativeCared,jdbcType=INTEGER},
+      invoice_num = #{invoiceNum,jdbcType=VARCHAR},
+      security_card_type = #{securityCardType,jdbcType=VARCHAR},
+      soc_sec_num = #{socSecNum,jdbcType=VARCHAR},
+      be_care_person_card = #{beCarePersonCard,jdbcType=VARCHAR},
+      card_type = #{cardType,jdbcType=INTEGER},
+      s_card_no = #{sCardNo,jdbcType=VARCHAR},
+      psam_card_no = #{psamCardNo,jdbcType=VARCHAR},
+      be_care_person_name = #{beCarePersonName,jdbcType=VARCHAR},
+      be_care_person_sex = #{beCarePersonSex,jdbcType=INTEGER},
+      agre_in_date = #{agreInDate,jdbcType=TIMESTAMP},
+      agre_out_date = #{agreOutDate,jdbcType=TIMESTAMP},
+      real_in_date = #{realInDate,jdbcType=TIMESTAMP},
+      real_out_date = #{realOutDate,jdbcType=TIMESTAMP},
+      disease_code = #{diseaseCode,jdbcType=VARCHAR},
+      diseaseName = #{diseasename,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      bed_num = #{bedNum,jdbcType=VARCHAR},
+      all_own_expense_flag = #{allOwnExpenseFlag,jdbcType=VARCHAR},
+      nurse_state = #{nurseState,jdbcType=VARCHAR},
+      exit_reason = #{exitReason,jdbcType=VARCHAR},
+      exit_reason_detial = #{exitReasonDetial,jdbcType=VARCHAR},
+      exit_from = #{exitFrom,jdbcType=VARCHAR},
+      direction = #{direction,jdbcType=VARCHAR},
+      in_hosp_state = #{inHospState,jdbcType=INTEGER},
+      year = #{year,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      created_org = #{createdOrg,jdbcType=VARCHAR},
+      si_area = #{siArea,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.ApplicationLogDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.ApplicationLogDO" >
+    <id column="application_logid" property="applicationLogid" jdbcType="VARCHAR" />
+    <result column="application_code" property="applicationCode" jdbcType="VARCHAR" />
+    <result column="security_number" property="securityNumber" jdbcType="VARCHAR" />
+    <result column="security_personal_number" property="securityPersonalNumber" jdbcType="VARCHAR" />
+    <result column="deputy_id_card" property="deputyIdCard" jdbcType="VARCHAR" />
+    <result column="application_status" property="applicationStatus" jdbcType="VARCHAR" />
+    <result column="application_reason" property="applicationReason" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    application_logid, application_code, security_number, security_personal_number, deputy_id_card, 
+    application_status, application_reason, created_by, created_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.ApplicationLogDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ltci_application_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ltci_application_log
+    where application_logid = #{applicationLogid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_application_log
+    where application_logid = #{applicationLogid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.ApplicationLogDOExample" >
+    delete from ltci_application_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.ApplicationLogDO" >
+    insert into ltci_application_log (application_logid, application_code, 
+      security_number, security_personal_number, 
+      deputy_id_card, application_status, application_reason, 
+      created_by, created_time)
+    values (#{applicationLogid,jdbcType=VARCHAR}, #{applicationCode,jdbcType=VARCHAR}, 
+      #{securityNumber,jdbcType=VARCHAR}, #{securityPersonalNumber,jdbcType=VARCHAR}, 
+      #{deputyIdCard,jdbcType=VARCHAR}, #{applicationStatus,jdbcType=VARCHAR}, #{applicationReason,jdbcType=VARCHAR}, 
+      #{createdBy,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.ApplicationLogDO" >
+    insert into ltci_application_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="applicationLogid != null" >
+        application_logid,
+      </if>
+      <if test="applicationCode != null" >
+        application_code,
+      </if>
+      <if test="securityNumber != null" >
+        security_number,
+      </if>
+      <if test="securityPersonalNumber != null" >
+        security_personal_number,
+      </if>
+      <if test="deputyIdCard != null" >
+        deputy_id_card,
+      </if>
+      <if test="applicationStatus != null" >
+        application_status,
+      </if>
+      <if test="applicationReason != null" >
+        application_reason,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="applicationLogid != null" >
+        #{applicationLogid,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationCode != null" >
+        #{applicationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="securityNumber != null" >
+        #{securityNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="securityPersonalNumber != null" >
+        #{securityPersonalNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="deputyIdCard != null" >
+        #{deputyIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationStatus != null" >
+        #{applicationStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationReason != null" >
+        #{applicationReason,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.ApplicationLogDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_application_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_application_log
+    <set >
+      <if test="record.applicationLogid != null" >
+        application_logid = #{record.applicationLogid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applicationCode != null" >
+        application_code = #{record.applicationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.securityNumber != null" >
+        security_number = #{record.securityNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.securityPersonalNumber != null" >
+        security_personal_number = #{record.securityPersonalNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deputyIdCard != null" >
+        deputy_id_card = #{record.deputyIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applicationStatus != null" >
+        application_status = #{record.applicationStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applicationReason != null" >
+        application_reason = #{record.applicationReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null" >
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_application_log
+    set application_logid = #{record.applicationLogid,jdbcType=VARCHAR},
+      application_code = #{record.applicationCode,jdbcType=VARCHAR},
+      security_number = #{record.securityNumber,jdbcType=VARCHAR},
+      security_personal_number = #{record.securityPersonalNumber,jdbcType=VARCHAR},
+      deputy_id_card = #{record.deputyIdCard,jdbcType=VARCHAR},
+      application_status = #{record.applicationStatus,jdbcType=VARCHAR},
+      application_reason = #{record.applicationReason,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.ApplicationLogDO" >
+    update ltci_application_log
+    <set >
+      <if test="applicationCode != null" >
+        application_code = #{applicationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="securityNumber != null" >
+        security_number = #{securityNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="securityPersonalNumber != null" >
+        security_personal_number = #{securityPersonalNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="deputyIdCard != null" >
+        deputy_id_card = #{deputyIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationStatus != null" >
+        application_status = #{applicationStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationReason != null" >
+        application_reason = #{applicationReason,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where application_logid = #{applicationLogid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.ApplicationLogDO" >
+    update ltci_application_log
+    set application_code = #{applicationCode,jdbcType=VARCHAR},
+      security_number = #{securityNumber,jdbcType=VARCHAR},
+      security_personal_number = #{securityPersonalNumber,jdbcType=VARCHAR},
+      deputy_id_card = #{deputyIdCard,jdbcType=VARCHAR},
+      application_status = #{applicationStatus,jdbcType=VARCHAR},
+      application_reason = #{applicationReason,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP}
+    where application_logid = #{applicationLogid,jdbcType=VARCHAR}
+  </update>
+</mapper>

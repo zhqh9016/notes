@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.OrgSettlementCustomDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.OrgSettlementDO" >
+  	<result column="org_set_code" property="orgSetCode" jdbcType="VARCHAR" />
+    <result column="org_code" property="orgCode" jdbcType="VARCHAR" />
+    <result column="org_name" property="orgName" jdbcType="VARCHAR" />
+    <result column="fee_starttime" property="feeStarttime" jdbcType="TIMESTAMP" />
+    <result column="fee_endtime" property="feeEndtime" jdbcType="TIMESTAMP" />
+    <result column="nurse_total_amount" property="nurseTotalAmount" jdbcType="DECIMAL" />
+    <result column="si_pay" property="siPay" jdbcType="DECIMAL" />
+    <result column="pay_self" property="paySelf" jdbcType="DECIMAL" />
+    <result column="expense_self" property="expenseSelf" jdbcType="DECIMAL" />
+    <result column="unr_fee" property="unrFee" jdbcType="DECIMAL" />
+    <result column="account_pay" property="accountPay" jdbcType="DECIMAL" />
+    <result column="bank_card_pay" property="bankCardPay" jdbcType="DECIMAL" />
+    <result column="over_cost" property="overCost" jdbcType="DECIMAL" />
+    <result column="audit_state" property="auditState" jdbcType="INTEGER" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    org_name, org_code, created_org,operated_org,set_date as fee_starttime,si_area,
+    mon_set_code as org_set_code,audit_state,SUM(nurse_total_amount) AS nurse_total_amount, 
+    SUM(si_pay) AS si_pay,SUM(pay_self) AS pay_self, 
+    SUM(expense_self) AS expense_self, 
+    SUM(unr_fee) AS unr_fee,SUM(over_limit_fee) over_cost, 
+    SUM(account_pay) account_pay,SUM(bank_card_pay) bank_card_pay
+  </sql>
+  <select id="getSettlementData" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.OrgSettlementDO" >
+    select
+    <include refid="Base_Column_List" />
+    from ltci_mon_set_per 
+    <where>
+	    <if test="feeStarttime != null  " >
+	       <![CDATA[  set_date >= DATE_FORMAT(#{feeStarttime},'%Y-%m-%d %H:%i:%s') ]]>
+	    </if>
+	    <if test="feeEndtime != null " >
+	       <![CDATA[ AND set_date <= DATE_FORMAT(#{feeEndtime},'%Y-%m-%d %H:%i:%s') ]]>
+	    </if>
+	    <if test="orgCode != null and orgCode != '' " >
+	       <![CDATA[ AND org_code = #{orgCode} ]]>
+	    </if>
+	    <if test="orgName != null and orgName != '' " >
+	       <![CDATA[ AND org_name like #{orgName} ]]>
+	    </if>
+	    <if test="auditState == 1  " >
+	       <![CDATA[ AND audit_state = 1 ]]>
+	    </if>
+	    <if test="auditState == 4  " >
+	       <![CDATA[ AND audit_state = 4 ]]>
+	    </if>
+	    <if test="auditState == null  " >
+	       <![CDATA[ AND audit_state in (1,4) ]]>
+	    </if>
+	    <if test="createdOrg != null and createdOrg != '' " >
+	       <![CDATA[ AND created_org = #{createdOrg} ]]>
+	    </if>
+	    <if test="createdOrg != null and createdOrg != '' " >
+	       OR 1=1
+	       <if test="feeStarttime != null  " >
+	       <![CDATA[ AND set_date >= DATE_FORMAT(#{feeStarttime},'%Y-%m-%d %H:%i:%s') ]]>
+		    </if>
+		    <if test="feeEndtime != null " >
+		       <![CDATA[ AND set_date <= DATE_FORMAT(#{feeEndtime},'%Y-%m-%d %H:%i:%s') ]]>
+		    </if>
+		    <if test="orgCode != null and orgCode != '' " >
+		       <![CDATA[ AND org_code = #{orgCode} ]]>
+		    </if>
+		    <if test="orgName != null and orgName != '' " >
+		       <![CDATA[ AND org_name like #{orgName} ]]>
+		    </if>
+		    <if test="auditState == 1  " >
+		       <![CDATA[ AND audit_state = 1 ]]>
+		    </if>
+		    <if test="auditState == 4  " >
+		       <![CDATA[ AND audit_state = 4 ]]>
+		    </if>
+		    <if test="auditState == null  " >
+		       <![CDATA[ AND audit_state in (1,4) ]]>
+		    </if>
+		     <![CDATA[ AND operated_org = #{createdOrg} ]]>
+	    </if>
+    </where>
+      GROUP BY org_code,created_org, DATE_FORMAT(set_date,'%Y-%m')  ${orderBy}
+  </select>
+  
+  <select id="count" resultType="java.lang.Integer" parameterType="com.taikang.dic.ltci.model.OrgSettlementDO" >
+    SELECT count(A.org_code) 
+    from (SELECT org_code FROM ltci_mon_set_per  
+    <where>
+	    <if test="feeStarttime != null  " >
+	       <![CDATA[  set_date >= DATE_FORMAT(#{feeStarttime},'%Y-%m-%d %H:%i:%s') ]]>
+	    </if>
+	    <if test="feeEndtime != null " >
+	       <![CDATA[ AND set_date <= DATE_FORMAT(#{feeEndtime},'%Y-%m-%d %H:%i:%s') ]]>
+	    </if>
+	    <if test="orgCode != null and orgCode != '' " >
+	       <![CDATA[ AND org_code = #{orgCode} ]]>
+	    </if>
+	    <if test="orgName != null and orgName != '' " >
+	       <![CDATA[ AND org_name like #{orgName} ]]>
+	    </if>
+	    <if test="auditState == 1  " >
+	       <![CDATA[ AND audit_state = 1 ]]>
+	    </if>
+	    <if test="auditState == 4  " >
+	       <![CDATA[ AND audit_state = 4 ]]>
+	    </if>
+	    <if test="auditState == null  " >
+	       <![CDATA[ AND audit_state in (1,4) ]]>
+	    </if>
+	    <if test="createdOrg != null and createdOrg != '' " >
+	       <![CDATA[ AND created_org = #{createdOrg} ]]>
+	    </if>
+	    <if test="createdOrg != null and createdOrg != '' " >
+	       OR 1=1
+	       <if test="feeStarttime != null  " >
+	       <![CDATA[ AND set_date >= DATE_FORMAT(#{feeStarttime},'%Y-%m-%d %H:%i:%s') ]]>
+		    </if>
+		    <if test="feeEndtime != null " >
+		       <![CDATA[ AND set_date <= DATE_FORMAT(#{feeEndtime},'%Y-%m-%d %H:%i:%s') ]]>
+		    </if>
+		    <if test="orgCode != null and orgCode != '' " >
+		       <![CDATA[ AND org_code = #{orgCode} ]]>
+		    </if>
+		    <if test="orgName != null and orgName != '' " >
+		       <![CDATA[ AND org_name like #{orgName} ]]>
+		    </if>
+		    <if test="auditState == 1  " >
+		       <![CDATA[ AND audit_state = 1 ]]>
+		    </if>
+		    <if test="auditState == 4  " >
+		       <![CDATA[ AND audit_state = 4 ]]>
+		    </if>
+		    <if test="auditState == null  " >
+		       <![CDATA[ AND audit_state in (1,4) ]]>
+		    </if>
+		     <![CDATA[ AND operated_org = #{createdOrg} ]]>
+	    </if>
+    </where>
+      GROUP BY org_code, created_org, DATE_FORMAT(set_date,'%Y-%m')) A;
+  </select>
+  
+</mapper>

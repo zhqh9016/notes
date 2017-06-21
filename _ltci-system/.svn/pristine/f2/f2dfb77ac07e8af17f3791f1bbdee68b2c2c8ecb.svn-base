@@ -1,0 +1,19 @@
+get: 
+  tags:
+  - rRoleResManage
+  summary: 查询角色资源关系列表
+  description: 根据权限id查询所有资源关系列表
+  operationId: listRRoleRes
+  parameters:
+  - name: resId
+    in: path
+    description: 菜单id
+    required: true
+    type: string
+  responses:
+    200:
+      description: 查询成功
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"

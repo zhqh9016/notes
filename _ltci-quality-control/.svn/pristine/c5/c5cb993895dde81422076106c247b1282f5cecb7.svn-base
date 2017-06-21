@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.MobileDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.MobileComplaintListDO" >
+  	<id column="patrol_task_id" property="patrolTaskId" jdbcType="VARCHAR" />
+    <result column="task_state" property="taskState" jdbcType="VARCHAR" />
+    <result column="audit_state" property="auditState" jdbcType="VARCHAR" />
+    <result column="complaint_time" property="complaintTime" jdbcType="VARCHAR" />
+    <result column="accept_time" property="acceptTime" jdbcType="VARCHAR" />
+    <result column="receive_result_time" property="receiveResultTime" jdbcType="VARCHAR" />
+    <result column="complaint_content" property="complaintContent" jdbcType="VARCHAR" />
+    <result column="violation_item" property="violationItem" jdbcType="VARCHAR" />
+    <result column="task_number" property="taskNumber" jdbcType="VARCHAR" />
+    <result column="complaint_type" property="complaintType" jdbcType="VARCHAR" />
+    <result column="patrol_violation_item" property="patrolViolationItem" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  <resultMap id="mobileResource" type="com.taikang.dic.ltci.model.MobileResourceDO" >
+  	<id column="resource_material_id" property="resourceMaterialId" jdbcType="VARCHAR" />
+    <result column="resource_file_type" property="resourceMaterialType" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <resultMap id="patrolStaffListDO" type="com.taikang.dic.ltci.model.PatrolStaffListDO" >
+  	<id column="patrol_staff_id" property="patrolStaffId" jdbcType="VARCHAR" />
+    <result column="patrol_staff_name" property="patrolStaffName" jdbcType="VARCHAR" />
+    <result column="patrol_task_id" property="patrolTaskId" jdbcType="VARCHAR" />
+    <result column="task_level" property="taskLevel" jdbcType="INTEGER" />
+    <result column="task_category" property="taskCategory" jdbcType="INTEGER" />
+    <result column="patrol_object_type" property="patrolObjectType" jdbcType="INTEGER" />
+    <result column="patrol_object_name" property="patrolObjectName" jdbcType="VARCHAR" />
+    <result column="patrol_object_phone" property="patrolObjectPhone" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="agency_code" property="agencyCode" jdbcType="VARCHAR" />
+    <result column="patrol_object_addr" property="patrolObjectAddr" jdbcType="VARCHAR" />
+    <result column="violation_item" property="violationItem" jdbcType="VARCHAR" />
+    <result column="complaint_content" property="complaintContent" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="task_status" property="taskStatus" jdbcType="VARCHAR" />
+    <result column="receive_result_time" property="receiveResultTime" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <select id="getPatrolTaskList" resultMap="BaseResultMap">
+  	
+  	select 
+  		   distinct
+		   a.patrol_task_id,
+		   a.task_state,
+		   a.task_number,
+		   a.complaint_type,
+           date_format(a.complaint_time,'%Y-%m-%d %H:%i:%s') complaint_time,
+           a.complaint_content,
+		   a.violation_item,
+		   b.violation_item patrol_violation_item,
+		   b.audit_state,
+		   date_format(b.receive_result_time,'%Y-%m-%d %H:%i:%s') receive_result_time,
+           date_format(c.operated_time,'%Y-%m-%d %H:%i:%s') accept_time
+     from ltci_patrol_task a left join ltci_execute_result b on a.patrol_task_id = b.patrol_task_id
+											  left join 
+		(select patrol_task_id,max(operated_time) operated_time from ltci_patrol_task_log where task_state =1 group by patrol_task_id) c 
+     on a.patrol_task_id = c.patrol_task_id
+
+     where a.task_category = 0 and a.is_valid =1 
+     and a.insured_person_card = #{idCard,jdbcType=VARCHAR}
+  
+  </select>
+  
+  <select id="getPatrolTask" resultMap="BaseResultMap">
+  	  	select 
+  	  	   distinct
+		   a.patrol_task_id,
+		   a.task_state,
+		   a.task_number,
+		   a.complaint_type,
+           date_format(a.complaint_time,'%Y-%m-%d %H:%i:%s') complaint_time,
+           a.complaint_content,
+		   a.violation_item,
+		   b.violation_item patrol_violation_item,
+		   b.audit_state,
+		   date_format(b.receive_result_time,'%Y-%m-%d %H:%i:%s') receive_result_time,
+           date_format(c.operated_time,'%Y-%m-%d %H:%i:%s') accept_time
+     from ltci_patrol_task a left join ltci_execute_result b on a.patrol_task_id = b.patrol_task_id
+											  left join 
+		(select patrol_task_id,max(operated_time) operated_time from ltci_patrol_task_log where task_state =1 group by patrol_task_id) c 
+     on a.patrol_task_id = c.patrol_task_id
+
+     where a.task_category = 0 and a.is_valid =1 
+     and a.patrol_task_id=#{patrolTaskId,jdbcType=VARCHAR}
+  
+  
+  </select>
+  
+  <select id="getMobileResource" resultMap="mobileResource">
+  	select resource_material_id,resource_file_type 
+  	from ltci_complaint_resource
+  	where patrol_task_id=#{patrolTaskId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getTodoPatrolTask" resultMap="patrolStaffListDO">
+	select  
+	a.patrol_staff_id,
+	a.patrol_staff_name,
+	a.patrol_task_id,
+	a.task_level,
+	a.task_category,
+	a.task_state task_status,
+	a.patrol_object_type,
+	a.patrol_object_name,
+	a.patrol_object_phone,
+	a.id_card,
+	a.agency_code,
+	a.patrol_object_addr,
+	a.violation_item,
+	a.complaint_content,
+	a.remark,
+	date_format(c.receive_result_time,'%Y-%m-%d %H:%i:%s') receive_result_time
+	
+	from ltci_patrol_task a 
+                          left join (select patrol_task_id,max(receive_result_time) receive_result_time from  ltci_execute_result group by patrol_task_id) c
+       on a.patrol_task_id = c.patrol_task_id
+	where a.is_valid = '1'   
+     and a.patrol_staff_id = #{patrolStaffId,jdbcType=VARCHAR}
+     <if test="taskStatus != null and taskStatus.size > 0">
+     and a.task_state in      
+	    <foreach collection="taskStatus" item="listItem" open="(" separator="," close=")">
+	      #{listItem}
+	    </foreach>
+     </if>
+  </select>
+</mapper>

@@ -1,0 +1,23 @@
+get:
+  tags:
+  - treatmentApplication
+  summary: 待遇申请详情查询
+  description: 根据待遇申请编号查询详情
+  operationId: treatmentApplicationGet
+  parameters:
+   - name: applicationCode
+     in: path
+     description: 待遇申请编号
+     required: true
+     type: string
+  responses:
+    200:
+      description: 查询成功
+      schema:
+        type: object
+        items:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/TreatApplyDTO"
+    default:
+      description: 其它错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"

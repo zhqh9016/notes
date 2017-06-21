@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.ComplaintResourceDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.ComplaintResourceDO" >
+    <id column="resource_id" property="resourceId" jdbcType="VARCHAR" />
+    <result column="resource_material_type" property="resourceMaterialType" jdbcType="VARCHAR" />
+    <result column="resource_material_id" property="resourceMaterialId" jdbcType="VARCHAR" />
+    <result column="resource_material_info_scan" property="resourceMaterialInfoScan" jdbcType="VARCHAR" />
+    <result column="patrol_task_id" property="patrolTaskId" jdbcType="VARCHAR" />
+    <result column="resource_file_name" property="resourceFileName" jdbcType="VARCHAR" />
+    <result column="resource_file_type" property="resourceFileType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    resource_id, resource_material_type, resource_material_id, resource_material_info_scan, 
+    patrol_task_id, resource_file_name, resource_file_type
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.ComplaintResourceDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ltci_complaint_resource
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ltci_complaint_resource
+    where resource_id = #{resourceId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_complaint_resource
+    where resource_id = #{resourceId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.ComplaintResourceDOExample" >
+    delete from ltci_complaint_resource
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.ComplaintResourceDO" >
+    insert into ltci_complaint_resource (resource_id, resource_material_type, 
+      resource_material_id, resource_material_info_scan, 
+      patrol_task_id, resource_file_name, resource_file_type
+      )
+    values (#{resourceId,jdbcType=VARCHAR}, #{resourceMaterialType,jdbcType=VARCHAR}, 
+      #{resourceMaterialId,jdbcType=VARCHAR}, #{resourceMaterialInfoScan,jdbcType=VARCHAR}, 
+      #{patrolTaskId,jdbcType=VARCHAR}, #{resourceFileName,jdbcType=VARCHAR}, #{resourceFileType,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.ComplaintResourceDO" >
+    insert into ltci_complaint_resource
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="resourceId != null" >
+        resource_id,
+      </if>
+      <if test="resourceMaterialType != null" >
+        resource_material_type,
+      </if>
+      <if test="resourceMaterialId != null" >
+        resource_material_id,
+      </if>
+      <if test="resourceMaterialInfoScan != null" >
+        resource_material_info_scan,
+      </if>
+      <if test="patrolTaskId != null" >
+        patrol_task_id,
+      </if>
+      <if test="resourceFileName != null" >
+        resource_file_name,
+      </if>
+      <if test="resourceFileType != null" >
+        resource_file_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="resourceId != null" >
+        #{resourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceMaterialType != null" >
+        #{resourceMaterialType,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceMaterialId != null" >
+        #{resourceMaterialId,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceMaterialInfoScan != null" >
+        #{resourceMaterialInfoScan,jdbcType=VARCHAR},
+      </if>
+      <if test="patrolTaskId != null" >
+        #{patrolTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceFileName != null" >
+        #{resourceFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceFileType != null" >
+        #{resourceFileType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.ComplaintResourceDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_complaint_resource
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_complaint_resource
+    <set >
+      <if test="record.resourceId != null" >
+        resource_id = #{record.resourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resourceMaterialType != null" >
+        resource_material_type = #{record.resourceMaterialType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resourceMaterialId != null" >
+        resource_material_id = #{record.resourceMaterialId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resourceMaterialInfoScan != null" >
+        resource_material_info_scan = #{record.resourceMaterialInfoScan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.patrolTaskId != null" >
+        patrol_task_id = #{record.patrolTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resourceFileName != null" >
+        resource_file_name = #{record.resourceFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resourceFileType != null" >
+        resource_file_type = #{record.resourceFileType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_complaint_resource
+    set resource_id = #{record.resourceId,jdbcType=VARCHAR},
+      resource_material_type = #{record.resourceMaterialType,jdbcType=VARCHAR},
+      resource_material_id = #{record.resourceMaterialId,jdbcType=VARCHAR},
+      resource_material_info_scan = #{record.resourceMaterialInfoScan,jdbcType=VARCHAR},
+      patrol_task_id = #{record.patrolTaskId,jdbcType=VARCHAR},
+      resource_file_name = #{record.resourceFileName,jdbcType=VARCHAR},
+      resource_file_type = #{record.resourceFileType,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.ComplaintResourceDO" >
+    update ltci_complaint_resource
+    <set >
+      <if test="resourceMaterialType != null" >
+        resource_material_type = #{resourceMaterialType,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceMaterialId != null" >
+        resource_material_id = #{resourceMaterialId,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceMaterialInfoScan != null" >
+        resource_material_info_scan = #{resourceMaterialInfoScan,jdbcType=VARCHAR},
+      </if>
+      <if test="patrolTaskId != null" >
+        patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceFileName != null" >
+        resource_file_name = #{resourceFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceFileType != null" >
+        resource_file_type = #{resourceFileType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where resource_id = #{resourceId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.ComplaintResourceDO" >
+    update ltci_complaint_resource
+    set resource_material_type = #{resourceMaterialType,jdbcType=VARCHAR},
+      resource_material_id = #{resourceMaterialId,jdbcType=VARCHAR},
+      resource_material_info_scan = #{resourceMaterialInfoScan,jdbcType=VARCHAR},
+      patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR},
+      resource_file_name = #{resourceFileName,jdbcType=VARCHAR},
+      resource_file_type = #{resourceFileType,jdbcType=VARCHAR}
+    where resource_id = #{resourceId,jdbcType=VARCHAR}
+  </update>
+</mapper>

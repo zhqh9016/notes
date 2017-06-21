@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.InsuredInfoDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.InsuredInfoDO" >
+    <id column="insured_personid" property="insuredPersonid" jdbcType="BIGINT" />
+    <result column="insured_person_name" property="insuredPersonName" jdbcType="VARCHAR" />
+    <result column="insured_person_gender" property="insuredPersonGender" jdbcType="VARCHAR" />
+    <result column="nation" property="nation" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+    <result column="security_number" property="securityNumber" jdbcType="VARCHAR" />
+    <result column="security_personal_number" property="securityPersonalNumber" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="personnel_identity_code" property="personnelIdentityCode" jdbcType="VARCHAR" />
+    <result column="personnel_identity_name" property="personnelIdentityName" jdbcType="VARCHAR" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+    <result column="org_code" property="orgCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    insured_personid, insured_person_name, insured_person_gender, nation, birthday, security_number, 
+    security_personal_number, id_card, personnel_identity_code, personnel_identity_name, 
+    si_area, org_code
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.InsuredInfoDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ltci_insured_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ltci_insured_info
+    where insured_personid = #{insuredPersonid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ltci_insured_info
+    where insured_personid = #{insuredPersonid,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.InsuredInfoDOExample" >
+    delete from ltci_insured_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.InsuredInfoDO" >
+    insert into ltci_insured_info (insured_personid, insured_person_name, 
+      insured_person_gender, nation, birthday, 
+      security_number, security_personal_number, 
+      id_card, personnel_identity_code, personnel_identity_name, 
+      si_area, org_code)
+    values (#{insuredPersonid,jdbcType=BIGINT}, #{insuredPersonName,jdbcType=VARCHAR}, 
+      #{insuredPersonGender,jdbcType=VARCHAR}, #{nation,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP}, 
+      #{securityNumber,jdbcType=VARCHAR}, #{securityPersonalNumber,jdbcType=VARCHAR}, 
+      #{idCard,jdbcType=VARCHAR}, #{personnelIdentityCode,jdbcType=VARCHAR}, #{personnelIdentityName,jdbcType=VARCHAR}, 
+      #{siArea,jdbcType=VARCHAR}, #{orgCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.InsuredInfoDO" >
+    insert into ltci_insured_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="insuredPersonid != null" >
+        insured_personid,
+      </if>
+      <if test="insuredPersonName != null" >
+        insured_person_name,
+      </if>
+      <if test="insuredPersonGender != null" >
+        insured_person_gender,
+      </if>
+      <if test="nation != null" >
+        nation,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="securityNumber != null" >
+        security_number,
+      </if>
+      <if test="securityPersonalNumber != null" >
+        security_personal_number,
+      </if>
+      <if test="idCard != null" >
+        id_card,
+      </if>
+      <if test="personnelIdentityCode != null" >
+        personnel_identity_code,
+      </if>
+      <if test="personnelIdentityName != null" >
+        personnel_identity_name,
+      </if>
+      <if test="siArea != null" >
+        si_area,
+      </if>
+      <if test="orgCode != null" >
+        org_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="insuredPersonid != null" >
+        #{insuredPersonid,jdbcType=BIGINT},
+      </if>
+      <if test="insuredPersonName != null" >
+        #{insuredPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredPersonGender != null" >
+        #{insuredPersonGender,jdbcType=VARCHAR},
+      </if>
+      <if test="nation != null" >
+        #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="securityNumber != null" >
+        #{securityNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="securityPersonalNumber != null" >
+        #{securityPersonalNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="personnelIdentityCode != null" >
+        #{personnelIdentityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="personnelIdentityName != null" >
+        #{personnelIdentityName,jdbcType=VARCHAR},
+      </if>
+      <if test="siArea != null" >
+        #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null" >
+        #{orgCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.InsuredInfoDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_insured_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_insured_info
+    <set >
+      <if test="record.insuredPersonid != null" >
+        insured_personid = #{record.insuredPersonid,jdbcType=BIGINT},
+      </if>
+      <if test="record.insuredPersonName != null" >
+        insured_person_name = #{record.insuredPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insuredPersonGender != null" >
+        insured_person_gender = #{record.insuredPersonGender,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nation != null" >
+        nation = #{record.nation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthday != null" >
+        birthday = #{record.birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.securityNumber != null" >
+        security_number = #{record.securityNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.securityPersonalNumber != null" >
+        security_personal_number = #{record.securityPersonalNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idCard != null" >
+        id_card = #{record.idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.personnelIdentityCode != null" >
+        personnel_identity_code = #{record.personnelIdentityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.personnelIdentityName != null" >
+        personnel_identity_name = #{record.personnelIdentityName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.siArea != null" >
+        si_area = #{record.siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgCode != null" >
+        org_code = #{record.orgCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_insured_info
+    set insured_personid = #{record.insuredPersonid,jdbcType=BIGINT},
+      insured_person_name = #{record.insuredPersonName,jdbcType=VARCHAR},
+      insured_person_gender = #{record.insuredPersonGender,jdbcType=VARCHAR},
+      nation = #{record.nation,jdbcType=VARCHAR},
+      birthday = #{record.birthday,jdbcType=TIMESTAMP},
+      security_number = #{record.securityNumber,jdbcType=VARCHAR},
+      security_personal_number = #{record.securityPersonalNumber,jdbcType=VARCHAR},
+      id_card = #{record.idCard,jdbcType=VARCHAR},
+      personnel_identity_code = #{record.personnelIdentityCode,jdbcType=VARCHAR},
+      personnel_identity_name = #{record.personnelIdentityName,jdbcType=VARCHAR},
+      si_area = #{record.siArea,jdbcType=VARCHAR},
+      org_code = #{record.orgCode,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.InsuredInfoDO" >
+    update ltci_insured_info
+    <set >
+      <if test="insuredPersonName != null" >
+        insured_person_name = #{insuredPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredPersonGender != null" >
+        insured_person_gender = #{insuredPersonGender,jdbcType=VARCHAR},
+      </if>
+      <if test="nation != null" >
+        nation = #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="securityNumber != null" >
+        security_number = #{securityNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="securityPersonalNumber != null" >
+        security_personal_number = #{securityPersonalNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="personnelIdentityCode != null" >
+        personnel_identity_code = #{personnelIdentityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="personnelIdentityName != null" >
+        personnel_identity_name = #{personnelIdentityName,jdbcType=VARCHAR},
+      </if>
+      <if test="siArea != null" >
+        si_area = #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null" >
+        org_code = #{orgCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where insured_personid = #{insuredPersonid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.InsuredInfoDO" >
+    update ltci_insured_info
+    set insured_person_name = #{insuredPersonName,jdbcType=VARCHAR},
+      insured_person_gender = #{insuredPersonGender,jdbcType=VARCHAR},
+      nation = #{nation,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      security_number = #{securityNumber,jdbcType=VARCHAR},
+      security_personal_number = #{securityPersonalNumber,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      personnel_identity_code = #{personnelIdentityCode,jdbcType=VARCHAR},
+      personnel_identity_name = #{personnelIdentityName,jdbcType=VARCHAR},
+      si_area = #{siArea,jdbcType=VARCHAR},
+      org_code = #{orgCode,jdbcType=VARCHAR}
+    where insured_personid = #{insuredPersonid,jdbcType=BIGINT}
+  </update>
+</mapper>

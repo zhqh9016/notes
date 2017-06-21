@@ -1,0 +1,318 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/icon.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/main.css" type="text/css" />
+    <link id="easyuiTheme" rel="stylesheet" href="../../css/common.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../css/detailStyle.css" />
+    <style>
+    #reWrite .radioBox {
+        margin-left: 10px;
+    }
+    
+    #reWrite .radioBox span {
+        font-size: 14px;
+        display: inline-block;
+        margin: 10px 4px;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app" style="height: 100%;width: 100%;border: none;">
+        <table width="100%" id="userList" toolbar="#userListtb">
+        </table>
+        <div id="userListtb" style="padding:3px; height: auto">
+            <div name="searchColums" id="searchColums">
+                <input id="isShowSearchId" type="hidden" value="false" />
+                <input id="_sqlbuilder" name="sqlbuilder" type="hidden" />
+                <form id="userListForm">
+                    <span class="inputLable"><span class="inputLableText">申请人：</span>
+                    <input type="text" name="insuredPersonName" class="inuptxt" />
+                    </span>
+                    <span class="inputLable"><span class="inputLableText">身份证号码：</span>
+                    <input type="text" id="idCard" name="idCard" class="inuptxt easyui-validatebox" data-options="validType:'idCard'" />
+                    </span>
+                    <span class="inputLable"><span class="inputLableText">评估机构：</span>
+                    <input type="text" name="evaluateOrg" class="inuptxt" />
+                    </span>
+                    <span class="inputLable"><span class="inputLableText">经办时间：</span>
+                    <input name="operatedTime" type="text" class="WdatePicker" editable="false" />
+                    </span>
+                    <span class="inputLable"><span class="inputLableText">送达状态：</span>
+                    <input id="taskState" data-dictionary="taskState" name="taskState" data-value="03,04" type="text" class="easyui-combobox dictionary query-condition" editable="false" />
+                    </span>
+                    <span class="inputLable"><span class="inputLableText">
+						<a href="#" class="easyui-linkbutton" iconcls="icon-search" onclick="doSearch()">查询</a>
+						<a href="#" class="easyui-linkbutton" iconcls="icon-search" onclick="resetSearch()">重置</a>
+						</span></span>
+                </form>
+            </div>
+            <div style="height:30px;" class="datagrid-toolbar">
+                <span style="float:left;">
+						<a href="#" class="easyui-linkbutton" plain="true" icon="icon-putout" onclick="doPostDatas()">批量送达	</a>
+					</span>
+            </div>
+        </div>
+    </div>
+    <div style="display: none;">
+        <div id="reWrite">
+            <div class="radioBox">
+                <span><input type="radio" name="isReWrite" value="通过" />通过</span>
+                <span><input type="radio" name="isReWrite" value="不通过" />不通过</span>
+            </div>
+            <div style="margin-left: 16px;">
+                <a class="easyui-linkbutton" onclick="doReWrite()">确认</a>
+                <a class="easyui-linkbutton" onclick="quitWrite()">取消</a>
+            </div>
+        </div>
+        <div id="showTableInfo">
+            <iframe id="showTableInfo_iframe" src="" width="99%" height="99%"></iframe>
+        </div>
+        <div id="showInfo">
+            <!-- <iframe id="showInfo_iframe" src="" width="99%" height="99%"></iframe> -->
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../../js/jquery.easyui.min.1.3.2.js"></script>
+<script type="text/javascript" src="../../js/util/WdatePicker.js"></script>
+<script type="text/javascript" src="../../js/util/lang/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../../js/validate.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/commonReady.js"></script>
+<script type="text/javascript" src="../../js/treatmentApply/evaluationResultSend.js"></script>
+<script type="text/javascript" src="../../js/treatmentApply/treatmentCommon.js"></script>
+<script>
+$('#showTableInfo').window({
+    title: '查看详情',
+    width: 800,
+    height: 450,
+    minimizable: false,
+    collapsible: false,
+    closed: true,
+    modal: true
+});
+$('#showInfo').window({
+    title: '查看详情',
+    width: 800,
+    height: 450,
+    minimizable: false,
+    collapsible: false,
+    closed: true,
+    modal: true
+});
+var rewriteRow = {};
+$('#reWrite').window({
+    title: '查看详情',
+    width: 600,
+    height: 400,
+    minimizable: false,
+    collapsible: false,
+    closed: true
+});
+
+function doSearch() {
+    if (!$("#idCard").validatebox("isValid")) {
+        $.messager.alert('警告', "请输入正确格式的身份证！");
+        return;
+    }
+    TableObj.page = 1;
+    TableObj.pageSize = 10;
+    doLoading();
+}
+
+function doLoading() {
+    var taskState = "03,04";
+    if ($("input[name=taskState]").val()) {
+        taskState = $("input[name=taskState]").val();
+    }
+    var obj = {
+        insuredPersonName: $("input[name=insuredPersonName]").val(),
+        idCard: $("input[name=idCard]").val(),
+        evaluateOrg: $("input[name=evaluateOrg]").val(),
+        operatedTime: $("input[name=operatedTime]").val(),
+        taskState: taskState,
+        page: TableObj.page,
+        pageSize: TableObj.pageSize
+    };
+    var url = portalServiceUrl + "/api/v1/evaluateTask/sendMessage";
+    sendAjax(url, "post", obj, function(data) {
+        gridLoadData('userList', data);
+    });
+}
+
+function resetSearch() {
+    $('#userListForm input').val('');
+    loadDictionary();
+}
+
+function isCheck() {
+    var arr = $('#userList').datagrid('getChecked');
+    if (arr.length < 1) {
+        $.messager.alert('警告', '请选择一行数据再进行操作');
+        return false;
+    }
+    return true;
+}
+
+/*	function loadexpertAssess(index) { //查看附件
+		var row = $('#userList').datagrid('getRows')[index];
+		code = row.expertEvaluateCode;
+		
+		var s = "<div><span style='font-size: 20px;'>查看附件：</span></div>";
+		s += "<div id='showImageInfo' class='imgBox'></div><div>专家意见:<span>" + row.opinion + "</span></div>";
+		$('#showInfo').html(s);
+		//loadImages("showImageInfo",data.datas.accessoryAddress);
+		doLoadImage(row.accessoryAddress, 'showImageInfo');
+		$('#showInfo').window('open');
+		//}, funct ion(erro r) {
+		//	console.log(error);
+		//	$.messager.alert('警告', "查询失败");
+		//});
+	}*/
+
+
+function loadexpertAssess(index) { //查看附件
+    var row = $('#userList').datagrid('getRows')[index];
+    code = row.expertEvaluateCode;
+
+    var s = "<div class=\"mainTitle\">查看附件：</div>";
+    s += "<div class=\"mainWapper\"><div id='showImageInfo' class='imgBox'></div></div>";
+    s += "<div class=\"mainTitle\">专家意见:</div>";
+    s += "<div class=\"mainWapper\"><span>" + row.opinion + "</span></div>";
+    $('#showInfo').html(s);
+
+    doLoadImage(row.accessoryAddress, 'showImageInfo');
+    $('#showInfo').window('open');
+
+}
+//单条送达
+function doSinglePost(index) {
+    $.messager.confirm('确认', '是否发送通知书至申请人？', function(r) {
+        if (r) {
+            var row = $('#userList').datagrid('getRows')[index];
+            console.log(row);
+            var taskState = "04";
+            var operatedBy = "小刘";
+            var evaluateTaskCodes = row.evaluateTaskCode;
+            var url = portalServiceUrl + "/api/v1/evaluateTaskStauts/" + taskState + "/" + operatedBy + "/" + evaluateTaskCodes;
+            sendAjax(url, "put", "", function(successdata) {
+                console.log(successdata);
+                //				$.messager.alert("提示", "送达成功！");
+                doLoading();
+                $.messager.show({
+                    title: '提示',
+                    msg: '送达成功！',
+                    timeout: 8000
+                });
+
+            });
+        }
+    });
+}
+
+function isSended() {
+    var rows = $("#userList").datagrid("getChecked");
+    var isSend = true;
+    $.each(rows, function(index, item) {
+        console.log(item);
+        if (item.taskState == 04) {
+            isSend = false;
+        }
+    });
+    if (!isSend) {
+        $.messager.alert("提示", "送达失败！所选数据有条目已送达，无法重复送达");
+    }
+    return isSend;
+}
+//批量送达
+function doPostDatas() {
+    var rows = $("#userList").datagrid("getChecked");
+    if (isCheck() && isSended()) {
+        $.messager.confirm('提示', '是否批量发送通知书至申请人？', function(r) {
+            if (r) {
+                var taskState = "04";
+                var operatedBy = "小刘";
+                var evaluateTaskCodes = "";
+                $.each(rows, function(index, item) {
+                    evaluateTaskCodes += item.evaluateTaskCode;
+                    if (index < rows.length - 1) {
+                        evaluateTaskCodes += ",";
+                    }
+                });
+                var url = portalServiceUrl + "/api/v1/evaluateTaskStauts/" + taskState + "/" + operatedBy + "/" + evaluateTaskCodes;
+                sendAjax(url, "put", "", function(successdata) {
+                    console.log(successdata);
+                    //	$.messager.alert("提示", "送达成功！");
+                    doLoading();
+                    $.messager.show({
+                        title: '提示',
+                        msg: '送达成功！',
+                        timeout: 8000
+                    });
+
+                });
+            }
+        });
+
+    }
+}
+
+//		function doLoadEvaluateDetail(index) {
+//			var row = $('#userList').datagrid('getRows')[index]
+//			data = JSON.parse(row.detailJson) //获取量表json
+//			html = getDetailHtml(data.detailJson)
+//			//alert(html)
+//		}
+
+//点击重评获取行数据
+function rewrite(index) {
+    $("input[name=isReWrite]").removeAttr("checked");
+    rewriteRow = $('#userList').datagrid('getRows')[index];
+    console.log(rewriteRow);
+    $('#reWrite').window("open");
+}
+//重写评定结果
+function doReWrite() {
+    if (!$("input[name=isReWrite]:checked").val()) {
+        $.messager.alert("提示", "请选择是否重评！");
+    } else {
+        var evaluateTaskCode = rewriteRow.evaluateTaskCode;
+        console.log($("input[name=isReWrite]:checked").val());
+        var reevalueateResult = $("input[name=isReWrite]:checked").val();
+        var url = portalServiceUrl + "/api/v1/reviewEvaluateTask";
+        var ajaxData = {
+            evaluateTaskCode: evaluateTaskCode,
+            reevalueateResult: reevalueateResult
+        };
+        sendAjax(url, "put", ajaxData, function(successdata) {
+            console.log(successdata);
+            if (successdata.status == 201) {
+                //						$.messager.alert("提示", successdata.message);
+
+                quitWrite();
+                doLoading();
+                $.messager.show({
+                    title: '提示',
+                    msg: successdata.message,
+                    timeout: 5000
+                });
+            } else {
+                $.messager.alert("提示", successdata.message);
+                quitWrite();
+                doLoading();
+            }
+        });
+    }
+
+}
+
+function quitWrite() {
+    $('#reWrite').window("close");
+}
+</script>
+
+</html>

@@ -1,0 +1,41 @@
+post: 
+  tags:
+  - reconsider
+  summary: 申述复议保存接口
+  description: 根据任务ID,更新尚未回复的申述
+  operationId: reconsider
+  parameters: 
+    - name: patrolTaskId
+      in: formdata
+      description: 任务ID
+      required: true
+      type: string
+    - name: operatedBy
+      in: formdata
+      description: 经办人
+      required: true
+      type: string
+    - name: operatedOrg
+      in: formdata
+      description: 经办机构
+      required: true
+      type: string
+    - name: replyOpinion
+      in: formdata
+      description: 回复意见
+      required: true
+      type: string
+    - name: replyPhone
+      in: formdata
+      description: 经办人手机
+      required: false
+      type: string
+  responses:
+      200:
+        description: 更新成功
+        schema:
+          $ref: "../../ltci-quality-control-api-v1.yml/#/definitions/ResultDTO"
+      default:
+        description: 其他错误
+        schema:
+          $ref: "../../ltci-quality-control-api-v1.yml/#/definitions/ResultDTO"

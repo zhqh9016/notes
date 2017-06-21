@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.IPatrolTaskDetailDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.PatrolTaskDetailDO" >
+    <id column="task_detail_id" property="taskDetailId" jdbcType="VARCHAR" />
+    <result column="patrol_task_id" property="patrolTaskId" jdbcType="VARCHAR" />
+    <result column="org_task_id" property="orgTaskId" jdbcType="VARCHAR" />
+    <result column="person_name" property="personName" jdbcType="VARCHAR" />
+    <result column="person_code" property="personCode" jdbcType="VARCHAR" />
+    <result column="agency_code" property="agencyCode" jdbcType="VARCHAR" />
+    <result column="preevaluate_date" property="preevaluateDate" jdbcType="TIMESTAMP" />
+    <result column="insurance_code" property="insuranceCode" jdbcType="VARCHAR" />
+    <result column="insurance_name" property="insuranceName" jdbcType="VARCHAR" />
+    <result column="insurance_papers_type" property="insurancePapersType" jdbcType="INTEGER" />
+    <result column="insurance_papers_no" property="insurancePapersNo" jdbcType="VARCHAR" />
+    <result column="insurance_phone" property="insurancePhone" jdbcType="VARCHAR" />
+    <result column="insurance_address" property="insuranceAddress" jdbcType="VARCHAR" />
+    <result column="longitude" property="longitude" jdbcType="VARCHAR" />
+    <result column="latitude" property="latitude" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="service_type" property="serviceType" jdbcType="INTEGER" />
+    <result column="service_items" property="serviceItems" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="is_critical" property="isCritical" jdbcType="INTEGER" />
+    <result column="is_kinship_care" property="isKinshipCare" jdbcType="INTEGER" />
+    <result column="is_privilege" property="isPrivilege" jdbcType="INTEGER" />
+    <result column="person_phone" property="personPhone" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    task_detail_id, patrol_task_id, org_task_id, person_name, person_code, agency_code, 
+    preevaluate_date, insurance_code, insurance_name, insurance_papers_type, insurance_papers_no, 
+    insurance_phone, insurance_address, longitude, latitude, remark, service_type, service_items, 
+    created_by, created_org, created_time, is_critical, is_kinship_care, is_privilege, 
+    person_phone
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.PatrolTaskDetailDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ltci_patrol_task_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ltci_patrol_task_detail
+    where task_detail_id = #{taskDetailId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_patrol_task_detail
+    where task_detail_id = #{taskDetailId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.PatrolTaskDetailDOExample" >
+    delete from ltci_patrol_task_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.PatrolTaskDetailDO" >
+    insert into ltci_patrol_task_detail (task_detail_id, patrol_task_id, org_task_id, 
+      person_name, person_code, agency_code, 
+      preevaluate_date, insurance_code, insurance_name, 
+      insurance_papers_type, insurance_papers_no, 
+      insurance_phone, insurance_address, longitude, 
+      latitude, remark, service_type, 
+      service_items, created_by, created_org, 
+      created_time, is_critical, is_kinship_care, 
+      is_privilege, person_phone)
+    values (#{taskDetailId,jdbcType=VARCHAR}, #{patrolTaskId,jdbcType=VARCHAR}, #{orgTaskId,jdbcType=VARCHAR}, 
+      #{personName,jdbcType=VARCHAR}, #{personCode,jdbcType=VARCHAR}, #{agencyCode,jdbcType=VARCHAR}, 
+      #{preevaluateDate,jdbcType=TIMESTAMP}, #{insuranceCode,jdbcType=VARCHAR}, #{insuranceName,jdbcType=VARCHAR}, 
+      #{insurancePapersType,jdbcType=INTEGER}, #{insurancePapersNo,jdbcType=VARCHAR}, 
+      #{insurancePhone,jdbcType=VARCHAR}, #{insuranceAddress,jdbcType=VARCHAR}, #{longitude,jdbcType=VARCHAR}, 
+      #{latitude,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{serviceType,jdbcType=INTEGER}, 
+      #{serviceItems,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createdOrg,jdbcType=VARCHAR}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{isCritical,jdbcType=INTEGER}, #{isKinshipCare,jdbcType=INTEGER}, 
+      #{isPrivilege,jdbcType=INTEGER}, #{personPhone,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.PatrolTaskDetailDO" >
+    insert into ltci_patrol_task_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="taskDetailId != null" >
+        task_detail_id,
+      </if>
+      <if test="patrolTaskId != null" >
+        patrol_task_id,
+      </if>
+      <if test="orgTaskId != null" >
+        org_task_id,
+      </if>
+      <if test="personName != null" >
+        person_name,
+      </if>
+      <if test="personCode != null" >
+        person_code,
+      </if>
+      <if test="agencyCode != null" >
+        agency_code,
+      </if>
+      <if test="preevaluateDate != null" >
+        preevaluate_date,
+      </if>
+      <if test="insuranceCode != null" >
+        insurance_code,
+      </if>
+      <if test="insuranceName != null" >
+        insurance_name,
+      </if>
+      <if test="insurancePapersType != null" >
+        insurance_papers_type,
+      </if>
+      <if test="insurancePapersNo != null" >
+        insurance_papers_no,
+      </if>
+      <if test="insurancePhone != null" >
+        insurance_phone,
+      </if>
+      <if test="insuranceAddress != null" >
+        insurance_address,
+      </if>
+      <if test="longitude != null" >
+        longitude,
+      </if>
+      <if test="latitude != null" >
+        latitude,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="serviceType != null" >
+        service_type,
+      </if>
+      <if test="serviceItems != null" >
+        service_items,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="createdOrg != null" >
+        created_org,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="isCritical != null" >
+        is_critical,
+      </if>
+      <if test="isKinshipCare != null" >
+        is_kinship_care,
+      </if>
+      <if test="isPrivilege != null" >
+        is_privilege,
+      </if>
+      <if test="personPhone != null" >
+        person_phone,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="taskDetailId != null" >
+        #{taskDetailId,jdbcType=VARCHAR},
+      </if>
+      <if test="patrolTaskId != null" >
+        #{patrolTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgTaskId != null" >
+        #{orgTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="personName != null" >
+        #{personName,jdbcType=VARCHAR},
+      </if>
+      <if test="personCode != null" >
+        #{personCode,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyCode != null" >
+        #{agencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="preevaluateDate != null" >
+        #{preevaluateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insuranceCode != null" >
+        #{insuranceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="insuranceName != null" >
+        #{insuranceName,jdbcType=VARCHAR},
+      </if>
+      <if test="insurancePapersType != null" >
+        #{insurancePapersType,jdbcType=INTEGER},
+      </if>
+      <if test="insurancePapersNo != null" >
+        #{insurancePapersNo,jdbcType=VARCHAR},
+      </if>
+      <if test="insurancePhone != null" >
+        #{insurancePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="insuranceAddress != null" >
+        #{insuranceAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceType != null" >
+        #{serviceType,jdbcType=INTEGER},
+      </if>
+      <if test="serviceItems != null" >
+        #{serviceItems,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdOrg != null" >
+        #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isCritical != null" >
+        #{isCritical,jdbcType=INTEGER},
+      </if>
+      <if test="isKinshipCare != null" >
+        #{isKinshipCare,jdbcType=INTEGER},
+      </if>
+      <if test="isPrivilege != null" >
+        #{isPrivilege,jdbcType=INTEGER},
+      </if>
+      <if test="personPhone != null" >
+        #{personPhone,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.PatrolTaskDetailDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_patrol_task_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_patrol_task_detail
+    <set >
+      <if test="record.taskDetailId != null" >
+        task_detail_id = #{record.taskDetailId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.patrolTaskId != null" >
+        patrol_task_id = #{record.patrolTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgTaskId != null" >
+        org_task_id = #{record.orgTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.personName != null" >
+        person_name = #{record.personName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.personCode != null" >
+        person_code = #{record.personCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyCode != null" >
+        agency_code = #{record.agencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.preevaluateDate != null" >
+        preevaluate_date = #{record.preevaluateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.insuranceCode != null" >
+        insurance_code = #{record.insuranceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insuranceName != null" >
+        insurance_name = #{record.insuranceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insurancePapersType != null" >
+        insurance_papers_type = #{record.insurancePapersType,jdbcType=INTEGER},
+      </if>
+      <if test="record.insurancePapersNo != null" >
+        insurance_papers_no = #{record.insurancePapersNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insurancePhone != null" >
+        insurance_phone = #{record.insurancePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insuranceAddress != null" >
+        insurance_address = #{record.insuranceAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.longitude != null" >
+        longitude = #{record.longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.latitude != null" >
+        latitude = #{record.latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serviceType != null" >
+        service_type = #{record.serviceType,jdbcType=INTEGER},
+      </if>
+      <if test="record.serviceItems != null" >
+        service_items = #{record.serviceItems,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdOrg != null" >
+        created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null" >
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isCritical != null" >
+        is_critical = #{record.isCritical,jdbcType=INTEGER},
+      </if>
+      <if test="record.isKinshipCare != null" >
+        is_kinship_care = #{record.isKinshipCare,jdbcType=INTEGER},
+      </if>
+      <if test="record.isPrivilege != null" >
+        is_privilege = #{record.isPrivilege,jdbcType=INTEGER},
+      </if>
+      <if test="record.personPhone != null" >
+        person_phone = #{record.personPhone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_patrol_task_detail
+    set task_detail_id = #{record.taskDetailId,jdbcType=VARCHAR},
+      patrol_task_id = #{record.patrolTaskId,jdbcType=VARCHAR},
+      org_task_id = #{record.orgTaskId,jdbcType=VARCHAR},
+      person_name = #{record.personName,jdbcType=VARCHAR},
+      person_code = #{record.personCode,jdbcType=VARCHAR},
+      agency_code = #{record.agencyCode,jdbcType=VARCHAR},
+      preevaluate_date = #{record.preevaluateDate,jdbcType=TIMESTAMP},
+      insurance_code = #{record.insuranceCode,jdbcType=VARCHAR},
+      insurance_name = #{record.insuranceName,jdbcType=VARCHAR},
+      insurance_papers_type = #{record.insurancePapersType,jdbcType=INTEGER},
+      insurance_papers_no = #{record.insurancePapersNo,jdbcType=VARCHAR},
+      insurance_phone = #{record.insurancePhone,jdbcType=VARCHAR},
+      insurance_address = #{record.insuranceAddress,jdbcType=VARCHAR},
+      longitude = #{record.longitude,jdbcType=VARCHAR},
+      latitude = #{record.latitude,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      service_type = #{record.serviceType,jdbcType=INTEGER},
+      service_items = #{record.serviceItems,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      is_critical = #{record.isCritical,jdbcType=INTEGER},
+      is_kinship_care = #{record.isKinshipCare,jdbcType=INTEGER},
+      is_privilege = #{record.isPrivilege,jdbcType=INTEGER},
+      person_phone = #{record.personPhone,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.PatrolTaskDetailDO" >
+    update ltci_patrol_task_detail
+    <set >
+      <if test="patrolTaskId != null" >
+        patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgTaskId != null" >
+        org_task_id = #{orgTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="personName != null" >
+        person_name = #{personName,jdbcType=VARCHAR},
+      </if>
+      <if test="personCode != null" >
+        person_code = #{personCode,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyCode != null" >
+        agency_code = #{agencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="preevaluateDate != null" >
+        preevaluate_date = #{preevaluateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insuranceCode != null" >
+        insurance_code = #{insuranceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="insuranceName != null" >
+        insurance_name = #{insuranceName,jdbcType=VARCHAR},
+      </if>
+      <if test="insurancePapersType != null" >
+        insurance_papers_type = #{insurancePapersType,jdbcType=INTEGER},
+      </if>
+      <if test="insurancePapersNo != null" >
+        insurance_papers_no = #{insurancePapersNo,jdbcType=VARCHAR},
+      </if>
+      <if test="insurancePhone != null" >
+        insurance_phone = #{insurancePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="insuranceAddress != null" >
+        insurance_address = #{insuranceAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null" >
+        latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceType != null" >
+        service_type = #{serviceType,jdbcType=INTEGER},
+      </if>
+      <if test="serviceItems != null" >
+        service_items = #{serviceItems,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdOrg != null" >
+        created_org = #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isCritical != null" >
+        is_critical = #{isCritical,jdbcType=INTEGER},
+      </if>
+      <if test="isKinshipCare != null" >
+        is_kinship_care = #{isKinshipCare,jdbcType=INTEGER},
+      </if>
+      <if test="isPrivilege != null" >
+        is_privilege = #{isPrivilege,jdbcType=INTEGER},
+      </if>
+      <if test="personPhone != null" >
+        person_phone = #{personPhone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where task_detail_id = #{taskDetailId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.PatrolTaskDetailDO" >
+    update ltci_patrol_task_detail
+    set patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR},
+      org_task_id = #{orgTaskId,jdbcType=VARCHAR},
+      person_name = #{personName,jdbcType=VARCHAR},
+      person_code = #{personCode,jdbcType=VARCHAR},
+      agency_code = #{agencyCode,jdbcType=VARCHAR},
+      preevaluate_date = #{preevaluateDate,jdbcType=TIMESTAMP},
+      insurance_code = #{insuranceCode,jdbcType=VARCHAR},
+      insurance_name = #{insuranceName,jdbcType=VARCHAR},
+      insurance_papers_type = #{insurancePapersType,jdbcType=INTEGER},
+      insurance_papers_no = #{insurancePapersNo,jdbcType=VARCHAR},
+      insurance_phone = #{insurancePhone,jdbcType=VARCHAR},
+      insurance_address = #{insuranceAddress,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      service_type = #{serviceType,jdbcType=INTEGER},
+      service_items = #{serviceItems,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_org = #{createdOrg,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      is_critical = #{isCritical,jdbcType=INTEGER},
+      is_kinship_care = #{isKinshipCare,jdbcType=INTEGER},
+      is_privilege = #{isPrivilege,jdbcType=INTEGER},
+      person_phone = #{personPhone,jdbcType=VARCHAR}
+    where task_detail_id = #{taskDetailId,jdbcType=VARCHAR}
+  </update>
+</mapper>

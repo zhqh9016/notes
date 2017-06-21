@@ -1,0 +1,69 @@
+post:
+  tags:
+  - organizationManage
+  summary: 新增机构部门信息
+  description: 返回数值类型（返回值为200代表成功）。
+  operationId: addOrganization
+  parameters:
+  - name: parentid
+    in: formData
+    description: 父级id 顶级=0
+    required: true
+    type: string
+  - name: code
+    in: formData
+    description: 机构部门编码
+    required: true
+    type: string
+  - name: name
+    in: formData
+    description: 机构部门名称
+    required: true
+    type: string
+  - name: description
+    in: formData
+    description: 机构部门描述
+    required: true
+    type: string
+  - name: sequence
+    in: formData
+    description: 资源显示顺序
+    required: true
+    type: string
+  - name: provinceid
+    in: formData
+    description: 所在省ID
+    required: false
+    type: string
+  - name: cityid
+    in: formData
+    description: 所在市ID
+    required: false
+    type: string
+  - name: countyid
+    in: formData
+    description: 县ID
+    required: false
+    type: string
+  - name: street
+    in: formData
+    description: 街道信息
+    required: false
+    type: string
+  - name: phone
+    in: formData
+    description: 联系电话
+    required: false
+    type: string
+  - name: createdBy
+    in: formData
+    description: 创建人
+    required: true
+    type: string
+  responses:
+    200:
+      description: 创建成功
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-system-api-v1.yml/#/definitions/Response"

@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.IExecuteResultDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.ExecuteResultDO" >
+    <id column="execute_result_id" property="executeResultId" jdbcType="VARCHAR" />
+    <result column="patrol_task_id" property="patrolTaskId" jdbcType="VARCHAR" />
+    <result column="partol_time" property="partolTime" jdbcType="TIMESTAMP" />
+    <result column="receive_result_time" property="receiveResultTime" jdbcType="TIMESTAMP" />
+    <result column="result_type" property="resultType" jdbcType="INTEGER" />
+    <result column="result_desc" property="resultDesc" jdbcType="VARCHAR" />
+    <result column="audit_state" property="auditState" jdbcType="INTEGER" />
+    <result column="rejection_reason" property="rejectionReason" jdbcType="VARCHAR" />
+    <result column="auditor" property="auditor" jdbcType="VARCHAR" />
+    <result column="auditor_phone" property="auditorPhone" jdbcType="VARCHAR" />
+    <result column="result_inform_state" property="resultInformState" jdbcType="INTEGER" />
+    <result column="violation_item" property="violationItem" jdbcType="VARCHAR" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    execute_result_id, patrol_task_id, partol_time, receive_result_time, result_type, 
+    result_desc, audit_state, rejection_reason, auditor, auditor_phone, result_inform_state, 
+    violation_item, is_valid, si_area, operated_by, operated_org, operated_time, created_by, 
+    created_org, created_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.ExecuteResultDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ltci_execute_result
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ltci_execute_result
+    where execute_result_id = #{executeResultId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_execute_result
+    where execute_result_id = #{executeResultId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.ExecuteResultDOExample" >
+    delete from ltci_execute_result
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.ExecuteResultDO" >
+    insert into ltci_execute_result (execute_result_id, patrol_task_id, partol_time, 
+      receive_result_time, result_type, result_desc, 
+      audit_state, rejection_reason, auditor, 
+      auditor_phone, result_inform_state, violation_item, 
+      is_valid, si_area, operated_by, 
+      operated_org, operated_time, created_by, 
+      created_org, created_time)
+    values (#{executeResultId,jdbcType=VARCHAR}, #{patrolTaskId,jdbcType=VARCHAR}, #{partolTime,jdbcType=TIMESTAMP}, 
+      #{receiveResultTime,jdbcType=TIMESTAMP}, #{resultType,jdbcType=INTEGER}, #{resultDesc,jdbcType=VARCHAR}, 
+      #{auditState,jdbcType=INTEGER}, #{rejectionReason,jdbcType=VARCHAR}, #{auditor,jdbcType=VARCHAR}, 
+      #{auditorPhone,jdbcType=VARCHAR}, #{resultInformState,jdbcType=INTEGER}, #{violationItem,jdbcType=VARCHAR}, 
+      #{isValid,jdbcType=INTEGER}, #{siArea,jdbcType=VARCHAR}, #{operatedBy,jdbcType=VARCHAR}, 
+      #{operatedOrg,jdbcType=VARCHAR}, #{operatedTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createdOrg,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.ExecuteResultDO" >
+    insert into ltci_execute_result
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="executeResultId != null" >
+        execute_result_id,
+      </if>
+      <if test="patrolTaskId != null" >
+        patrol_task_id,
+      </if>
+      <if test="partolTime != null" >
+        partol_time,
+      </if>
+      <if test="receiveResultTime != null" >
+        receive_result_time,
+      </if>
+      <if test="resultType != null" >
+        result_type,
+      </if>
+      <if test="resultDesc != null" >
+        result_desc,
+      </if>
+      <if test="auditState != null" >
+        audit_state,
+      </if>
+      <if test="rejectionReason != null" >
+        rejection_reason,
+      </if>
+      <if test="auditor != null" >
+        auditor,
+      </if>
+      <if test="auditorPhone != null" >
+        auditor_phone,
+      </if>
+      <if test="resultInformState != null" >
+        result_inform_state,
+      </if>
+      <if test="violationItem != null" >
+        violation_item,
+      </if>
+      <if test="isValid != null" >
+        is_valid,
+      </if>
+      <if test="siArea != null" >
+        si_area,
+      </if>
+      <if test="operatedBy != null" >
+        operated_by,
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org,
+      </if>
+      <if test="operatedTime != null" >
+        operated_time,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="createdOrg != null" >
+        created_org,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="executeResultId != null" >
+        #{executeResultId,jdbcType=VARCHAR},
+      </if>
+      <if test="patrolTaskId != null" >
+        #{patrolTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="partolTime != null" >
+        #{partolTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiveResultTime != null" >
+        #{receiveResultTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="resultType != null" >
+        #{resultType,jdbcType=INTEGER},
+      </if>
+      <if test="resultDesc != null" >
+        #{resultDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="auditState != null" >
+        #{auditState,jdbcType=INTEGER},
+      </if>
+      <if test="rejectionReason != null" >
+        #{rejectionReason,jdbcType=VARCHAR},
+      </if>
+      <if test="auditor != null" >
+        #{auditor,jdbcType=VARCHAR},
+      </if>
+      <if test="auditorPhone != null" >
+        #{auditorPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="resultInformState != null" >
+        #{resultInformState,jdbcType=INTEGER},
+      </if>
+      <if test="violationItem != null" >
+        #{violationItem,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="siArea != null" >
+        #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedOrg != null" >
+        #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdOrg != null" >
+        #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.ExecuteResultDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_execute_result
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_execute_result
+    <set >
+      <if test="record.executeResultId != null" >
+        execute_result_id = #{record.executeResultId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.patrolTaskId != null" >
+        patrol_task_id = #{record.patrolTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.partolTime != null" >
+        partol_time = #{record.partolTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.receiveResultTime != null" >
+        receive_result_time = #{record.receiveResultTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.resultType != null" >
+        result_type = #{record.resultType,jdbcType=INTEGER},
+      </if>
+      <if test="record.resultDesc != null" >
+        result_desc = #{record.resultDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditState != null" >
+        audit_state = #{record.auditState,jdbcType=INTEGER},
+      </if>
+      <if test="record.rejectionReason != null" >
+        rejection_reason = #{record.rejectionReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditor != null" >
+        auditor = #{record.auditor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditorPhone != null" >
+        auditor_phone = #{record.auditorPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resultInformState != null" >
+        result_inform_state = #{record.resultInformState,jdbcType=INTEGER},
+      </if>
+      <if test="record.violationItem != null" >
+        violation_item = #{record.violationItem,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isValid != null" >
+        is_valid = #{record.isValid,jdbcType=INTEGER},
+      </if>
+      <if test="record.siArea != null" >
+        si_area = #{record.siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedBy != null" >
+        operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedOrg != null" >
+        operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedTime != null" >
+        operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdBy != null" >
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdOrg != null" >
+        created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null" >
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_execute_result
+    set execute_result_id = #{record.executeResultId,jdbcType=VARCHAR},
+      patrol_task_id = #{record.patrolTaskId,jdbcType=VARCHAR},
+      partol_time = #{record.partolTime,jdbcType=TIMESTAMP},
+      receive_result_time = #{record.receiveResultTime,jdbcType=TIMESTAMP},
+      result_type = #{record.resultType,jdbcType=INTEGER},
+      result_desc = #{record.resultDesc,jdbcType=VARCHAR},
+      audit_state = #{record.auditState,jdbcType=INTEGER},
+      rejection_reason = #{record.rejectionReason,jdbcType=VARCHAR},
+      auditor = #{record.auditor,jdbcType=VARCHAR},
+      auditor_phone = #{record.auditorPhone,jdbcType=VARCHAR},
+      result_inform_state = #{record.resultInformState,jdbcType=INTEGER},
+      violation_item = #{record.violationItem,jdbcType=VARCHAR},
+      is_valid = #{record.isValid,jdbcType=INTEGER},
+      si_area = #{record.siArea,jdbcType=VARCHAR},
+      operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.ExecuteResultDO" >
+    update ltci_execute_result
+    <set >
+      <if test="patrolTaskId != null" >
+        patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="partolTime != null" >
+        partol_time = #{partolTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiveResultTime != null" >
+        receive_result_time = #{receiveResultTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="resultType != null" >
+        result_type = #{resultType,jdbcType=INTEGER},
+      </if>
+      <if test="resultDesc != null" >
+        result_desc = #{resultDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="auditState != null" >
+        audit_state = #{auditState,jdbcType=INTEGER},
+      </if>
+      <if test="rejectionReason != null" >
+        rejection_reason = #{rejectionReason,jdbcType=VARCHAR},
+      </if>
+      <if test="auditor != null" >
+        auditor = #{auditor,jdbcType=VARCHAR},
+      </if>
+      <if test="auditorPhone != null" >
+        auditor_phone = #{auditorPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="resultInformState != null" >
+        result_inform_state = #{resultInformState,jdbcType=INTEGER},
+      </if>
+      <if test="violationItem != null" >
+        violation_item = #{violationItem,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="siArea != null" >
+        si_area = #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        operated_by = #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdOrg != null" >
+        created_org = #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where execute_result_id = #{executeResultId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.ExecuteResultDO" >
+    update ltci_execute_result
+    set patrol_task_id = #{patrolTaskId,jdbcType=VARCHAR},
+      partol_time = #{partolTime,jdbcType=TIMESTAMP},
+      receive_result_time = #{receiveResultTime,jdbcType=TIMESTAMP},
+      result_type = #{resultType,jdbcType=INTEGER},
+      result_desc = #{resultDesc,jdbcType=VARCHAR},
+      audit_state = #{auditState,jdbcType=INTEGER},
+      rejection_reason = #{rejectionReason,jdbcType=VARCHAR},
+      auditor = #{auditor,jdbcType=VARCHAR},
+      auditor_phone = #{auditorPhone,jdbcType=VARCHAR},
+      result_inform_state = #{resultInformState,jdbcType=INTEGER},
+      violation_item = #{violationItem,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      si_area = #{siArea,jdbcType=VARCHAR},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_org = #{createdOrg,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP}
+    where execute_result_id = #{executeResultId,jdbcType=VARCHAR}
+  </update>
+</mapper>

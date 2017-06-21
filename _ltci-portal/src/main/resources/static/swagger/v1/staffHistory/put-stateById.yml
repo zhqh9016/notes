@@ -1,0 +1,55 @@
+put:
+  tags:
+  - staffAccept
+  summary: 人员申请/变更 受理、审核
+  description: 根据人员历史流水号修改受理、审核状态[已受理、暂不受理、审核通过、审核不通过]
+  operationId: staffHistoryStateCase
+  parameters:
+   - name: serialNo
+     in: formData
+     description: 人员历史流水号
+     required: true
+     type: string
+   - name: staffCode
+     in: formData
+     description: 人员编码
+     required: true
+     type: string
+   - name: empCode
+     in: formData
+     description: 人员编码（专业服务提供的）
+     required: true
+     type: string
+   - name: actionType
+     in: formData
+     description: 操作类型
+     required: true
+     type: integer
+     format: int32  
+   - name: auditState
+     in: formData
+     description: 状态
+     required: true
+     type: integer
+     format: int32
+   - name: credentialNumber
+     in: formData
+     description: 身份证号
+     required: true
+     type: string
+   - name: cause
+     in: formData
+     description: 原因
+     required: false
+     type: string
+  responses:
+    200:
+      description: 待遇申请状态修改成功
+      schema:
+        type: object
+        items:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其它错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"

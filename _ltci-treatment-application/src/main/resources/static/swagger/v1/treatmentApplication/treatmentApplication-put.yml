@@ -1,0 +1,38 @@
+put:
+  tags:
+  - mobileTreatmentApplication
+  summary: 移动端待遇申请受理处理
+  description: 根据待遇申请编号修改待遇申请受理状态[已受理、暂不受理、审核通过、审核不通过]
+  operationId: treatmentApplicationCase
+  parameters:
+   - name: applicationCode
+     in: path
+     description: 待遇申请编号
+     required: true
+     type: string
+   - name: applicationStatus
+     in: path
+     description: 待遇申请状态
+     required: true
+     type: string
+   - name: applicationReason
+     in: path
+     description: 审核原因
+     required: false
+     type: string
+   - name: createdBy
+     in: path
+     description: 经办人
+     required: true
+     type: string
+  responses:
+    200:
+      description: 查询成功
+      schema:
+        type: array
+        items:
+          $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"
+    default:
+      description: 其它错误
+      schema:
+        $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"

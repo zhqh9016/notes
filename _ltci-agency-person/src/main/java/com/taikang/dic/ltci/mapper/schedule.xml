@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.ScheduleDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.ScheduleDO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="moudle_type" property="moudleType" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="execution_schedule" property="executionSchedule" jdbcType="INTEGER" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="time_window" property="timeWindow" jdbcType="INTEGER" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="execution_status" property="executionStatus" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, moudle_type, version, execution_schedule, operated_time, time_window, ip, execution_status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.ScheduleDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ltci_schedule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ltci_schedule
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_schedule
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.ScheduleDOExample" >
+    delete from ltci_schedule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.ScheduleDO" >
+    insert into ltci_schedule (id, moudle_type, version, 
+      execution_schedule, operated_time, time_window, 
+      ip, execution_status)
+    values (#{id,jdbcType=VARCHAR}, #{moudleType,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, 
+      #{executionSchedule,jdbcType=INTEGER}, #{operatedTime,jdbcType=TIMESTAMP}, #{timeWindow,jdbcType=INTEGER}, 
+      #{ip,jdbcType=VARCHAR}, #{executionStatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.ScheduleDO" >
+    insert into ltci_schedule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="moudleType != null" >
+        moudle_type,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="executionSchedule != null" >
+        execution_schedule,
+      </if>
+      <if test="operatedTime != null" >
+        operated_time,
+      </if>
+      <if test="timeWindow != null" >
+        time_window,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="executionStatus != null" >
+        execution_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="moudleType != null" >
+        #{moudleType,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="executionSchedule != null" >
+        #{executionSchedule,jdbcType=INTEGER},
+      </if>
+      <if test="operatedTime != null" >
+        #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeWindow != null" >
+        #{timeWindow,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="executionStatus != null" >
+        #{executionStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.ScheduleDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_schedule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_schedule
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.moudleType != null" >
+        moudle_type = #{record.moudleType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=BIGINT},
+      </if>
+      <if test="record.executionSchedule != null" >
+        execution_schedule = #{record.executionSchedule,jdbcType=INTEGER},
+      </if>
+      <if test="record.operatedTime != null" >
+        operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.timeWindow != null" >
+        time_window = #{record.timeWindow,jdbcType=INTEGER},
+      </if>
+      <if test="record.ip != null" >
+        ip = #{record.ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.executionStatus != null" >
+        execution_status = #{record.executionStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_schedule
+    set id = #{record.id,jdbcType=VARCHAR},
+      moudle_type = #{record.moudleType,jdbcType=VARCHAR},
+      version = #{record.version,jdbcType=BIGINT},
+      execution_schedule = #{record.executionSchedule,jdbcType=INTEGER},
+      operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      time_window = #{record.timeWindow,jdbcType=INTEGER},
+      ip = #{record.ip,jdbcType=VARCHAR},
+      execution_status = #{record.executionStatus,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.ScheduleDO" >
+    update ltci_schedule
+    <set >
+      <if test="moudleType != null" >
+        moudle_type = #{moudleType,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="executionSchedule != null" >
+        execution_schedule = #{executionSchedule,jdbcType=INTEGER},
+      </if>
+      <if test="operatedTime != null" >
+        operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeWindow != null" >
+        time_window = #{timeWindow,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="executionStatus != null" >
+        execution_status = #{executionStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.ScheduleDO" >
+    update ltci_schedule
+    set moudle_type = #{moudleType,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      execution_schedule = #{executionSchedule,jdbcType=INTEGER},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      time_window = #{timeWindow,jdbcType=INTEGER},
+      ip = #{ip,jdbcType=VARCHAR},
+      execution_status = #{executionStatus,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

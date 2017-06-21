@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.AgencyStaffUnionSpecDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.StaffHistoryDO" >
+    <id column="serial_no" property="serialNo" jdbcType="VARCHAR" />
+    <result column="action_type" property="actionType" jdbcType="VARCHAR" />
+    <result column="emp_code" property="empCode" jdbcType="VARCHAR" />
+    <result column="staff_code" property="staffCode" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+    <result column="staff_phone" property="staffPhone" jdbcType="VARCHAR" />
+    <result column="staff_level" property="staffLevel" jdbcType="VARCHAR" />
+    <result column="agency_code" property="agencyCode" jdbcType="VARCHAR" />
+    <result column="agency_name" property="agencyName" jdbcType="VARCHAR" />
+    <result column="credential_type" property="credentialType" jdbcType="INTEGER" />
+    <result column="credential_number" property="credentialNumber" jdbcType="VARCHAR" />
+    <result column="credential_validity_date" property="credentialValidityDate" jdbcType="TIMESTAMP" />
+    <result column="staff_gender" property="staffGender" jdbcType="INTEGER" />
+    <result column="highest_education" property="highestEducation" jdbcType="VARCHAR" />
+    <result column="acquire_degree" property="acquireDegree" jdbcType="VARCHAR" />
+    <result column="certificate_date" property="certificateDate" jdbcType="TIMESTAMP" />
+    <result column="job_scope" property="jobScope" jdbcType="VARCHAR" />
+    <result column="qualification_certification_number" property="qualificationCertificationNumber" jdbcType="VARCHAR" />
+    <result column="qualification_level" property="qualificationLevel" jdbcType="INTEGER" />
+    <result column="qualification_certification_date" property="qualificationCertificationDate" jdbcType="TIMESTAMP" />
+    <result column="practice_certification_number" property="practiceCertificationNumber" jdbcType="VARCHAR" />
+    <result column="practice_level" property="practiceLevel" jdbcType="INTEGER" />
+    <result column="practice_certification_date" property="practiceCertificationDate" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="unique_number" property="uniqueNumber" jdbcType="VARCHAR" />
+    <result column="audit_state" property="auditState" jdbcType="INTEGER" />
+    <result column="cause" property="cause" jdbcType="VARCHAR" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.StaffHistoryUnionExample" resultType="java.lang.Integer" >
+    select count(*)
+	from ltci_staff_history s
+	LEFT JOIN ltci_agency a on s.agency_code = a.agency_code
+	where s.is_valid ='1' 
+	<if test="example.actionType != null" > and s.action_type = #{example.actionType ,jdbcType=VARCHAR} </if>
+	<if test="example.staffName != null" > and s.staff_name like #{example.staffName ,jdbcType=VARCHAR} </if>
+	<if test="example.agencyName != null" >and s.agency_name like #{example.agencyName ,jdbcType=VARCHAR} </if>
+	<if test="example.auditState != null" >
+		 and s.audit_state in
+      <foreach collection="example.auditState" item="listItem" open="(" close=")" separator="," >
+           #{listItem}
+      </foreach>
+	</if>
+	<if test="example.beginTime != null and example.endTime != null" >and s.created_time 
+		between #{example.beginTime ,jdbcType=TIMESTAMP} and #{example.endTime ,jdbcType=TIMESTAMP} </if>
+	<choose >
+	<when test="example.isBetweenOne" >
+		<if test="example.beginTime != null " >and s.created_time  >= #{example.beginTime ,jdbcType=TIMESTAMP} </if>
+		<if test="example.endTime != null" >and s.created_time  &lt;= #{example.endTime ,jdbcType=TIMESTAMP} </if>
+	</when>
+	</choose>
+	<choose >
+	<when test="example.isHasAgencyType" >
+      <foreach collection="example.agencyType" item="listItem">
+          and FIND_IN_SET(#{listItem},a.agency_type)
+      </foreach>
+    </when>
+    </choose>
+	<choose >
+	<when test="example.isHasDisAgType" >
+      <foreach collection="example.dsignatedAgencyType" item="listItem" >
+          and FIND_IN_SET(#{listItem},a.agency_service_type)
+      </foreach>
+    </when>
+    </choose>
+    <choose >
+	<when test="example.isAgencyLevel" >
+      and a.agency_level  in
+      <foreach collection="example.agencyLevel" item="listItem" open="(" close=")" separator="," >
+           #{listItem}
+      </foreach>
+    </when>
+    </choose>
+    <choose >
+	<when test="example.jobScope" >
+      <foreach collection="example.jobScope" item="listItem"  >
+           and s.job_scope  like #{listItem}
+      </foreach>
+    </when>
+    </choose>
+  </select>
+    <select id="selectByExample" parameterType="com.taikang.dic.ltci.model.StaffHistoryUnionExample" resultMap="BaseResultMap">
+    select s.serial_no, s.action_type, s.staff_code, s.staff_name, s.agency_code, s.agency_name, s.audit_state, s.cause, s.is_valid,
+     s.credential_number, s.qualification_level, s.staff_level, s.created_by, s.created_time, s.job_scope
+	from ltci_staff_history s
+	LEFT JOIN ltci_agency a on s.agency_code = a.agency_code
+	where s.is_valid ='1' 
+	<if test="example.actionType != null" > and s.action_type = #{example.actionType ,jdbcType=VARCHAR} </if>
+	<if test="example.staffName != null" > and s.staff_name like #{example.staffName ,jdbcType=VARCHAR} </if>
+	<if test="example.agencyName != null" >and s.agency_name like #{example.agencyName ,jdbcType=VARCHAR} </if>
+	<if test="example.auditState != null" >
+		 and s.audit_state in
+      <foreach collection="example.auditState" item="listItem" open="(" close=")" separator="," >
+           #{listItem}
+      </foreach>
+	</if>
+	<if test="example.beginTime != null and example.endTime != null" >and s.created_time 
+		between #{example.beginTime ,jdbcType=TIMESTAMP} and #{example.endTime ,jdbcType=TIMESTAMP} </if>
+	<choose >
+	<when test="example.isBetweenOne" >
+		<if test="example.beginTime != null " >and s.created_time  >= #{example.beginTime ,jdbcType=TIMESTAMP} </if>
+		<if test="example.endTime != null" >and s.created_time  &lt;= #{example.endTime ,jdbcType=TIMESTAMP} </if>
+	</when>
+	</choose>
+	<choose >
+	<when test="example.isHasAgencyType" >
+      <foreach collection="example.agencyType" item="listItem">
+          and FIND_IN_SET(#{listItem},a.agency_type)
+      </foreach>
+    </when>
+    </choose>
+	<choose >
+	<when test="example.isHasDisAgType" >
+      <foreach collection="example.dsignatedAgencyType" item="listItem" >
+          and FIND_IN_SET(#{listItem},a.agency_service_type)
+      </foreach>
+    </when>
+    </choose>
+    <choose >
+	<when test="example.isAgencyLevel" >
+      and a.agency_level  in
+      <foreach collection="example.agencyLevel" item="listItem" open="(" close=")" separator="," >
+           #{listItem}
+      </foreach>
+    </when>
+    </choose>
+    <choose >
+	<when test="example.jobScope" >
+      <foreach collection="example.jobScope" item="listItem" >
+           and s.job_scope  like #{listItem}
+      </foreach>
+    </when>
+    </choose>
+    order by s.created_time desc
+    limit  #{example.beginNum},#{example.endNum}
+  </select>
+</mapper>

@@ -1,0 +1,218 @@
+put:
+  tags:
+  - insuredPerson
+  summary: 经办人员编辑参保人信息
+  description: 经办人员根据参保人ID编辑参保人信息。
+  operationId: updateInsuredPerson
+  parameters:
+  - name: insuredPersonid
+    in: formData
+    description: 参保人表主键
+    required: true
+    type: string
+  - name: insuredPersonCode
+    in: formData
+    description: 参保人ID
+    required: true
+    type: string
+  - name: personnelIdentityCode
+    in: formData
+    type: string
+    required: false
+    description: 人员身份编码
+  - name: personnelIdentityName
+    in: formData
+    type: string
+    required: false
+    description: 人员身份名称
+  - name: mobile
+    in: formData
+    type: string
+    required: true
+    description: 联系方式
+  - name: address
+    in: formData
+    type: string
+    required: true
+    description: 家庭住址
+  - name: email
+    in: formData
+    type: string
+    required: false
+    description: 邮箱地址
+  - name: orgName
+    in: formData
+    type: string
+    required: true
+    description: 单位名称
+  - name: married
+    in: formData
+    type: string
+    required: true
+    description: 婚姻状况
+  - name: educationid
+    in: formData
+    type: string
+    required: true
+    description: 文化程度
+  - name: politicsid
+    in: formData
+    type: string
+    required: true
+    description: 政治面貌
+  - name: occupationid
+    in: formData
+    type: string
+    required: true
+    description: 所属职业
+  - name: provinceCode
+    in: formData
+    type: string
+    required: false
+    description: 所属省份
+  - name: cityCode
+    in: formData
+    type: string
+    required: false
+    description: 所属城市
+  - name: areaCode
+    in: formData
+    type: string
+    required: true
+    description: 所属区域
+  responses:
+    200:
+      description: 编辑成功
+      schema:
+        $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"
+
+
+post:
+  tags:
+  - insuredPerson
+  summary: 经办人员新增参保人信息
+  description: 返回参保人新增结果状态。
+  operationId: createInsuredPerson
+  parameters:
+  - name: idCard
+    in: formData
+    description: 用户身份证号
+    required: true
+    type: string
+  - name: insuredPersonName
+    in: formData
+    description: 参保人姓名
+    required: true
+    type: string
+  - name: insuredPersonGender
+    in: formData
+    description: 参保人性别
+    required: true
+    type: string
+  - name: nation
+    in: formData
+    description: 民族
+    required: true
+    type: string
+  - name: birthday
+    in: formData
+    type: string
+    description: 出生日期
+    required: true
+  - name: securityNumber
+    in: formData
+    type: string
+    required: true
+    description: 参保人社保卡号
+  - name: securityPersonalNumber
+    in: formData
+    type: string
+    required: false
+    description: 参保人个人编号
+  - name: idCard
+    in: formData
+    type: string
+    required: true
+    description: 参保人身份证号
+  - name: personnelIdentityCode
+    in: formData
+    type: string
+    required: false
+    description: 人员身份编码
+  - name: personnelIdentityName
+    in: formData
+    type: string
+    required: false
+    description: 人员身份名称
+  - name: mobile
+    in: formData
+    type: string
+    required: true
+    description: 联系方式
+  - name: address
+    in: formData
+    type: string
+    required: true
+    description: 家庭住址
+  - name: email
+    in: formData
+    type: string
+    required: false
+    description: 邮箱地址
+  - name: orgName
+    in: formData
+    type: string
+    required: true
+    description: 单位名称
+  - name: married
+    in: formData
+    type: string
+    required: true
+    description: 婚姻状况
+  - name: educationid
+    in: formData
+    type: string
+    required: true
+    description: 文化程度
+  - name: politicsid
+    in: formData
+    type: string
+    required: true
+    description: 政治面貌
+  - name: occupationid
+    in: formData
+    type: string
+    required: true
+    description: 所属职业
+  - name: provinceCode
+    in: formData
+    type: string
+    required: false
+    description: 所属省份
+  - name: cityCode
+    in: formData
+    type: string
+    required: false
+    description: 所属城市
+  - name: areaCode
+    in: formData
+    type: string
+    required: true
+    description: 所属区域
+  responses:
+    200:
+      description: 添加成功
+      schema:
+        $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-api-v1.yml/#/definitions/RestResponseDTO"
+
+
+
+

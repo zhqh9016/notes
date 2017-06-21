@@ -1,0 +1,50 @@
+post:
+  tags:
+  - resManage
+  summary: 新增资源信息
+  description: 返回数值类型（大于0为成功）。
+  operationId: createRes
+  parameters:
+  - name: parentId
+    in: formData
+    description: 父级id 顶级=0
+    required: true
+    type: string
+  - name: resName
+    in: formData
+    description: 资源名称
+    required: false
+    type: string
+  - name: description
+    in: formData
+    description: 资源描述
+    required: false
+    type: string
+  - name: url
+    in: formData
+    description: 资源链接
+    required: false
+    type: string
+  - name: sequence
+    in: formData
+    description: 资源显示顺序
+    required: false
+    type: string
+  - name: isMenu
+    in: formData
+    description: 是否是菜单(1-是 0-否)
+    required: false
+    type: integer
+    format: int32
+  - name: createBy
+    in: formData
+    description: 创建人
+    required: true
+    type: string
+  responses:
+    200:
+      description: 创建成功
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/Response"

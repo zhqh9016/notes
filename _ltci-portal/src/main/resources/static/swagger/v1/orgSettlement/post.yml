@@ -1,0 +1,41 @@
+post:
+  tags:
+  - orgSettlement
+  summary: 保存审核通过的机构费用信息
+  description: 返回成功或失败标识
+  operationId: saveOrgSettlement
+  parameters:
+  - name: id
+    in: formData
+    description: id（当保存复核失败的记录时必传）
+    required: false
+    type: string
+  - name: orgCode
+    in: formData
+    description: 护理机构编号
+    required: true
+    type: string
+  - name: createdOrg
+    in: formData
+    description: 经办机构编号
+    required: true
+    type: string
+  - name: feeStarttime
+    in: formData
+    description: 费用开始日期
+    required: true
+    type: string
+  - name: feeEndtime
+    in: formData
+    description: 费用终止日期
+    required: true
+    type: string
+  responses:
+    200:
+      description: 查询成功
+      schema:
+          $ref: "../../ltci-portal-api-v1.yml/#/definitions/ResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-portal-api-v1.yml/#/definitions/Response"

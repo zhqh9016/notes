@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taikang.dic.ltci.dao.StaffDAO" >
+  <resultMap id="BaseResultMap" type="com.taikang.dic.ltci.model.StaffDO" >
+    <id column="staffid" property="staffid" jdbcType="VARCHAR" />
+    <result column="emp_code" property="empCode" jdbcType="VARCHAR" />
+    <result column="staff_code" property="staffCode" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+    <result column="agency_code" property="agencyCode" jdbcType="VARCHAR" />
+    <result column="staff_phone" property="staffPhone" jdbcType="VARCHAR" />
+    <result column="credential_type" property="credentialType" jdbcType="INTEGER" />
+    <result column="credential_number" property="credentialNumber" jdbcType="VARCHAR" />
+    <result column="credential_validity_date" property="credentialValidityDate" jdbcType="TIMESTAMP" />
+    <result column="staff_gender" property="staffGender" jdbcType="INTEGER" />
+    <result column="highest_education" property="highestEducation" jdbcType="VARCHAR" />
+    <result column="acquire_degree" property="acquireDegree" jdbcType="VARCHAR" />
+    <result column="certificate_date" property="certificateDate" jdbcType="TIMESTAMP" />
+    <result column="job_scope" property="jobScope" jdbcType="VARCHAR" />
+    <result column="qualification_certification_number" property="qualificationCertificationNumber" jdbcType="VARCHAR" />
+    <result column="qualification_level" property="qualificationLevel" jdbcType="INTEGER" />
+    <result column="qualification_certification_date" property="qualificationCertificationDate" jdbcType="TIMESTAMP" />
+    <result column="practice_certification_number" property="practiceCertificationNumber" jdbcType="VARCHAR" />
+    <result column="practice_level" property="practiceLevel" jdbcType="INTEGER" />
+    <result column="practice_certification_date" property="practiceCertificationDate" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="audit_state" property="auditState" jdbcType="INTEGER" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="si_area" property="siArea" jdbcType="VARCHAR" />
+    <result column="operated_by" property="operatedBy" jdbcType="VARCHAR" />
+    <result column="operated_org" property="operatedOrg" jdbcType="VARCHAR" />
+    <result column="operated_time" property="operatedTime" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_org" property="createdOrg" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    staffid, emp_code, staff_code, staff_name, agency_code, staff_phone, credential_type, 
+    credential_number, credential_validity_date, staff_gender, highest_education, acquire_degree, 
+    certificate_date, job_scope, qualification_certification_number, qualification_level, 
+    qualification_certification_date, practice_certification_number, practice_level, 
+    practice_certification_date, remark, audit_state, is_valid, si_area, operated_by, 
+    operated_org, operated_time, created_by, created_org, created_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.taikang.dic.ltci.model.StaffDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ltci_staff
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ltci_staff
+    where staffid = #{staffid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ltci_staff
+    where staffid = #{staffid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.taikang.dic.ltci.model.StaffDOExample" >
+    delete from ltci_staff
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.taikang.dic.ltci.model.StaffDO" >
+    insert into ltci_staff (staffid, emp_code, staff_code, 
+      staff_name, agency_code, staff_phone, 
+      credential_type, credential_number, credential_validity_date, 
+      staff_gender, highest_education, acquire_degree, 
+      certificate_date, job_scope, qualification_certification_number, 
+      qualification_level, qualification_certification_date, 
+      practice_certification_number, practice_level, 
+      practice_certification_date, remark, audit_state, 
+      is_valid, si_area, operated_by, 
+      operated_org, operated_time, created_by, 
+      created_org, created_time)
+    values (#{staffid,jdbcType=VARCHAR}, #{empCode,jdbcType=VARCHAR}, #{staffCode,jdbcType=VARCHAR}, 
+      #{staffName,jdbcType=VARCHAR}, #{agencyCode,jdbcType=VARCHAR}, #{staffPhone,jdbcType=VARCHAR}, 
+      #{credentialType,jdbcType=INTEGER}, #{credentialNumber,jdbcType=VARCHAR}, #{credentialValidityDate,jdbcType=TIMESTAMP}, 
+      #{staffGender,jdbcType=INTEGER}, #{highestEducation,jdbcType=VARCHAR}, #{acquireDegree,jdbcType=VARCHAR}, 
+      #{certificateDate,jdbcType=TIMESTAMP}, #{jobScope,jdbcType=VARCHAR}, #{qualificationCertificationNumber,jdbcType=VARCHAR}, 
+      #{qualificationLevel,jdbcType=INTEGER}, #{qualificationCertificationDate,jdbcType=TIMESTAMP}, 
+      #{practiceCertificationNumber,jdbcType=VARCHAR}, #{practiceLevel,jdbcType=INTEGER}, 
+      #{practiceCertificationDate,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{auditState,jdbcType=INTEGER}, 
+      #{isValid,jdbcType=INTEGER}, #{siArea,jdbcType=VARCHAR}, #{operatedBy,jdbcType=VARCHAR}, 
+      #{operatedOrg,jdbcType=VARCHAR}, #{operatedTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createdOrg,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taikang.dic.ltci.model.StaffDO" >
+    insert into ltci_staff
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="staffid != null" >
+        staffid,
+      </if>
+      <if test="empCode != null" >
+        emp_code,
+      </if>
+      <if test="staffCode != null" >
+        staff_code,
+      </if>
+      <if test="staffName != null" >
+        staff_name,
+      </if>
+      <if test="agencyCode != null" >
+        agency_code,
+      </if>
+      <if test="staffPhone != null" >
+        staff_phone,
+      </if>
+      <if test="credentialType != null" >
+        credential_type,
+      </if>
+      <if test="credentialNumber != null" >
+        credential_number,
+      </if>
+      <if test="credentialValidityDate != null" >
+        credential_validity_date,
+      </if>
+      <if test="staffGender != null" >
+        staff_gender,
+      </if>
+      <if test="highestEducation != null" >
+        highest_education,
+      </if>
+      <if test="acquireDegree != null" >
+        acquire_degree,
+      </if>
+      <if test="certificateDate != null" >
+        certificate_date,
+      </if>
+      <if test="jobScope != null" >
+        job_scope,
+      </if>
+      <if test="qualificationCertificationNumber != null" >
+        qualification_certification_number,
+      </if>
+      <if test="qualificationLevel != null" >
+        qualification_level,
+      </if>
+      <if test="qualificationCertificationDate != null" >
+        qualification_certification_date,
+      </if>
+      <if test="practiceCertificationNumber != null" >
+        practice_certification_number,
+      </if>
+      <if test="practiceLevel != null" >
+        practice_level,
+      </if>
+      <if test="practiceCertificationDate != null" >
+        practice_certification_date,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="auditState != null" >
+        audit_state,
+      </if>
+      <if test="isValid != null" >
+        is_valid,
+      </if>
+      <if test="siArea != null" >
+        si_area,
+      </if>
+      <if test="operatedBy != null" >
+        operated_by,
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org,
+      </if>
+      <if test="operatedTime != null" >
+        operated_time,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="createdOrg != null" >
+        created_org,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="staffid != null" >
+        #{staffid,jdbcType=VARCHAR},
+      </if>
+      <if test="empCode != null" >
+        #{empCode,jdbcType=VARCHAR},
+      </if>
+      <if test="staffCode != null" >
+        #{staffCode,jdbcType=VARCHAR},
+      </if>
+      <if test="staffName != null" >
+        #{staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyCode != null" >
+        #{agencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="staffPhone != null" >
+        #{staffPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="credentialType != null" >
+        #{credentialType,jdbcType=INTEGER},
+      </if>
+      <if test="credentialNumber != null" >
+        #{credentialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="credentialValidityDate != null" >
+        #{credentialValidityDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="staffGender != null" >
+        #{staffGender,jdbcType=INTEGER},
+      </if>
+      <if test="highestEducation != null" >
+        #{highestEducation,jdbcType=VARCHAR},
+      </if>
+      <if test="acquireDegree != null" >
+        #{acquireDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="certificateDate != null" >
+        #{certificateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jobScope != null" >
+        #{jobScope,jdbcType=VARCHAR},
+      </if>
+      <if test="qualificationCertificationNumber != null" >
+        #{qualificationCertificationNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="qualificationLevel != null" >
+        #{qualificationLevel,jdbcType=INTEGER},
+      </if>
+      <if test="qualificationCertificationDate != null" >
+        #{qualificationCertificationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="practiceCertificationNumber != null" >
+        #{practiceCertificationNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="practiceLevel != null" >
+        #{practiceLevel,jdbcType=INTEGER},
+      </if>
+      <if test="practiceCertificationDate != null" >
+        #{practiceCertificationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="auditState != null" >
+        #{auditState,jdbcType=INTEGER},
+      </if>
+      <if test="isValid != null" >
+        #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="siArea != null" >
+        #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedOrg != null" >
+        #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdOrg != null" >
+        #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.taikang.dic.ltci.model.StaffDOExample" resultType="java.lang.Integer" >
+    select count(*) from ltci_staff
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ltci_staff
+    <set >
+      <if test="record.staffid != null" >
+        staffid = #{record.staffid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.empCode != null" >
+        emp_code = #{record.empCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.staffCode != null" >
+        staff_code = #{record.staffCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.staffName != null" >
+        staff_name = #{record.staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyCode != null" >
+        agency_code = #{record.agencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.staffPhone != null" >
+        staff_phone = #{record.staffPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.credentialType != null" >
+        credential_type = #{record.credentialType,jdbcType=INTEGER},
+      </if>
+      <if test="record.credentialNumber != null" >
+        credential_number = #{record.credentialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.credentialValidityDate != null" >
+        credential_validity_date = #{record.credentialValidityDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.staffGender != null" >
+        staff_gender = #{record.staffGender,jdbcType=INTEGER},
+      </if>
+      <if test="record.highestEducation != null" >
+        highest_education = #{record.highestEducation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.acquireDegree != null" >
+        acquire_degree = #{record.acquireDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="record.certificateDate != null" >
+        certificate_date = #{record.certificateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.jobScope != null" >
+        job_scope = #{record.jobScope,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qualificationCertificationNumber != null" >
+        qualification_certification_number = #{record.qualificationCertificationNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qualificationLevel != null" >
+        qualification_level = #{record.qualificationLevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.qualificationCertificationDate != null" >
+        qualification_certification_date = #{record.qualificationCertificationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.practiceCertificationNumber != null" >
+        practice_certification_number = #{record.practiceCertificationNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.practiceLevel != null" >
+        practice_level = #{record.practiceLevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.practiceCertificationDate != null" >
+        practice_certification_date = #{record.practiceCertificationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditState != null" >
+        audit_state = #{record.auditState,jdbcType=INTEGER},
+      </if>
+      <if test="record.isValid != null" >
+        is_valid = #{record.isValid,jdbcType=INTEGER},
+      </if>
+      <if test="record.siArea != null" >
+        si_area = #{record.siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedBy != null" >
+        operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedOrg != null" >
+        operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatedTime != null" >
+        operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdBy != null" >
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdOrg != null" >
+        created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null" >
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ltci_staff
+    set staffid = #{record.staffid,jdbcType=VARCHAR},
+      emp_code = #{record.empCode,jdbcType=VARCHAR},
+      staff_code = #{record.staffCode,jdbcType=VARCHAR},
+      staff_name = #{record.staffName,jdbcType=VARCHAR},
+      agency_code = #{record.agencyCode,jdbcType=VARCHAR},
+      staff_phone = #{record.staffPhone,jdbcType=VARCHAR},
+      credential_type = #{record.credentialType,jdbcType=INTEGER},
+      credential_number = #{record.credentialNumber,jdbcType=VARCHAR},
+      credential_validity_date = #{record.credentialValidityDate,jdbcType=TIMESTAMP},
+      staff_gender = #{record.staffGender,jdbcType=INTEGER},
+      highest_education = #{record.highestEducation,jdbcType=VARCHAR},
+      acquire_degree = #{record.acquireDegree,jdbcType=VARCHAR},
+      certificate_date = #{record.certificateDate,jdbcType=TIMESTAMP},
+      job_scope = #{record.jobScope,jdbcType=VARCHAR},
+      qualification_certification_number = #{record.qualificationCertificationNumber,jdbcType=VARCHAR},
+      qualification_level = #{record.qualificationLevel,jdbcType=INTEGER},
+      qualification_certification_date = #{record.qualificationCertificationDate,jdbcType=TIMESTAMP},
+      practice_certification_number = #{record.practiceCertificationNumber,jdbcType=VARCHAR},
+      practice_level = #{record.practiceLevel,jdbcType=INTEGER},
+      practice_certification_date = #{record.practiceCertificationDate,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      audit_state = #{record.auditState,jdbcType=INTEGER},
+      is_valid = #{record.isValid,jdbcType=INTEGER},
+      si_area = #{record.siArea,jdbcType=VARCHAR},
+      operated_by = #{record.operatedBy,jdbcType=VARCHAR},
+      operated_org = #{record.operatedOrg,jdbcType=VARCHAR},
+      operated_time = #{record.operatedTime,jdbcType=TIMESTAMP},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      created_org = #{record.createdOrg,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taikang.dic.ltci.model.StaffDO" >
+    update ltci_staff
+    <set >
+      <if test="empCode != null" >
+        emp_code = #{empCode,jdbcType=VARCHAR},
+      </if>
+      <if test="staffCode != null" >
+        staff_code = #{staffCode,jdbcType=VARCHAR},
+      </if>
+      <if test="staffName != null" >
+        staff_name = #{staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyCode != null" >
+        agency_code = #{agencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="staffPhone != null" >
+        staff_phone = #{staffPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="credentialType != null" >
+        credential_type = #{credentialType,jdbcType=INTEGER},
+      </if>
+      <if test="credentialNumber != null" >
+        credential_number = #{credentialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="credentialValidityDate != null" >
+        credential_validity_date = #{credentialValidityDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="staffGender != null" >
+        staff_gender = #{staffGender,jdbcType=INTEGER},
+      </if>
+      <if test="highestEducation != null" >
+        highest_education = #{highestEducation,jdbcType=VARCHAR},
+      </if>
+      <if test="acquireDegree != null" >
+        acquire_degree = #{acquireDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="certificateDate != null" >
+        certificate_date = #{certificateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jobScope != null" >
+        job_scope = #{jobScope,jdbcType=VARCHAR},
+      </if>
+      <if test="qualificationCertificationNumber != null" >
+        qualification_certification_number = #{qualificationCertificationNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="qualificationLevel != null" >
+        qualification_level = #{qualificationLevel,jdbcType=INTEGER},
+      </if>
+      <if test="qualificationCertificationDate != null" >
+        qualification_certification_date = #{qualificationCertificationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="practiceCertificationNumber != null" >
+        practice_certification_number = #{practiceCertificationNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="practiceLevel != null" >
+        practice_level = #{practiceLevel,jdbcType=INTEGER},
+      </if>
+      <if test="practiceCertificationDate != null" >
+        practice_certification_date = #{practiceCertificationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="auditState != null" >
+        audit_state = #{auditState,jdbcType=INTEGER},
+      </if>
+      <if test="isValid != null" >
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="siArea != null" >
+        si_area = #{siArea,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedBy != null" >
+        operated_by = #{operatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedOrg != null" >
+        operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="operatedTime != null" >
+        operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdOrg != null" >
+        created_org = #{createdOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where staffid = #{staffid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taikang.dic.ltci.model.StaffDO" >
+    update ltci_staff
+    set emp_code = #{empCode,jdbcType=VARCHAR},
+      staff_code = #{staffCode,jdbcType=VARCHAR},
+      staff_name = #{staffName,jdbcType=VARCHAR},
+      agency_code = #{agencyCode,jdbcType=VARCHAR},
+      staff_phone = #{staffPhone,jdbcType=VARCHAR},
+      credential_type = #{credentialType,jdbcType=INTEGER},
+      credential_number = #{credentialNumber,jdbcType=VARCHAR},
+      credential_validity_date = #{credentialValidityDate,jdbcType=TIMESTAMP},
+      staff_gender = #{staffGender,jdbcType=INTEGER},
+      highest_education = #{highestEducation,jdbcType=VARCHAR},
+      acquire_degree = #{acquireDegree,jdbcType=VARCHAR},
+      certificate_date = #{certificateDate,jdbcType=TIMESTAMP},
+      job_scope = #{jobScope,jdbcType=VARCHAR},
+      qualification_certification_number = #{qualificationCertificationNumber,jdbcType=VARCHAR},
+      qualification_level = #{qualificationLevel,jdbcType=INTEGER},
+      qualification_certification_date = #{qualificationCertificationDate,jdbcType=TIMESTAMP},
+      practice_certification_number = #{practiceCertificationNumber,jdbcType=VARCHAR},
+      practice_level = #{practiceLevel,jdbcType=INTEGER},
+      practice_certification_date = #{practiceCertificationDate,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      audit_state = #{auditState,jdbcType=INTEGER},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      si_area = #{siArea,jdbcType=VARCHAR},
+      operated_by = #{operatedBy,jdbcType=VARCHAR},
+      operated_org = #{operatedOrg,jdbcType=VARCHAR},
+      operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_org = #{createdOrg,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP}
+    where staffid = #{staffid,jdbcType=VARCHAR}
+  </update>
+</mapper>

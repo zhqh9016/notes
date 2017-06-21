@@ -1,0 +1,78 @@
+get:
+  tags:
+  - agencyUpdate
+  summary: 机构审核查询
+  description: 机构审核查询
+  operationId: listAgencyAudit
+  parameters:
+  - name: agencyName
+    in: query
+    description: 机构名称
+    required: false
+    type: string
+  - name: agencyLevel
+    in: query
+    description: 定点机构类别
+    required: false
+    type: string
+  - name: agencyServiceType
+    in: query
+    description: 定点服务机构类型（多个逗号分隔）
+    required: false
+    type: string
+  - name: agencyType
+    in: query
+    description: 机构类型（多个逗号分隔）
+    required: false
+    type: string
+  - name: agencyState
+    in: query
+    description: 确认状态
+    required: false
+    type: string
+  - name: operatedBeginDate
+    in: query
+    description: 经办开始日期
+    required: false
+    type: string
+  - name: operatedEndDate
+    in: query
+    description: 经办结束日期
+    required: false
+    type: string
+  - name: applyBeginDate
+    in: query
+    description: 申请开始日期
+    required: false
+    type: string
+  - name: applyEndDate
+    in: query
+    description: 申请结束日期
+    required: false
+    type: string
+  - name: actionType
+    in: query
+    description: 操作类型（1：新增 2：变更）
+    required: false
+    type: string
+  - name: page
+    in: query
+    description: 当前页码
+    required: true
+    type: integer
+    format: int32
+  - name: pageSize
+    in: query
+    description: 每页显示件数
+    required: true
+    type: integer
+    format: int32
+  responses:
+    200:
+      description: 查询成功
+      schema:
+          $ref: "../../ltci-agency-person-api-v1.yml/#/definitions/PageResultDTO"
+    default:
+      description: 其他错误
+      schema:
+        $ref: "../../ltci-agency-person-api-v1.yml/#/definitions/Response"
