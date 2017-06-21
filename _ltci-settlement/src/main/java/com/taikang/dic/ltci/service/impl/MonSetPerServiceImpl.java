@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.deser.std.DateDeserializers.CalendarDeseri
 import com.taikang.dic.ltci.api.model.CheckInDTO;
 import com.taikang.dic.ltci.api.model.ResultDTO;
 import com.taikang.dic.ltci.common.ConstantUtil;
+import com.taikang.dic.ltci.common.IsValidEnum;
 import com.taikang.dic.ltci.common.enumeration.InHospStateEnum;
 import com.taikang.dic.ltci.common.enumeration.OperationTypeEnum;
 import com.taikang.dic.ltci.common.enumeration.StatusCodeEnum;
@@ -35,6 +36,7 @@ import com.taikang.dic.ltci.common.util.UrlUtil;
 import com.taikang.dic.ltci.dao.CustomNurseDetailDAO;
 import com.taikang.dic.ltci.dao.DaySetPerDAO;
 import com.taikang.dic.ltci.dao.IGenericDAO;
+import com.taikang.dic.ltci.dao.INurseDetailDAO;
 import com.taikang.dic.ltci.dao.MonSetPerDAO;
 import com.taikang.dic.ltci.dao.MqMessageLogDAO;
 import com.taikang.dic.ltci.model.InsuredPersonDO;
@@ -42,6 +44,8 @@ import com.taikang.dic.ltci.model.MonSetPerDO;
 import com.taikang.dic.ltci.model.MonSetPerDOExample;
 import com.taikang.dic.ltci.model.MonSetPerDOExample.Criteria;
 import com.taikang.dic.ltci.model.MqFailMessageLogDO;
+import com.taikang.dic.ltci.model.NurseDetailDO;
+import com.taikang.dic.ltci.model.NurseDetailDOExample;
 import com.taikang.dic.ltci.model.PersonAmountInfo;
 import com.taikang.dic.ltci.model.PersonCostAccount;
 import com.taikang.dic.ltci.mqmodel.MqBaseModel;
@@ -93,6 +97,8 @@ public class MonSetPerServiceImpl extends AbstractGenericService<MonSetPerDO, St
   @Autowired private CheckInServerClient checkInServerClient;
 
   @Autowired private CustomNurseDetailDAO customNurseDetailDAO;
+
+  @Autowired private INurseDetailDAO nurseDetailDAO;
 
   @Override
   public IGenericDAO<MonSetPerDO, String> getDao() {
@@ -302,28 +308,19 @@ public class MonSetPerServiceImpl extends AbstractGenericService<MonSetPerDO, St
     PersonCostAccount result = new PersonCostAccount();
     if (StringUtils.isNotBlank(personInfo)) {
 
-      //-----------------------校验必传信息----start---------------------------
       PersonAmountInfo personAmountInfo =
           JSONObject.parseObject(personInfo, PersonAmountInfo.class);
       //入住唯一编号
       String recorduuid = personAmountInfo.getInRecorduuid();
-      if (StringUtils.isBlank(recorduuid)) {
-        result.setErrorReasonCode(ConstantUtil.PERSON_SETTLE_RESPONSE_CODE_ERROR);
-        result.setErrorReason("入住编号不能为空");
-        return result;
-      }
-      //是否使用账户支付
+      //是否使用账号标志
       String isAccountUse = personAmountInfo.getIsAccountUse();
-      if (StringUtils.isBlank(isAccountUse)) {
-        result.setErrorReasonCode(ConstantUtil.PERSON_SETTLE_RESPONSE_CODE_ERROR);
-        result.setErrorReason("支付方式不能为空");
-        return result;
-      }
       //预结算标志
       String isbBalance = personAmountInfo.getIsbBalance();
-      if (StringUtils.isBlank(isbBalance)) {
-        result.setErrorReasonCode(ConstantUtil.PERSON_SETTLE_RESPONSE_CODE_ERROR);
-        result.setErrorReason("预结算标识不能为空");
+      //-----------------------校验必传信息----start---------------------------
+
+      checkParam(result, recorduuid, isAccountUse, isbBalance);
+
+      if (ConstantUtil.PERSON_SETTLE_RESPONSE_CODE_ERROR.equals(result.getErrorReasonCode())) {
         return result;
       }
       //-----------------------校验必传信息----end---------------------------
@@ -354,17 +351,17 @@ public class MonSetPerServiceImpl extends AbstractGenericService<MonSetPerDO, St
             && feeTime.after(DateFormatUtil.strToDate(balanceDate))) {
           feeTime = DateFormatUtil.strToDate(balanceDate);
         }
+        endFeeTime = getPreMonthLastDay(feeTime);
       }
       //如果是出院状态
       if (Integer.valueOf(InHospStateEnum.In.getValue()).equals(status)) {
         //取实际出院时间作为结算时间
         String realOutDate = checkIn.getRealOutDate();
         if (StringUtils.isNotBlank(realOutDate)) {
-          feeTime =
+          endFeeTime =
               DateFormatUtil.strToDate(realOutDate, DateFormatUtil.DATE_FORMAT_YYYY_MM_DD_HH_MM_SS);
         }
       }
-      endFeeTime = getPreMonthLastDay(feeTime);
       //-------------------------确定结算终止日期--end-----------------------------
 
       //--------------------------计算结算信息---start-----------------------------
@@ -378,91 +375,167 @@ public class MonSetPerServiceImpl extends AbstractGenericService<MonSetPerDO, St
       //不使用账号支付的逻辑
       if (ConstantUtil.PERSON_SETTLE_NOT_USE_ACCOUNT.equals(isAccountUse)) {
         Map<String, String> parameters = new HashMap<>();
-        
-        parameters.put("inRecorduuid", recorduuid);
-        parameters.put("feeDate", DateFormatUtil.dateToStr(endFeeTime, DateFormatUtil.DATE_FORMAT_YYYY_MM_DD_HH_MM_SS));
-        
+
+        parameters.put(ConstantUtil.PERSON_SETTLE_PARAM_INRECORDUUID, recorduuid);
+        parameters.put(
+            ConstantUtil.PERSON_SETTLE_PARAM_FEEDATE,
+            DateFormatUtil.dateToStr(endFeeTime, DateFormatUtil.DATE_FORMAT_YYYY_MM_DD_HH_MM_SS));
+
         //从数据库服务明细表中根据入住唯一编号和结算截止日期计算结算信息
         PersonCostAccount settleForPerson = customNurseDetailDAO.settleForPerson(parameters);
-        
+
+        //查询费用开始时间和费用结束时间
+        Date queryStartFeeDate = customNurseDetailDAO.queryStartFeeDate(parameters);
+        Date queryEndFeeDate = customNurseDetailDAO.queryEndFeeDate(parameters);
+        result.setStartDate(
+            DateFormatUtil.dateToStr(
+                queryStartFeeDate, DateFormatUtil.DATE_FORMAT_YYYY_MM_DD_HH_MM_SS));
+        result.setEndDate(
+            DateFormatUtil.dateToStr(
+                queryEndFeeDate, DateFormatUtil.DATE_FORMAT_YYYY_MM_DD_HH_MM_SS));
+
         //构建返回结果
         settleForPersonNoAccount(result, settleForPerson);
         result.setErrorReasonCode(ConstantUtil.PERSON_SETTLE_RESPONSE_CODE_SUCESS);
       }
       //--------------------------计算结算信息---end------------------------------
 
-      //---------------------------结算时结算信息插入以及更新结算状态--start----------------------------------
+      //---------------------------结算时结算信息插入以及更新服务明细中结算状态--start----------------------------------
       //判断是否为预结算,如果不为结算那么向个人结算表中插入一条数据,并更新服务明细表中的结算状态
       if (ConstantUtil.PERSON_SETTLE_BALANCE.equals(isbBalance)) {
-        //向个人结算表中插入一条数据并更新服务明细表中的结算状态,
-        //需要在一个事物里
-    	  MonSetPerDO monSetPerDO = new MonSetPerDO();
-    	  monSetPerDO.setId(UUIDUtil.getUUID());
-    	  monSetPerDO.setPerSetCode(UUIDUtil.getUUID());
-    	  monSetPerDO.setReceiptNum(personAmountInfo.getReceiptNum());
-    	  monSetPerDO.setInRecorduuid(recorduuid);
-    	  monSetPerDO.setSetDate(new Date());
-    	  //报销类别:定点医疗机构全部传“0”
-    	  monSetPerDO.setReimbType(StringUtils.isBlank(personAmountInfo.getReceiptNum())?"0":personAmountInfo.getReceiptNum());
-    	  monSetPerDO.setIsAccountUse(isAccountUse);
-    	  //monSetPerDO.set
-    	  
+        //向个人结算表中插入一条数据并更新服务明细表中的结算状态,需要在一个事务里
+        //TODO 需要抽到一个方法,并在一个事务中处理
+        MonSetPerDO monSetPerDO = new MonSetPerDO();
+
+        monSetPerDO.setId(UUIDUtil.getUUID());
+        monSetPerDO.setPerSetCode(UUIDUtil.getUUID());
+        monSetPerDO.setReceiptNum(personAmountInfo.getReceiptNum());
+        monSetPerDO.setInRecorduuid(recorduuid);
+        monSetPerDO.setSetDate(new Date());
+
+        monSetPerDO.setIsValid(IsValidEnum.NO_DELETE.getValue());
+        monSetPerDO.setAuditState(ConstantUtil.WAITING_PROCESS);
+
+        monSetPerDO.setAccountPay(result.getMediAccountExpense());
+        monSetPerDO.setBankCardPay(result.getCashExpense());
+        monSetPerDO.setNurseTotalAmount(result.getNurseTotalAmount());
+        monSetPerDO.setSiPay(result.getSiPay());
+        monSetPerDO.setPaySelf(result.getPaySelf());
+        monSetPerDO.setExpenseSelf(result.getExpenseSelf());
+        monSetPerDO.setOverLimitFee(result.getOverCost());
+
+        monSetPerDO.setNurseStarttime(DateFormatUtil.strToDate(result.getStartDate()));
+        monSetPerDO.setNurseEndtime(DateFormatUtil.strToDate(result.getEndDate()));
+
+        //报销类别:定点医疗机构全部传“0”
+        monSetPerDO.setReimbType(
+            StringUtils.isBlank(personAmountInfo.getReceiptNum())
+                ? "0"
+                : personAmountInfo.getReceiptNum());
+        monSetPerDO.setIsAccountUse(isAccountUse);
+        //TODO 需要不全字段 如机构和个人的信息
+        //monSetPerDO.set
+
+        monSetPerDAO.insert(monSetPerDO);
+        //更新护理明细中的结算标志位,并回写月结记录编码
+        NurseDetailDOExample nurseDetailExample = new NurseDetailDOExample();
+        com.taikang.dic.ltci.model.NurseDetailDOExample.Criteria criteria =
+            nurseDetailExample.createCriteria();
+        criteria.andInRecorduuidEqualTo(recorduuid);
+        criteria.andPerSettleFalgEqualTo(ConstantUtil.PERSON_NOT_SETTLE);
+        criteria.andFeeDateLessThan(endFeeTime);
+
+        NurseDetailDO nurseDetailDO = new NurseDetailDO();
+        //回写结算记录编码
+        nurseDetailDO.setFeeSetCode(monSetPerDO.getPerSetCode());
+        //更新结算标志
+        nurseDetailDO.setPerSettleFalg(ConstantUtil.PERSON_SETTLE_DONE);
+
+        nurseDetailDAO.updateByExampleSelective(nurseDetailDO, nurseDetailExample);
       }
-      //---------------------------结算时结算信息插入以及更新结算状态--end----------------------------------
+      //---------------------------结算时结算信息插入以及更新服务明细中结算状态--end----------------------------------
     }
     return result;
   }
 
   /**
+   * 校验必传参数是否为空
+   *
+   * @param result
+   * @param recorduuid
+   * @param isAccountUse
+   * @param isbBalance
+   */
+  private void checkParam(
+      PersonCostAccount result, String recorduuid, String isAccountUse, String isbBalance) {
+    if (StringUtils.isBlank(recorduuid)) {
+      result.setErrorReasonCode(ConstantUtil.PERSON_SETTLE_RESPONSE_CODE_ERROR);
+      result.setErrorReason("入住编号不能为空");
+    }
+    //是否使用账户支付
+    if (StringUtils.isBlank(isAccountUse)) {
+      result.setErrorReasonCode(ConstantUtil.PERSON_SETTLE_RESPONSE_CODE_ERROR);
+      result.setErrorReason("支付方式不能为空");
+    }
+    //预结算标志
+    if (StringUtils.isBlank(isbBalance)) {
+      result.setErrorReasonCode(ConstantUtil.PERSON_SETTLE_RESPONSE_CODE_ERROR);
+      result.setErrorReason("预结算标识不能为空");
+    }
+  }
+
+  /**
    * 获取传入时间上一个月的最后一天
+   *
    * @param feeTime
    * @return
    */
-private Date getPreMonthLastDay(Date feeTime) {
-	
-	String dateToStr = DateFormatUtil.dateToStr(feeTime, DateFormatUtil.DATE_FORMAT_YYYY_MM_DD);
-	//先获取月第一天
-	Date monthFirstDay = DateFormatUtil.getMonthFirstDay(dateToStr);
-	Calendar instance = Calendar.getInstance();
-	instance.setTime(monthFirstDay);
-	//向前减一天
-	instance.add(Calendar.DAY_OF_MONTH, -1);
-	Date time = instance.getTime();
-	//获取当天的最后时刻
-	Date dayLastTime = DateFormatUtil.getDayLastTime(time);
-	return dayLastTime;
-	
-}
+  private Date getPreMonthLastDay(Date feeTime) {
 
-/**
+    String dateToStr = DateFormatUtil.dateToStr(feeTime, DateFormatUtil.DATE_FORMAT_YYYY_MM_DD);
+    //先获取月第一天
+    Date monthFirstDay = DateFormatUtil.getMonthFirstDay(dateToStr);
+    Calendar instance = Calendar.getInstance();
+    instance.setTime(monthFirstDay);
+    //向前减一天
+    instance.add(Calendar.DAY_OF_MONTH, -1);
+    Date time = instance.getTime();
+    //获取当天的最后时刻
+    Date dayLastTime = DateFormatUtil.getDayLastTime(time);
+    return dayLastTime;
+  }
+
+  /**
    * 非账户支付时计算个人结算信息
+   *
    * @param result
    * @param settleForPerson
    */
-public void settleForPersonNoAccount(PersonCostAccount result, PersonCostAccount settleForPerson) {
-	BigDecimal nurseTotalAmount = bigDecimalNullToZero(settleForPerson.getNurseTotalAmount());
-	BigDecimal siPay = bigDecimalNullToZero(settleForPerson.getSiPay());
-	BigDecimal paySelf = bigDecimalNullToZero(settleForPerson.getPaySelf());
-	BigDecimal expenseSelf = bigDecimalNullToZero(settleForPerson.getExpenseSelf());
-	BigDecimal overCost = bigDecimalNullToZero(settleForPerson.getOverCost());
-	
-	//总费用、统筹支出、个人自付、个人自费、超限额
-	result.setNurseTotalAmount(nurseTotalAmount);
-	result.setSiPay(siPay);
-	result.setPaySelf(paySelf);
-	result.setExpenseSelf(expenseSelf);
-	result.setOverCost(overCost);
-	
-	//非医保结算,医保账户支付为0
-	result.setMediAccountExpense(BigDecimal.valueOf(0));
-	//现金支付为个人自付+个人自费
-	result.setCashExpense(paySelf.add(expenseSelf));
-	
-}
-private BigDecimal bigDecimalNullToZero(BigDecimal bigDecimal){
-	if(bigDecimal == null){
-		return BigDecimal.valueOf(0);
-	}
-	return bigDecimal;
-}
+  public void settleForPersonNoAccount(
+      PersonCostAccount result, PersonCostAccount settleForPerson) {
+    BigDecimal nurseTotalAmount = bigDecimalNullToZero(settleForPerson.getNurseTotalAmount());
+    BigDecimal siPay = bigDecimalNullToZero(settleForPerson.getSiPay());
+    BigDecimal paySelf = bigDecimalNullToZero(settleForPerson.getPaySelf());
+    BigDecimal expenseSelf = bigDecimalNullToZero(settleForPerson.getExpenseSelf());
+    BigDecimal overCost = bigDecimalNullToZero(settleForPerson.getOverCost());
+
+    //总费用、统筹支出、个人自付、个人自费、超限额
+    result.setNurseTotalAmount(nurseTotalAmount);
+    result.setSiPay(siPay);
+    result.setPaySelf(paySelf);
+    result.setExpenseSelf(expenseSelf);
+    result.setOverCost(overCost);
+
+    //非医保结算,医保账户支付为0
+    result.setMediAccountExpense(BigDecimal.valueOf(0));
+    //现金支付为个人自付+个人自费
+    result.setCashExpense(paySelf.add(expenseSelf));
+  }
+
+  private BigDecimal bigDecimalNullToZero(BigDecimal bigDecimal) {
+    if (bigDecimal == null) {
+      return BigDecimal.valueOf(0);
+    }
+    return bigDecimal;
+  }
 }

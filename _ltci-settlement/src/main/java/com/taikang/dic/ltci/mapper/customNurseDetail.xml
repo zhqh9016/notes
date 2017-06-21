@@ -81,4 +81,12 @@
   		SUM(expense_self) expenseSelf,SUM(over_cost) overCost FROM ltci_nurse_fee_detail
 	WHERE in_recorduuid = #{inRecorduuid} AND fee_date &lt;= #{feeDate} and per_settle_falg = 0;
   </select>
+  <select id ="queryStartFeeDate" parameterType="java.util.Map" resultType="java.util.Date">
+  	SELECT min(fee_date) FROM ltci_nurse_fee_detail
+	WHERE in_recorduuid = #{inRecorduuid} AND fee_date &lt;= #{feeDate} and per_settle_falg = 0 order by fee_date desc;
+  </select>
+  <select id ="queryEndFeeDate" parameterType="java.util.Map" resultType="java.util.Date">
+  	SELECT max(fee_date) FROM ltci_nurse_fee_detail
+	WHERE in_recorduuid = #{inRecorduuid} AND fee_date &lt;= #{feeDate} and per_settle_falg = 0 order by fee_date desc;
+  </select>
 </mapper>

@@ -163,7 +163,7 @@ public class ConstantUtil {
   //专业个人费用预结算、结算返回状态码
   public static final String PERSON_SETTLE_RESPONSE_CODE_SUCESS = "0";
   public static final String PERSON_SETTLE_RESPONSE_CODE_ERROR = "-1";
-  
+
   //明细计算返回状态码
   public static final String COUNT_DETAIL_RESPONSE_CODE_SUCESS = "0";
   public static final String COUNT_DETAIL_RESPONSE_CODE_ERROR = "-1";
@@ -178,4 +178,11 @@ public class ConstantUtil {
   //专业预结算标识
   public static final String PERSON_SETTLE_PRE_BALANCE = "1"; //预结算
   public static final String PERSON_SETTLE_BALANCE = "2"; //结算
+  //个人结算标志
+  public static final String PERSON_SETTLE_DONE = "1"; //个人已结算
+  public static final String PERSON_NOT_SETTLE = "0"; //个人未结算
+
+  //个人结算、预结算统计结算信息入参
+  public static final String PERSON_SETTLE_PARAM_INRECORDUUID = "inRecorduuid"; //入住编号
+  public static final String PERSON_SETTLE_PARAM_FEEDATE = "feeDate"; //费用终止时间
 }
